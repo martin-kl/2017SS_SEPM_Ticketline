@@ -1,0 +1,77 @@
+nächstes Treffen: Montag 19 Uhr
+
+jeder legt einmal Projekt an + Git / Github
+
+Erweiterte User-Stories: (4 stehen zur Auswahl - 2 davon machen wir)
+	- Merchandise und Prämien
+	- Zahlungsabwicklung
+	- Benutzerverwaltung
+	- Ticketverkauf und Dateneingabe
+
+für jedes Dokument wird ein Issue angelegt, dort wird die Zeit draufgebucht
+
+Dokumente erstellen:
+.)	Benutzergruppenanalyse:
+	admin / user - dürfte nich allzu schwer sein
+	Benni
+	
+.)	Szenarien:
+	drei Kernfunktionen textuell und mittels Diagramm + Skizze/Mockup
+	jetzt vielleicht nur mal wenig - einmal auf Mockup warten
+	
+	erstmal aufschieben
+	
+.)	Mockups:
+	erstmal für die Grundmasken die wir wahrscheinlich zu Beginn brauchen
+	
+	Alex macht das - ev. schon mit UI Builder	
+	
+.)	Meetingprotokolle:
+	Vorlage kommt in Git Repo unter Documents
+	
+.)	Risokomanagement:
+	Krankheit eines Studenten, Student hört auf
+	
+	Calvin
+	
+.)	Gantt Chart
+	geht automatisch in Redmine
+	
+.)	Testplan
+
+	Calvin & Benni
+	
+.)	Manuelle Systemtests:
+	jetzt mal noch nicht - oder Vorlage anlegen
+	
+	Martin - Vorlage erstellen
+	
+.)	Testprotokolle und Testberichte:
+	jetzt mal noch nicht - oder Vorlage anlegen
+	
+	Martin - Vorlage erstellen
+	
+.)	Entwicklungsrichtlinien:
+	Vorgaben - Java Code Convention verwenden oder etwas anderes
+	oder Intellij Konfig verwenden
+	Christopher
+	
+.)	Designdokument:
+	welche Logging-Levels werden verwendet, Security abtippen von Angabe
+	Exception Handling - weitergeben an GUI (welche Exceptions kommt im Laufe des Programmierens)
+		- eher alle gemeinsam
+	
+	ER Diagramm realtiv früh machen wenn möglich
+	
+	Klassendiagramm + Domänenmodell vllt erst später während Projekt
+	
+	machen wir zu 5. gemeinsam
+	
+.)	Softwarearchitektur:
+	eigentlich alle vorgegeben, nur Dokument erstellen
+	Christopher
+	
+.)	Projektendbericht:
+	jetzt noch nicht benötigt
+	Vorlage erstellen
+	
