@@ -18,9 +18,9 @@ Tasks sind oft für viele User Stories gleich, aber manchmal auch spezifisch fü
 jeder legt einmal Projekt an + Git / Github
 
 Erweiterte User-Stories: (4 stehen zur Auswahl - 2 davon machen wir wobei noch nicht geklärt ist, was wir machen)
-	- Merchandise und Prämien
-	- Zahlungsabwicklung
-	- Benutzerverwaltung
+	- Merchandise und Prämien	
+	- Zahlungsabwicklung	<- Alex und Benni interessieren sich dafür
+	- Benutzerverwaltung	<- schaut eher einfach aus.... wir wären da mal dafür
 	- Ticketverkauf und Dateneingabe
 
 für jedes Dokument wird ein Issue angelegt, dort wird die Zeit draufgebucht
@@ -92,3 +92,8 @@ Dokumente erstellen:
 
 .)	Sprint Retrospective Protocol
 	siehe Szenario und User Stories - vorletzte/letzte Seite... nach jedem Sprint anzulegen
+
+.) Sprinttagebuch
+Das Sprinttagebuch dokumentiert den Verlauf bereits abgeschlossener Sprints und bietet eine
+Rückschau auf den bisherigen Prozessverlauf. Es wird am Ende des gerade laufenden Sprints
+aktualisiert, indem ein zusätzlicher Sprinteintrag dem Dokument hinzugefügt wird.
