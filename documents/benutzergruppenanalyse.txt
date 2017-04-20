@@ -1,0 +1,59 @@
+- Verkäufer
+	Kenntnisse:
+		Keine besonderen technischen Kenntnisse werden vorausgesetzt.
+		Sollte mit fachspezifischen Begriffen aus dem Ticketverkaufsbereich
+		vertraut sein, um Abkürzungen oder bestimmte Prozesse (wie einen Bestellvorgang)
+		zu verstehen.
+	
+	Nutzungsverhalten:
+		Verkäufer arbeiten regelmäßig mit der Software, da die wesentlichen 
+		betrieblichen Vorgänge über die Software abgewickelt werden.
+
+	NFAs:
+		Es sollen keine technischen Meldungen direkt an den Verkäufer weitergeleitet werden.
+		Stattdessen soll der Verkäufer mit einer allgemein verständlichen Nachricht informiert
+		werden. Bespiel: ExceptionNamen nicht in der GUI ausgeben, sondern eine 
+		allgemein verständliche Fehlermeldung schreiben.
+		Hilfestellung wird im Allgemeinen durch die Software nicht angeboten. Falls ein 
+		bestimmter Vorgang nicht verständlich sein sollte, so wird dieser in Textform in der
+		GUI erklärt.
+		
+	Kernfunktionen: 
+		- News anzeigen
+		- Kunden verwalten
+		- Veranstaltungen ansehen
+		- Tickets verwalten
+		- Rechnungen ausstellen
+		- Merchandise und Prämienverwaltung
+		- Tickets drucken
+	
+	Mögliche Optimierungen der Kernfunktionen:
+		- Tabellarische Kundenübersicht
+		- Veranstaltungen anlegen?
+
+- Administrator
+	Kentnisse:
+		Grundlegende technische Kenntnisse werden vorausgesetzt. Auch der Administor
+		sollte mit fachspezifischen Begriffen aus dem Ticketverkaufsbereich vertraut sein,
+		um Prozesse rund um Ticketline zu verstehen.
+	
+	Nutzungsverhalten:
+		Administratoren verwenden die Hauptfunktionen (Tickets verwalten, 
+		Veranstaltungen ansehen, ...) der Software seltener, jedoch benötigen
+		sie spezielle Funktionen (wie z.B. Benutzer freischalten).
+
+	NFAs:
+		Administratoren dürfen mit technischen Fehlermeldungen konfrontiert werden.
+		Sonst gelten die gleichen NFAs, wie bei den Verkäufern.
+	
+	Kernfunktionen:
+		- prinzipiell sind Admins dazu in der Lage, alle Funktionen eines Verkäufers auszuführen
+		- gesperrte Verkäufer verwalten
+		- News erstellen
+		- Zahlungsdienstleister verwalten
+		- Benutzer im System verwalten
+		- Aufführungsorte und Saalpläne anlegen
+	
+	Mögliche Optimierungen der Kernfunktionen:
+		- Veranstaltungen anlegen + löschen
+		- News bearbeiten + löschen

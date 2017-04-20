@@ -1,0 +1,56 @@
+Meeting 10.4.2017 - 19 Uhr 
+besprochen wurde:
+
+Beispiel für generelle Aufteilung in Redmine:
+Feature Authentifizierung
+	Sub-Feature: Accountsperre nach falscher Passworteingabe
+		besteht aus Tasks
+			.) z.b. wenn ausgesperrt, darf sich nicht einloggen
+			.) weiterer Task für 5x falsch eingeben --> sperren
+			.) Tests...usw
+
+
+generell Einteilung für Redmine:
+		eher wichtig - mit dem beginnen:
+	.) Ticket
+	.) Veranstaltung
+	.) Kunden
+
+(alles mal ohne Mehrsprachigkeit - wobei die sollte nicht viel arbeit sein glaub ich)
+
+der Rest ist aktuell noch nicht so wichtig
+
+
+Datenbankmodell-Entwurf erstellen 
+Benni: für Grundfunktionen erstellt das
+
+Erweiterte User-Stories - diese haben wir festgelegt, die wir implementieren müssen:
+	- Zahlungsabwicklung	<- Alex und Benni interessieren sich dafür
+	- Benutzerverwaltung	<- schaut eher einfach aus.... wir wären da mal dafür
+
+
+				jetzt ein Sprint bis zum MR 1
+da wird voraussichtlich gemacht:
+.) Kunde anlegen
+.) Kunde bearbeiten (beides mit UI - nicht vergessen auf auslagern der Texte im UI)
+.) Kunden-Demo-Demo-Daten erstellen
+.) Demo-Daten für Veranstaltungen erstellen
+
+Tasks anlegen: (Grobstruktur einmal)
+	ER Diagramm erstellen
+	Service erstellen
+	UI erstellen
+	Kunde anlegen Tests
+	Kunde bearbeiten Tests
+	
+alles Codebezogenen (JavaDOC, Logger, Git Commit Messages) Englisch
+alles in Redmine auf Deutsch
+
+was loggen wir: Ticketreservierungen, einloggen oder so, eher Service Sachen
+
+zu Github - Branching:
+User Stories sind Features - 1 Person ist immer zuständig für ein Feature (Ansprechpartner dazu)
+	die zuständige Person erstellt sich selbst die Tasks in Redmine dafür
+
+jedes Feature in Redmine wird zu einem Branch - also z.B: Kunden anlegen, Kunde bearbeiten werden zu Branches
+Unterpunkte von User Stories sind Features, alles darunter Tasks

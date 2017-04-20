@@ -1,0 +1,99 @@
+nächstes Treffen: Montag 19 Uhr
+
+von Scrum Tutorial:
+Empfehlung von dem Vortragenden: 2 Punkte für den kleinsten (geringsten, wenigster Umfang) Storypoint
+von dem aus ausgehend dann die größeren / anderen bewerten
+2-3 Wochen ein Sprint (muss aber immer gleich lang dauern)
+dann halt schauen, wie viele Storypoints ich in dem Sprint schaffe
+    also wir sagen wir wählen xxx Storypoints für den Sprint - ich nehme solange VOM BACKLOG vom wichtigsten startend
+    bis ich eben das nächste nicht mehr nehmen kann weil ich sonst drüber wäre
+    jeder Storypoint muss unabhängig von den anderen implementierbar sein
+
+danach dann User Stories in Tasks zerlegen - Task ca 1-2h (laut dem Tut)
+Tasks sind oft für viele User Stories gleich, aber manchmal auch spezifisch für die User Story
+    (z.B: ich hab vergessen in der bisherigen GUI für die jetzige Story Platz zu schaffen => neuer Task dafür)
+    eine Person kann immer nur 1 Task aktuell machen!
+
+
+jeder legt einmal Projekt an + Git / Github
+
+Erweiterte User-Stories: (4 stehen zur Auswahl - 2 davon machen wir wobei noch nicht geklärt ist, was wir machen)
+	- Merchandise und Prämien	
+	- Zahlungsabwicklung	<- Alex und Benni interessieren sich dafür
+	- Benutzerverwaltung	<- schaut eher einfach aus.... wir wären da mal dafür
+	- Ticketverkauf und Dateneingabe
+
+für jedes Dokument wird ein Issue angelegt, dort wird die Zeit draufgebucht
+
+Dokumente erstellen:
+.)	Benutzergruppenanalyse:
+	admin / user - dürfte nich allzu schwer sein
+	Benni
+
+.)	Szenarien:
+	drei Kernfunktionen textuell und mittels Diagramm + Skizze/Mockup
+	jetzt vielleicht nur mal wenig - einmal auf Mockup warten
+
+	erstmal aufschieben
+
+.)	Mockups:
+	erstmal für die Grundmasken die wir wahrscheinlich zu Beginn brauchen
+
+	Alex macht das - ev. schon mit UI Builder
+
+.)	Meetingprotokolle:
+	Vorlage kommt in Git Repo unter Documents
+
+.)	Risokomanagement:
+	Krankheit eines Studenten, Student hört auf
+
+	Calvin
+
+.)	Gantt Chart
+	geht automatisch in Redmine
+
+.)	Testplan
+
+	Calvin & Benni
+
+.)	Manuelle Systemtests:
+	jetzt mal noch nicht - oder Vorlage anlegen
+
+	Martin - Vorlage erstellen
+
+.)	Testprotokolle und Testberichte:
+	jetzt mal noch nicht - oder Vorlage anlegen
+
+	Martin - Vorlage erstellen
+
+.)	Entwicklungsrichtlinien:
+	Vorgaben - Java Code Convention verwenden oder etwas anderes
+	oder Intellij Konfig verwenden
+	Christopher
+
+.)	Designdokument:
+	welche Logging-Levels werden verwendet, Security abtippen von Angabe
+	Exception Handling - weitergeben an GUI (welche Exceptions kommt im Laufe des Programmierens)
+		- eher alle gemeinsam
+
+	ER Diagramm realtiv früh machen wenn möglich
+
+	Klassendiagramm + Domänenmodell vllt erst später während Projekt
+
+	machen wir zu 5. gemeinsam
+
+.)	Softwarearchitektur:
+	eigentlich alle vorgegeben, nur Dokument erstellen
+	Christopher
+
+.)	Projektendbericht:
+	jetzt noch nicht benötigt
+	Vorlage erstellen
+
+.)	Sprint Retrospective Protocol
+	siehe Szenario und User Stories - vorletzte/letzte Seite... nach jedem Sprint anzulegen
+
+.) Sprinttagebuch
+Das Sprinttagebuch dokumentiert den Verlauf bereits abgeschlossener Sprints und bietet eine
+Rückschau auf den bisherigen Prozessverlauf. Es wird am Ende des gerade laufenden Sprints
+aktualisiert, indem ein zusätzlicher Sprinteintrag dem Dokument hinzugefügt wird.
