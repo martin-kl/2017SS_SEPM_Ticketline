@@ -17,11 +17,10 @@
     <properties>
         <!-- dependencies -->
         <ticketline-rest.version>3.0.0-SNAPSHOT</ticketline-rest.version>
-        <h2.version>1.4.193</h2.version>
-        <mapstruct.version>1.2.0.Beta1</mapstruct.version>
-        <jackson.version>2.8.6</jackson.version>
+        <h2.version>1.4.194</h2.version>
+        <mapstruct.version>1.2.0.Beta2</mapstruct.version>
         <jjwt.version>0.7.0</jjwt.version>
-        <javafaker.version>0.12</javafaker.version>
+        <javafaker.version>0.13</javafaker.version>
         <rest-assured.version>2.9.0</rest-assured.version>
     </properties>
 

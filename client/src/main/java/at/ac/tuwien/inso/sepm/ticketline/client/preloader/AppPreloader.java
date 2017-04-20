@@ -15,11 +15,14 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class AppPreloader extends Preloader {
+
+    public static final String DEFAULT_BUILD_VERSION = "3.0.0";
 
     private Stage stage;
 
@@ -30,6 +33,7 @@ public class AppPreloader extends Preloader {
     private TicketlineInfoController ticketlineInfoController;
 
     private static final DateTimeFormatter ISO_DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private static final ZonedDateTime DEFAULT_BUILD_TIME = ZonedDateTime.now();
 
     public void start(Stage stage) throws IOException {
         this.stage = stage;
@@ -44,11 +48,11 @@ public class AppPreloader extends Preloader {
         if (buildInfoPropertiesResource != null) {
             properties.load(buildInfoPropertiesResource);
         }
-        ticketlineInfoController.setVersion(properties.getProperty("git.build.version", "0.0.0"));
+        ticketlineInfoController.setVersion(properties.getProperty("git.build.version", DEFAULT_BUILD_VERSION));
         LocalDateTime localDateTime = ZonedDateTime.parse(
-            properties.getProperty("git.build.time", ISO_DATETIME_FORMATTER.format(ZonedDateTime.now())),
+            properties.getProperty("git.build.time", ISO_DATETIME_FORMATTER.format(DEFAULT_BUILD_TIME)),
             ISO_DATETIME_FORMATTER
-        ).toLocalDateTime();
+        ).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
         ticketlineInfoController.setBuildDateTime(localDateTime);
         this.stage.show();
     }

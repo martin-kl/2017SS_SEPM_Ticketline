@@ -15,8 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -31,8 +30,8 @@ public class NewsEndpointTest extends BaseIntegrationTest {
 
     private static final String TEST_NEWS_TEXT = "TestNewsText";
     private static final String TEST_NEWS_TITLE = "title";
-    private static final ZonedDateTime TEST_NEWS_PUBLISHED_AT =
-        ZonedDateTime.of(2016, 11, 13, 12, 15, 0, 0, ZoneId.systemDefault());
+    private static final LocalDateTime TEST_NEWS_PUBLISHED_AT =
+        LocalDateTime.of(2016, 11, 13, 12, 15, 0, 0);
     private static final long TEST_NEWS_ID = 1L;
 
     @MockBean

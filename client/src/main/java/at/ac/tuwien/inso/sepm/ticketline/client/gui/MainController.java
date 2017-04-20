@@ -5,13 +5,15 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformatio
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -20,9 +22,6 @@ import javafx.stage.WindowEvent;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.springframework.stereotype.Component;
-
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Component
 public class MainController {
@@ -111,34 +110,5 @@ public class MainController {
 
     public void setProgressbarProgress(double progress) {
         pbLoadingProgress.setProgress(progress);
-    }
-
-    public void changeToGerman(ActionEvent actionEvent) {
-        BundleManager.changeLocale(new Locale("de"));
-        reloadLanguage();
-    }
-
-    public void changeToEnglish(ActionEvent actionEvent) {
-        BundleManager.changeLocale(new Locale("en"));
-        reloadLanguage();
-    }
-
-    private void reloadLanguage() {
-        ResourceBundle bundle = BundleManager.getBundle();
-        ObservableList<Menu> menuList = mbMain.getMenus();
-        menuList.get(0).setText(bundle.getString("menu.application"));
-        menuList.get(1).setText(bundle.getString("menu.help"));
-        menuList.get(2).setText(bundle.getString("menu.language"));
-
-        //set language for sub menu items of menu.application
-        menuList.get(0).getItems().get(0).setText(bundle.getString("menu.application.exit"));
-
-        //set language for sub menu items of menu.help
-        menuList.get(1).getItems().get(0).setText(bundle.getString("menu.help.about"));
-
-        //set language for sub menu items of menu.language
-        menuList.get(2).getItems().get(0).setText(bundle.getString("menu.language.german"));
-        menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
-
     }
 }

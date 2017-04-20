@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties("spring.h2.console")
 public class H2ConsoleConfigurationProperties {
 
-    private String path;
+    private String path = "/h2-console";
     private String accessMatcher = "denyAll";
 
     public String getPath() {
