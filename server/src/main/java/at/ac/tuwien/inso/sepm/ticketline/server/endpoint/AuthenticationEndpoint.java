@@ -20,7 +20,7 @@ public class AuthenticationEndpoint {
     private final HeaderTokenAuthenticationService authenticationService;
 
     public AuthenticationEndpoint(SimpleHeaderTokenAuthenticationService simpleHeaderTokenAuthenticationService) {
-        this.authenticationService = simpleHeaderTokenAuthenticationService;
+        authenticationService = simpleHeaderTokenAuthenticationService;
     }
 
     @RequestMapping(method = RequestMethod.POST)

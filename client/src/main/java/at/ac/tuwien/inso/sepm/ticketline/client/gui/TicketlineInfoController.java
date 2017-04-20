@@ -51,6 +51,7 @@ public class TicketlineInfoController {
     }
 
     public void setVersion(String version) {
+        version = (version != null) ? version : "";
         Matcher versionMatcher = SEMANTIC_VERSION_PATTERN.matcher(version);
         if (versionMatcher.matches()) {
             labVersionMajor.setText(Optional.ofNullable(versionMatcher.group("major")).orElse(""));

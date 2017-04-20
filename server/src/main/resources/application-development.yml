@@ -12,7 +12,6 @@ application:
 spring:
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
   datasource:
@@ -23,5 +22,4 @@ spring:
   h2:
     console:
       enabled: true
-      path: /api/h2-console
-      access-matcher: permitAll
+      access-matcher: "hasIpAddress('10.0.0.0/16') or hasIpAddress('127.0.0.0/8') or hasIpAddress('::1')"

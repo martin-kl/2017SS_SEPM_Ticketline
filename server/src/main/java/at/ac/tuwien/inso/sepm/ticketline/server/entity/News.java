@@ -2,7 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Entity
 public class News {
@@ -13,7 +13,7 @@ public class News {
     private Long id;
 
     @Column(nullable = false, name = "published_at")
-    private ZonedDateTime publishedAt;
+    private LocalDateTime publishedAt;
 
     @Column(nullable = false)
     @Size(max = 100)
@@ -30,11 +30,11 @@ public class News {
         this.id = id;
     }
 
-    public ZonedDateTime getPublishedAt() {
+    public LocalDateTime getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(ZonedDateTime publishedAt) {
+    public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 
@@ -93,7 +93,7 @@ public class News {
 
     public static final class NewsBuilder {
         private Long id;
-        private ZonedDateTime publishedAt;
+        private LocalDateTime publishedAt;
         private String title;
         private String text;
 
@@ -105,7 +105,7 @@ public class News {
             return this;
         }
 
-        public NewsBuilder publishedAt(ZonedDateTime publishedAt) {
+        public NewsBuilder publishedAt(LocalDateTime publishedAt) {
             this.publishedAt = publishedAt;
             return this;
         }

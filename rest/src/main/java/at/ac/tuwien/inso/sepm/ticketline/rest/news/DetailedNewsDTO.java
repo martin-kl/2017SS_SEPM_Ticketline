@@ -3,7 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.rest.news;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @ApiModel(value = "DetailedNewsDTO", description = "A detailed DTO for news entries via rest")
 public class DetailedNewsDTO {
@@ -12,7 +12,7 @@ public class DetailedNewsDTO {
     private Long id;
 
     @ApiModelProperty(readOnly = true, name = "The date and time when the news was published")
-    private ZonedDateTime publishedAt;
+    private LocalDateTime publishedAt;
 
     @ApiModelProperty(required = true, name = "The title of the news")
     private String title;
@@ -28,11 +28,11 @@ public class DetailedNewsDTO {
         this.id = id;
     }
 
-    public ZonedDateTime getPublishedAt() {
+    public LocalDateTime getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(ZonedDateTime publishedAt) {
+    public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 
@@ -92,7 +92,7 @@ public class DetailedNewsDTO {
     public static final class NewsDTOBuilder {
 
         private Long id;
-        private ZonedDateTime publishedAt;
+        private LocalDateTime publishedAt;
         private String title;
         private String text;
 
@@ -101,7 +101,7 @@ public class DetailedNewsDTO {
             return this;
         }
 
-        public NewsDTOBuilder publishedAt(ZonedDateTime publishedAt) {
+        public NewsDTOBuilder publishedAt(LocalDateTime publishedAt) {
             this.publishedAt = publishedAt;
             return this;
         }

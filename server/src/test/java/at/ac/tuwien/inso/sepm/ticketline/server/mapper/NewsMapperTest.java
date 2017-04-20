@@ -9,17 +9,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 public class NewsMapperTest {
 
     @Configuration
@@ -28,15 +24,17 @@ public class NewsMapperTest {
     }
 
     @Autowired
+    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
+    // Suppress warning cause inspection does not know that the cdi annotations are added in the code generation step
     private NewsMapper newsMapper;
 
-    public static final long NEWS_ID = 1L;
+    private static final long NEWS_ID = 1L;
     private static final String NEWS_TITLE = "Headline";
     private static final String NEWS_TEXT = "This is a very long text containing all the contents of the news" +
         " and a lot of other more or less useful information.";
     private static final String NEWS_SUMMARY = "This is a very long text containing all the";
-    private static final ZonedDateTime NEWS_PUBLISHED_AT =
-        ZonedDateTime.of(2016, 1, 1, 12, 0, 0, 0, ZoneId.systemDefault());
+    private static final LocalDateTime NEWS_PUBLISHED_AT =
+        LocalDateTime.of(2016, 1, 1, 12, 0, 0, 0);
 
     @Test
     public void shouldMapNewsToSimpleNewsDTOShorteningTextToSummary() {

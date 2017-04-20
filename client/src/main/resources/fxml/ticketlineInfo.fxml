@@ -33,7 +33,7 @@
                         <Font name="Caviar Dreams Bold" size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="labVersionMajor" layoutX="346.0" layoutY="52.0" rotate="-8.0" text="0" textFill="WHITE">
+                <Label fx:id="labVersionMajor" layoutX="346.0" layoutY="52.0" rotate="-8.0" textFill="WHITE">
                     <font>
                         <Font name="Caviar Dreams Bold" size="64.0"/>
                     </font>

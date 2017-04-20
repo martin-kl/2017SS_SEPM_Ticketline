@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
 
@@ -37,10 +38,13 @@ public class NewsDataGenerator {
                 News news = News.builder()
                     .title(faker.lorem().characters(25, 100))
                     .text(faker.lorem().paragraph(faker.number().numberBetween(5, 10)))
-                    .publishedAt(faker.date()
-                        .past(365 * 3, TimeUnit.DAYS)
-                        .toInstant()
-                        .atZone(ZoneId.systemDefault()))
+                    .publishedAt(
+                        LocalDateTime.ofInstant(
+                            faker.date()
+                                .past(365 * 3, TimeUnit.DAYS).
+                                toInstant(),
+                            ZoneId.systemDefault()
+                        ))
                     .build();
                 LOGGER.debug("saving news {}", news);
                 newsRepository.save(news);
