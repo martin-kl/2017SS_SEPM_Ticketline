@@ -32,7 +32,7 @@
 
 To generate some testData add the generateData profile when running the server
 ```
-./mvnw -pl=server -am spring-boot:run -Drun.profiles=generateData
+./mvnw -pl=server -am spring-boot:run -Drun.profiles=generateData,development
 ```
 
 #### Client
@@ -50,3 +50,6 @@ You can login to the client using one of the following credentials:
 * User
   * Username: user
   * Password: password
+* Database
+  * Username: ticketline
+  * Password: ticketline
