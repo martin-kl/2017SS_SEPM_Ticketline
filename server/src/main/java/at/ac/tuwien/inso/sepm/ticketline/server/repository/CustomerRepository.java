@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
+    //TODO is this method even sinful, are we searching for 1 customer by id?!?
     /**
      * Find a single customer entry by id.
      *

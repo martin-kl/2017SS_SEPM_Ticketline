@@ -24,7 +24,7 @@ public interface CustomerService {
 
     /**
      * saves a new or edited customer
-     * @param customer
+     * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */
     Customer save(Customer customer);
