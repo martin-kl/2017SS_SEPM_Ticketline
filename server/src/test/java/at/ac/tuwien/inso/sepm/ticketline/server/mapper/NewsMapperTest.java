@@ -47,7 +47,7 @@ public class NewsMapperTest {
             .build();
         SimpleNewsDTO simpleNewsDTO = newsMapper.newsToSimpleNewsDTO(news);
         assertThat(simpleNewsDTO).isNotNull();
-        assertThat(simpleNewsDTO.getId()).isEqualTo(1L);
+        assertThat(simpleNewsDTO.getId()).isEqualTo(NEWS_ID);
         assertThat(simpleNewsDTO.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(simpleNewsDTO.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(simpleNewsDTO.getSummary()).isEqualTo(NEWS_SUMMARY);
@@ -63,7 +63,7 @@ public class NewsMapperTest {
             .build();
         SimpleNewsDTO simpleNewsDTO = newsMapper.newsToSimpleNewsDTO(news);
         assertThat(simpleNewsDTO).isNotNull();
-        assertThat(simpleNewsDTO.getId()).isEqualTo(1L);
+        assertThat(simpleNewsDTO.getId()).isEqualTo(NEWS_ID);
         assertThat(simpleNewsDTO.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(simpleNewsDTO.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(simpleNewsDTO.getSummary()).isEqualTo(NEWS_SUMMARY);
@@ -79,7 +79,7 @@ public class NewsMapperTest {
             .build();
         DetailedNewsDTO detailedNewsDTO = newsMapper.newsToDetailedNewsDTO(news);
         assertThat(detailedNewsDTO).isNotNull();
-        assertThat(detailedNewsDTO.getId()).isEqualTo(1L);
+        assertThat(detailedNewsDTO.getId()).isEqualTo(NEWS_ID);
         assertThat(detailedNewsDTO.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(detailedNewsDTO.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(detailedNewsDTO.getText()).isEqualTo(NEWS_TEXT);
@@ -95,7 +95,7 @@ public class NewsMapperTest {
             .build();
         News news = newsMapper.detailedNewsDTOToNews(detailedNewsDTO);
         assertThat(news).isNotNull();
-        assertThat(news.getId()).isEqualTo(1L);
+        assertThat(news.getId()).isEqualTo(NEWS_ID);
         assertThat(news.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(news.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(news.getText()).isEqualTo(NEWS_TEXT);
