@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -44,4 +45,8 @@ public class Performance extends Audited {
         foreignKey = @ForeignKey(name = "fk_performance_location")
     )
     private Location location;
+
+    @Getter
+    @ManyToMany(mappedBy = "performance")
+    private Set<Ticket> tickets;
 }
