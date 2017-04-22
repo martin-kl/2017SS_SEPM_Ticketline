@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -30,5 +31,9 @@ public abstract class Ticket extends Audited {
         foreignKey = @ForeignKey(name = "fk_performance_ticket")
     )
     private Performance performance;
+
+    @Getter
+    @OneToMany(mappedBy = "ticket")
+    private Set<TicketHistory> ticketHistories;
 
 }

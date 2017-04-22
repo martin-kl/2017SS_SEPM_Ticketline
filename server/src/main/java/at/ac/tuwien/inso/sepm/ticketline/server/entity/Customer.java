@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -21,4 +22,8 @@ public class Customer extends Audited {
 
     @Column(nullable = false, length = 10_000)
     private String name;
+
+    @Getter
+    @OneToMany(mappedBy = "customer")
+    private Set<TicketHistory> ticketHistories;
 }
