@@ -15,8 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
-@Setter
 @Entity
 public class Principal extends Audited implements UserDetails {
 
@@ -31,24 +29,33 @@ public class Principal extends Audited implements UserDetails {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
+    @Setter
     @Column
     @NotNull
     private String username;
 
+    @Setter
     @Column
     @JsonIgnore
     private String password;
 
+    @Setter
     @Column
     @NotNull
     private boolean enabled = true;
 
+    @Getter
+    @Setter
     @Transient
     private boolean locked = false;
 
+    @Getter
+    @Setter
     @Transient
     private boolean expired = false;
 
+    @Getter
+    @Setter
     @Transient
     private boolean credentialsExpired = false;
 
@@ -57,8 +64,13 @@ public class Principal extends Audited implements UserDetails {
     @Column
     @NotNull
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Role role = Role.SELLER;
 
+    // Relations
+
+    @Getter
+    @OneToMany(mappedBy = "principal")
+    private Set<PrincipalNews> principalNews;
 
     // User Details implementations
 

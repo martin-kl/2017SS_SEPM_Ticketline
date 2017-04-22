@@ -1,58 +1,42 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class News {
 
+    @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_news_id")
     @SequenceGenerator(name = "seq_news_id", sequenceName = "seq_news_id")
     private Long id;
 
+    @Getter
+    @Setter
     @Column(nullable = false, name = "published_at")
     private LocalDateTime publishedAt;
 
+    @Getter
+    @Setter
     @Column(nullable = false)
     @Size(max = 100)
     private String title;
 
+    @Getter
+    @Setter
     @Column(nullable = false, length = 10_000)
     private String text;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(LocalDateTime publishedAt) {
-        this.publishedAt = publishedAt;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+    @Getter
+    @OneToMany(mappedBy = "news")
+    private Set<PrincipalNews> principalNews;
 
     public static NewsBuilder builder() {
         return new NewsBuilder();
