@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -18,7 +17,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
      * @param id the is of the customer entry
      * @return Optional containing the customer
      */
-    Optional<News> findOneById(Long id);
-
-
+    Optional<Customer> findOneById(Long id);
 }
