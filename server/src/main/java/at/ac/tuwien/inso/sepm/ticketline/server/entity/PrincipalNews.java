@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 public class PrincipalNews extends Audited {
 
@@ -17,13 +19,9 @@ public class PrincipalNews extends Audited {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Getter
-    @Setter
     @Column
     private boolean seen = false;
 
-    @Getter
-    @Setter
     @NotNull
     @ManyToOne
     @JoinColumn(
@@ -31,8 +29,6 @@ public class PrincipalNews extends Audited {
     )
     private Principal principal;
 
-    @Getter
-    @Setter
     @NotNull
     @ManyToOne
     @JoinColumn(

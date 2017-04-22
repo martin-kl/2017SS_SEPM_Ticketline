@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 public class Principal extends Audited implements UserDetails {
 
@@ -29,38 +31,27 @@ public class Principal extends Audited implements UserDetails {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Setter
     @Column
     @NotNull
     private String username;
 
-    @Setter
     @Column
     @JsonIgnore
     private String password;
 
-    @Setter
     @Column
     @NotNull
     private boolean enabled = true;
 
-    @Getter
-    @Setter
     @Transient
     private boolean locked = false;
 
-    @Getter
-    @Setter
     @Transient
     private boolean expired = false;
 
-    @Getter
-    @Setter
     @Transient
     private boolean credentialsExpired = false;
 
-    @Getter
-    @Setter
     @Column
     @NotNull
     @Enumerated(value = EnumType.STRING)
