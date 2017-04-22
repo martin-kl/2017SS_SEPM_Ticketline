@@ -7,30 +7,26 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 public class News {
 
     @Getter
-    @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_news_id")
-    @SequenceGenerator(name = "seq_news_id", sequenceName = "seq_news_id")
-    private Long id;
+    @GeneratedValue
+    @Column(columnDefinition = "uuid", updatable = false)
+    private UUID id;
 
-    @Getter
-    @Setter
     @Column(nullable = false, name = "published_at")
     private LocalDateTime publishedAt;
 
-    @Getter
-    @Setter
     @Column(nullable = false)
     @Size(max = 100)
     private String title;
 
-    @Getter
-    @Setter
     @Column(nullable = false, length = 10_000)
     private String text;
 
@@ -52,31 +48,8 @@ public class News {
             '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        News news = (News) o;
-
-        if (id != null ? !id.equals(news.id) : news.id != null) return false;
-        if (publishedAt != null ? !publishedAt.equals(news.publishedAt) : news.publishedAt != null) return false;
-        if (title != null ? !title.equals(news.title) : news.title != null) return false;
-        return text != null ? text.equals(news.text) : news.text == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (publishedAt != null ? publishedAt.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
-        return result;
-    }
-
     public static final class NewsBuilder {
-        private Long id;
+        private UUID id;
         private LocalDateTime publishedAt;
         private String title;
         private String text;
@@ -84,7 +57,7 @@ public class News {
         private NewsBuilder() {
         }
 
-        public NewsBuilder id(Long id) {
+        public NewsBuilder id(UUID id) {
             this.id = id;
             return this;
         }

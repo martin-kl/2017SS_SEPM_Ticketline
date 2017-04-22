@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +29,7 @@ public class NewsMapperTest {
     // Suppress warning cause inspection does not know that the cdi annotations are added in the code generation step
     private NewsMapper newsMapper;
 
-    private static final long NEWS_ID = 1L;
+    private static final UUID NEWS_ID = UUID.randomUUID();
     private static final String NEWS_TITLE = "Headline";
     private static final String NEWS_TEXT = "This is a very long text containing all the contents of the news" +
         " and a lot of other more or less useful information.";
@@ -87,7 +88,7 @@ public class NewsMapperTest {
     @Test
     public void shouldMapDetailedNewsDTOToNews() {
         DetailedNewsDTO detailedNewsDTO = DetailedNewsDTO.builder()
-            .id(1L)
+            .id(NEWS_ID)
             .publishedAt(NEWS_PUBLISHED_AT)
             .title(NEWS_TITLE)
             .text(NEWS_TEXT)

@@ -2,14 +2,21 @@ package at.ac.tuwien.inso.sepm.ticketline.rest.news;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Getter
+@Setter
+@EqualsAndHashCode
 @ApiModel(value = "DetailedNewsDTO", description = "A simple DTO for news entries via rest")
 public class SimpleNewsDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
-    private Long id;
+    private UUID id;
 
     @ApiModelProperty(required = true, readOnly = true, name = "The date and time when the news was published")
     private LocalDateTime publishedAt;
@@ -19,38 +26,6 @@ public class SimpleNewsDTO {
 
     @ApiModelProperty(required = true, readOnly = true, name = "The summary of the news")
     private String summary;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(LocalDateTime publishedAt) {
-        this.publishedAt = publishedAt;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
 
     @Override
     public String toString() {
@@ -62,41 +37,18 @@ public class SimpleNewsDTO {
             '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SimpleNewsDTO that = (SimpleNewsDTO) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (publishedAt != null ? !publishedAt.equals(that.publishedAt) : that.publishedAt != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        return summary != null ? summary.equals(that.summary) : that.summary == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (publishedAt != null ? publishedAt.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (summary != null ? summary.hashCode() : 0);
-        return result;
-    }
-
     public static NewsDTOBuilder builder() {
         return new NewsDTOBuilder();
     }
 
     public static final class NewsDTOBuilder {
 
-        private Long id;
+        private UUID id;
         private LocalDateTime publishedAt;
         private String title;
         private String summary;
 
-        public NewsDTOBuilder id(Long id) {
+        public NewsDTOBuilder id(UUID id) {
             this.id = id;
             return this;
         }

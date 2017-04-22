@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News, Long> {
+public interface NewsRepository extends JpaRepository<News, UUID> {
 
     /**
      * Find a single news entry by id.
@@ -16,7 +17,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
      * @param id the is of the news entry
      * @return Optional containing the news entry
      */
-    Optional<News> findOneById(Long id);
+    Optional<News> findOneById(UUID id);
 
     /**
      * Find all news entries ordered by published at date (descending).

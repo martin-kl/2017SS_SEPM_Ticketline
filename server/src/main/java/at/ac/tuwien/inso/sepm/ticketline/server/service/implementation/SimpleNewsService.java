@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SimpleNewsService implements NewsService {
@@ -24,7 +25,7 @@ public class SimpleNewsService implements NewsService {
     }
 
     @Override
-    public News findOne(Long id) {
+    public News findOne(UUID id) {
         return newsRepository.findOneById(id).orElseThrow(NotFoundException::new);
     }
 

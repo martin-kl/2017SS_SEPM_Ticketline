@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/news")
@@ -33,7 +34,7 @@ public class NewsEndpoint {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get detailed information about a specific news entry")
-    public DetailedNewsDTO find(@PathVariable Long id) {
+    public DetailedNewsDTO find(@PathVariable UUID id) {
         return newsMapper.newsToDetailedNewsDTO(newsService.findOne(id));
     }
 
