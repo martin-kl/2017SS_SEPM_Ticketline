@@ -6,4 +6,6 @@ package at.ac.tuwien.inso.sepm.ticketline.server.unittest.customer.base;
  */
 public class BaseCustomerUnitTest {
 
+    //TODO insert test data here
+
 }

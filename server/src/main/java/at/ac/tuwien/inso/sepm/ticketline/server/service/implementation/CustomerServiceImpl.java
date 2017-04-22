@@ -35,9 +35,6 @@ public class CustomerServiceImpl implements CustomerService {
             LOGGER.error("name of customer has less then 3 characters - that is not valid");
             throw new IllegalArgumentException("name of customer must have at least 3 characters");
         }
-        LOGGER.info("before saving customer cust = id="+customer.getId()+", name = "+customer.getId());
-        customer = customerRepository.save(customer);
-        LOGGER.info("after saving customer cust = id="+customer.getId()+", name = "+customer.getId());
-        return customer;
+        return customerRepository.save(customer);
     }
 }
