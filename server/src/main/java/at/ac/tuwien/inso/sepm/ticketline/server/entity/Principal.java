@@ -43,6 +43,9 @@ public class Principal extends Audited implements UserDetails {
     private String password;
 
     @Column
+    private int failedLoginCount = 0;
+
+    @Column
     @NotNull
     private boolean enabled = true;
 
