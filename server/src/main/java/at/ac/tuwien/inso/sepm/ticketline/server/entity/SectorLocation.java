@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"sectors"})
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="sector")
@@ -35,7 +35,7 @@ public class SectorLocation extends Location {
     }
 
     @Getter
-    @ManyToMany(mappedBy = "location")
+    @ManyToMany(mappedBy = "location", fetch = FetchType.EAGER)
     private Set<Sector> sectors;
 
 }

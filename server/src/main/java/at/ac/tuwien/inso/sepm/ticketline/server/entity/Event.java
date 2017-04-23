@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"eventArtists", "performances"})
 @Entity
 public class Event extends Audited {
 
@@ -40,10 +40,10 @@ public class Event extends Audited {
     private String description;
 
     @Getter
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private Set<EventArtist> eventArtists;
 
     @Getter
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private Set<Performance> performances;
 }

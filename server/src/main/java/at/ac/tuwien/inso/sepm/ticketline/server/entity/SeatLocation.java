@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"seats"})
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="seat")
@@ -35,7 +35,7 @@ public class SeatLocation extends Location {
     }
 
     @Getter
-    @ManyToMany(mappedBy = "location")
+    @ManyToMany(mappedBy = "location", fetch = FetchType.EAGER)
     private Set<Seat> seats;
 
 }

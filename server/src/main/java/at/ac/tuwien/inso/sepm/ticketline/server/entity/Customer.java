@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"ticketHistories"})
 @Entity
 public class Customer extends Audited {
 

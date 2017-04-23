@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"principalNews"})
 @Entity
 public class Principal extends Audited implements UserDetails {
 

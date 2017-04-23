@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(exclude = {"performances"})
 @DiscriminatorColumn(columnDefinition = "varchar default 'sector'")
 public abstract class Location extends Audited {
 
