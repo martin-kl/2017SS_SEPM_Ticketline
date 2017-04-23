@@ -40,8 +40,8 @@ public class Event extends Audited {
     private String description;
 
     @Getter
-    @ManyToMany(mappedBy = "events")
-    private Set<Artist> artists;
+    @OneToMany(mappedBy = "event")
+    private Set<EventArtist> eventArtists;
 
     @Getter
     @OneToMany(mappedBy = "event")

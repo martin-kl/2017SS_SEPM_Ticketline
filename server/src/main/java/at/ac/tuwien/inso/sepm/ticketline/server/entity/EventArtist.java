@@ -4,7 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Setter
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @Entity
-public class Artist extends Audited {
+public class EventArtist extends Audited {
 
     @Getter
     @Id
@@ -22,14 +22,18 @@ public class Artist extends Audited {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Column
-    private String firstname;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(
+        foreignKey = @ForeignKey(name = "fk_eventartist_artist")
+    )
+    private Artist artist;
 
-    @Column
-    private String lastname;
-
-    @Getter
-    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER)
-    private Set<EventArtist> eventArtists;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(
+        foreignKey = @ForeignKey(name = "fk_eventartist_event")
+    )
+    private Event event;
 
 }
