@@ -1,8 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,6 +9,10 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 @Entity
 public class Artist extends Audited {
 
