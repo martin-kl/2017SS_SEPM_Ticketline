@@ -14,6 +14,10 @@
     <version>3.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <org.projectlombok.version>1.16.16</org.projectlombok.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -24,7 +28,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
+            <version>${org.projectlombok.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

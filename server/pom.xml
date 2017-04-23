@@ -22,6 +22,7 @@
         <jjwt.version>0.7.0</jjwt.version>
         <javafaker.version>0.13</javafaker.version>
         <rest-assured.version>2.9.0</rest-assured.version>
+        <org.projectlombok.version>1.16.16</org.projectlombok.version>
     </properties>
 
     <dependencies>
@@ -72,6 +73,7 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -86,9 +88,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
+            <version>${org.projectlombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -113,7 +116,7 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -138,6 +141,11 @@
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
             </plugin>
         </plugins>
     </build>
