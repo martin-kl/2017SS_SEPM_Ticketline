@@ -45,7 +45,6 @@ public class SectorLocationDataGenerator {
 
     private final Faker faker = new Faker();
 
-    @Order(110)
     @PostConstruct
     private void generateSectorLocations() {
         if (sectorLocationRepository.count() > 0) {

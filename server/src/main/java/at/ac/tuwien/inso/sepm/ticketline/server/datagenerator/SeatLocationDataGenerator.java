@@ -40,7 +40,6 @@ public class SeatLocationDataGenerator {
 
     private final Faker faker = new Faker();
 
-    @Order(110)
     @PostConstruct
     private void generateSeatLocations() {
         if (seatLocationRepository.count() > 0) {
