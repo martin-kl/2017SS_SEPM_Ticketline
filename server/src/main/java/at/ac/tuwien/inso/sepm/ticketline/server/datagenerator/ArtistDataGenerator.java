@@ -26,7 +26,7 @@ public class ArtistDataGenerator {
         if (artistRepository.count() > 0) {
             log.info("artists already generated");
         } else {
-            log.info("generating {} news entries", NUMBER_OF_ARTIST_TO_GENERATE);
+            log.info("generating {} artist entries", NUMBER_OF_ARTIST_TO_GENERATE);
             for (int i = 0; i < NUMBER_OF_ARTIST_TO_GENERATE; i++) {
                 Artist artist = Artist.builder()
                     .firstname(faker.name().firstName())

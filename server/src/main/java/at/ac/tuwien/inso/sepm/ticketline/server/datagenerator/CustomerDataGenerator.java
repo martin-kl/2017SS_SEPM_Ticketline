@@ -1,8 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.datagenerator;
 
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Artist;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
-import at.ac.tuwien.inso.sepm.ticketline.server.repository.ArtistRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;

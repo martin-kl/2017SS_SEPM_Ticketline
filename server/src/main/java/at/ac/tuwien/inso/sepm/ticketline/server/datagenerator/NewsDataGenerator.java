@@ -4,8 +4,6 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.NewsRepository;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
