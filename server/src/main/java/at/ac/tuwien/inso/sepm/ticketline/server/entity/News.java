@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @Entity
-public class News {
+public class News extends Audited {
 
     @Getter
     @Id

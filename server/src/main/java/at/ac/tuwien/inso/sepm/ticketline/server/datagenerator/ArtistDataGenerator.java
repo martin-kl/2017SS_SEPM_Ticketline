@@ -22,7 +22,7 @@ public class ArtistDataGenerator {
     private final Faker faker = new Faker();
 
     @PostConstruct
-    private void generateNews() {
+    private void generateArtists() {
         if (artistRepository.count() > 0) {
             log.info("artists already generated");
         } else {
