@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -34,10 +35,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthenticationService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHeaderTokenAuthenticationService.class);
 
     private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
@@ -72,7 +72,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList()));
         } catch (JsonProcessingException e) {
-            LOGGER.error("Failed to wrap authorities", e);
+            log.error("Failed to wrap authorities", e);
         }
         String currentToken = Jwts.builder()
             .claim(AuthenticationConstants.JWT_CLAIM_PRINCIPAL_ID, null)
@@ -176,7 +176,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 new TypeReference<List<String>>() {
                 });
         } catch (IOException e) {
-            LOGGER.error("Failed to unwrap roles", e);
+            log.error("Failed to unwrap roles", e);
         }
         return authoritiesWrapper;
     }
