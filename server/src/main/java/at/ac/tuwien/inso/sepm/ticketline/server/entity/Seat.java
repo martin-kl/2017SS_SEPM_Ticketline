@@ -29,6 +29,8 @@ public class Seat extends Audited {
     @Column
     private int column;
 
+    @Setter
+    @Getter
     @NotNull
     @ManyToOne
     @JoinColumn(

@@ -27,6 +27,8 @@ public class PriceCategory extends Audited {
     @Column
     private String name;
 
+    @Setter
+    @Getter
     @Column
     private double modifier;
 

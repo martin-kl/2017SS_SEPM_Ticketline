@@ -22,10 +22,14 @@ public class Sector extends Audited {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
+    @Getter
+    @Setter
     @Column
     @NotNull
     private int size;
 
+    @Setter
+    @Getter
     @NotNull
     @ManyToOne
     @JoinColumn(

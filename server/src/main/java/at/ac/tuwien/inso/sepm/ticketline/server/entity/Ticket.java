@@ -1,8 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +11,9 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString(exclude = {"ticketHistories"})
 @Entity
 @DiscriminatorColumn(columnDefinition = "varchar default 'sector'")
 public abstract class Ticket extends Audited {
