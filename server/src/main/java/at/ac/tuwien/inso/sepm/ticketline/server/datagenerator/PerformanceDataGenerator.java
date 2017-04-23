@@ -64,7 +64,7 @@ public class PerformanceDataGenerator {
 
                     int randomLocationId = (int) (Math.random() * locationList.size());
                     Instant startTime = faker.date()
-                        .past(365 * 3, TimeUnit.DAYS)
+                        .future(365 * 3, TimeUnit.DAYS)
                         .toInstant();
 
                     Performance performance = Performance.builder()
