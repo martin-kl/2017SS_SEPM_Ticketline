@@ -59,3 +59,8 @@ You can login to the client using one of the following credentials:
 * Database
   * Username: ticketline
   * Password: ticketline
+
+## Intellij Configuration
+
+For a smooth programming feeling you should install the following plugin:
+https://github.com/mplushnikov/lombok-intellij-plugin
