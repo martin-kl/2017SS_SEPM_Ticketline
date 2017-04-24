@@ -1,16 +1,18 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
-
-@Getter
 @Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"ticketHistories"})
 @Entity
 public class Customer extends Audited {
 

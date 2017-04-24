@@ -12,9 +12,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Entity
-public class PrincipalNews extends Audited {
+public class EventArtist extends Audited {
 
     @Getter
     @Id
@@ -22,21 +21,18 @@ public class PrincipalNews extends Audited {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Column
-    private boolean seen = false;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(
+        foreignKey = @ForeignKey(name = "fk_eventartist_artist")
+    )
+    private Artist artist;
 
     @NotNull
     @ManyToOne
     @JoinColumn(
-        foreignKey = @ForeignKey(name = "fk_principalnews_principal")
+        foreignKey = @ForeignKey(name = "fk_eventartist_event")
     )
-    private Principal principal;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(
-        foreignKey = @ForeignKey(name = "fk_principalnews_news")
-    )
-    private News news;
+    private Event event;
 
 }

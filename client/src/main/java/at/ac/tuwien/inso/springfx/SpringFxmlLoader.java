@@ -2,8 +2,7 @@ package at.ac.tuwien.inso.springfx;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import javafx.fxml.FXMLLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -15,10 +14,9 @@ import java.io.IOException;
  * <p>
  * Based on <a href="http://www.javacodegeeks.com/2013/03/javafx-2-with-spring.html">http://www.javacodegeeks.com/2013/03/javafx-2-with-spring.html</a>
  */
+@Slf4j
 @Component
 public class SpringFxmlLoader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringFxmlLoader.class);
 
     private final ApplicationContext applicationContext;
 
@@ -37,19 +35,19 @@ public class SpringFxmlLoader {
         fxmlLoader.setLocation(SpringFxmlLoader.class.getResource(url));
         fxmlLoader.setResources(BundleManager.getBundle());
         fxmlLoader.setControllerFactory(clazz -> {
-            LOGGER.debug("Trying to retrieve spring bean for type {}", clazz.getName());
+            log.debug("Trying to retrieve spring bean for type {}", clazz.getName());
             Object bean = null;
             try {
                 bean = applicationContext.getBean(clazz);
             } catch (NoSuchBeanDefinitionException e) {
-                LOGGER.warn("No qualifying spring bean of type {} found", clazz.getName());
+                log.warn("No qualifying spring bean of type {} found", clazz.getName());
             }
             if (bean == null) {
-                LOGGER.debug("Trying to instantiating class of type {}", clazz.getName());
+                log.debug("Trying to instantiating class of type {}", clazz.getName());
                 try {
                     bean = clazz.newInstance();
                 } catch (InstantiationException | IllegalAccessException e) {
-                    LOGGER.error("Failed to instantiate bean of type {}", clazz.getName(), e);
+                    log.error("Failed to instantiate bean of type {}", clazz.getName(), e);
                     throw new RuntimeException("Failed to instantiate bean of type " + clazz.getName(), e);
                 }
             }

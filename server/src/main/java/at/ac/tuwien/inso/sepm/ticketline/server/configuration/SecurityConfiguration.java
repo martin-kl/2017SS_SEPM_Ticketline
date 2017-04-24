@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -36,11 +37,11 @@ import java.util.Map;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfiguration {
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public SecurityConfiguration(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
     public static PasswordEncoder configureDefaultPasswordEncoder() {
@@ -61,11 +62,9 @@ public class SecurityConfiguration {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, List<AuthenticationProvider> providerList) throws Exception {
-        new InMemoryUserDetailsManagerConfigurer<AuthenticationManagerBuilder>()
-            .withUser("user").password(passwordEncoder.encode("password")).authorities("USER").and()
-            .withUser("admin").password(passwordEncoder.encode("password")).authorities("ADMIN", "USER").and()
-            .passwordEncoder(passwordEncoder)
-            .configure(auth);
+        auth
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder);
         providerList.forEach(auth::authenticationProvider);
     }
 

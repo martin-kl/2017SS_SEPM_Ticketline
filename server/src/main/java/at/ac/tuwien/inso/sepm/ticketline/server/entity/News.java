@@ -1,18 +1,23 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"principalNews"})
 @Entity
-public class News {
+public class News extends Audited {
 
     @Getter
     @Id
@@ -32,58 +37,5 @@ public class News {
 
     @Getter
     @OneToMany(mappedBy = "news")
-    private Set<PrincipalNews> principalNews;
-
-    public static NewsBuilder builder() {
-        return new NewsBuilder();
-    }
-
-    @Override
-    public String toString() {
-        return "News{" +
-            "id=" + id +
-            ", publishedAt=" + publishedAt +
-            ", title='" + title + '\'' +
-            ", text='" + text + '\'' +
-            '}';
-    }
-
-    public static final class NewsBuilder {
-        private UUID id;
-        private LocalDateTime publishedAt;
-        private String title;
-        private String text;
-
-        private NewsBuilder() {
-        }
-
-        public NewsBuilder id(UUID id) {
-            this.id = id;
-            return this;
-        }
-
-        public NewsBuilder publishedAt(LocalDateTime publishedAt) {
-            this.publishedAt = publishedAt;
-            return this;
-        }
-
-        public NewsBuilder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public NewsBuilder text(String text) {
-            this.text = text;
-            return this;
-        }
-
-        public News build() {
-            News news = new News();
-            news.setId(id);
-            news.setPublishedAt(publishedAt);
-            news.setTitle(title);
-            news.setText(text);
-            return news;
-        }
-    }
+    private Set<PrincipalNews> principalNews = new HashSet<>();
 }

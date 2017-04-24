@@ -1,9 +1,9 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
+import at.ac.tuwien.inso.sepm.ticketline.server.security.AuthorityService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +15,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Getter
 @Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"principalNews"})
 @Entity
 public class Principal extends Audited implements UserDetails {
 
@@ -38,6 +42,9 @@ public class Principal extends Audited implements UserDetails {
     @Column
     @JsonIgnore
     private String password;
+
+    @Column
+    private int failedLoginCount = 0;
 
     @Column
     @NotNull
@@ -69,9 +76,7 @@ public class Principal extends Audited implements UserDetails {
     @Transient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-        return grantedAuthorities;
+        return AuthorityService.getAuthoritiesForRole(role);
     }
 
     @Override
