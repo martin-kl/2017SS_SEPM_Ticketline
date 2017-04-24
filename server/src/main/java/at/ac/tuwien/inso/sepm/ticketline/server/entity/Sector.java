@@ -1,15 +1,18 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-@Getter
 @Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString
 @Entity
 public class Sector extends Audited {
 
@@ -19,10 +22,14 @@ public class Sector extends Audited {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
+    @Getter
+    @Setter
     @Column
     @NotNull
     private int size;
 
+    @Setter
+    @Getter
     @NotNull
     @ManyToOne
     @JoinColumn(

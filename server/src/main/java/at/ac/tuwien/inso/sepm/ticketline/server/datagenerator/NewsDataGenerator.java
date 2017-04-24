@@ -3,38 +3,33 @@ package at.ac.tuwien.inso.sepm.ticketline.server.datagenerator;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.NewsRepository;
 import com.github.javafaker.Faker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Profile("generateData")
 @Component
 public class NewsDataGenerator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewsDataGenerator.class);
     private static final int NUMBER_OF_NEWS_TO_GENERATE = 25;
 
-    private final NewsRepository newsRepository;
-    private final Faker faker;
-
-    public NewsDataGenerator(NewsRepository newsRepository) {
-        this.newsRepository = newsRepository;
-        faker = new Faker();
-    }
+    @Autowired
+    private NewsRepository newsRepository;
+    private final Faker faker = new Faker();
 
     @PostConstruct
     private void generateNews() {
         if (newsRepository.count() > 0) {
-            LOGGER.info("news already generated");
+            log.info("news already generated");
         } else {
-            LOGGER.info("generating {} news entries", NUMBER_OF_NEWS_TO_GENERATE);
+            log.info("generating {} news entries", NUMBER_OF_NEWS_TO_GENERATE);
             for (int i = 0; i < NUMBER_OF_NEWS_TO_GENERATE; i++) {
                 News news = News.builder()
                     .title(faker.lorem().characters(25, 100))
@@ -47,7 +42,7 @@ public class NewsDataGenerator {
                             ZoneId.systemDefault()
                         ))
                     .build();
-                LOGGER.debug("saving news {}", news);
+                log.debug("saving news {}", news);
                 newsRepository.save(news);
             }
         }

@@ -4,16 +4,16 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.NewsRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class SimpleNewsService implements NewsService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleNewsService.class);
 
     private final NewsRestClient newsRestClient;
 

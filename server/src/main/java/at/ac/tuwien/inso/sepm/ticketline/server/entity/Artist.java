@@ -1,8 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,6 +9,10 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"eventArtists"})
 @Entity
 public class Artist extends Audited {
 
@@ -26,12 +29,7 @@ public class Artist extends Audited {
     private String lastname;
 
     @Getter
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "event_artist",
-        joinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_artist_event")),
-        inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_event_artist")))
-    private Set<Event> events;
+    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER)
+    private Set<EventArtist> eventArtists;
 
 }

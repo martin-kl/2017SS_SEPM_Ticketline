@@ -1,8 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,7 +9,10 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@ToString(exclude = {"performances"})
 @DiscriminatorColumn(columnDefinition = "varchar default 'sector'")
 public abstract class Location extends Audited {
 
