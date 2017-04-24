@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface NewsService {
 
@@ -20,7 +21,7 @@ public interface NewsService {
      * @param id the is of the news entry
      * @return the news entry
      */
-    News findOne(Long id);
+    News findOne(UUID id);
 
     /**
      * Publish a single news entry

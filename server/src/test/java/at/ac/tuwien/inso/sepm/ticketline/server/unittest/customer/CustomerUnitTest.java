@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RunWith(SpringRunner.class)
@@ -43,7 +44,7 @@ public class CustomerUnitTest {
         Customer customer = new Customer();
         customer.setName(CUSTOMER_NAME_VALID);
         customerService.save(customer);
-        Long custID = customer.getId();
+        UUID custID = customer.getId();
         assertEquals(customer.getName(), CUSTOMER_NAME_VALID);
 
         //customer is saved, now try to edit the customer

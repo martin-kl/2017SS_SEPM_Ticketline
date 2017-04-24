@@ -35,6 +35,11 @@ To generate some testData add the generateData profile when running the server
 ./mvnw -pl=server -am spring-boot:run -Drun.profiles=generateData
 ./mvnw -pl=server -am spring-boot:run -Drun.profiles=generateData,development
 ```
+On Windows Powershell
+```
+./mvnw -pl=server -am spring-boot:run '-Drun.profiles=generateData'
+./mvnw -pl=server -am spring-boot:run '-Drun.profiles=generateData,development'
+```
 
 #### Client
 ```
@@ -54,3 +59,8 @@ You can login to the client using one of the following credentials:
 * Database
   * Username: ticketline
   * Password: ticketline
+
+## Intellij Configuration
+
+For a smooth programming feeling you should install the following plugin:
+https://github.com/mplushnikov/lombok-intellij-plugin

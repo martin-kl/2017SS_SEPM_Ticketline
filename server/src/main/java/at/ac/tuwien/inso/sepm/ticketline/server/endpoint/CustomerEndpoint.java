@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/customer")
@@ -30,7 +31,7 @@ public class CustomerEndpoint {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get one Customer by id")
-    public CustomerDTO find(@PathVariable Long id) {
+    public CustomerDTO find(@PathVariable UUID id) {
         return customerMapper.customerToCustomerDTO(customerService.findOne(id));
     }
 

@@ -6,10 +6,15 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.news.NewsSummaryMapper.NewsSummary;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = NewsSummaryMapper.class)
+@Mapper(
+    componentModel = "spring",
+    uses = NewsSummaryMapper.class,
+    unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface NewsMapper {
 
     News detailedNewsDTOToNews(DetailedNewsDTO detailedNewsDTO);

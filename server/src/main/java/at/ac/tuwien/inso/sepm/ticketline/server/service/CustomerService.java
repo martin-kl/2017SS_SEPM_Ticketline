@@ -4,6 +4,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CustomerService {
     /**
@@ -20,7 +21,7 @@ public interface CustomerService {
      * @param id the is of the news entry
      * @return the news entry
      */
-    Customer findOne(Long id);
+    Customer findOne(UUID id);
 
     /**
      * saves a new or edited customer

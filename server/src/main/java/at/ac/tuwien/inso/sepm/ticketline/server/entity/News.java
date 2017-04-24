@@ -1,16 +1,29 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = {"principalNews"})
 @Entity
-public class News {
+public class News extends Audited {
 
+    @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_news_id")
-    @SequenceGenerator(name = "seq_news_id", sequenceName = "seq_news_id")
-    private Long id;
+    @GeneratedValue
+    @Column(columnDefinition = "uuid", updatable = false)
+    private UUID id;
 
     @Column(nullable = false, name = "published_at")
     private LocalDateTime publishedAt;
@@ -22,111 +35,7 @@ public class News {
     @Column(nullable = false, length = 10_000)
     private String text;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(LocalDateTime publishedAt) {
-        this.publishedAt = publishedAt;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public static NewsBuilder builder() {
-        return new NewsBuilder();
-    }
-
-    @Override
-    public String toString() {
-        return "News{" +
-            "id=" + id +
-            ", publishedAt=" + publishedAt +
-            ", title='" + title + '\'' +
-            ", text='" + text + '\'' +
-            '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        News news = (News) o;
-
-        if (id != null ? !id.equals(news.id) : news.id != null) return false;
-        if (publishedAt != null ? !publishedAt.equals(news.publishedAt) : news.publishedAt != null) return false;
-        if (title != null ? !title.equals(news.title) : news.title != null) return false;
-        return text != null ? text.equals(news.text) : news.text == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (publishedAt != null ? publishedAt.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
-        return result;
-    }
-
-    public static final class NewsBuilder {
-        private Long id;
-        private LocalDateTime publishedAt;
-        private String title;
-        private String text;
-
-        private NewsBuilder() {
-        }
-
-        public NewsBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public NewsBuilder publishedAt(LocalDateTime publishedAt) {
-            this.publishedAt = publishedAt;
-            return this;
-        }
-
-        public NewsBuilder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public NewsBuilder text(String text) {
-            this.text = text;
-            return this;
-        }
-
-        public News build() {
-            News news = new News();
-            news.setId(id);
-            news.setPublishedAt(publishedAt);
-            news.setTitle(title);
-            news.setText(text);
-            return news;
-        }
-    }
+    @Getter
+    @OneToMany(mappedBy = "news")
+    private Set<PrincipalNews> principalNews = new HashSet<>();
 }

@@ -10,6 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,7 +27,7 @@ public class CustomerMapperTest {
     // Suppress warning cause inspection does not know that the cdi annotations are added in the code generation step
     private CustomerMapper customerMapper;
 
-    private static final long CUSTOMER_ID = 1L;
+    private static final UUID CUSTOMER_ID = UUID.randomUUID();
     private static final String CUSTOMER_NAME = "Maximilian Muster";
 
     @Test
@@ -36,7 +38,7 @@ public class CustomerMapperTest {
 
         CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
         assertThat(customerDTO).isNotNull();
-        assertThat(customerDTO.getId()).isEqualTo(1L);
+        assertThat(customerDTO.getId()).isEqualTo(CUSTOMER_ID);
         assertThat(customerDTO.getName()).isEqualTo(CUSTOMER_NAME);
     }
     @Test
@@ -49,7 +51,7 @@ public class CustomerMapperTest {
 
         Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
         assertThat(customer).isNotNull();
-        assertThat(customer.getId()).isEqualTo(1L);
+        assertThat(customer.getId()).isEqualTo(CUSTOMER_ID);
         assertThat(customer.getName()).isEqualTo(CUSTOMER_NAME);
     }
 
