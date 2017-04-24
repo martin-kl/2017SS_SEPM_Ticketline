@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
+import at.ac.tuwien.inso.sepm.ticketline.server.security.AuthorityService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -75,9 +76,7 @@ public class Principal extends Audited implements UserDetails {
     @Transient
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
-        return grantedAuthorities;
+        return AuthorityService.getAuthoritiesForRole(role);
     }
 
     @Override

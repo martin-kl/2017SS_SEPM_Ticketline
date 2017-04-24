@@ -23,6 +23,7 @@
         <spring.version>4.3.7.RELEASE</spring.version>
         <httpclient.version>4.5.3</httpclient.version>
         <controlsfx.version>8.40.12</controlsfx.version>
+        <org.projectlombok.version>1.16.16</org.projectlombok.version>
         <!-- plugins -->
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
     </properties>
@@ -69,6 +70,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!-- persistence -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${org.projectlombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- test -->
         <dependency>
