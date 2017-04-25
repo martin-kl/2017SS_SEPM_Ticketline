@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
@@ -29,16 +30,16 @@ public class SimpleTicketService implements TicketService {
         Optional<TicketHistory> presentTicketHistory = ticketHistoryRepository.findLatestTicketHistory(ticket);
         if (presentTicketHistory.isPresent()) {
             TicketHistory ticketHistory = presentTicketHistory.get();
-            if (ticketHistory.getStatus().equals(TicketHistory.Status.BOUGHT)) {
+            if (ticketHistory.getStatus().equals(TicketStatus.BOUGHT)) {
                 throw new BadRequestException("Ticket already sold");
             }
-            if (ticketHistory.getStatus().equals(TicketHistory.Status.RESERVED)) {
+            if (ticketHistory.getStatus().equals(TicketStatus.RESERVED)) {
                 throw new BadRequestException("Ticket already reserved");
             }
         }
         // ticket can be reserved, so lets do it
         TicketHistory ticketHistory = TicketHistory.builder()
-            .status(TicketHistory.Status.RESERVED)
+            .status(TicketStatus.RESERVED)
             .customer(customer)
             .ticket(ticket)
             .build();

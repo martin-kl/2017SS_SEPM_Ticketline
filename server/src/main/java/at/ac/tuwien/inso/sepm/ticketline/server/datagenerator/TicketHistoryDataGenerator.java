@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.datagenerator;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
@@ -89,7 +90,7 @@ public class TicketHistoryDataGenerator {
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.RESERVED
+                TicketStatus.RESERVED
             );
         }
     }
@@ -100,12 +101,12 @@ public class TicketHistoryDataGenerator {
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.RESERVED
+                TicketStatus.RESERVED
             );
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.BOUGHT
+                TicketStatus.BOUGHT
             );
 
         }
@@ -117,12 +118,12 @@ public class TicketHistoryDataGenerator {
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.BOUGHT
+                TicketStatus.BOUGHT
             );
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.STORNO
+                TicketStatus.STORNO
             );
         }
     }
@@ -133,24 +134,24 @@ public class TicketHistoryDataGenerator {
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.BOUGHT
+                TicketStatus.BOUGHT
             );
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.STORNO
+                TicketStatus.STORNO
             );
             // set new customer (or randomly the same person)
             randomCustomerIndex = (int) (Math.random() * customers.size());
             createTicket(
                 ticket,
                 customers.get(randomCustomerIndex),
-                TicketHistory.Status.RESERVED
+                TicketStatus.RESERVED
             );
         }
     }
 
-    private void createTicket(Ticket ticket, Customer customer, TicketHistory.Status status) {
+    private void createTicket(Ticket ticket, Customer customer, TicketStatus status) {
         TicketHistory ticketHistory = TicketHistory.builder()
             .ticket(ticket)
             .customer(customer)
