@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(exclude = {"ticketHistories"})
 @ToString(exclude = {"ticketHistories"})
 @Entity
 public class Customer extends Audited {
