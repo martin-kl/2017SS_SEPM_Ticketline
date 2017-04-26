@@ -46,6 +46,7 @@ public class MainController {
     private final SpringFxmlLoader springFxmlLoader;
     private final FontAwesome fontAwesome;
     private NewsController newsController;
+    private CustomerAddEditController customerAddEditController;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -64,10 +65,10 @@ public class MainController {
         pbLoadingProgress.setProgress(0);
         login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
         spMainContent.getChildren().add(login);
+        //add tabs
         initNewsTabPane();
-    }
-
-    @FXML
+        initCustomerTabPane();
+    }@FXML
     private void exitApplication(ActionEvent actionEvent) {
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
@@ -94,6 +95,17 @@ public class MainController {
         newsGlyph.setColor(Color.WHITE);
         newsTab.setGraphic(newsGlyph);
         tpContent.getTabs().add(newsTab);
+    }
+
+    private void initCustomerTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/addEditCustomer.fxml");
+        customerAddEditController = (CustomerAddEditController) wrapper.getController();
+        Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph customerGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
+        customerGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        customerGlyph.setColor(Color.WHITE);
+        customerTab.setGraphic(customerGlyph);
+        tpContent.getTabs().add(customerTab);
     }
 
     private void setAuthenticated(boolean authenticated) {

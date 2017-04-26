@@ -22,11 +22,8 @@ public class CustomerRestClientImpl implements CustomerRestClient{
 
     private final RestClient restClient;
 
-    private final CustomerRestClient customerRestClient;
-
-    public CustomerRestClientImpl(RestClient restClient, CustomerRestClient customerRestClient) {
+    public CustomerRestClientImpl(RestClient restClient) {
         this.restClient = restClient;
-        this.customerRestClient = customerRestClient;
     }
 
     @Override
@@ -55,7 +52,7 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             log.debug("Retrieving one customer with uuid {} from {}", id, restClient.getServiceURI(CUSTOMER_URL));
             ResponseEntity<CustomerDTO> customer =
                 restClient.exchange(
-                    restClient.getServiceURI(CUSTOMER_URL),
+                    restClient.getServiceURI(CUSTOMER_URL)+"/" + id,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<CustomerDTO>() {
@@ -76,14 +73,14 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             ResponseEntity<CustomerDTO> customerReturn =
                 restClient.exchange(
                     restClient.getServiceURI(CUSTOMER_URL),
-                    HttpMethod.GET,
+                    HttpMethod.POST,
                     null,
                     new ParameterizedTypeReference<CustomerDTO>() {
                     });
             log.debug("Result status was {} with content {}", customerReturn.getStatusCode(), customerReturn.getBody());
             return customerReturn.getBody();
         } catch (HttpStatusCodeException e) {
-            throw new DataAccessException("Failed retrieve one customer with status code " + e.getStatusCode().toString());
+            throw new DataAccessException("Failed save customer with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }

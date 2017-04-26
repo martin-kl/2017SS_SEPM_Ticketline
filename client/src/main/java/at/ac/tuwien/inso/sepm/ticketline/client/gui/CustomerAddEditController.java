@@ -6,8 +6,10 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class CustomerAddEditController {
 
@@ -30,6 +32,7 @@ public class CustomerAddEditController {
         String inputName = tf_customerName.getText().trim();
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setName(inputName);
-        customerService.save(customerDTO);
+        customerDTO = customerService.save(customerDTO);
+        log.info("Customer succesfully saved with name = {} and id = {}", customerDTO.getName(), customerDTO.getId());
     }
 }
