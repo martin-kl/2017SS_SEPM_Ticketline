@@ -15,5 +15,12 @@ Modellieren Sie wichtige wiederkehrende Strukturen der Applikation in Form eines
 Wenn Sie ein Framework einsetzen, dokumentieren Sie das Zusammenspiel und die Integration des Frameworks in die Applikation.
 gefragt - was heißt das genau, also was sollen wir da machen??!?!??
 
+	
+	
+noch weitere Fragen (nach MR1)
+
+
 •	Eingesetzte Patterns - was noch außer:
 	Dependency Injection durch Spring Boot. Es ist aufgebaut als 3 Schichten Architektur.
+	
+•	Die NFAs sollten später schon in einem Dokument festgehalten werden, aber abgeklärt werden diese beim MR1. - in welchem Dokument?
