@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -13,9 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = {"ticketHistories"})
 @Entity
-public class TicketHistory extends Audited {
+public class TicketTransaction extends Audited {
 
     @Getter
     @Id
@@ -23,18 +24,20 @@ public class TicketHistory extends Audited {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
+    @Column(updatable = false)
     @NotNull
-    @ManyToOne
-    @JoinColumn(
-        foreignKey = @ForeignKey(name = "fk_tickethistory_ticket")
-    )
-    private Ticket ticket;
+    @Enumerated(value = EnumType.STRING)
+    private TicketStatus status = TicketStatus.RESERVED;
+
+    @Getter
+    @OneToMany(mappedBy = "ticketTransaction")
+    private Set<TicketHistory> ticketHistories;
 
     @NotNull
     @ManyToOne
     @JoinColumn(
-        foreignKey = @ForeignKey(name = "fk_tickettransaction_tickethistory")
+        foreignKey = @ForeignKey(name = "fk_tickethistory_customer")
     )
-    private TicketTransaction ticketTransaction;
+    private Customer customer;
 
 }
