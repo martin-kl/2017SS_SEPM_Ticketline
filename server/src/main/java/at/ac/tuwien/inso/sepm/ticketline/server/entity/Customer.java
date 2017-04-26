@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"ticketHistories"})
+@ToString(exclude = {"ticketTransactions"})
 @Entity
 public class Customer extends Audited {
 
@@ -27,5 +27,5 @@ public class Customer extends Audited {
 
     @Getter
     @OneToMany(mappedBy = "customer")
-    private Set<TicketHistory> ticketHistories;
+    private Set<TicketTransaction> ticketTransactions;
 }
