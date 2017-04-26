@@ -31,14 +31,12 @@ import java.util.ResourceBundle;
 @Component
 public class CustomersController {
     @FXML
-    private VBox vbCustomersElements;
-    @FXML
     private TabHeaderController tabHeaderController;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     /* TODO: add customer service */
-
+    /* TODO: add page specific elements, create specific fxml */
     public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader /* TODO: add customer service */) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
