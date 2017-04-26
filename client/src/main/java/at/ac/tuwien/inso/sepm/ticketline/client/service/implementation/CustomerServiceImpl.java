@@ -4,11 +4,13 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.CustomerRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class CustomerServiceImpl implements CustomerService{
 
@@ -32,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService{
     public CustomerDTO save(CustomerDTO customer) throws DataAccessException {
         if(customer.getName().length() < 3) {
             //TODO show error message and stay in window
-
+            log.error("Error during saving of customer with id {}, name of customer is not even 3 char long, that is not valid!", customer.getId());
         }else {
             customerRestClient.save(customer);
         }

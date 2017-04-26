@@ -5,7 +5,10 @@ import at.ac.tuwien.inso.sepm.ticketline.client.rest.CustomerRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -70,13 +73,17 @@ public class CustomerRestClientImpl implements CustomerRestClient{
     public CustomerDTO save(CustomerDTO customer) throws DataAccessException {
         try {
             log.debug("saving customer with name {} in {}", customer.getName(), restClient.getServiceURI(CUSTOMER_URL));
-            ResponseEntity<CustomerDTO> customerReturn =
-                restClient.exchange(
-                    restClient.getServiceURI(CUSTOMER_URL),
-                    HttpMethod.POST,
-                    null,
-                    new ParameterizedTypeReference<CustomerDTO>() {
-                    });
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<CustomerDTO> entity = new HttpEntity<>(customer, headers);
+            ResponseEntity<CustomerDTO> customerReturn = restClient.exchange(
+                restClient.getServiceURI(CUSTOMER_URL),
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<CustomerDTO>() {
+                }
+            );
             log.debug("Result status was {} with content {}", customerReturn.getStatusCode(), customerReturn.getBody());
             return customerReturn.getBody();
         } catch (HttpStatusCodeException e) {
