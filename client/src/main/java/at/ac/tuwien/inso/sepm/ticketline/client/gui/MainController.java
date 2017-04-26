@@ -1,6 +1,11 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.performances.PerformancesController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -46,6 +51,11 @@ public class MainController {
     private final SpringFxmlLoader springFxmlLoader;
     private final FontAwesome fontAwesome;
     private NewsController newsController;
+    private AccountsController accountsController;
+    private CustomersController customersController;
+    private PerformancesController performancesController;
+    private ReservationsController reservationsController;
+    private EventsController eventsController;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -65,6 +75,11 @@ public class MainController {
         login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
         spMainContent.getChildren().add(login);
         initNewsTabPane();
+        initCustomersTabPane();
+        initEventsTabPane();
+        initPerformancesTabPane();
+        initAccountsTabPane();
+        initReservationsTabPane();
     }
 
     @FXML
@@ -95,6 +110,62 @@ public class MainController {
         newsTab.setGraphic(newsGlyph);
         tpContent.getTabs().add(newsTab);
     }
+
+    private void initCustomersTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/customersComponent.fxml");
+        customersController = (CustomersController) wrapper.getController();
+        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        newsTab.setGraphic(newsGlyph);
+        tpContent.getTabs().add(newsTab);
+    }
+
+    private void initEventsTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/eventsComponent.fxml");
+        eventsController = (EventsController) wrapper.getController();
+        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        newsTab.setGraphic(newsGlyph);
+        tpContent.getTabs().add(newsTab);
+    }
+
+    private void initPerformancesTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/performances/performancesComponent.fxml");
+        performancesController = (PerformancesController) wrapper.getController();
+        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR_ALT);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        newsTab.setGraphic(newsGlyph);
+        tpContent.getTabs().add(newsTab);
+    }
+
+    private void initAccountsTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/accounts/accountsComponent.fxml");
+        accountsController = (AccountsController) wrapper.getController();
+        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        newsTab.setGraphic(newsGlyph);
+        tpContent.getTabs().add(newsTab);
+    }
+
+    private void initReservationsTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
+        reservationsController = (ReservationsController) wrapper.getController();
+        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        newsTab.setGraphic(newsGlyph);
+        tpContent.getTabs().add(newsTab);
+    }
+
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
