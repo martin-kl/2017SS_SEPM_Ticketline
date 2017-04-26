@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
@@ -11,19 +13,27 @@
       maxWidth="1.7976931348623157E308"
       spacing="5.0">
     <children>
-        <fx:include source="/fxml/tabHeader.fxml" fx:id="tabHeader"/>
-        <Separator/>
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS"
-                    style="-fx-background-color: transparent;">
-            <VBox fx:id="vbCustomersElements" fillWidth="true" maxHeight="1.7976931348623157E308"
-                  maxWidth="1.7976931348623157E308">
+        <fx:include fx:id="tabHeader" source="/fxml/tabHeader.fxml" />
+        <Separator />
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+            <VBox fx:id="vbCustomersElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                 <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                 </padding>
             </VBox>
         </ScrollPane>
+      <Separator prefWidth="200.0" />
+      <ButtonBar buttonMinWidth="0.0">
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#handleCustomerEdit" text="%customer.edit" />
+            <Button mnemonicParsing="false" onAction="#handleCustomerAdd" text="%customer.add" />
+        </buttons>
+         <VBox.margin>
+            <Insets right="10.0" />
+         </VBox.margin>
+      </ButtonBar>
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
 </VBox>

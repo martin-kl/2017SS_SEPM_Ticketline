@@ -105,6 +105,29 @@ public class MainController {
         dialog.showAndWait();
     }
 
+/*
+    private void initCustomersTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/addEditCustomer.fxml");
+        customerAddEditController = (CustomerAddEditController) wrapper.getController();
+        Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph customerGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
+        customerGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        customerGlyph.setColor(Color.WHITE);
+        customerTab.setGraphic(customerGlyph);
+        tpContent.getTabs().add(customerTab);
+    }
+    */
+    public void addEditCustomerWindow() {
+        Stage stage = (Stage) spMainContent.getScene().getWindow();
+        Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+        dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/addEditCustomer.fxml")));
+        dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
+        dialog.showAndWait();
+    }
+
     private void initNewsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/news/newsComponent.fxml");
         newsController = (NewsController) wrapper.getController();
@@ -117,18 +140,6 @@ public class MainController {
     }
 
     private void initCustomersTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/addEditCustomer.fxml");
-        customerAddEditController = (CustomerAddEditController) wrapper.getController();
-        Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
-        Glyph customerGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
-        customerGlyph.setFontSize(TAB_ICON_FONT_SIZE);
-        customerGlyph.setColor(Color.WHITE);
-        customerTab.setGraphic(customerGlyph);
-        tpContent.getTabs().add(customerTab);
-    }
-
-    /*
-    private void initCustomersTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/customersComponent.fxml");
         customersController = (CustomersController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
@@ -138,7 +149,7 @@ public class MainController {
         newsTab.setGraphic(newsGlyph);
         tpContent.getTabs().add(newsTab);
     }
-    */
+
 
     private void initEventsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/eventsComponent.fxml");
