@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.ticket;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatTicket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.SectorTicket;
@@ -15,15 +17,14 @@ import java.util.Optional;
 )
 public interface TicketMapper {
 
-    /*
     default TicketDTO toDTO(Ticket ticket) {
         if(ticket instanceof SeatTicket)
             return toSeatTicketDTO((SeatTicket) ticket);
         return toSectorTicketDTO((SectorTicket) ticket);
     }
 
-    SeatTicketDTO toSeatTicketDTO();
+    SeatTicketDTO toSeatTicketDTO(SeatTicket one);
 
-    TicketDTO fromEntity(Ticket one);
-    */
+    SectorTicketDTO toSectorTicketDTO(SectorTicket one);
+
 }

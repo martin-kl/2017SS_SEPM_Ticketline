@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -18,5 +19,8 @@ public class TicketDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
     private UUID id;
+
+    @ApiModelProperty(readOnly = true, name = "price of the ticket")
+    private BigDecimal price;
 
 }

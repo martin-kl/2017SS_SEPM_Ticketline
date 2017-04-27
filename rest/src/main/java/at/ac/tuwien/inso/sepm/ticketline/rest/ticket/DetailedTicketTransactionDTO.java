@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -26,4 +27,7 @@ public class DetailedTicketTransactionDTO {
 
     @ApiModelProperty(readOnly = true, name = "Customer of the transaction")
     private CustomerDTO customer;
+
+    @ApiModelProperty(readOnly = true, name = "Reserved Tickets")
+    private List<TicketDTO> tickets;
 }
