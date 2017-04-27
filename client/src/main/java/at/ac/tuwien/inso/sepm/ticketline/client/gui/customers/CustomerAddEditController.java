@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
@@ -30,11 +32,18 @@ public class CustomerAddEditController {
     private TextField tf_customerLastName;
 
     private final CustomerService customerService;
+    private final MainController mainController;
 
 //TODO add support for edit - so have a CustomerDTO object here and save, if it is a update or new customer process
 
-    public CustomerAddEditController(CustomerService customerService) {
+    public CustomerAddEditController(CustomerService customerService,
+        MainController mainController) {
+        this.mainController = mainController;
         this.customerService = customerService;
+    }
+
+    public void test(boolean edit) {
+
     }
 
     public void handleCustomerCancel(ActionEvent actionEvent) {
@@ -59,12 +68,28 @@ public class CustomerAddEditController {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstName(firstName);
         customerDTO.setLastName(lastName);
-        customerDTO = customerService.save(customerDTO);
-        log.info(
-            "controller: customer after save method has first name = {}, last name = {} and id = {}",
-            customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getId());
+        try {
+            customerDTO = customerService.save(customerDTO);
+            log.info(
+                "controller: customer after save method has first name = {}, last name = {} and id = {}",
+                customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getId());
 
-        Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
-        stage.close();
+            Alert alert = new Alert(AlertType.INFORMATION);
+            //TODO do we have to have these error messages in two languages as well??
+            alert.setHeaderText("Customer successfully saved");
+            alert.setContentText("The customer with the name "+customerDTO.getFirstName()+" "+customerDTO.getLastName()+" has been successfully saved");
+            alert.showAndWait();
+
+            mainController.reloadCustomerList();
+            Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
+            stage.close();
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            //TODO do we have to have these error messages in two languages as well?? - then we cannot take localized message or?
+            alert.setHeaderText("Name to short");
+            alert.setContentText(e.getLocalizedMessage());
+            alert.showAndWait();
+        }
+
     }
 }

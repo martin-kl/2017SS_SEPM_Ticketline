@@ -55,9 +55,6 @@ public class MainController {
     private NewsController newsController;
     private AccountsController accountsController;
     private CustomersController customersController;
-
-    private CustomerAddEditController customerAddEditController;
-
     private PerformancesController performancesController;
     private ReservationsController reservationsController;
     private EventsController eventsController;
@@ -87,6 +84,11 @@ public class MainController {
         initPerformancesTabPane();
         initAccountsTabPane();
         initReservationsTabPane();
+
+        //add listener to reload data when tab is clicked
+        tpContent.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+            System.err.println("changed to " + tpContent.getSelectionModel().getSelectedItem());
+        });
     }
 
     @FXML
@@ -213,6 +215,8 @@ public class MainController {
                 spMainContent.getChildren().remove(login);
             }
             newsController.loadNews();
+            //TODO hier laden ? - schon oder?
+            customersController.loadCustomers();
         } else {
             if (!spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().add(login);
@@ -222,6 +226,11 @@ public class MainController {
 
     public void setProgressbarProgress(double progress) {
         pbLoadingProgress.setProgress(progress);
+    }
+
+
+    public void reloadCustomerList() {
+        customersController.loadCustomers();
     }
 
     public void changeToGerman(ActionEvent actionEvent) {

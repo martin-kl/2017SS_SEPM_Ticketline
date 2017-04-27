@@ -33,13 +33,13 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public CustomerDTO save(CustomerDTO customer) throws DataAccessException {
         if(customer.getFirstName().length() < 3) {
-            //TODO show error message and stay in window
             log.error(
                 "Error during saving of customer with id {}, first name of customer is not even 3 char long, that is not valid!",
                 customer.getId());
+            throw new IllegalArgumentException("Error during saving of customer with id {}, first name of customer is not even 3 char long, that is not valid!");
         }else if(customer.getLastName().length() < 3) {
-                //TODO show error message and stay in window
-                log.error("Error during saving of customer with id {}, last name of customer is not even 3 char long, that is not valid!", customer.getId());
+            log.error("Error during saving of customer with id {}, last name of customer is not even 3 char long, that is not valid!", customer.getId());
+            throw new IllegalArgumentException("Error during saving of customer with id {}, last name of customer is not even 3 char long, that is not valid!");
         }else {
             customerRestClient.save(customer);
         }
