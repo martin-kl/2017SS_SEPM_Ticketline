@@ -28,7 +28,8 @@ public class CustomerDataGenerator {
             log.info("generating {} customer entries", NUMBER_OF_CUSTOMER_TO_GENERATE);
             for (int i = 0; i < NUMBER_OF_CUSTOMER_TO_GENERATE; i++) {
                 Customer customer = Customer.builder()
-                    .name(faker.artist().name())
+                    .firstName(faker.artist().name())
+                    .lastName(faker.artist().name())
                     .build();
                 log.debug("saving artist {}", customer);
                 customerRepository.save(customer);

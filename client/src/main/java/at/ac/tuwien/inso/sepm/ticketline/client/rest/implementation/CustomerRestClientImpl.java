@@ -72,7 +72,7 @@ public class CustomerRestClientImpl implements CustomerRestClient{
     @Override
     public CustomerDTO save(CustomerDTO customer) throws DataAccessException {
         try {
-            log.debug("saving customer with name {} in {}", customer.getName(), restClient.getServiceURI(CUSTOMER_URL));
+            log.debug("saving customer with first name {} and last name {} in {}", customer.getFirstName(), customer.getLastName(), restClient.getServiceURI(CUSTOMER_URL));
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 

@@ -28,31 +28,36 @@ public class CustomerMapperTest {
     private CustomerMapper customerMapper;
 
     private static final UUID CUSTOMER_ID = UUID.randomUUID();
-    private static final String CUSTOMER_NAME = "Maximilian Muster";
+    private static final String CUSTOMER_FIRST_NAME = "Maximilian";
+    private static final String CUSTOMER_LAST_NAME = "Muster";
 
     @Test
     public void shouldMapCustomerToCustomerDTO() {
         Customer customer = new Customer();
         customer.setId(CUSTOMER_ID);
-        customer.setName(CUSTOMER_NAME);
+        customer.setFirstName(CUSTOMER_FIRST_NAME);
+        customer.setLastName(CUSTOMER_LAST_NAME);
 
         CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
         assertThat(customerDTO).isNotNull();
         assertThat(customerDTO.getId()).isEqualTo(CUSTOMER_ID);
-        assertThat(customerDTO.getName()).isEqualTo(CUSTOMER_NAME);
+        assertThat(customerDTO.getFirstName()).isEqualTo(CUSTOMER_FIRST_NAME);
+        assertThat(customerDTO.getLastName()).isEqualTo(CUSTOMER_LAST_NAME);
     }
     @Test
     public void shouldMapCustomerDTOtoCustomer() {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(CUSTOMER_ID);
-        customerDTO.setName(CUSTOMER_NAME);
+        customerDTO.setFirstName(CUSTOMER_FIRST_NAME);
+        customerDTO.setLastName(CUSTOMER_LAST_NAME);
 
         assertThat(customerMapper).isNotNull();
 
         Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
         assertThat(customer).isNotNull();
         assertThat(customer.getId()).isEqualTo(CUSTOMER_ID);
-        assertThat(customer.getName()).isEqualTo(CUSTOMER_NAME);
+        assertThat(customer.getFirstName()).isEqualTo(CUSTOMER_FIRST_NAME);
+        assertThat(customer.getLastName()).isEqualTo(CUSTOMER_LAST_NAME);
     }
 
 }

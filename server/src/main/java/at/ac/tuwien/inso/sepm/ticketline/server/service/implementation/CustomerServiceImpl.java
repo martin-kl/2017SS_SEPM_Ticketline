@@ -32,9 +32,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(Customer customer) {
-        if(customer.getName().length() < 3) {
-            LOGGER.error("name of customer has less then 3 characters - that is not valid");
-            throw new IllegalArgumentException("name of customer must have at least 3 characters");
+        if(customer.getFirstName().length() < 3) {
+            LOGGER.error("first name of customer has less then 3 characters - that is not valid");
+            throw new IllegalArgumentException("first name of customer must have at least 3 characters");
+        }
+        if(customer.getLastName().length() < 3) {
+            LOGGER.error("last name of customer has less then 3 characters - that is not valid");
+            throw new IllegalArgumentException(
+                "last name of customer must have at least 3 characters");
         }
         return customerRepository.save(customer);
     }

@@ -25,7 +25,10 @@ public class Customer extends Audited {
     private UUID id;
 
     @Column(nullable = false, length = 10_000)
-    private String name;
+    private String firstName;
+
+    @Column(nullable = false, length = 10_000)
+    private String lastName;
 
     @Getter
     @OneToMany(mappedBy = "customer")

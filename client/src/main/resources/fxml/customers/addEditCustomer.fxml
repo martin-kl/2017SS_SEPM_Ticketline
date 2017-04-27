@@ -9,10 +9,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+    minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0"
+    xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController">
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
@@ -37,11 +37,12 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="tf_customerName" promptText="%customer.name">
+            <TextField fx:id="tf_customerFirstName" promptText="%customer.firstName">
                <VBox.margin>
                   <Insets bottom="10.0" top="20.0" />
                </VBox.margin>
             </TextField>
+            <TextField fx:id="tf_customerLastName" promptText="%customer.lastName" />
          </children>
          <padding>
             <Insets left="20.0" right="20.0" />

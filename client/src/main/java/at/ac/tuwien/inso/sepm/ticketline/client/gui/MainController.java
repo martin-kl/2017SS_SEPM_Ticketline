@@ -10,6 +10,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsCon
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -78,6 +79,7 @@ public class MainController {
         pbLoadingProgress.setProgress(0);
         login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
         spMainContent.getChildren().add(login);
+
         //add tabs
         initNewsTabPane();
         initCustomersTabPane();
@@ -105,31 +107,35 @@ public class MainController {
         dialog.showAndWait();
     }
 
-/*
-    private void initCustomersTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/addEditCustomer.fxml");
-        customerAddEditController = (CustomerAddEditController) wrapper.getController();
-        Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
-        Glyph customerGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
-        customerGlyph.setFontSize(TAB_ICON_FONT_SIZE);
-        customerGlyph.setColor(Color.WHITE);
-        customerTab.setGraphic(customerGlyph);
-        tpContent.getTabs().add(customerTab);
-    }
-    */
     public void addEditCustomerWindow() {
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
-        dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/addEditCustomer.fxml")));
+        dialog.setScene(new Scene((Parent) springFxmlLoader.load(
+            "/fxml/customers/addEditCustomer.fxml")));
+
         dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
+
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                event.consume();
+            }
+        });
         dialog.showAndWait();
     }
 
     private void initNewsTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/news/newsComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/news/newsComponent.fxml");
         newsController = (NewsController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.NEWSPAPER_ALT);
@@ -140,7 +146,8 @@ public class MainController {
     }
 
     private void initCustomersTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/customersComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/customers/customersComponent.fxml");
         customersController = (CustomersController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
@@ -152,7 +159,8 @@ public class MainController {
 
 
     private void initEventsTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/eventsComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/events/eventsComponent.fxml");
         eventsController = (EventsController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR);
@@ -163,7 +171,8 @@ public class MainController {
     }
 
     private void initPerformancesTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/performances/performancesComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/performances/performancesComponent.fxml");
         performancesController = (PerformancesController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR_ALT);
@@ -174,7 +183,8 @@ public class MainController {
     }
 
     private void initAccountsTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/accounts/accountsComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/accounts/accountsComponent.fxml");
         accountsController = (AccountsController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
@@ -185,7 +195,8 @@ public class MainController {
     }
 
     private void initReservationsTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
         reservationsController = (ReservationsController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);

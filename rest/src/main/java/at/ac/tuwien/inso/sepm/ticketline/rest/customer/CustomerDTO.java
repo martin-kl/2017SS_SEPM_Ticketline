@@ -19,10 +19,11 @@ public class CustomerDTO {
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
     private UUID id;
 
-
     //TODO read only = true here?
 
-    @ApiModelProperty(required = true, readOnly = true, name = "The name of the customer")
-    private String name;
+    @ApiModelProperty(required = true, readOnly = true, name = "The first name of the customer")
+    private String firstName;
 
+    @ApiModelProperty(required = true, readOnly = true, name = "The last name of the customer")
+    private String lastName;
 }
