@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
+import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,9 @@ import org.springframework.stereotype.Component;
 import java.util.Iterator;
 import java.util.List;
 
+@Slf4j
 @Component
 public class NewsController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewsController.class);
 
     @FXML
     private VBox vbNewsElements;

@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.authentication.AuthenticationRequest;
 import at.ac.tuwien.inso.sepm.ticketline.rest.authentication.AuthenticationToken;
 import at.ac.tuwien.inso.sepm.ticketline.rest.authentication.AuthenticationTokenInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -18,10 +19,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.ScheduledFuture;
 
+@Slf4j
 @Service
 public class SimpleAuthenticationService implements AuthenticationService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleAuthenticationService.class);
 
     private final AuthenticationRestClient authenticationRestClient;
     private final AuthenticationInformationService authenticationInformationService;
@@ -40,10 +40,10 @@ public class SimpleAuthenticationService implements AuthenticationService {
 
     @Override
     public AuthenticationTokenInfo authenticate(AuthenticationRequest authenticationRequest) throws DataAccessException {
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("trying to authenticate {}", authenticationRequest);
+        if (log.isTraceEnabled()) {
+            log.trace("trying to authenticate {}", authenticationRequest);
         } else {
-            LOGGER.debug("trying to authenticate");
+            log.debug("trying to authenticate");
         }
         return authenticateAndScheduleNextAuthentication(authenticationRequest);
     }
@@ -58,7 +58,7 @@ public class SimpleAuthenticationService implements AuthenticationService {
         } else {
             authenticationToken = authenticationRestClient.authenticate(authenticationRequest);
         }
-        LOGGER.debug("authentication result {}", authenticationToken);
+        log.debug("authentication result {}", authenticationToken);
         authenticationInformationService.setCurrentAuthenticationToken(authenticationToken.getCurrentToken());
         AuthenticationTokenInfo authenticationTokenInfo = authenticationRestClient.tokenInfoCurrent();
         scheduleReauthenticationTask(authenticationTokenInfo.getExpireAt().minus(authenticationTokenInfo.getOverlapDuration().dividedBy(2)));
@@ -69,9 +69,9 @@ public class SimpleAuthenticationService implements AuthenticationService {
     private void scheduleReauthenticationTask(LocalDateTime runAt) {
         schedule = taskScheduler.schedule(
             () -> {
-                LOGGER.debug("setting current token to future token");
+                log.debug("setting current token to future token");
                 authenticationInformationService.setCurrentAuthenticationToken(authenticationToken.getFutureToken());
-                LOGGER.debug("trying to re-authenticate {}", authenticationToken);
+                log.debug("trying to re-authenticate {}", authenticationToken);
                 try {
                     authenticateAndScheduleNextAuthentication();
                 } catch (DataAccessException e) {
@@ -83,7 +83,7 @@ public class SimpleAuthenticationService implements AuthenticationService {
 
     @Override
     public void deAuthenticate() {
-        LOGGER.debug("de authenticating");
+        log.debug("de authenticating");
         authenticationInformationService.clearAuthentication();
         authenticationToken = null;
         taskScheduler.shutdown();

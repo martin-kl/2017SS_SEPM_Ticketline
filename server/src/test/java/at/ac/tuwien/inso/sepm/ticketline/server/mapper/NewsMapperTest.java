@@ -9,17 +9,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class)
 public class NewsMapperTest {
 
     @Configuration
@@ -28,15 +25,17 @@ public class NewsMapperTest {
     }
 
     @Autowired
+    @SuppressWarnings("SpringJavaAutowiredMembersInspection")
+    // Suppress warning cause inspection does not know that the cdi annotations are added in the code generation step
     private NewsMapper newsMapper;
 
-    public static final long NEWS_ID = 1L;
+    private static final UUID NEWS_ID = UUID.randomUUID();
     private static final String NEWS_TITLE = "Headline";
     private static final String NEWS_TEXT = "This is a very long text containing all the contents of the news" +
         " and a lot of other more or less useful information.";
     private static final String NEWS_SUMMARY = "This is a very long text containing all the";
-    private static final ZonedDateTime NEWS_PUBLISHED_AT =
-        ZonedDateTime.of(2016, 1, 1, 12, 0, 0, 0, ZoneId.systemDefault());
+    private static final LocalDateTime NEWS_PUBLISHED_AT =
+        LocalDateTime.of(2016, 1, 1, 12, 0, 0, 0);
 
     @Test
     public void shouldMapNewsToSimpleNewsDTOShorteningTextToSummary() {
@@ -48,7 +47,7 @@ public class NewsMapperTest {
             .build();
         SimpleNewsDTO simpleNewsDTO = newsMapper.newsToSimpleNewsDTO(news);
         assertThat(simpleNewsDTO).isNotNull();
-        assertThat(simpleNewsDTO.getId()).isEqualTo(1L);
+        assertThat(simpleNewsDTO.getId()).isEqualTo(NEWS_ID);
         assertThat(simpleNewsDTO.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(simpleNewsDTO.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(simpleNewsDTO.getSummary()).isEqualTo(NEWS_SUMMARY);
@@ -64,7 +63,7 @@ public class NewsMapperTest {
             .build();
         SimpleNewsDTO simpleNewsDTO = newsMapper.newsToSimpleNewsDTO(news);
         assertThat(simpleNewsDTO).isNotNull();
-        assertThat(simpleNewsDTO.getId()).isEqualTo(1L);
+        assertThat(simpleNewsDTO.getId()).isEqualTo(NEWS_ID);
         assertThat(simpleNewsDTO.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(simpleNewsDTO.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(simpleNewsDTO.getSummary()).isEqualTo(NEWS_SUMMARY);
@@ -80,7 +79,7 @@ public class NewsMapperTest {
             .build();
         DetailedNewsDTO detailedNewsDTO = newsMapper.newsToDetailedNewsDTO(news);
         assertThat(detailedNewsDTO).isNotNull();
-        assertThat(detailedNewsDTO.getId()).isEqualTo(1L);
+        assertThat(detailedNewsDTO.getId()).isEqualTo(NEWS_ID);
         assertThat(detailedNewsDTO.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(detailedNewsDTO.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(detailedNewsDTO.getText()).isEqualTo(NEWS_TEXT);
@@ -89,14 +88,14 @@ public class NewsMapperTest {
     @Test
     public void shouldMapDetailedNewsDTOToNews() {
         DetailedNewsDTO detailedNewsDTO = DetailedNewsDTO.builder()
-            .id(1L)
+            .id(NEWS_ID)
             .publishedAt(NEWS_PUBLISHED_AT)
             .title(NEWS_TITLE)
             .text(NEWS_TEXT)
             .build();
         News news = newsMapper.detailedNewsDTOToNews(detailedNewsDTO);
         assertThat(news).isNotNull();
-        assertThat(news.getId()).isEqualTo(1L);
+        assertThat(news.getId()).isEqualTo(NEWS_ID);
         assertThat(news.getPublishedAt()).isEqualTo(NEWS_PUBLISHED_AT);
         assertThat(news.getTitle()).isEqualTo(NEWS_TITLE);
         assertThat(news.getText()).isEqualTo(NEWS_TEXT);

@@ -1,0 +1,26 @@
+		Fragen an Tutor:
+
+Präsentation für MR1 - sollen wir da PowerPoint erstellen oder was genau ist da gefragt?
+		
+Nicht-funktionale Anforderungen - müssen wir die wo aufschreiben?
+
+	Meetingprotokolle:
+sollen getroffene Entscheidungen als auch Ergebnis des Meetings oder des Reviews beinhalten
+wo ist der unterschied zwischen den beiden??
+	
+	Designdokument,
+	
+	dort sind •	Modellierung der Kernstrukturen der Applikation:
+Modellieren Sie wichtige wiederkehrende Strukturen der Applikation in Form eines Klassendiagramms.
+Wenn Sie ein Framework einsetzen, dokumentieren Sie das Zusammenspiel und die Integration des Frameworks in die Applikation.
+gefragt - was heißt das genau, also was sollen wir da machen??!?!??
+
+	
+	
+noch weitere Fragen (nach MR1)
+
+
+•	Eingesetzte Patterns - was noch außer:
+	Dependency Injection durch Spring Boot. Es ist aufgebaut als 3 Schichten Architektur.
+	
+•	Die NFAs sollten später schon in einem Dokument festgehalten werden, aber abgeklärt werden diese beim MR1. - in welchem Dokument?

@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Optional;
@@ -20,6 +21,8 @@ import java.util.Optional;
 public class TicketlineClientApplication extends SpringFxApplication {
 
     @Autowired
+    @SuppressWarnings("SpringAutowiredFieldsWarningInspection")
+    // Suppress warning cause sadly it seems that there is no nice way of doing this without field injection here
     private JavaFxConfigurationProperties javaFxConfigurationProperties;
 
     @Override

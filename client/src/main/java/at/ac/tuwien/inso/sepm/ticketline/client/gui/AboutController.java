@@ -16,6 +16,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -83,18 +84,20 @@ public class AboutController {
     private void initialize() {
         labClientVersion.setText(gitProperties.get("build.version"));
         String buildTimeString = gitProperties.get("build.time");
-        ZonedDateTime buildTime = null;
+        LocalDateTime buildTime = null;
         if (buildTimeString != null && !buildTimeString.isEmpty()) {
-            buildTime = ZonedDateTime.parse(buildTimeString, ISO_DATETIME_FORMATTER);
+            buildTime = ZonedDateTime.parse(buildTimeString, ISO_DATETIME_FORMATTER)
+                .withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
         }
         labClientBuildTime.setText((buildTime != null) ? DATETIME_FORMATTER.format(buildTime) : "-");
         labClientCommit.setText(gitProperties.get("commit.id.abbrev"));
         String commitTimeString = gitProperties.get("commit.time");
-        ZonedDateTime commitTime = null;
+        LocalDateTime commitTime = null;
         if (commitTimeString != null && !commitTimeString.isEmpty()) {
-            commitTime = ZonedDateTime.parse(commitTimeString, ISO_DATETIME_FORMATTER);
+            commitTime = ZonedDateTime.parse(commitTimeString, ISO_DATETIME_FORMATTER)
+                .withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
         }
-        labClientCommitTime.setText((buildTime != null) ? DATETIME_FORMATTER.format(commitTime) : "-");
+        labClientCommitTime.setText((commitTime != null) ? DATETIME_FORMATTER.format(commitTime) : "-");
         labClientBranch.setText(gitProperties.get("branch"));
         String tags = gitProperties.get("tags");
         labClientTags.setText((tags != null && !tags.isEmpty()) ? tags : "-");
@@ -120,19 +123,36 @@ public class AboutController {
             protected void succeeded() {
                 super.succeeded();
                 Info info = getValue();
-                labServerVersion.setText(info.getGit().getBuild().getVersion());
-                labServerBuildTime.setText(DATETIME_FORMATTER.format(info.getGit().getBuild().getTime()));
-                labServerCommit.setText(info.getGit().getCommit().getId().getAbbrev());
-                labServerCommitTime.setText(DATETIME_FORMATTER.format(info.getGit().getCommit().getTime()));
-                labServerBranch.setText(info.getGit().getBranch());
-                String tags = info.getGit().getTags();
-                labServerTags.setText((tags != null && !tags.isEmpty()) ? tags : "-");
-                labServerUptime.setText(formatDuration(info.getUptime()));
+                if (info != null) {
+                    Info.Git git = info.getGit();
+                    if (git != null) {
+                        Info.Git.Build build = git.getBuild();
+                        if (build != null) {
+                            labServerVersion.setText((build.getVersion() != null) ? build.getVersion() : "-");
+                            labServerBuildTime.setText((build.getTime() != null) ? DATETIME_FORMATTER.format(
+                                build.getTime().withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()) : "-");
+                        }
+                        Info.Git.Commit commit = git.getCommit();
+                        if (commit != null) {
+                            labServerCommit.setText(
+                                (commit.getId() != null && commit.getId().getAbbrev() != null) ?
+                                    commit.getId().getAbbrev() : "-");
+                            labServerCommitTime.setText((commit.getTime() != null) ? DATETIME_FORMATTER.format(
+                                commit.getTime().withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()) : "-");
+                        }
+                        String branch = git.getBranch();
+                        labServerBranch.setText((branch != null && !branch.isEmpty()) ? branch : "-");
+                        String tags = git.getTags();
+                        labServerTags.setText((tags != null && !tags.isEmpty()) ? tags : "-");
+                    }
+                    Duration uptime = info.getUptime();
+                    labServerUptime.setText((uptime != null) ? formatDuration(uptime) : "-");
+                }
             }
         };
         new Thread(task).start();
 
-        ticketlineInfoController.setBuildDateTime((buildTime != null) ? buildTime.toLocalDateTime() : LocalDateTime.now());
+        ticketlineInfoController.setBuildDateTime((buildTime != null) ? buildTime : LocalDateTime.now());
         ticketlineInfoController.setVersion(gitProperties.get("build.version"));
         ticketlineInfoController.setInfoText("Client & Server Information");
     }
