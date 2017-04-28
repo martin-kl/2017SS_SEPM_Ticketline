@@ -2,6 +2,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
+import java.time.LocalDate;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +30,15 @@ public class Customer extends Audited {
 
     @Column(nullable = false, length = 10_000)
     private String lastName;
+
+    @Column(nullable = false, length = 10_000)
+    private String email;
+
+    @Column(nullable = false, length = 10_000)
+    private String address;
+
+    @Column(nullable = false)
+    private LocalDate birthday;
 
     @Getter
     @OneToMany(mappedBy = "customer")

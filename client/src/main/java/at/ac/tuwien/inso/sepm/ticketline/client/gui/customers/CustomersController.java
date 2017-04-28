@@ -94,7 +94,7 @@ public class CustomersController {
 
     public void handleCustomerEdit(ActionEvent actionEvent) {
         //TODO marked customer from list
-        ObservableList<Node> customerList = this.vbCustomersElements.getChildren();
+        //ObservableList<Node> customerList = this.vbCustomersElements.getChildren();
 
         mainController.addEditCustomerWindow(null);
     }

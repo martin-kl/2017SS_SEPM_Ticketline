@@ -116,9 +116,12 @@ public class MainController {
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+
+        //TODO casting to customerAddEditController does NOT WORK!
         Object objectController = springFxmlLoader.load("/fxml/customers/addEditCustomer.fxml");
         CustomerAddEditController controller = (CustomerAddEditController) objectController;
-        dialog.setScene(new Scene((Parent) objectController));
+
+        dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/customers/addEditCustomer.fxml")));
 
         if(customerToEdit != null) {
             dialog.setTitle(BundleManager.getBundle().getString("customer.edit"));
