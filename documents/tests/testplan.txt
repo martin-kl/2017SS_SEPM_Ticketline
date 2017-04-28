@@ -3,11 +3,7 @@ Unit Tests:
 	- jedes Mitglied schreibt Unit Tests für den eigenen Code
 	- vor dem Merge müssen alle Unit Tests positiv durchlaufen
 	- Tests sollen gleichzeitig mit dem Entwickeln der Klasse entstehen
-	- es wird ein File mit vorgegebenen Testdaten geben: 
-		Für jeden Unittest muss man sich die Testdaten aus einem zentralen Verzeichnis holen 
-		und in den eigenen Testordner kopieren. Die Idee dahinter: jeder hat bereits Testdaten
-		zur Verfügung und kann bei Bedarf diese Testdaten auch anpassen, 
-		ohne andere Tests zu beeinflussen.
+	- Jeder Unittest muss seine eigenen Testdaten generieren und verwalten sodass ein ändern der automatisch generierten Daten keinesfalss zu einem Fehlschlagen der Tests führen kann.
 
 Komponententests:
 	- werden nicht gemacht
@@ -18,13 +14,13 @@ Integrationstest:
 	- pro Userstory ein Integrationstest
 	- bevor eine Userstory gemerged wird, soll das Feature durch einen Integrationstest getestet werden
 	- eventuell Aufteilung der Integrationstests im Team
-	- es werden Testdaten bereitgestellt (wie bei den Unittests)
+	- es werden Testdaten bereitgestellt, der Änderung den Test aber nicht beeinflussen darf  
 
 Systemtests:
 	- werden mind. 3 Tage vor jedem MR durchgeführt
 	- jedem Teammitglied wird ein zu testender Teil der Applikation zugewiesen
 	- jedes Teammitglied testet ein möglichst "fremdes" Feature
-	- jedes Teammitglied protokolliert seine Testergebnisse (es wird eine Vorlage geben)
+	- jedes Teammitglied protokolliert seine Testergebnisse (Systemtestprotokoll)
 	- die Gesamttestergebnisse werden von den Testverantwortlichen zusammengestellt
 
 	Genauere Beschreibung:
