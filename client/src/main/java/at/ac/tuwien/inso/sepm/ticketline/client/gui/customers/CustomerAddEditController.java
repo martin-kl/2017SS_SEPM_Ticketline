@@ -34,6 +34,8 @@ public class CustomerAddEditController {
     private final CustomerService customerService;
     private final MainController mainController;
 
+    private CustomerDTO customerToEdit;
+
 //TODO add support for edit - so have a CustomerDTO object here and save, if it is a update or new customer process
 
     public CustomerAddEditController(CustomerService customerService,
@@ -42,8 +44,9 @@ public class CustomerAddEditController {
         this.customerService = customerService;
     }
 
-    public void test(boolean edit) {
-
+    public void setCustomerToEdit(CustomerDTO customerToEdit) {
+        tf_customerFirstName.setText(customerToEdit.getFirstName());
+        tf_customerLastName.setText(customerToEdit.getLastName());
     }
 
     public void handleCustomerCancel(ActionEvent actionEvent) {

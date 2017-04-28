@@ -9,6 +9,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.performances.PerformancesCon
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.Optional;
 import javafx.application.Platform;
@@ -109,16 +110,23 @@ public class MainController {
         dialog.showAndWait();
     }
 
-    public void addEditCustomerWindow() {
+    public void addEditCustomerWindow(CustomerDTO customerToEdit) {
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
-        dialog.setScene(new Scene((Parent) springFxmlLoader.load(
-            "/fxml/customers/addEditCustomer.fxml")));
+        Object objectController = springFxmlLoader.load("/fxml/customers/addEditCustomer.fxml");
+        CustomerAddEditController controller = (CustomerAddEditController) objectController;
+        dialog.setScene(new Scene((Parent) objectController));
 
-        dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
+        if(customerToEdit != null) {
+            dialog.setTitle(BundleManager.getBundle().getString("customer.edit"));
+            controller.setCustomerToEdit(customerToEdit);
+        }else {
+            dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
+            //controller.setCustomerToEdit(null);
+        }
 
         dialog.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

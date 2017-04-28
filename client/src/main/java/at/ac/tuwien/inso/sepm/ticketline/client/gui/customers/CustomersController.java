@@ -93,10 +93,13 @@ public class CustomersController {
     }
 
     public void handleCustomerEdit(ActionEvent actionEvent) {
-        mainController.addEditCustomerWindow();
+        //TODO marked customer from list
+        ObservableList<Node> customerList = this.vbCustomersElements.getChildren();
+
+        mainController.addEditCustomerWindow(null);
     }
 
     public void handleCustomerAdd(ActionEvent actionEvent) {
-        mainController.addEditCustomerWindow();
+        mainController.addEditCustomerWindow(null);
     }
 }
