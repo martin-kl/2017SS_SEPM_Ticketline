@@ -19,4 +19,7 @@ public class CustomerDTO {
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
     private UUID id;
 
+    @ApiModelProperty(readOnly = true, name = "name of the customer")
+    private String name;
+
 }
