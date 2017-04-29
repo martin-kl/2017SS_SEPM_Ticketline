@@ -11,22 +11,17 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.Iterator;
 import java.util.List;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
-import javafx.geometry.*;
 
 @Slf4j
 @Component
@@ -41,10 +36,7 @@ public class CustomersController {
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
 
-    /* TODO: add customer service */
-    /* TODO: add page specific elements, create specific fxml */
-
-    public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader, /* TODO: add customer service */
+    public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
@@ -54,11 +46,11 @@ public class CustomersController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.USER);
+        //TODO language support
         tabHeaderController.setTitle("Customers");
     }
 
     public void loadCustomers() {
-        // TODO: load Customers (see NewsController for example */
         ObservableList<Node> vbCustomerBoxChildren = vbCustomersElements.getChildren();
         vbCustomerBoxChildren.clear();
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
@@ -84,8 +76,6 @@ public class CustomersController {
                 while (iterator.hasNext()) {
                     CustomerDTO customer = iterator.next();
                     SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/customersElement.fxml");
-
-                    log.debug("\t- got customer with id={} first name={} and last name={}", customer.getId(), customer.getFirstName(), customer.getLastName());
 
                     ((CustomersElementController) wrapper.getController()).initializeData(customer);
                     HBox customerBox = (HBox) wrapper.getLoadedObject();

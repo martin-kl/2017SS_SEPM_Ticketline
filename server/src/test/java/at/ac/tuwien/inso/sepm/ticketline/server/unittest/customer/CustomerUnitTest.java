@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.unittest.customer;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import java.time.LocalDate;
@@ -74,7 +73,7 @@ public class CustomerUnitTest {
         assertEquals(customer.getBirthday(), CUSTOMER_BIRTHDAY);
         assertEquals(customer.getAddress(), CUSTOMER_ADDRESS);
 
-        Customer editedVersion = new Customer();
+        Customer editedVersion = customerService.findOne(custID);
         editedVersion.setId(custID);
 
         //customer is saved, now try to edit the customer
@@ -92,7 +91,7 @@ public class CustomerUnitTest {
         assertEquals(editedVersion.getId(), custID);
 
         List<Customer> listAfterEdit = customerService.findAll();
-        assertTrue(listAfterEdit.contains(customer));
+        assertTrue(listAfterEdit.contains(editedVersion));
     }
 
     @Test

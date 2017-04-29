@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@Slf4j
 @Component
 public class MainController {
 
@@ -88,7 +90,27 @@ public class MainController {
 
         //add listener to reload data when tab is clicked
         tpContent.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-            System.err.println("changed to " + tpContent.getSelectionModel().getSelectedItem());
+            System.err.println("changed to " + tpContent.getSelectionModel().getSelectedItem().getId());
+            switch (tpContent.getSelectionModel().getSelectedItem().getId()) {
+                case "news":
+                    reloadNewsList();
+                    break;
+                case "customers":
+                    reloadCustomerList();
+                    break;
+                case "events":
+                    //reloadCustomerList();
+                    break;
+                 case "accounts":
+                    //reloadCustomerList();
+                    break;
+                 case "reservations":
+                    //reloadCustomerList();
+                    break;
+                default:
+                    log.error("invalid argument in tab pane switch, argument is = {}", tpContent.getSelectionModel().getSelectedItem().getId());
+                    break;
+            }
         });
     }
 
@@ -154,6 +176,7 @@ public class MainController {
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
         newsTab.setGraphic(newsGlyph);
+        newsTab.setId("news");
         tpContent.getTabs().add(newsTab);
     }
 
@@ -161,27 +184,29 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/customers/customersComponent.fxml");
         customersController = (CustomersController) wrapper.getController();
-        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
-        newsTab.setGraphic(newsGlyph);
-        tpContent.getTabs().add(newsTab);
+        customerTab.setGraphic(newsGlyph);
+        customerTab.setId("customers");
+        tpContent.getTabs().add(customerTab);
     }
-
 
     private void initEventsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/events/eventsComponent.fxml");
         eventsController = (EventsController) wrapper.getController();
-        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Tab eventTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
-        newsTab.setGraphic(newsGlyph);
-        tpContent.getTabs().add(newsTab);
+        eventTab.setGraphic(newsGlyph);
+        eventTab.setId("events");
+        tpContent.getTabs().add(eventTab);
     }
 
+    //TODO noch notwendig?
     private void initPerformancesTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/performances/performancesComponent.fxml");
@@ -198,26 +223,27 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/accounts/accountsComponent.fxml");
         accountsController = (AccountsController) wrapper.getController();
-        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Tab accountsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
-        newsTab.setGraphic(newsGlyph);
-        tpContent.getTabs().add(newsTab);
+        accountsTab.setGraphic(newsGlyph);
+        accountsTab.setId("accounts");
+        tpContent.getTabs().add(accountsTab);
     }
 
     private void initReservationsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
         reservationsController = (ReservationsController) wrapper.getController();
-        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Tab reservationTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
-        newsTab.setGraphic(newsGlyph);
-        tpContent.getTabs().add(newsTab);
+        reservationTab.setGraphic(newsGlyph);
+        reservationTab.setId("reservations");
+        tpContent.getTabs().add(reservationTab);
     }
-
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
@@ -225,8 +251,6 @@ public class MainController {
                 spMainContent.getChildren().remove(login);
             }
             newsController.loadNews();
-            //TODO hier laden ? - schon oder?
-            customersController.loadCustomers();
         } else {
             if (!spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().add(login);
@@ -238,10 +262,11 @@ public class MainController {
         pbLoadingProgress.setProgress(progress);
     }
 
-
     public void reloadCustomerList() {
         customersController.loadCustomers();
     }
+
+    public void reloadNewsList() { newsController.loadNews(); };
 
     public void changeToGerman(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("de"));

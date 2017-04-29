@@ -19,7 +19,6 @@ public class CustomersElementController {
     private Label lblLastname;
 
     public void initializeData(CustomerDTO customerDTO) {
-        System.out.println("in initialize data");
         lblPrename.setText(customerDTO.getFirstName());
         lblLastname.setText(customerDTO.getLastName());
     }

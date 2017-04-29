@@ -19,7 +19,8 @@ public abstract class Audited {
 
     @CreatedDate
     @Column
-    @NotNull
+    //should work but on edit customer createdAt is somehow set to NULL
+    //@NotNull
     @Getter
     protected Instant createdAt;
 
