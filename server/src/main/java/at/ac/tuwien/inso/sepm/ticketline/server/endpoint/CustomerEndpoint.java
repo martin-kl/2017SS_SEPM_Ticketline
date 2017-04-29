@@ -8,7 +8,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Time;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -41,11 +40,7 @@ public class CustomerEndpoint {
     @ApiOperation(value = "create a new customer")
     public CustomerDTO createCustomer(@RequestBody CustomerDTO customerDTO) {
         Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
-        System.out.println("savig lalala : " + customer);
-        Instant instant = Instant.now();
-        customer.setCreatedAt(instant);
         customer = customerService.save(customer);
         return customerMapper.customerToCustomerDTO(customer);
     }
-
 }

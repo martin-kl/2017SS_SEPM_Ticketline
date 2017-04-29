@@ -2,15 +2,12 @@ package at.ac.tuwien.inso.sepm.ticketline.rest.customer;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.time.Instant;
 import java.time.LocalDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -39,6 +36,4 @@ public class CustomerDTO {
 
     @ApiModelProperty(required = true, readOnly = true, name = "The birthday of the customer")
     private LocalDate birthday;
-
-
 }
