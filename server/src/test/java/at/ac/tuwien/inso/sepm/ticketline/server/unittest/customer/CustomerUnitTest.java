@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.unittest.customer;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import java.time.LocalDate;
@@ -73,18 +74,22 @@ public class CustomerUnitTest {
         assertEquals(customer.getBirthday(), CUSTOMER_BIRTHDAY);
         assertEquals(customer.getAddress(), CUSTOMER_ADDRESS);
 
-        //customer is saved, now try to edit the customer
-        customer.setFirstName("New");
-        customer.setLastName("Name");
-        customer.setEmail("max.neu@neu.at");
-        customerService.save(customer);
+        Customer editedVersion = new Customer();
+        editedVersion.setId(custID);
 
-        assertEquals(customer.getFirstName(), "New");
-        assertEquals(customer.getLastName(), "Name");
-        assertEquals(customer.getAddress(), CUSTOMER_ADDRESS);
-        assertEquals(customer.getEmail(), "max.neu@neu.at");
-        assertEquals(customer.getBirthday(), CUSTOMER_BIRTHDAY);
-        assertEquals(customer.getId(), custID);
+        //customer is saved, now try to edit the customer
+        editedVersion.setFirstName("New");
+        editedVersion.setLastName("Name");
+        editedVersion.setEmail("max.neu@neu.at");
+        customerService.save(editedVersion);
+
+        editedVersion = customerService.findOne(custID);
+        assertEquals(editedVersion.getFirstName(), "New");
+        assertEquals(editedVersion.getLastName(), "Name");
+        assertEquals(editedVersion.getAddress(), CUSTOMER_ADDRESS);
+        assertEquals(editedVersion.getEmail(), "max.neu@neu.at");
+        assertEquals(editedVersion.getBirthday(), CUSTOMER_BIRTHDAY);
+        assertEquals(editedVersion.getId(), custID);
 
         List<Customer> listAfterEdit = customerService.findAll();
         assertTrue(listAfterEdit.contains(customer));
