@@ -1,11 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
