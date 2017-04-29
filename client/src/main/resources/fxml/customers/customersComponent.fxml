@@ -25,7 +25,6 @@
       <Separator prefWidth="200.0" />
       <ButtonBar buttonMinWidth="0.0">
         <buttons>
-          <Button mnemonicParsing="false" onAction="#handleCustomerEdit" text="%customer.edit" />
             <Button mnemonicParsing="false" onAction="#handleCustomerAdd" text="%customer.add" />
         </buttons>
          <VBox.margin>

@@ -1,0 +1,4 @@
+.customersElement:hover {
+    -fx-background-color: lightblue;
+    -fx-cursor: hand;
+}

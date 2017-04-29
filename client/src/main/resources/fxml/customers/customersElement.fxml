@@ -4,10 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0"
-    xmlns="http://javafx.com/javafx/8.0.111"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController">
+<HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" styleClass="customersElement" stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController">
    <children>
       <Label fx:id="lblPrename" text="&lt;Prename&gt;">
          <HBox.margin>

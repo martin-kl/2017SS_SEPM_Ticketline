@@ -39,6 +39,8 @@ public class CustomerAddEditController {
     @FXML
     private Button btn_CustomerOK;
 
+    private CustomerDTO customerDTO;
+
     private final CustomerService customerService;
     private final MainController mainController;
 
@@ -49,6 +51,7 @@ public class CustomerAddEditController {
     }
 
     public void setCustomerToEdit(CustomerDTO customerToEdit) {
+        customerDTO = customerToEdit;
         tf_customerFirstName.setText(customerToEdit.getFirstName());
         tf_customerLastName.setText(customerToEdit.getLastName());
         tf_customerMail.setText(customerToEdit.getEmail());
@@ -75,7 +78,7 @@ public class CustomerAddEditController {
         String firstName = tf_customerFirstName.getText().trim();
         String lastName = tf_customerLastName.getText().trim();
 
-        CustomerDTO customerDTO = new CustomerDTO();
+        if (this.customerDTO == null) { customerDTO = new CustomerDTO(); }
         customerDTO.setFirstName(firstName);
         customerDTO.setLastName(lastName);
         customerDTO.setEmail(tf_customerMail.getText().trim());
@@ -83,6 +86,7 @@ public class CustomerAddEditController {
         customerDTO.setBirthday(dp_Birthday.getValue());
 
         try {
+            System.out.println("saving this: "+customerDTO);
             customerDTO = customerService.save(customerDTO);
             log.info(
                 "controller: customer after save method has first name = {}, last name = {}, mail = {}, address = {}, birthday = {} and id = {}",
