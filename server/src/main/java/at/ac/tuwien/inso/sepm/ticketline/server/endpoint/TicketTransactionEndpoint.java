@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
@@ -17,8 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/ticket")
-@Api(value = "ticket")
+@RequestMapping(value = "/tickettransaction")
+@Api(value = "tickettransaction")
 public class TicketTransactionEndpoint {
 
     @Autowired
@@ -30,10 +29,9 @@ public class TicketTransactionEndpoint {
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of Ticket Reservations")
     public List<DetailedTicketTransactionDTO> getAllTransactions(
-        Pageable pageable,
         @RequestParam(value = "status") String status) {
         return ticketService
-            .getAllTransactions(status, pageable)
+            .getAllTransactions(status)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());

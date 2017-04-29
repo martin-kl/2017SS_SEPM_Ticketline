@@ -11,8 +11,7 @@ public interface TicketService {
      * Simply returns a list of Transactions for a given status
      *
      * @param status of the transactions
-     * @param pageable a spring pageable
      * @return a list of TicketTransactions
      */
-    List<TicketTransaction> getAllTransactions(String status, Pageable pageable);
+    List<TicketTransaction> getAllTransactions(String status);
 }

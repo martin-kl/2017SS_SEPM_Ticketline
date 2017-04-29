@@ -26,15 +26,13 @@ public class TicketServiceImpl implements TicketService {
     private TicketTransactionRepository ticketTransactionRepository;
 
     @Override
-    public List<TicketTransaction> getAllTransactions(String status, Pageable pageable) {
+    public List<TicketTransaction> getAllTransactions(String status) {
         TicketStatus ticketStatus;
         try {
             ticketStatus = TicketStatus.valueOf(status);
         } catch (IllegalArgumentException e) {
             throw new BadRequestException("Bad status");
         }
-        return ticketTransactionRepository
-            .findByStatus(ticketStatus, pageable)
-            .getContent();
+        return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 }
