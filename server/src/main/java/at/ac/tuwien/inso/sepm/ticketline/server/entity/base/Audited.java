@@ -2,6 +2,8 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity.base;
 
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,10 +19,10 @@ import java.time.Instant;
 @MappedSuperclass
 public abstract class Audited {
 
-    @CreatedDate
     @Column
     //should work but on edit customer createdAt is somehow set to NULL
     //@NotNull
+    @CreatedDate
     @Getter
     protected Instant createdAt;
 

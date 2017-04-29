@@ -52,6 +52,7 @@ public class CustomerAddEditController {
 
     public void setCustomerToEdit(CustomerDTO customerToEdit) {
         customerDTO = customerToEdit;
+        if (customerToEdit == null) return;
         tf_customerFirstName.setText(customerToEdit.getFirstName());
         tf_customerLastName.setText(customerToEdit.getLastName());
         tf_customerMail.setText(customerToEdit.getEmail());

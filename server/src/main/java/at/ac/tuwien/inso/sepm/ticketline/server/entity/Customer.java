@@ -4,6 +4,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import java.time.LocalDate;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Set;

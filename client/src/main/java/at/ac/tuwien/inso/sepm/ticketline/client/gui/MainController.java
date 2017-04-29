@@ -144,12 +144,11 @@ public class MainController {
         CustomerAddEditController controller = (CustomerAddEditController) wrapper.getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
+        controller.setCustomerToEdit(customerToEdit);
         if (customerToEdit != null) {
             dialog.setTitle(BundleManager.getBundle().getString("customer.edit"));
-            controller.setCustomerToEdit(customerToEdit);
         } else {
             dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
-            //controller.setCustomerToEdit(null);
         }
 
         dialog.setOnCloseRequest(event -> {
