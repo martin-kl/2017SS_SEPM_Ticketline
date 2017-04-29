@@ -3,16 +3,15 @@ package at.ac.tuwien.inso.sepm.ticketline.rest.customer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
 @ToString
+@Builder
 @EqualsAndHashCode
 @ApiModel(value = "CustomerDTO", description = "A customer DTO for customers via rest")
 public class CustomerDTO {

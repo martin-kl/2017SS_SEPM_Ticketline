@@ -1,12 +1,21 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidatorContext;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,25 +31,24 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> findAll() {
-        return customerRepository.findAll();
+        return customerRepository.findAll(new Sort("lastName"));
     }
 
     @Override
     public Customer findOne(UUID id) {
-        return customerRepository.findOne(id);
+        return customerRepository.findOneById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public Customer save(Customer customer) {
-        if(customer.getFirstName().length() < 3) {
-            LOGGER.error("first name of customer has less then 3 characters - that is not valid");
-            throw new IllegalArgumentException("first name of customer must have at least 3 characters");
+        try {
+            return customerRepository.save(customer);
+        } catch(TransactionSystemException e) {
+            //TODO
+            //wie bekommen wir hier eine bessere Meldung aus Hibernate raus?
+            //intern gibt es da eine bessere Exception wo der genau Fehler herausgeht
+            //aber nach außen bekomm ich nur diese
+            throw new BadRequestException(e.getMessage());
         }
-        if(customer.getLastName().length() < 3) {
-            LOGGER.error("last name of customer has less then 3 characters - that is not valid");
-            throw new IllegalArgumentException(
-                "last name of customer must have at least 3 characters");
-        }
-        return customerRepository.save(customer);
     }
 }

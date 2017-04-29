@@ -4,6 +4,8 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import java.time.LocalDate;
 import lombok.*;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -26,15 +28,19 @@ public class Customer extends Audited {
     private UUID id;
 
     @Column(nullable = false, length = 10_000)
+    @Length(min = 1)
     private String firstName;
 
     @Column(nullable = false, length = 10_000)
+    @Length(min = 1)
     private String lastName;
 
     @Column(nullable = false, length = 10_000)
+    @Email
     private String email;
 
     @Column(nullable = false, length = 10_000)
+    @Length(min = 5)
     private String address;
 
     @Column(nullable = false)

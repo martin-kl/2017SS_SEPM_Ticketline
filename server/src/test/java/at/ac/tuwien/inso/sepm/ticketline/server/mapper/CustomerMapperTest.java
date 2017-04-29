@@ -63,7 +63,7 @@ public class CustomerMapperTest {
 
     @Test
     public void shouldMapCustomerDTOtoCustomer() {
-        CustomerDTO customerDTO = new CustomerDTO();
+        CustomerDTO customerDTO = CustomerDTO.builder().build();
         customerDTO.setId(CUSTOMER_ID);
         customerDTO.setFirstName(CUSTOMER_FIRST_NAME);
         customerDTO.setLastName(CUSTOMER_LAST_NAME);

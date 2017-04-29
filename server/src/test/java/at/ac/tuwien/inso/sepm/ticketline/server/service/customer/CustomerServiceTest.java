@@ -1,0 +1,118 @@
+package at.ac.tuwien.inso.sepm.ticketline.server.service.customer;
+
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
+import java.time.LocalDate;
+
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.validation.ConstraintViolationException;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+import java.util.UUID;
+
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class CustomerServiceTest {
+    @Autowired
+    private CustomerService customerService;
+
+    private static final String CUSTOMER_FIRST_NAME = "Maximilian";
+    private static final String CUSTOMER_LAST_NAME = "Muster";
+    private static final String CUSTOMER_NAME_INVALID = "";
+
+    private static final String CUSTOMER_EMAIL = "max.muster@muster.com";
+    private static final String CUSTOMER_EMAIL_INVALID = "max.mustermuster.com";
+    private static final String CUSTOMER_ADDRESS = "Musterstraße 14, 1010 Wien";
+    private static final LocalDate CUSTOMER_BIRTHDAY = LocalDate.now();
+    private Customer unsavedCustomer;
+
+    @Before
+    public void setUpCustomer() {
+        unsavedCustomer = new Customer();
+        unsavedCustomer.setFirstName(CUSTOMER_FIRST_NAME);
+        unsavedCustomer.setLastName(CUSTOMER_LAST_NAME);
+        unsavedCustomer.setEmail(CUSTOMER_EMAIL);
+        unsavedCustomer.setAddress(CUSTOMER_ADDRESS);
+        unsavedCustomer.setBirthday(CUSTOMER_BIRTHDAY);
+    }
+
+    @Test
+    public void createValidCustomer() {
+        Customer returnedFromSave = customerService.save(unsavedCustomer);
+        List<Customer> list = customerService.findAll();
+        assertTrue(list.contains(unsavedCustomer));
+        assertNotNull(unsavedCustomer.getId());
+        assertTrue(returnedFromSave == unsavedCustomer);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void createCustomerWithNameTooShort() {
+        unsavedCustomer.setFirstName(CUSTOMER_NAME_INVALID);
+        customerService.save(unsavedCustomer);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void createCustomerWithLastNameTooShort() {
+        unsavedCustomer.setLastName(CUSTOMER_NAME_INVALID);
+        customerService.save(unsavedCustomer);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void createCustomerWithInvalidMail() {
+        unsavedCustomer.setEmail(CUSTOMER_EMAIL_INVALID);
+        customerService.save(unsavedCustomer);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void tryToFindNonExistingCustomer() {
+        customerService.findOne(new UUID(1, 2));
+    }
+
+    @Test
+    public void editCustomer() {
+        //save
+        customerService.save(unsavedCustomer);
+        UUID custID = unsavedCustomer.getId();
+
+        //edit
+        Customer editedVersion = customerService.findOne(custID);
+        editedVersion.setFirstName("New");
+        editedVersion.setLastName("Name");
+        editedVersion.setEmail("max.neu@neu.at");
+        customerService.save(editedVersion);
+
+        //check edits worked
+        editedVersion = customerService.findOne(custID);
+        assertEquals(editedVersion.getFirstName(), "New");
+        assertEquals(editedVersion.getLastName(), "Name");
+        assertEquals(editedVersion.getAddress(), CUSTOMER_ADDRESS);
+        assertEquals(editedVersion.getEmail(), "max.neu@neu.at");
+        assertEquals(editedVersion.getBirthday(), CUSTOMER_BIRTHDAY);
+        assertEquals(editedVersion.getId(), custID);
+
+        //check is in list
+        List<Customer> listAfterEdit = customerService.findAll();
+        assertTrue(listAfterEdit.contains(editedVersion));
+    }
+
+    @Test
+    public void testFindAll() {
+        List<Customer> listBeforeInsert = customerService.findAll();
+        customerService.save(unsavedCustomer);
+        List<Customer> listAfterInsert = customerService.findAll();
+        assertEquals(listBeforeInsert.size() + 1, listAfterInsert.size());
+        assertFalse(listBeforeInsert.contains(unsavedCustomer));
+        assertTrue(listAfterInsert.contains(unsavedCustomer));
+    }
+}

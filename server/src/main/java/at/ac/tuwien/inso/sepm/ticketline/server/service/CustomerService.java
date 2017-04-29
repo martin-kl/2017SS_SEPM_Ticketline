@@ -10,16 +10,17 @@ public interface CustomerService {
     /**
      * Find all customers
      *
-     * @return ordered list of al customers
+     * @return list of customers (ordered by lastname)
      */
     List<Customer> findAll();
 
 
     /**
-     * Find a single news entry by id.
+     * Find a single customer entry by id.
      *
-     * @param id the is of the news entry
-     * @return the news entry
+     * @param id the ids of the customer entry
+     * @return the customer entry
+     * @throws at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException
      */
     Customer findOne(UUID id);
 
@@ -27,6 +28,7 @@ public interface CustomerService {
      * saves a new or edited customer
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
+     * @throws at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException
      */
     Customer save(Customer customer);
 }
