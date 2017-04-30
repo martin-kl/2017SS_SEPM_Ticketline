@@ -37,8 +37,8 @@ public class CustomerEndpoint {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @ApiOperation(value = "create a new customer")
-    public CustomerDTO createCustomer(@RequestBody CustomerDTO customerDTO) {
+    @ApiOperation(value = "Save a customer")
+    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
         Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
         customer = customerService.save(customer);
         return customerMapper.customerToCustomerDTO(customer);
