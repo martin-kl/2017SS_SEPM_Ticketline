@@ -3,9 +3,11 @@ package at.ac.tuwien.inso.sepm.ticketline.server.datagenerator;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketHistoryRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
+import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -19,6 +21,9 @@ import java.util.List;
 @Profile("generateData")
 @Component
 public class TicketHistoryDataGenerator {
+
+    @Autowired
+    private TicketTransactionRepository ticketTransactionRepository;
 
     @Autowired
     private TicketHistoryRepository ticketHistoryRepository;
@@ -84,79 +89,125 @@ public class TicketHistoryDataGenerator {
     }
 
     private void reserveTickets(List<Ticket> tickets, List<Customer> customers) {
+        int randomTicketCount = (int) (Math.random() * 5 + 1);
+        List<Ticket> tmpTicketList = new ArrayList<>();
+
         for (Ticket ticket : tickets) {
-            int randomCustomerIndex = (int) (Math.random() * customers.size());
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.RESERVED
-            );
+            tmpTicketList.add(ticket);
+
+            if (tmpTicketList.size() == randomTicketCount) {
+                int randomCustomerIndex = (int) (Math.random() * customers.size());
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.RESERVED
+                );
+
+                randomTicketCount = (int) (Math.random() * 5 + 1);
+                tmpTicketList = new ArrayList<>();
+            }
         }
     }
 
     private void reserveAndBuyTickets(List<Ticket> tickets, List<Customer> customers) {
-        for (Ticket ticket : tickets) {
-            int randomCustomerIndex = (int) (Math.random() * customers.size());
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.RESERVED
-            );
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.BOUGHT
-            );
+        int randomTicketCount = (int) (Math.random() * 5 + 1);
+        List<Ticket> tmpTicketList = new ArrayList<>();
 
+        for (Ticket ticket : tickets) {
+            tmpTicketList.add(ticket);
+
+            if (tmpTicketList.size() == randomTicketCount) {
+                int randomCustomerIndex = (int) (Math.random() * customers.size());
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.RESERVED
+                );
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.BOUGHT
+                );
+
+                randomTicketCount = (int) (Math.random() * 5 + 1);
+                tmpTicketList = new ArrayList<>();
+            }
         }
     }
 
     private void buyAndStornoTickets(List<Ticket> tickets, List<Customer> customers) {
+        int randomTicketCount = (int) (Math.random() * 5 + 1);
+        List<Ticket> tmpTicketList = new ArrayList<>();
+
         for (Ticket ticket : tickets) {
-            int randomCustomerIndex = (int) (Math.random() * customers.size());
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.BOUGHT
-            );
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.STORNO
-            );
+            tmpTicketList.add(ticket);
+
+            if (tmpTicketList.size() == randomTicketCount) {
+                int randomCustomerIndex = (int) (Math.random() * customers.size());
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.BOUGHT
+                );
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.STORNO
+                );
+
+                randomTicketCount = (int) (Math.random() * 5 + 1);
+                tmpTicketList = new ArrayList<>();
+            }
         }
     }
 
     private void buyStornoAndReserveTickets(List<Ticket> tickets, List<Customer> customers) {
+        int randomTicketCount = (int) (Math.random() * 5 + 1);
+        List<Ticket> tmpTicketList = new ArrayList<>();
+
         for (Ticket ticket : tickets) {
-            int randomCustomerIndex = (int) (Math.random() * customers.size());
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.BOUGHT
-            );
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.STORNO
-            );
-            // set new customer (or randomly the same person)
-            randomCustomerIndex = (int) (Math.random() * customers.size());
-            createTicket(
-                ticket,
-                customers.get(randomCustomerIndex),
-                TicketHistory.Status.RESERVED
-            );
+            tmpTicketList.add(ticket);
+
+            if (tmpTicketList.size() == randomTicketCount) {
+                int randomCustomerIndex = (int) (Math.random() * customers.size());
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.BOUGHT
+                );
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.STORNO
+                );
+                // set new customer (or randomly the same person)
+                randomCustomerIndex = (int) (Math.random() * customers.size());
+                createTicketTransaction(
+                    tmpTicketList,
+                    customers.get(randomCustomerIndex),
+                    TicketTransaction.Status.RESERVED
+                );
+
+                randomTicketCount = (int) (Math.random() * 5 + 1);
+                tmpTicketList = new ArrayList<>();
+            }
         }
     }
 
-    private void createTicket(Ticket ticket, Customer customer, TicketHistory.Status status) {
-        TicketHistory ticketHistory = TicketHistory.builder()
-            .ticket(ticket)
+    private void createTicketTransaction(List<Ticket> ticketList, Customer customer, TicketTransaction.Status status) {
+        TicketTransaction ticketTransaction = TicketTransaction.builder()
             .customer(customer)
             .status(status)
             .build();
-        ticketHistoryRepository.save(ticketHistory);
+        ticketTransactionRepository.save(ticketTransaction);
+        for (Ticket ticket : ticketList) {
+            TicketHistory ticketHistory = TicketHistory.builder()
+                .ticket(ticket)
+                .ticketTransaction(ticketTransaction)
+                .build();
+            ticketHistoryRepository.save(ticketHistory);
+        }
+
     }
 
 }

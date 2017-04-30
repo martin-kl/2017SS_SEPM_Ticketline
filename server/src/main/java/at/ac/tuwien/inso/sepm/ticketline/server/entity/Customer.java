@@ -16,8 +16,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"ticketHistories"})
-@ToString(exclude = {"ticketHistories"})
+@EqualsAndHashCode(exclude = {"ticketTransactions"})
+@ToString(exclude = {"ticketTransactions"})
 @Entity
 public class Customer extends Audited {
 
@@ -47,6 +47,6 @@ public class Customer extends Audited {
     private LocalDate birthday;
 
     @Getter
-    @OneToMany(mappedBy = "customer")
-    private Set<TicketHistory> ticketHistories;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    private Set<TicketTransaction> ticketTransactions;
 }

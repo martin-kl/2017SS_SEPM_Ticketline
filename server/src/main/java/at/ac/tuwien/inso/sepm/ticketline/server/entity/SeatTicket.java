@@ -26,10 +26,10 @@ public class SeatTicket extends Ticket {
         UUID id,
         BigDecimal price,
         Performance performance,
-        Set<TicketHistory> ticketHistorySet,
+        Set<TicketHistory> ticketHistories,
         Seat seat
     ) {
-        super(id, price, performance, ticketHistorySet);
+        super(id, price, performance, ticketHistories);
         this.seat = seat;
     }
 

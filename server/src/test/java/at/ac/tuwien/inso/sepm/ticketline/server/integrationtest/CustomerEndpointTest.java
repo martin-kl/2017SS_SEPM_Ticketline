@@ -56,6 +56,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
 
     @Before
     public void fillWithCustomers() {
+        customerRepository.deleteAll();
         for (int i = 0; i < CREATED_CUSTOMERS; i++) {
             customerRepository.save(CustomerDataGenerator.generateCustomer());
         }

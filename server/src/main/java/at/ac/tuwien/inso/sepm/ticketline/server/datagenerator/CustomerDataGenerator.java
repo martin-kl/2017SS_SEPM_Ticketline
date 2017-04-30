@@ -29,11 +29,11 @@ public class CustomerDataGenerator {
             log.info("customers already generated");
         } else {
             log.info("generating {} customer entries", NUMBER_OF_CUSTOMER_TO_GENERATE);
-            Customer customer = generateCustomer();
             for (int i = 0; i < NUMBER_OF_CUSTOMER_TO_GENERATE; i++) {
+                Customer customer = generateCustomer();
                 log.debug("saving artist {}", customer);
+                customerRepository.save(customer);
             }
-            customerRepository.save(customer);
         }
     }
 

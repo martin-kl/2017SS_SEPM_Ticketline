@@ -24,12 +24,10 @@
 		- Veranstaltungen ansehen
 		- Tickets verwalten
 		- Rechnungen ausstellen
-		- Merchandise und Prämienverwaltung
 		- Tickets drucken
 	
 	Mögliche Optimierungen der Kernfunktionen:
 		- Tabellarische Kundenübersicht
-		- Veranstaltungen anlegen?
 
 - Administrator
 	Kentnisse:
@@ -52,8 +50,6 @@
 		- News erstellen
 		- Zahlungsdienstleister verwalten
 		- Benutzer im System verwalten
-		- Aufführungsorte und Saalpläne anlegen
 	
 	Mögliche Optimierungen der Kernfunktionen:
-		- Veranstaltungen anlegen + löschen
 		- News bearbeiten + löschen

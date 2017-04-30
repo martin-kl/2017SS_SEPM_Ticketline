@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
+import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ConstraintViolationException;
 
 import static org.junit.Assert.*;
 
@@ -27,6 +27,9 @@ public class CustomerServiceTest {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     private static final String CUSTOMER_FIRST_NAME = "Maximilian";
     private static final String CUSTOMER_LAST_NAME = "Muster";
     private static final String CUSTOMER_NAME_INVALID = "";
@@ -39,6 +42,7 @@ public class CustomerServiceTest {
 
     @Before
     public void setUpCustomer() {
+        customerRepository.deleteAll();
         unsavedCustomer = new Customer();
         unsavedCustomer.setFirstName(CUSTOMER_FIRST_NAME);
         unsavedCustomer.setLastName(CUSTOMER_LAST_NAME);
@@ -48,7 +52,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void createValidCustomer() {
+    public void canSaveValidCustomer() {
         Customer returnedFromSave = customerService.save(unsavedCustomer);
         List<Customer> list = customerService.findAll();
         assertTrue(list.contains(unsavedCustomer));
@@ -57,7 +61,7 @@ public class CustomerServiceTest {
     }
 
     @Test(expected = BadRequestException.class)
-    public void createCustomerWithNameTooShort() {
+    public void createCustomerWithFirstNameTooShort() {
         unsavedCustomer.setFirstName(CUSTOMER_NAME_INVALID);
         customerService.save(unsavedCustomer);
     }
@@ -80,13 +84,16 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void editCustomer() {
+    public void canSaveAndEditCustomerFindAllAndFindOne() {
+        List<Customer> listBeforeInsert = customerService.findAll();
+
         //save
-        customerService.save(unsavedCustomer);
+        unsavedCustomer = customerService.save(unsavedCustomer);
         UUID custID = unsavedCustomer.getId();
 
         //edit
         Customer editedVersion = customerService.findOne(custID);
+        assertEquals(editedVersion, unsavedCustomer);
         editedVersion.setFirstName("New");
         editedVersion.setLastName("Name");
         editedVersion.setEmail("max.neu@neu.at");
@@ -102,17 +109,10 @@ public class CustomerServiceTest {
         assertEquals(editedVersion.getId(), custID);
 
         //check is in list
-        List<Customer> listAfterEdit = customerService.findAll();
-        assertTrue(listAfterEdit.contains(editedVersion));
+        List<Customer> listAfterInsert = customerService.findAll();
+        assertTrue(listAfterInsert.contains(editedVersion));
+        assertEquals(listBeforeInsert.size()+1, listAfterInsert.size());
     }
 
-    @Test
-    public void testFindAll() {
-        List<Customer> listBeforeInsert = customerService.findAll();
-        customerService.save(unsavedCustomer);
-        List<Customer> listAfterInsert = customerService.findAll();
-        assertEquals(listBeforeInsert.size() + 1, listAfterInsert.size());
-        assertFalse(listBeforeInsert.contains(unsavedCustomer));
-        assertTrue(listAfterInsert.contains(unsavedCustomer));
-    }
+
 }

@@ -26,10 +26,10 @@ public class SectorTicket extends Ticket {
         UUID id,
         BigDecimal price,
         Performance performance,
-        Set<TicketHistory> ticketHistorySet,
+        Set<TicketHistory> ticketHistories,
         Sector sector
     ) {
-        super(id, price, performance, ticketHistorySet);
+        super(id, price, performance, ticketHistories);
         this.sector = sector;
     }
 
