@@ -90,7 +90,6 @@ public class MainController {
 
         //add listener to reload data when tab is clicked
         tpContent.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
-            System.err.println("changed to " + tpContent.getSelectionModel().getSelectedItem().getId());
             switch (tpContent.getSelectionModel().getSelectedItem().getId()) {
                 case "news":
                     reloadNewsList();
