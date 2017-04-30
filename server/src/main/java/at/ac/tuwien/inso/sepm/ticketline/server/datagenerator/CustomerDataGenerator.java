@@ -22,7 +22,6 @@ public class CustomerDataGenerator {
 
     @Autowired
     private CustomerRepository customerRepository;
-    private final Faker faker = new Faker();
 
     @PostConstruct
     private void generateCustomers() {
@@ -30,23 +29,26 @@ public class CustomerDataGenerator {
             log.info("customers already generated");
         } else {
             log.info("generating {} customer entries", NUMBER_OF_CUSTOMER_TO_GENERATE);
-
-            //generate birthday "by hand" cause faker can`t do it
-            Random random = new Random();
+            Customer customer = generateCustomer();
             for (int i = 0; i < NUMBER_OF_CUSTOMER_TO_GENERATE; i++) {
-                long ms = -946771200000L + (Math.abs(random.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000));
-                LocalDate birthday = Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()).toLocalDate();
-
-                Customer customer = Customer.builder()
-                    .firstName(faker.artist().name())
-                    .lastName(faker.artist().name())
-                    .address(faker.address().fullAddress())
-                    .email(faker.internet().emailAddress())
-                    .birthday(birthday)
-                    .build();
                 log.debug("saving artist {}", customer);
-                customerRepository.save(customer);
             }
+            customerRepository.save(customer);
         }
+    }
+
+    public static Customer generateCustomer() {
+        Faker faker = new Faker();
+        //generate birthday "by hand" cause faker can`t do it
+        Random random = new Random();
+        long ms = -946771200000L + (Math.abs(random.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000));
+        LocalDate birthday = Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()).toLocalDate();
+        return Customer.builder()
+            .firstName(faker.artist().name())
+            .lastName(faker.artist().name())
+            .address(faker.address().fullAddress())
+            .email(faker.internet().emailAddress())
+            .birthday(birthday)
+            .build();
     }
 }
