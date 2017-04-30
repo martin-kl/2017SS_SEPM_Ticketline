@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@Builder
+@NoArgsConstructor
 @EqualsAndHashCode
 @ApiModel(value = "CustomerDTO", description = "A customer DTO for customers via rest")
 public class CustomerDTO {

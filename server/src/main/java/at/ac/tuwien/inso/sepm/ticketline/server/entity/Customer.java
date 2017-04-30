@@ -13,9 +13,9 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @EqualsAndHashCode(exclude = {"ticketHistories"})
 @ToString(exclude = {"ticketHistories"})
 @Entity
