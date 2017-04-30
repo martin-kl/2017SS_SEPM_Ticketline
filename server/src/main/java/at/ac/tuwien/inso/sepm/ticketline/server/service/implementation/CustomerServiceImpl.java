@@ -5,24 +5,16 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidatorContext;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerServiceImpl.class);
     private final CustomerRepository customerRepository;
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
