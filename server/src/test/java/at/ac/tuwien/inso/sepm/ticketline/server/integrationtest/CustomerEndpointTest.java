@@ -39,6 +39,21 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
     private static final String CUSTOMER_1_EMAIL = "mail@mail.com";
     private static final int CREATED_CUSTOMERS = 5;
 
+    /**
+     * This is a template for future integration tests.
+     * 1.) @Before is used to fill the repository with some random data that is not specifically addressed in the tests
+     *      this is useful to catch bugs that might only appear if there is more than a single entity in the database.
+     *      To generate this you can reuse the logic in the generators by exposing their logic in a static method (e.g. 'allActionsRequireAuthorization').
+     * 2.) One or more public static helper methods are defined that prevent repetition: e.g. 'getCustomerDTO(UUID uuid)' will
+     *      fill in all the fields for a customer dto with constants defined at the top of the file. It is public/static so it can be reused
+     *      in other tests.
+     * 3.) All methods that make requests are defined in their own method and return the response to prevent repetition.
+     * 4.) It is not necessary to create a test for each function. If you use 'findAll' in your 'create' test 'findAll' is considered tested.
+     * 5.) If authorization is necessary for one or more routes test each route like was done in 'allActionsRequireAuthorization'
+     * 6.) You have to use equals to compare two entities. Do not compare every field manually.
+     * 7.) The method names must communicate which methods you are testing in what context: (e.g. 'findingOneForNonExistingLeadsToNotFound')
+     */
+
     @Before
     public void fillWithCustomers() {
         for (int i = 0; i < CREATED_CUSTOMERS; i++) {
@@ -55,13 +70,21 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void findingNonExistingLeadsToNotFound() {
+    public void findingOneForNonExistingLeadsToNotFound() {
         Response response = requestSpecificCustomer(UUID.randomUUID());
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
     }
 
     @Test
-    public void userCanFindAllCustomersIfNonExistAndGetEmptyList() {
+    public void savingInvalidCustomerLeadsToBadRequestException() {
+        CustomerDTO customer = getCustomerDTO(null);
+        customer.setLastName("");
+        Response response = saveCustomerRequest(customer);
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
+    }
+
+    @Test
+    public void findAllIfNonExistReturnsEmptyList() {
         customerRepository.deleteAll();
         Response response = requestCustomers();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
@@ -101,12 +124,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
         assertTrue(customers.get(customers.size()-1).equals(lastInAlphabet));
     }
 
-
-
-    //HELPERS
-    //You can move these methods into base integration test should you need them somewhere else
-
-    private CustomerDTO getCustomerDTO(UUID uuid) {
+    public static CustomerDTO getCustomerDTO(UUID uuid) {
         CustomerDTO customerDTO = new CustomerDTO();
         if (uuid != null) {
             customerDTO.setId(uuid);
@@ -118,6 +136,11 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
         customerDTO.setEmail(CUSTOMER_1_EMAIL);
         return customerDTO;
     }
+
+
+    //REQUEST HELPERS
+    //You can move these methods into base integration test should you need them somewhere else
+
 
     private Response saveCustomerRequest(CustomerDTO customerDTO) {
         return RestAssured
