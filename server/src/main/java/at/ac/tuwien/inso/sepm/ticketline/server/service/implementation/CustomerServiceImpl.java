@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.util.ValidationHelper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
@@ -37,11 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
             //TODO validate customer here too?
             return customerRepository.save(customer);
         } catch(TransactionSystemException e) {
-            //TODO
-            //wie bekommen wir hier eine bessere Meldung aus Hibernate raus?
-            //intern gibt es da eine bessere Exception wo der genau Fehler herausgeht
-            //aber nach außen bekomm ich nur diese
-            throw new BadRequestException(e.getMessage());
+            throw new BadRequestException(ValidationHelper.getErrorMessages(e).toString());
         }
     }
 }

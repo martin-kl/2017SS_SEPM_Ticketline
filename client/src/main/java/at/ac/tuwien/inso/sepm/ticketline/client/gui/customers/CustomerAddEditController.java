@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
@@ -75,7 +77,7 @@ public class CustomerAddEditController {
         }
     }
 
-    public void handleCustomerOK(ActionEvent actionEvent) throws DataAccessException {
+    public void handleCustomerOK(ActionEvent actionEvent) {
         String firstName = tf_customerFirstName.getText().trim();
         String lastName = tf_customerLastName.getText().trim();
 
@@ -94,7 +96,6 @@ public class CustomerAddEditController {
                 customerDTO.getAddress(), customerDTO.getBirthday(), customerDTO.getId());
 
             Alert alert = new Alert(AlertType.INFORMATION);
-            //TODO do we have to have these error messages in two languages as well??
             alert.setHeaderText("Customer successfully saved");
             alert.setContentText("The customer with the name "+customerDTO.getFirstName()+" "+customerDTO.getLastName()+" has been successfully saved");
             alert.showAndWait();
@@ -102,12 +103,8 @@ public class CustomerAddEditController {
             mainController.reloadCustomerList();
             Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
             stage.close();
-        } catch (IllegalArgumentException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(BundleManager.getBundle().getString("default.error.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("default.error.header"));
-            alert.setContentText(BundleManager.getBundle().getString("default.error.content"));
-            alert.showAndWait();
+        } catch (ExceptionWithDialog exceptionWithDialog) {
+            exceptionWithDialog.showDialog();
         }
     }
 }

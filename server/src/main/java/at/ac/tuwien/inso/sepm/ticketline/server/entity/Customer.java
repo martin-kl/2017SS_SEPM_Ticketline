@@ -37,6 +37,7 @@ public class Customer extends Audited {
 
     @Column(nullable = false, length = 10_000)
     @Email
+    @Length(min = 1)
     private String email;
 
     @Column(nullable = false, length = 10_000)
