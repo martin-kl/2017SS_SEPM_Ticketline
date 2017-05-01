@@ -7,14 +7,15 @@ import javafx.scene.control.Alert;
 
 public abstract class ExceptionWithDialog extends Exception {
 
-    private String errorMessagePropertyName;
+    protected String errorMessagePropertyName = "default.error.content";
 
 
-    public ExceptionWithDialog() {
-        this("default.error.content");
-    }
+    public ExceptionWithDialog() { super(); }
 
-    public ExceptionWithDialog(String errorMessagePropertyName) {
+    public ExceptionWithDialog(String message) { super(message); }
+
+    public ExceptionWithDialog(String message, String errorMessagePropertyName) {
+        super(message);
         this.errorMessagePropertyName = errorMessagePropertyName;
     }
 
