@@ -87,7 +87,6 @@ public class CustomerAddEditController {
         customerDTO.setBirthday(dp_Birthday.getValue());
 
         try {
-            System.out.println("saving this: "+customerDTO);
             customerDTO = customerService.save(customerDTO);
             log.info(
                 "controller: customer after save method has first name = {}, last name = {}, mail = {}, address = {}, birthday = {} and id = {}",

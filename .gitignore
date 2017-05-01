@@ -46,6 +46,7 @@ buildNumber.properties
 ### Intellij ###
 .idea/
 .idea_modules/
+workspace.xml
 *.iws
 out/
 *.iml
