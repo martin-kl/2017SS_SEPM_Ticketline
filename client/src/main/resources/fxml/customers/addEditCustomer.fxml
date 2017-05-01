@@ -7,7 +7,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController">
@@ -33,29 +35,49 @@
       </Label>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <GridPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="10.0" prefWidth="129.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="474.0" minWidth="10.0" prefWidth="446.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <TextField fx:id="tf_customerFirstName" promptText="%customer.firstName">
-               <VBox.margin>
-                  <Insets bottom="10.0" top="20.0" />
-               </VBox.margin>
+            <Label text="%customer.firstName" />
+            <TextField fx:id="tf_customerFirstName" promptText="%customer.firstName" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
             </TextField>
-            <TextField fx:id="tf_customerLastName" promptText="%customer.lastName" />
-            <TextField fx:id="tf_customerMail" promptText="%customer.email">
-               <VBox.margin>
-                  <Insets bottom="10.0" top="10.0" />
-               </VBox.margin>
+            <Label text="%customer.lastName" GridPane.rowIndex="1" />
+            <Label text="%customer.email" GridPane.rowIndex="2" />
+            <Label text="%customer.address" GridPane.rowIndex="3" />
+            <Label text="%customer.birthday" GridPane.rowIndex="4" />
+            <TextField fx:id="tf_customerLastName" promptText="%customer.lastName" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
             </TextField>
-            <TextField fx:id="tf_customerAddress" promptText="%customer.address">
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
+            <TextField fx:id="tf_customerMail" promptText="%customer.email" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
             </TextField>
-            <DatePicker fx:id="dp_Birthday" promptText="%customer.birthday" />
+            <TextField fx:id="tf_customerAddress" promptText="%customer.address" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </TextField>
+            <DatePicker fx:id="dp_Birthday" promptText="%customer.birthday" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <padding>
-            <Insets left="20.0" right="20.0" />
+            <Insets left="20.0" />
          </padding>
-      </VBox>
+      </GridPane>
    </center>
 </BorderPane>
