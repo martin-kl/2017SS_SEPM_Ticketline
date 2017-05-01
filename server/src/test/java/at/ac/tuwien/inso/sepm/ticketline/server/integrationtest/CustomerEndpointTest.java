@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +53,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
      * 5.) If authorization is necessary for one or more routes test each route like was done in 'allActionsRequireAuthorization'
      * 6.) You have to use equals to compare two entities. Do not compare every field manually.
      * 7.) The method names must communicate which methods you are testing in what context: (e.g. 'findingOneForNonExistingLeadsToNotFound')
+     * 8.) Use @Before and @After methods to empty repositories.
      */
 
     @Before
@@ -60,6 +62,11 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
         for (int i = 0; i < CREATED_CUSTOMERS; i++) {
             customerRepository.save(CustomerDataGenerator.generateCustomer());
         }
+    }
+
+    @After
+    public void cleanUp() {
+        customerRepository.deleteAll();
     }
 
     @Test
