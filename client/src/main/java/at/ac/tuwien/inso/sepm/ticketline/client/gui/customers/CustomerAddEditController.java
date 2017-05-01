@@ -1,8 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;

@@ -55,24 +55,24 @@
                </GridPane.margin>
             </TextField>
             <Label text="%customer.lastName" GridPane.rowIndex="1" />
-            <Label text="%customer.email" GridPane.rowIndex="2" />
-            <Label text="%customer.address" GridPane.rowIndex="3" />
-            <Label text="%customer.birthday" GridPane.rowIndex="4" />
             <TextField fx:id="tf_customerLastName" promptText="%customer.lastName" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
             </TextField>
+            <Label text="%customer.email" GridPane.rowIndex="2" />
             <TextField fx:id="tf_customerMail" promptText="%customer.email" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
             </TextField>
+            <Label text="%customer.address" GridPane.rowIndex="3" />
             <TextField fx:id="tf_customerAddress" promptText="%customer.address" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
             </TextField>
+            <Label text="%customer.birthday" GridPane.rowIndex="4" />
             <DatePicker fx:id="dp_Birthday" promptText="%customer.birthday" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <padding>

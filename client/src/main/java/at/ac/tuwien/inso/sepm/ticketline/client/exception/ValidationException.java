@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.exception;
 
-
 public class ValidationException extends ExceptionWithDialog {
     public ValidationException() {
     }

@@ -11,14 +11,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 

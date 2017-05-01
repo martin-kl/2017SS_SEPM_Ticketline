@@ -19,6 +19,7 @@ public class ValidationHelper {
         }
         return messages;
     }
+
     public static String getSingleErrorMessage(Exception exception) {
         String message = "";
         for (String error: getErrorMessages(exception)) {

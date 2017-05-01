@@ -1,8 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 
 import java.util.List;
