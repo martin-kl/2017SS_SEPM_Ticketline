@@ -13,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,6 +24,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerAddEditController {
 
+    @FXML
+    private Label lb_CustomerHeadline;
     @FXML
     private TextField tf_customerFirstName;
     @FXML
@@ -53,6 +56,7 @@ public class CustomerAddEditController {
     public void setCustomerToEdit(CustomerDTO customerToEdit) {
         customerDTO = customerToEdit;
         if (customerToEdit == null) return;
+        lb_CustomerHeadline.setText(BundleManager.getBundle().getString("customer.edit"));
         tf_customerFirstName.setText(customerToEdit.getFirstName());
         tf_customerLastName.setText(customerToEdit.getLastName());
         tf_customerMail.setText(customerToEdit.getEmail());
@@ -94,8 +98,8 @@ public class CustomerAddEditController {
                 customerDTO.getAddress(), customerDTO.getBirthday(), customerDTO.getId());
 
             Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setHeaderText("Customer successfully saved");
-            alert.setContentText("The customer with the name "+customerDTO.getFirstName()+" "+customerDTO.getLastName()+" has been successfully saved");
+            alert.setTitle(BundleManager.getBundle().getString("customer.saved.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("customer.saved.header"));
             alert.showAndWait();
 
             mainController.reloadCustomerList();

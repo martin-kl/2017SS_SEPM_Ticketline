@@ -4,7 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DataAccessException extends ExceptionWithDialog {
-    public DataAccessException() { super(); }
+
+    public DataAccessException() {
+        super();
+    }
+
     public DataAccessException(String message) {
         super();
         log.debug(message);
@@ -19,5 +23,4 @@ public class DataAccessException extends ExceptionWithDialog {
         super();
         log.debug(message);
     }
-
 }

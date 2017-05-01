@@ -21,9 +21,9 @@ public abstract class ExceptionWithDialog extends Exception {
     public void showDialog() {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(BundleManager.getBundle().getString("default.error.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("default.error.header"));
-            alert.setContentText(BundleManager.getBundle().getString(errorMessagePropertyName));
+            alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
+            alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
+            alert.setContentText(BundleManager.getExceptionBundle().getString(errorMessagePropertyName));
             alert.showAndWait();
         });
     }

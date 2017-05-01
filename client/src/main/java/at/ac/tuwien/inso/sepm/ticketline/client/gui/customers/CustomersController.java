@@ -18,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
@@ -29,6 +30,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomersController {
 
+    @FXML
+    private Button bn_addCustomer;
     @FXML
     private VBox vbCustomersElements;
     @FXML
@@ -104,7 +107,6 @@ public class CustomersController {
         );
         new Thread(task).start();
     }
-
 
     private void handleCustomerEdit(CustomerDTO customerDTO) {
         //TODO why does the main controller do this?
