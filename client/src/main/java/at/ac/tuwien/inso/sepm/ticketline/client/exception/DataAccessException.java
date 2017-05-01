@@ -10,6 +10,11 @@ public class DataAccessException extends ExceptionWithDialog {
         super();
         log.debug(message);
     }
+
+    public DataAccessException(String errorMessagePropertyName, String message, Throwable cause) {
+        super(errorMessagePropertyName);
+        log.debug(message);
+    }
     public DataAccessException(String message, Throwable cause) {
         super();
         log.debug(message);
