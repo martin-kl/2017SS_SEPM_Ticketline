@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
@@ -8,6 +9,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -56,7 +58,12 @@ public class CustomersController {
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
             @Override
             protected List<CustomerDTO> call() throws DataAccessException {
-                return customerService.findAll();
+                try {
+                    return customerService.findAll();
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.showDialog();
+                    return new ArrayList<>();
+                }
             }
 
             @Override

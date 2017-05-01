@@ -43,10 +43,9 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             log.debug("Result status was {} with content {}", customer.getStatusCode(), customer.getBody());
             return customer.getBody();
         } catch (HttpStatusCodeException e) {
-            log.debug("Failed retrieve list of all customer with status code " + e.getStatusCode().toString());
-            throw new DataAccessException();
+            throw new DataAccessException("Failed retrieve list of all customer with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage(), e);
         }
     }
 
@@ -64,10 +63,9 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             log.debug("Result status was {} with content {}", customer.getStatusCode(), customer.getBody());
             return customer.getBody();
         } catch (HttpStatusCodeException e) {
-            log.debug("Failed retrieve one customer with status code " + e.getStatusCode().toString());
-            throw new DataAccessException();
+            throw new DataAccessException("Failed retrieve one customer with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage(), e);
         }
     }
 
@@ -89,10 +87,9 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             log.debug("Result status was {} with content {}", customerReturn.getStatusCode(), customerReturn.getBody());
             return customerReturn.getBody();
         } catch (HttpStatusCodeException e) {
-            log.debug("Failed save customer with status code " + e.getStatusCode().toString());
-            throw new DataAccessException();
+            throw new DataAccessException("Failed save customer with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
-            throw new DataAccessException();
+            throw new DataAccessException(e.getMessage(), e);
         }
     }
 }
