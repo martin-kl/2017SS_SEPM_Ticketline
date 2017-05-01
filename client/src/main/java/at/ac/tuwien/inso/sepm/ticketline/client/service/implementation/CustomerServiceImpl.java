@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService{
     public CustomerDTO save(CustomerDTO customer) throws ExceptionWithDialog {
 
         EmailValidator ev = new EmailValidator();
-        if(! ev.isValid(customer.getEmail(), null)) {
+        if(customer.getEmail() == null || customer.getEmail().equals("") || ev.isValid(customer.getEmail(), null)) {
              log.error(
                 "Error during saving of customer with id {}, email address is not well formed, email is \"{}\"",
                 customer.getId(), customer.getEmail());
