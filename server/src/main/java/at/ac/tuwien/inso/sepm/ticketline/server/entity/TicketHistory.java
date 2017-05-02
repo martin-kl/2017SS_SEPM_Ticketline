@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 

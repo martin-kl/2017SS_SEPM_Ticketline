@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 
@@ -17,12 +18,6 @@ import java.util.UUID;
 @Entity
 public class TicketTransaction extends Audited {
 
-    public enum Status {
-        RESERVED,
-        STORNO,
-        BOUGHT
-    }
-
     @Getter
     @Id
     @GeneratedValue
@@ -32,7 +27,7 @@ public class TicketTransaction extends Audited {
     @Column(updatable = false)
     @NotNull
     @Enumerated(value = EnumType.STRING)
-    private Status status = Status.RESERVED;
+    private TicketStatus status = TicketStatus.RESERVED;
 
     @Getter
     @OneToMany(mappedBy = "ticketTransaction")
