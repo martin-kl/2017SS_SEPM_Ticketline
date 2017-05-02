@@ -33,6 +33,7 @@ public class EventDTO {
     @ApiModelProperty(required = true, readOnly = true, name = "The description of the event")
     private String description;
 
+    // TODO: implement
     /*@ApiModelProperty(required = true, readOnly = true, name = "The artists playing in the event")
     private List<EventArtistDTO> artists;*/
 

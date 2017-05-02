@@ -1,8 +1,20 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.event;
 
-/**
- * Created by Alex on 02.05.2017.
- */
-public class EventMapper {
-    // TODO: Implement
+import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+
+import java.util.List;
+
+@Mapper(
+    componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
+public interface EventMapper {
+    Event fromDTO(EventDTO eventDTO);
+
+    EventDTO fromEntity(Event event);
+
+    List<EventDTO> fromEntity(List<Event> all);
 }

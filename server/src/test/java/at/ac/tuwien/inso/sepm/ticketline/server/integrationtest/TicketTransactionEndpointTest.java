@@ -29,7 +29,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
     private static final UUID TEST_TRANSACTION_ID = UUID.randomUUID();
     private static final Customer TEST_CUSTOMER = Customer.builder()
         .id(UUID.randomUUID())
-        .name("Testuser")
+        .firstName("TestuserFN")
+        .lastName("TestuserLN")
         .build();
 
     private static final Ticket TEST_TICKET = SeatTicket.builder()
