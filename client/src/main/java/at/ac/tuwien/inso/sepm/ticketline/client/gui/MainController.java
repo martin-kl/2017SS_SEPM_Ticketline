@@ -1,9 +1,17 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.performances.PerformancesController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.springframework.stereotype.Component;
@@ -24,6 +33,7 @@ import org.springframework.stereotype.Component;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@Slf4j
 @Component
 public class MainController {
 
@@ -46,6 +56,11 @@ public class MainController {
     private final SpringFxmlLoader springFxmlLoader;
     private final FontAwesome fontAwesome;
     private NewsController newsController;
+    private AccountsController accountsController;
+    private CustomersController customersController;
+    private PerformancesController performancesController;
+    private ReservationsController reservationsController;
+    private EventsController eventsController;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -64,7 +79,38 @@ public class MainController {
         pbLoadingProgress.setProgress(0);
         login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
         spMainContent.getChildren().add(login);
+
+        //add tabs
         initNewsTabPane();
+        initCustomersTabPane();
+        initEventsTabPane();
+        initPerformancesTabPane();
+        initAccountsTabPane();
+        initReservationsTabPane();
+
+        //add listener to reload data when tab is clicked
+        tpContent.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+            switch (tpContent.getSelectionModel().getSelectedItem().getId()) {
+                case "news":
+                    reloadNewsList();
+                    break;
+                case "customers":
+                    reloadCustomerList();
+                    break;
+                case "events":
+                    //reloadCustomerList();
+                    break;
+                 case "accounts":
+                    //reloadCustomerList();
+                    break;
+                 case "reservations":
+                    //reloadCustomerList();
+                    break;
+                default:
+                    log.error("invalid argument in tab pane switch, argument is = {}", tpContent.getSelectionModel().getSelectedItem().getId());
+                    break;
+            }
+        });
     }
 
     @FXML
@@ -85,15 +131,116 @@ public class MainController {
         dialog.showAndWait();
     }
 
+    public void addEditCustomerWindow(CustomerDTO customerToEdit) {
+        Stage stage = (Stage) spMainContent.getScene().getWindow();
+        Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/addEditCustomer.fxml");
+        CustomerAddEditController controller = (CustomerAddEditController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.setCustomerToEdit(customerToEdit);
+        if (customerToEdit != null) {
+            dialog.setTitle(BundleManager.getBundle().getString("customer.edit"));
+        } else {
+            dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
+        }
+
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                event.consume();
+            }
+        });
+        dialog.showAndWait();
+    }
+
     private void initNewsTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/news/newsComponent.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/news/newsComponent.fxml");
         newsController = (NewsController) wrapper.getController();
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.NEWSPAPER_ALT);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
         newsTab.setGraphic(newsGlyph);
+        newsTab.setId("news");
         tpContent.getTabs().add(newsTab);
+    }
+
+    private void initCustomersTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/customers/customersComponent.fxml");
+        customersController = (CustomersController) wrapper.getController();
+        Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        customerTab.setGraphic(newsGlyph);
+        customerTab.setId("customers");
+        tpContent.getTabs().add(customerTab);
+    }
+
+    private void initEventsTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/events/eventsComponent.fxml");
+        eventsController = (EventsController) wrapper.getController();
+        Tab eventTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        eventTab.setGraphic(newsGlyph);
+        eventTab.setId("events");
+        tpContent.getTabs().add(eventTab);
+    }
+
+    //TODO noch notwendig?
+    private void initPerformancesTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/performances/performancesComponent.fxml");
+        performancesController = (PerformancesController) wrapper.getController();
+        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR_ALT);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        newsTab.setGraphic(newsGlyph);
+        tpContent.getTabs().add(newsTab);
+    }
+
+    private void initAccountsTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/accounts/accountsComponent.fxml");
+        accountsController = (AccountsController) wrapper.getController();
+        Tab accountsTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        accountsTab.setGraphic(newsGlyph);
+        accountsTab.setId("accounts");
+        tpContent.getTabs().add(accountsTab);
+    }
+
+    private void initReservationsTabPane() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
+        reservationsController = (ReservationsController) wrapper.getController();
+        Tab reservationTab = new Tab(null, (Node) wrapper.getLoadedObject());
+        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);
+        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
+        newsGlyph.setColor(Color.WHITE);
+        reservationTab.setGraphic(newsGlyph);
+        reservationTab.setId("reservations");
+        tpContent.getTabs().add(reservationTab);
     }
 
     private void setAuthenticated(boolean authenticated) {
@@ -112,6 +259,12 @@ public class MainController {
     public void setProgressbarProgress(double progress) {
         pbLoadingProgress.setProgress(progress);
     }
+
+    public void reloadCustomerList() {
+        customersController.loadCustomers();
+    }
+
+    public void reloadNewsList() { newsController.loadNews(); };
 
     public void changeToGerman(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("de"));
