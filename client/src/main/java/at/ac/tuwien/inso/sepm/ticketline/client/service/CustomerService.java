@@ -18,13 +18,13 @@ public interface CustomerService {
     /**
      * Find a single news entry by id.
      *
-     * @param id the is of the news entry
-     * @return the news entry
+     * @param id the is of the customer entry
+     * @return the customer entry
      */
     CustomerDTO findOne(UUID id) throws ExceptionWithDialog;
 
     /**
-     * saves a new or edited customer
+     * saves a new or edit a customer
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */

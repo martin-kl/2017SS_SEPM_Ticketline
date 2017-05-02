@@ -104,7 +104,7 @@ public class MainController {
                     //reloadCustomerList();
                     break;
                  case "reservations":
-                    //reloadCustomerList();
+                    reloadReservationList();
                     break;
                 default:
                     log.error("invalid argument in tab pane switch, argument is = {}", tpContent.getSelectionModel().getSelectedItem().getId());
@@ -264,7 +264,11 @@ public class MainController {
         customersController.loadCustomers();
     }
 
-    public void reloadNewsList() { newsController.loadNews(); };
+    public void reloadNewsList() { newsController.loadNews(); }
+
+    private void reloadReservationList() {
+        reservationsController.loadReservations();
+    }
 
     public void changeToGerman(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("de"));
