@@ -195,6 +195,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/events/eventsComponent.fxml");
         eventsController = (EventsController) wrapper.getController();
+        eventsController.setFont(fontAwesome);
         Tab eventTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);

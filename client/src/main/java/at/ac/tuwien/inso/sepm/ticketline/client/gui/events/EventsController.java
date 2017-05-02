@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
@@ -14,11 +15,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class EventsController {
+    private static final int HEADER_ICON_SIZE = 25;
     @FXML
-    private TabHeaderController tabHeaderController;
+    private Label lblHeaderIcon;
+    @FXML
+    private Label lblHeaderTitle;
+
+    private FontAwesome fontAwesome;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
+
     /* TODO: add events service */
     /* TODO: add page specific elements, create specific fxml */
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader /* TODO: add events service */) {
@@ -26,11 +33,27 @@ public class EventsController {
         this.springFxmlLoader = springFxmlLoader;
     }
 
+    public void setFont(FontAwesome fontAwesome){
+        this.fontAwesome = fontAwesome;
+        setIcon(FontAwesome.Glyph.CALENDAR);
+        setTitle("Events");
+    }
+
     @FXML
     private void initialize() {
-        tabHeaderController.setIcon(FontAwesome.Glyph.CALENDAR);
-        tabHeaderController.setTitle("Events");
+
     }
+
+    private void setIcon(FontAwesome.Glyph glyph) {
+        lblHeaderIcon.setGraphic(
+            fontAwesome
+                .create(glyph)
+                .size(HEADER_ICON_SIZE));
+    }
+    private void setTitle(String title) {
+        lblHeaderTitle.setText(title);
+    }
+
 
     public void loadEvents() {
         // TODO: load Events (see NewsController for example */
