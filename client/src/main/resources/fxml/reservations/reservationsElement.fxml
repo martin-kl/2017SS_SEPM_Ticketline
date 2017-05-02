@@ -5,8 +5,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="5.0" styleClass="customersElement" stylesheets="@../../css/customersElement.css"
-    xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+<!-- TODO change customersElement.css to support selecting of reservations -->
+
+<VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement"
+    stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.112"
+    xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsElementController">
     <children>
         <HBox>

@@ -18,7 +18,7 @@ public class TicketDTO {
     private UUID id;
 
     @ApiModelProperty(required = true, readOnly = true, name = "The price for the ticket at the time of the reservation")
-    private BigDecimal price;
+    private Long price;
 
     @ApiModelProperty(required = true, readOnly = true, name = "The id of the performance for this ticket")
     private UUID performanceID;
@@ -27,8 +27,9 @@ public class TicketDTO {
     private UUID locationID;
 
     @ApiModelProperty(required = true, readOnly = true, name = "The name of the location of the performance")
-    private String performanceLocationName;
+    private String locationName;
 
     @ApiModelProperty(required = true, readOnly = true, name = "The status of this reservations. If the parameter is TRUE, the ticket has been bought, else it has been reserved")
-    private boolean bought;
+    private Boolean bought;
+
 }
