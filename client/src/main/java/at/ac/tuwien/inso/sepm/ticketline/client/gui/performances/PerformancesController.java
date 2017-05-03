@@ -2,15 +2,13 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.performances;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.fxml.FXML;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Alex on 26.04.2017.
- */
 @Slf4j
 @Component
 public class PerformancesController {
@@ -29,7 +27,7 @@ public class PerformancesController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.CALENDAR_ALT);
-        tabHeaderController.setTitle("Performances");
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("performances.title"));
     }
 
     public void loadPerformances() {

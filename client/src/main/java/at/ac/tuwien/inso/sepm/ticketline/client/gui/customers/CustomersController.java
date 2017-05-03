@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -51,8 +52,7 @@ public class CustomersController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.USER);
-        //TODO language support
-        tabHeaderController.setTitle("Customers");
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("customers.title"));
     }
 
     public void loadCustomers() {
@@ -109,7 +109,6 @@ public class CustomersController {
     }
 
     private void handleCustomerEdit(CustomerDTO customerDTO) {
-        //TODO why does the main controller do this?
         mainController.addEditCustomerWindow(customerDTO);
     }
 

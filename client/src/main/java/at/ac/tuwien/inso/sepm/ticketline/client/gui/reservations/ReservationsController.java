@@ -2,15 +2,13 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.fxml.FXML;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Alex on 26.04.2017.
- */
 @Slf4j
 @Component
 public class ReservationsController {
@@ -29,7 +27,7 @@ public class ReservationsController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.TICKET);
-        tabHeaderController.setTitle("Reservations");
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
     }
 
     public void loadReservations() {

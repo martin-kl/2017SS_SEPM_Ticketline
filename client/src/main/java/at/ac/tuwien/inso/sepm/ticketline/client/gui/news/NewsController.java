@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -46,7 +47,7 @@ public class NewsController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.NEWSPAPER_ALT);
-        tabHeaderController.setTitle("News");
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("news.title"));
     }
 
     public void loadNews() {

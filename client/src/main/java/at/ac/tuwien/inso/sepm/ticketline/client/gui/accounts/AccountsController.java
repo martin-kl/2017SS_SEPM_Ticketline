@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
@@ -9,9 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Alex on 26.04.2017.
- */
 @Slf4j
 @Component
 public class AccountsController {
@@ -30,7 +28,7 @@ public class AccountsController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.USERS);
-        tabHeaderController.setTitle("Accounts");
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("accounts.title"));
     }
 
     public void loadAccounts() {
