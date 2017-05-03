@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.datagenerator;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
@@ -93,6 +94,7 @@ public class TicketHistoryDataGenerator {
         List<Ticket> tmpTicketList = new ArrayList<>();
 
         for (Ticket ticket : tickets) {
+
             tmpTicketList.add(ticket);
 
             if (tmpTicketList.size() == randomTicketCount) {
@@ -100,7 +102,7 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.RESERVED
+                    TicketStatus.RESERVED
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -121,12 +123,12 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.RESERVED
+                    TicketStatus.RESERVED
                 );
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.BOUGHT
+                    TicketStatus.BOUGHT
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -147,12 +149,12 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.BOUGHT
+                    TicketStatus.BOUGHT
                 );
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.STORNO
+                    TicketStatus.STORNO
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -173,19 +175,19 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.BOUGHT
+                    TicketStatus.BOUGHT
                 );
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.STORNO
+                    TicketStatus.STORNO
                 );
                 // set new customer (or randomly the same person)
                 randomCustomerIndex = (int) (Math.random() * customers.size());
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketTransaction.Status.RESERVED
+                    TicketStatus.RESERVED
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -194,7 +196,7 @@ public class TicketHistoryDataGenerator {
         }
     }
 
-    private void createTicketTransaction(List<Ticket> ticketList, Customer customer, TicketTransaction.Status status) {
+    private void createTicketTransaction(List<Ticket> ticketList, Customer customer, TicketStatus status) {
         TicketTransaction ticketTransaction = TicketTransaction.builder()
             .customer(customer)
             .status(status)

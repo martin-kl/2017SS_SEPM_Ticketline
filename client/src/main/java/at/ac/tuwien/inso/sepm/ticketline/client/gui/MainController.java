@@ -104,7 +104,7 @@ public class MainController {
                     //reloadCustomerList();
                     break;
                  case "reservations":
-                    //reloadCustomerList();
+                    reloadReservationList();
                     break;
                 default:
                     log.error("invalid argument in tab pane switch, argument is = {}", tpContent.getSelectionModel().getSelectedItem().getId());
@@ -195,6 +195,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/events/eventsComponent.fxml");
         eventsController = (EventsController) wrapper.getController();
+        eventsController.setFont(fontAwesome);
         Tab eventTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
@@ -264,7 +265,11 @@ public class MainController {
         customersController.loadCustomers();
     }
 
-    public void reloadNewsList() { newsController.loadNews(); };
+    public void reloadNewsList() { newsController.loadNews(); }
+
+    private void reloadReservationList() {
+        reservationsController.loadReservations();
+    }
 
     public void changeToGerman(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("de"));
