@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -20,11 +21,13 @@ public class EventsController {
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
-
     private FontAwesome fontAwesome;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
+
+    @FXML
+    private void initialize() {}
 
     /* TODO: add events service */
     /* TODO: add page specific elements, create specific fxml */
@@ -36,14 +39,8 @@ public class EventsController {
     public void setFont(FontAwesome fontAwesome){
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.CALENDAR);
-        setTitle("Events");
+        setTitle(BundleManager.getBundle().getString("events.title"));
     }
-
-    @FXML
-    private void initialize() {
-
-    }
-
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome

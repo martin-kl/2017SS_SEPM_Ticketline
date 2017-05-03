@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -11,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
@@ -26,6 +28,12 @@ import java.util.List;
 @Slf4j
 @Component
 public class NewsController {
+    private static final int HEADER_ICON_SIZE = 25;
+    @FXML
+    private Label lblHeaderIcon;
+    @FXML
+    private Label lblHeaderTitle;
+    private FontAwesome fontAwesome;
 
     @FXML
     private VBox vbNewsElements;
@@ -37,16 +45,28 @@ public class NewsController {
     private final SpringFxmlLoader springFxmlLoader;
     private final NewsService newsService;
 
+    @FXML
+    private void initialize() {}
+
     public NewsController(MainController mainController, SpringFxmlLoader springFxmlLoader, NewsService newsService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.newsService = newsService;
     }
 
-    @FXML
-    private void initialize() {
-        tabHeaderController.setIcon(FontAwesome.Glyph.NEWSPAPER_ALT);
-        tabHeaderController.setTitle("News");
+    public void setFont(FontAwesome fontAwesome){
+        this.fontAwesome = fontAwesome;
+        setIcon(FontAwesome.Glyph.NEWSPAPER_ALT);
+        setTitle(BundleManager.getBundle().getString("news.title"));
+    }
+    private void setIcon(FontAwesome.Glyph glyph) {
+        lblHeaderIcon.setGraphic(
+            fontAwesome
+                .create(glyph)
+                .size(HEADER_ICON_SIZE));
+    }
+    private void setTitle(String title) {
+        lblHeaderTitle.setText(title);
     }
 
     public void loadNews() {
