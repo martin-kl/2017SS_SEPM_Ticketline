@@ -7,28 +7,33 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0"
+    xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController">
     <children>
-        <fx:include fx:id="tabHeader" source="/fxml/tabHeader.fxml" />
-        <Separator />
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
-            <VBox fx:id="vbCustomersElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+        <fx:include fx:id="tabHeader" source="/fxml/tabHeader.fxml"/>
+        <Separator/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
+            style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+            <VBox fx:id="vbCustomersElements" fillWidth="true" maxHeight="1.7976931348623157E308"
+                maxWidth="1.7976931348623157E308">
                 <padding>
-                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                 </padding>
             </VBox>
         </ScrollPane>
-      <Separator prefWidth="200.0" />
-      <ButtonBar buttonMinWidth="0.0">
-        <buttons>
-            <Button fx:id="bn_addCustomer" mnemonicParsing="false" onAction="#handleCustomerAdd" text="%customer.add" />
-        </buttons>
-         <VBox.margin>
-            <Insets right="10.0" />
-         </VBox.margin>
-      </ButtonBar>
+        <Separator prefWidth="200.0"/>
+        <ButtonBar buttonMinWidth="0.0">
+            <buttons>
+                <Button fx:id="bn_addCustomer" mnemonicParsing="false" onAction="#handleCustomerAdd"
+                    text="%customer.add"/>
+            </buttons>
+            <VBox.margin>
+                <Insets right="10.0"/>
+            </VBox.margin>
+        </ButtonBar>
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
 </VBox>
