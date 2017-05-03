@@ -48,26 +48,31 @@ public class ReservationsElementController {
 
         ObservableList<Node> vbReservationAndTicketsChildren = vbReservationAndTickets
             .getChildren();
-        vbReservationAndTicketsChildren.clear();
+        //vbReservationAndTicketsChildren.clear();
 
         Iterator<TicketDTO> iterator = ticketTransactionDTO.getTickets().iterator();
+
         while (iterator.hasNext()) {
             TicketDTO ticket = iterator.next();
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/reservations/ticketsElement.fxml");
 
-            //((TicketElementsController) wrapper.getController()).initializeData(ticket);
+            ((TicketElementsController) wrapper.getController()).initializeData(ticket);
             HBox reservationBox = (HBox) wrapper.getLoadedObject();
+
                     /*
                     customerBox.setOnMouseClicked((e) -> {
                         handleCustomerEdit(customer);
                     });
                     */
             vbReservationAndTicketsChildren.add(reservationBox);
+            /*
             if (iterator.hasNext()) {
                 Separator separator = new Separator();
                 vbReservationAndTicketsChildren.add(separator);
             }
+            */
         }
+
     }
 }

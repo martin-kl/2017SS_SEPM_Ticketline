@@ -58,10 +58,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
        try {
             log.debug("Retrieving all ticket transactions from {}", restClient.getServiceURI(
                 TRANSACTION_URL));
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            HttpEntity<String> entity = new HttpEntity<>(status, headers);
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
                     restClient.getServiceURI(TRANSACTION_URL)+"?status=" + status,

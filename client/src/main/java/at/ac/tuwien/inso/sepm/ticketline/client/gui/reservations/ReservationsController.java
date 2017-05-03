@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -60,7 +61,7 @@ public class ReservationsController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.TICKET);
-        tabHeaderController.setTitle("Reservations");
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
     }
 
     public void loadReservations() {
