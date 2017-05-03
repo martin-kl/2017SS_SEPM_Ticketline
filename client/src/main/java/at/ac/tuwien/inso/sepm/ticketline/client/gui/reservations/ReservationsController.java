@@ -4,10 +4,9 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
-import at.ac.tuwien.inso.sepm.ticketline.rest.reservation.ReservationDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -68,11 +66,11 @@ public class ReservationsController {
     public void loadReservations() {
         ObservableList<Node> vbReservationBoxChildren = vbReservationsElements.getChildren();
         vbReservationBoxChildren.clear();
-        Task<List<ReservationDTO>> task = new Task<List<ReservationDTO>>() {
+        Task<List<DetailedTicketTransactionDTO>> task = new Task<List<DetailedTicketTransactionDTO>>() {
             @Override
-            protected List<ReservationDTO> call() throws DataAccessException {
+            protected List<DetailedTicketTransactionDTO> call() throws DataAccessException {
                 try {
-                    return reservationService.findAll();
+                    return reservationService.findReservationsWithStatus("BOUGHT");
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();
@@ -92,13 +90,13 @@ public class ReservationsController {
                     vbReservationsElements.getScene().getWindow()).showAndWait();
             }
 
-            private void drawReservations(Iterator<ReservationDTO> iterator) {
+            private void drawReservations(Iterator<DetailedTicketTransactionDTO> iterator) {
                 while (iterator.hasNext()) {
-                    ReservationDTO reservation = iterator.next();
+                    DetailedTicketTransactionDTO ticketTransaction = iterator.next();
                     SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/reservations/reservationsElement.fxml");
 
-                    ((ReservationsElementController) wrapper.getController()).initializeData(reservation);
-                    HBox reservationBox = (HBox) wrapper.getLoadedObject();
+                    ((ReservationsElementController) wrapper.getController()).initializeData(ticketTransaction);
+                    VBox reservationBox = (VBox) wrapper.getLoadedObject();
                     /*
                     customerBox.setOnMouseClicked((e) -> {
                         handleCustomerEdit(customer);

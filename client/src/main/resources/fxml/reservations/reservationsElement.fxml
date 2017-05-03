@@ -8,7 +8,7 @@
 <!-- TODO change customersElement.css to support selecting of reservations -->
 
 <VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement"
-    stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.112"
+    stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.111"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsElementController">
     <children>
@@ -25,7 +25,16 @@
                         <Insets/>
                     </HBox.margin>
                 </Label>
-                <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;"/>
+                <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;">
+                <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </Label>
+                <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;">
+                 <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </Label>
             </children>
         </HBox>
     </children>

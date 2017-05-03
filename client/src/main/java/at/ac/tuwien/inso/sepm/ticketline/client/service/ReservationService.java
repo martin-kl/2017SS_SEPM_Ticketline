@@ -1,9 +1,8 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
-import at.ac.tuwien.inso.sepm.ticketline.rest.reservation.ReservationDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import java.util.List;
-import java.util.UUID;
 
 public interface ReservationService {
      /**
@@ -11,7 +10,7 @@ public interface ReservationService {
      *
      * @return ordered list of al reservations
      */
-    List<ReservationDTO> findAll() throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findReservationsWithStatus(String status) throws ExceptionWithDialog;
 
 
     /**
@@ -20,12 +19,12 @@ public interface ReservationService {
      * @param id the is of the reservation entry
      * @return the news entry
      */
-//    ReservationDTO findOne(UUID id) throws ExceptionWithDialog;
+//    DetailedTicketTransactionDTO findOne(UUID id) throws ExceptionWithDialog;
 
     /**
      * saves a new or edited customer
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */
-//    CustomerDTO save(CustomerDTO customer) throws ExceptionWithDialog;
+//    DetailedTicketTransactionDTO save(DetailedTicketTransactionDTO customer) throws ExceptionWithDialog;
 }

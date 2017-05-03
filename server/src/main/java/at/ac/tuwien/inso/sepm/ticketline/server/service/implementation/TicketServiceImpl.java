@@ -31,6 +31,7 @@ public class TicketServiceImpl implements TicketService {
         try {
             ticketStatus = TicketStatus.valueOf(status);
         } catch (IllegalArgumentException e) {
+            log.error("Bad status for TicketStatus - status is {}", status);
             throw new BadRequestException("Bad status");
         }
         return ticketTransactionRepository.findByStatus(ticketStatus);

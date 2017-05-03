@@ -36,4 +36,16 @@ public class TicketTransactionEndpoint {
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
     }
+/*
+    @RequestMapping(value = "/{status}", method = RequestMethod.GET)
+    @ApiOperation(value = "Gets a list of Ticket Reservations")
+    public List<DetailedTicketTransactionDTO> getAllTransactionsAlternate(
+        @RequestParam(value = "status") String status) {
+        return ticketService
+            .getAllTransactions(status)
+            .stream()
+            .map(ticketTransactionMapper::fromEntity)
+            .collect(Collectors.toList());
+    }
+    */
 }

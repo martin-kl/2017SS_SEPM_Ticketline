@@ -1,24 +1,24 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
-import at.ac.tuwien.inso.sepm.ticketline.client.rest.ReservationRestClient;
+import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
-import at.ac.tuwien.inso.sepm.ticketline.rest.reservation.ReservationDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
-    private final ReservationRestClient reservationRestClient;
+    private final TicketTransactionRestClient ticketTransactionRestClient;
 
-    public ReservationServiceImpl(ReservationRestClient customerRestClient) {
-        this.reservationRestClient = customerRestClient;
+    public ReservationServiceImpl(TicketTransactionRestClient customerRestClient) {
+        this.ticketTransactionRestClient = customerRestClient;
     }
 
     @Override
-    public List<ReservationDTO> findAll() throws ExceptionWithDialog {
-        return reservationRestClient.findAll();
+    public List<DetailedTicketTransactionDTO> findReservationsWithStatus(String status) throws ExceptionWithDialog {
+        return ticketTransactionRestClient.findReservationsWithStatus(status);
     }
 
 }
