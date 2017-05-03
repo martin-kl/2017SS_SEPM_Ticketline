@@ -13,7 +13,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "LocationDTO", description = "A location DTO for location entries via rest")
+@ApiModel(value = "LocationDTO", description = "default DTO for location entries via rest")
 public class LocationDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")

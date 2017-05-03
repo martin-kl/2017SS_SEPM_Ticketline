@@ -1,7 +1,11 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.location;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Location;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatLocation;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.SectorLocation;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -13,10 +17,13 @@ import java.util.List;
 )
 public interface LocationMapper {
 
-    Location fromDTO(LocationDTO locationDTO);
+    default LocationDTO fromEntity(Location location) {
+        if(location instanceof SeatLocation)
+            return fromEntity((SeatLocation) location);
+        return fromEntity((SectorLocation) location);
+    }
 
-    LocationDTO fromEntity(Location location);
-
-    List<LocationDTO> fromEntity(List<Location> all);
+    SeatLocationDTO fromEntity(SeatLocation location);
+    SectorLocationDTO fromEntity(SectorLocation location);
 
 }

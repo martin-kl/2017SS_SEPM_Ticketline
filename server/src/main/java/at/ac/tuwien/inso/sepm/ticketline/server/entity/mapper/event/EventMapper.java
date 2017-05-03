@@ -12,9 +12,8 @@ import java.util.List;
     componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
-@Component
 public interface EventMapper {
-    Event fromDTO(EventDTO eventDTO);
+    //Event fromDTO(EventDTO eventDTO);
 
     EventDTO fromEntity(Event event);
 

@@ -13,7 +13,7 @@ import java.util.List;
 )
 public interface PerformanceMapper {
 
-    Performance fromDTO(PerformanceDTO perforanceDTO);
+    //Performance fromDTO(PerformanceDTO performanceDTO);
 
     PerformanceDTO fromEntity(Performance performance);
 
