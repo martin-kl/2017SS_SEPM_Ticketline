@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,9 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Alex on 26.04.2017.
- */
 @Slf4j
 @Component
 public class EventsController {
@@ -36,7 +34,7 @@ public class EventsController {
     public void setFont(FontAwesome fontAwesome){
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.CALENDAR);
-        setTitle("Events");
+        setTitle(BundleManager.getBundle().getString("events.title"));
     }
 
     @FXML
