@@ -50,6 +50,13 @@ public class NewsController {
         tabHeaderController.setTitle(BundleManager.getBundle().getString("news.title"));
     }
 
+    public void setFont(FontAwesome font) {
+    }
+
+    public void reloadLanguage() {
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("news.title"));
+    }
+
     public void loadNews() {
         ObservableList<Node> vbNewsBoxChildren = vbNewsElements.getChildren();
         vbNewsBoxChildren.clear();
@@ -88,7 +95,4 @@ public class NewsController {
         new Thread(task).start();
     }
 
-    public void reloadLanguage() {
-        tabHeaderController.setTitle(BundleManager.getBundle().getString("news.title"));
-    }
 }

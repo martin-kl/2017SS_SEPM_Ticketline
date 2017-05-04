@@ -5,7 +5,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditCon
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.performances.PerformancesController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
@@ -58,7 +57,6 @@ public class MainController {
     private NewsController newsController;
     private AccountsController accountsController;
     private CustomersController customersController;
-    private PerformancesController performancesController;
     private ReservationsController reservationsController;
     private EventsController eventsController;
 
@@ -84,7 +82,6 @@ public class MainController {
         initNewsTabPane();
         initCustomersTabPane();
         initEventsTabPane();
-        initPerformancesTabPane();
         initAccountsTabPane();
         initReservationsTabPane();
 
@@ -169,6 +166,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/news/newsComponent.fxml");
         newsController = (NewsController) wrapper.getController();
+        newsController.setFont(fontAwesome);
         Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.NEWSPAPER_ALT);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
@@ -182,6 +180,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/customers/customersComponent.fxml");
         customersController = (CustomersController) wrapper.getController();
+        customersController.setFont(fontAwesome);
         Tab customerTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USER);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
@@ -203,19 +202,6 @@ public class MainController {
         eventTab.setGraphic(newsGlyph);
         eventTab.setId("events");
         tpContent.getTabs().add(eventTab);
-    }
-
-    //TODO noch notwendig?
-    private void initPerformancesTabPane() {
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/performances/performancesComponent.fxml");
-        performancesController = (PerformancesController) wrapper.getController();
-        Tab newsTab = new Tab(null, (Node) wrapper.getLoadedObject());
-        Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.CALENDAR_ALT);
-        newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
-        newsGlyph.setColor(Color.WHITE);
-        newsTab.setGraphic(newsGlyph);
-        tpContent.getTabs().add(newsTab);
     }
 
     private void initAccountsTabPane() {
