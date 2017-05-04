@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventElementController">
+    <stylesheets>
+        <URL value="@/css/newsElement.css" />
+    </stylesheets>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+   <HBox prefHeight="0.0" prefWidth="200.0" spacing="10.0">
+      <children>
+          <Label fx:id="labelEventName" styleClass="newsPublishDate" text="EventName" />
+         <Label fx:id="firstPerf" text="FirstPerformanceName" />
+      </children>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets>
+   </HBox>
+</VBox>
