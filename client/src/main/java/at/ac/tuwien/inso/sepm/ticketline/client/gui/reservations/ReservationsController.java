@@ -60,7 +60,21 @@ public class ReservationsController {
     @FXML
     private void initialize() {
         tabHeaderController.setIcon(FontAwesome.Glyph.TICKET);
-        tabHeaderController.setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+        tabHeaderController
+            .setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+
+    }
+
+    public void reloadLanguage() {
+        tabHeaderController
+            .setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+
+        tfResBillNumber.setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
+        tfCustomerName.setPromptText(BundleManager.getBundle().getString("reservation.prompt.customerName"));
+        tfReservationID.setPromptText(BundleManager.getBundle().getString("reservation.prompt.performanceName"));
+
+        btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
+        btnReservationDetails.setText(BundleManager.getBundle().getString("reservation.showDetails"));
     }
 
     public void loadReservations() {
@@ -93,9 +107,11 @@ public class ReservationsController {
             private void drawReservations(Iterator<DetailedTicketTransactionDTO> iterator) {
                 while (iterator.hasNext()) {
                     DetailedTicketTransactionDTO ticketTransaction = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/reservations/reservationsElement.fxml");
+                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                        .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
 
-                    ((ReservationsElementController) wrapper.getController()).initializeData(ticketTransaction);
+                    ((ReservationsElementController) wrapper.getController())
+                        .initializeData(ticketTransaction);
                     VBox reservationBox = (VBox) wrapper.getLoadedObject();
                     /*
                     customerBox.setOnMouseClicked((e) -> {

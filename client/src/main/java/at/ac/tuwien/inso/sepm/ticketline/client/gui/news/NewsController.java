@@ -88,4 +88,7 @@ public class NewsController {
         new Thread(task).start();
     }
 
+    public void reloadLanguage() {
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("news.title"));
+    }
 }

@@ -298,5 +298,12 @@ public class MainController {
         menuList.get(2).getItems().get(0).setText(bundle.getString("menu.language.german"));
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
 
+        //TODO implement all these methods and update them if something is changing (new button or something like this)
+        newsController.reloadLanguage();
+        customersController.reloadLanguage();
+        eventsController.reloadLanguage();
+        accountsController.reloadLanguage();
+        reservationsController.reloadLanguage();
+
     }
 }

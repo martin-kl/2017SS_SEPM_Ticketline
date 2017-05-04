@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
 public class CustomersController {
 
     @FXML
-    private Button bn_addCustomer;
+    private Button btnAddCustomer;
     @FXML
     private VBox vbCustomersElements;
     @FXML
@@ -114,5 +114,10 @@ public class CustomersController {
 
     public void handleCustomerAdd(ActionEvent actionEvent) {
         mainController.addEditCustomerWindow(null);
+    }
+
+    public void reloadLanguage() {
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("customers.title"));
+        btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
     }
 }

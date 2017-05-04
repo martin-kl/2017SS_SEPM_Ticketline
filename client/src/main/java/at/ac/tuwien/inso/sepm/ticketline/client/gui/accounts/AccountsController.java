@@ -34,4 +34,8 @@ public class AccountsController {
     public void loadAccounts() {
         // TODO: load Accounts (see NewsController for example */
     }
+
+    public void reloadLanguage() {
+        tabHeaderController.setTitle(BundleManager.getBundle().getString("accounts.title"));
+    }
 }

@@ -56,4 +56,8 @@ public class EventsController {
     public void loadEvents() {
         // TODO: load Events (see NewsController for example */
     }
+
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("events.title"));
+    }
 }
