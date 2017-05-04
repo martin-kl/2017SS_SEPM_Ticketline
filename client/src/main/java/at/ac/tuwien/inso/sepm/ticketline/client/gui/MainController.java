@@ -101,7 +101,7 @@ public class MainController {
                     //reloadCustomerList();
                     break;
                  case "reservations":
-                    //reloadCustomerList();
+                    reloadReservationList();
                     break;
                 default:
                     log.error("invalid argument in tab pane switch, argument is = {}", tpContent.getSelectionModel().getSelectedItem().getId());
@@ -253,7 +253,11 @@ public class MainController {
         customersController.loadCustomers();
     }
 
-    public void reloadNewsList() { newsController.loadNews(); };
+    public void reloadNewsList() { newsController.loadNews(); }
+
+    private void reloadReservationList() {
+        reservationsController.loadReservations();
+    }
 
     public void changeToGerman(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("de"));
@@ -289,6 +293,13 @@ public class MainController {
         //set language for sub menu items of menu.language
         menuList.get(2).getItems().get(0).setText(bundle.getString("menu.language.german"));
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
+
+        //TODO implement all these methods and update them if something is changing (new button or something like this)
+        newsController.reloadLanguage();
+        customersController.reloadLanguage();
+        eventsController.reloadLanguage();
+        accountsController.reloadLanguage();
+        reservationsController.reloadLanguage();
 
     }
 }

@@ -39,7 +39,7 @@ public class CustomersController {
     private FontAwesome fontAwesome;
 
     @FXML
-    private Button bn_addCustomer;
+    private Button btnAddCustomer;
     @FXML
     private VBox vbCustomersElements;
 
@@ -70,6 +70,11 @@ public class CustomersController {
     }
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
+    }
+
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("customers.title"));
+        btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
     }
 
     public void loadCustomers() {
@@ -126,7 +131,6 @@ public class CustomersController {
     }
 
     private void handleCustomerEdit(CustomerDTO customerDTO) {
-        //TODO why does the main controller do this?
         mainController.addEditCustomerWindow(customerDTO);
     }
 

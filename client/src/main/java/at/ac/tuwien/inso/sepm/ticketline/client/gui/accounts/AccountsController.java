@@ -11,9 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Alex on 26.04.2017.
- */
 @Slf4j
 @Component
 public class AccountsController {
@@ -55,5 +52,9 @@ public class AccountsController {
 
     public void loadAccounts() {
         // TODO: load Accounts (see NewsController for example */
+    }
+
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("accounts.title"));
     }
 }

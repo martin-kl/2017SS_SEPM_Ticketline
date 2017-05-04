@@ -2,7 +2,6 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
@@ -18,8 +17,6 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
@@ -38,20 +35,18 @@ public class NewsController {
     @FXML
     private VBox vbNewsElements;
 
-    @FXML
-    private TabHeaderController tabHeaderController;
-
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final NewsService newsService;
-
-    @FXML
-    private void initialize() {}
 
     public NewsController(MainController mainController, SpringFxmlLoader springFxmlLoader, NewsService newsService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.newsService = newsService;
+    }
+
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("news.title"));
     }
 
     public void setFont(FontAwesome fontAwesome){

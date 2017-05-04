@@ -1,0 +1,11 @@
+.reservationsElement:hover {
+    -fx-background-color: lightblue;
+    -fx-cursor: hand;
+}
+
+/* //TODO we dont want to mark it on hover, we want it on click - a "normal" select
+.reservationsElement:pressed {
+    -fx-background-color: darkblue;
+    -fx-cursor: hand;
+}
+*/

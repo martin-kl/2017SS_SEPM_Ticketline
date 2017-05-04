@@ -30,4 +30,5 @@ public class EventEndpoint {
     public List<EventDTO> findAll() {
         return eventService.findAll().stream().map(eventMapper::fromEntity).collect(Collectors.toList());
     }
+
 }

@@ -44,3 +44,4 @@ public class Event extends Audited {
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private Set<Performance> performances;
 }
+
