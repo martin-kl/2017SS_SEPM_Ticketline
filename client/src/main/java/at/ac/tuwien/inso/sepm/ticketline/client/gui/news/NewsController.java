@@ -39,9 +39,6 @@ public class NewsController {
     private final SpringFxmlLoader springFxmlLoader;
     private final NewsService newsService;
 
-    @FXML
-    private void initialize() {}
-
     public NewsController(MainController mainController, SpringFxmlLoader springFxmlLoader, NewsService newsService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;

@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
@@ -48,8 +47,6 @@ public class ReservationsController {
 
     @FXML
     private VBox vbReservationsElements;
-    @FXML
-    private TabHeaderController tabHeaderController;
 
     private FontAwesome fontAwesome;
     private static final int HEADER_ICON_SIZE = 25;
