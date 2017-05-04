@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.sepm.ticketline.client.rest.implementation;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
-import at.ac.tuwien.inso.sepm.ticketline.rest.reservation.ReservationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
