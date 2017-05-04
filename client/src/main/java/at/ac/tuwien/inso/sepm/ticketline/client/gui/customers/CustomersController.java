@@ -36,20 +36,19 @@ public class CustomersController {
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
+    private FontAwesome fontAwesome;
+
     @FXML
     private Button btnAddCustomer;
     @FXML
     private VBox vbCustomersElements;
-    /*
-    @FXML
-    private TabHeaderController tabHeaderController;
-    */
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
 
-    private FontAwesome fontAwesome;
+    @FXML
+    private void initialize() {}
 
     public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService) {
@@ -58,33 +57,25 @@ public class CustomersController {
         this.customerService = customerService;
     }
 
-    @FXML
-    private void initialize() {
-    }
-
-    public void reloadLanguage() {
-        setTitle(BundleManager.getBundle().getString("customers.title"));
-        btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
-    }
-
-
     public void setFont(FontAwesome fontAwesome){
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.USER);
         setTitle(BundleManager.getBundle().getString("customers.title"));
     }
-
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
                 .create(glyph)
                 .size(HEADER_ICON_SIZE));
     }
-
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
 
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("customers.title"));
+        btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
+    }
 
     public void loadCustomers() {
         ObservableList<Node> vbCustomerBoxChildren = vbCustomersElements.getChildren();
@@ -146,5 +137,4 @@ public class CustomersController {
     public void handleCustomerAdd(ActionEvent actionEvent) {
         mainController.addEditCustomerWindow(null);
     }
-
 }

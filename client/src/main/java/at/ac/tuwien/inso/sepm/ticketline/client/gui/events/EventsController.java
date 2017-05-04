@@ -10,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
+/**
+ * Created by Alex on 26.04.2017.
+ */
 @Slf4j
 @Component
 public class EventsController {
@@ -18,11 +21,13 @@ public class EventsController {
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
-
     private FontAwesome fontAwesome;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
+
+    @FXML
+    private void initialize() {}
 
     /* TODO: add events service */
     /* TODO: add page specific elements, create specific fxml */
@@ -36,12 +41,6 @@ public class EventsController {
         setIcon(FontAwesome.Glyph.CALENDAR);
         setTitle(BundleManager.getBundle().getString("events.title"));
     }
-
-    @FXML
-    private void initialize() {
-
-    }
-
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
@@ -55,9 +54,5 @@ public class EventsController {
 
     public void loadEvents() {
         // TODO: load Events (see NewsController for example */
-    }
-
-    public void reloadLanguage() {
-        setTitle(BundleManager.getBundle().getString("events.title"));
     }
 }

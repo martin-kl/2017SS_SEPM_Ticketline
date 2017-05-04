@@ -12,11 +12,7 @@ import java.util.List;
     unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public interface PerformanceMapper {
-
-    //Performance fromDTO(PerformanceDTO performanceDTO);
-
     PerformanceDTO fromEntity(Performance performance);
 
     List<PerformanceDTO> fromEntity(List<Performance> all);
-
 }

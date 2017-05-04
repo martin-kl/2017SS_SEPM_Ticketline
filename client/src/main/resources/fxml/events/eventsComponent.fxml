@@ -26,8 +26,6 @@
                         <Button layoutX="20.0" layoutY="10.0" mnemonicParsing="false" text="Graph" />
                     </buttons>
                   </ButtonBar>
-                   <!--<fx:include fx:id="tabHeader" source="/fxml/tabHeader.fxml" />-->
-
                    <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
                        <children>
                            <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />

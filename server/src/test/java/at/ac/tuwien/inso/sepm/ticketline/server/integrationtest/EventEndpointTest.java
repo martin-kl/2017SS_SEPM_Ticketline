@@ -14,7 +14,7 @@ import static org.hamcrest.core.Is.is;
 public class EventEndpointTest extends BaseIntegrationTest {
     private static final String EVENT_ENDPOINT = "/event";
 
-
+    //TODO: implement complete test
     @Test
     public void findAllEventsUnauthorizedAsAnonymous() {
         Response response = RestAssured

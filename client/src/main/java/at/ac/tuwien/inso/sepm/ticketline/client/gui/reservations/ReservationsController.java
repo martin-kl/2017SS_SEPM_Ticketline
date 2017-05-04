@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
@@ -29,6 +30,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ReservationsController {
+    @FXML
+    private Label lblHeaderIcon;
+    @FXML
+    private Label lblHeaderTitle;
 
     @FXML
     private TextField tfResBillNumber;
@@ -46,6 +51,9 @@ public class ReservationsController {
     @FXML
     private TabHeaderController tabHeaderController;
 
+    private FontAwesome fontAwesome;
+    private static final int HEADER_ICON_SIZE = 25;
+
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final ReservationService reservationService;
@@ -58,16 +66,10 @@ public class ReservationsController {
     }
 
     @FXML
-    private void initialize() {
-        tabHeaderController.setIcon(FontAwesome.Glyph.TICKET);
-        tabHeaderController
-            .setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
-
-    }
+    private void initialize() { }
 
     public void reloadLanguage() {
-        tabHeaderController
-            .setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+        setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
         tfResBillNumber.setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
         tfCustomerName.setPromptText(BundleManager.getBundle().getString("reservation.prompt.customerName"));
@@ -75,6 +77,21 @@ public class ReservationsController {
 
         btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
         btnReservationDetails.setText(BundleManager.getBundle().getString("reservation.showDetails"));
+    }
+
+    public void setFont(FontAwesome fontAwesome){
+        this.fontAwesome = fontAwesome;
+        setIcon(FontAwesome.Glyph.TICKET);
+        setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+    }
+    private void setIcon(FontAwesome.Glyph glyph) {
+        lblHeaderIcon.setGraphic(
+            fontAwesome
+                .create(glyph)
+                .size(HEADER_ICON_SIZE));
+    }
+    private void setTitle(String title) {
+        lblHeaderTitle.setText(title);
     }
 
     public void loadReservations() {

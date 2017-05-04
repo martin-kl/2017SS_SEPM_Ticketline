@@ -208,6 +208,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/accounts/accountsComponent.fxml");
         accountsController = (AccountsController) wrapper.getController();
+        accountsController.setFont(fontAwesome);
         Tab accountsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
@@ -221,6 +222,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
         reservationsController = (ReservationsController) wrapper.getController();
+        reservationsController.setFont(fontAwesome);
         Tab reservationTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
@@ -270,6 +272,14 @@ public class MainController {
     private void reloadLanguage() {
         ResourceBundle bundle = BundleManager.getBundle();
         ObservableList<Menu> menuList = mbMain.getMenus();
+
+        //reload fonts (causing header reload)
+        newsController.setFont(fontAwesome);
+        accountsController.setFont(fontAwesome);
+        customersController.setFont(fontAwesome);
+        reservationsController.setFont(fontAwesome);
+        eventsController.setFont(fontAwesome);
+
         menuList.get(0).setText(bundle.getString("menu.application"));
         menuList.get(1).setText(bundle.getString("menu.help"));
         menuList.get(2).setText(bundle.getString("menu.language"));
