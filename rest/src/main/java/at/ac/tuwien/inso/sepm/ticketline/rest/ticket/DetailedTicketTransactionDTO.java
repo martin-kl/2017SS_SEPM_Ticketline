@@ -30,4 +30,6 @@ public class DetailedTicketTransactionDTO {
 
     @ApiModelProperty(readOnly = true, name = "Reserved Tickets")
     private List<TicketDTO> tickets;
+
+    //TODO hier auch Location mitladen? - ist eigentlich unnötig weil beim suchen kann ich auch einfach einen String nehmen und den der Suche übergeben oder?
 }
