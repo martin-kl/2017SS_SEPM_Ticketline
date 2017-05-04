@@ -68,6 +68,7 @@ public class PerformanceDataGenerator {
                         .toInstant();
 
                     Performance performance = Performance.builder()
+                        .name("Performance " + faker.name().lastName())
                         .event(event)
                         .location(locationList.get(randomLocationId))
                         .defaultPrice(new BigDecimal(Math.random() * 200 + 10))

@@ -24,6 +24,9 @@ public class PerformanceDTO {
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
     private UUID id;
 
+    @ApiModelProperty(required = true, readOnly = true, name = "The name of the performance")
+    private String name;
+
     @ApiModelProperty(required = true, readOnly = true, name = "The start time of the performance")
     private Instant startTime;
 
