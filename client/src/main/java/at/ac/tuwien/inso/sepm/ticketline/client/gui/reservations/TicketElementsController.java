@@ -14,7 +14,7 @@ public class TicketElementsController {
     private Label lbPrice;
 
     public void initializeData(TicketDTO ticketDTO) {
-        lbPlace.setText("TODO insert Place here,");//ticketDTO.getLocationName());
+        lbPlace.setText("TODO insert Place here");//ticketDTO.getLocationName());
         lbPrice.setText(ticketDTO.getPrice() + "€");
     }
 }

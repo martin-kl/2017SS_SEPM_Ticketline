@@ -50,6 +50,8 @@ public class ReservationsElementController {
 
         ObservableList<Node> vbReservationAndTicketsChildren = vbReservationAndTickets
             .getChildren();
+
+        //copy HBox away, clear VBox and add HBox again
         HBox hbReservationTemp = hbReservation;
         vbReservationAndTicketsChildren.clear();
         vbReservationAndTicketsChildren.add(hbReservationTemp);
@@ -64,19 +66,12 @@ public class ReservationsElementController {
             ((TicketElementsController) wrapper.getController()).initializeData(ticket);
             HBox reservationBox = (HBox) wrapper.getLoadedObject();
 
-                    /*
-                    customerBox.setOnMouseClicked((e) -> {
-                        handleCustomerEdit(customer);
-                    });
-                    */
-            vbReservationAndTicketsChildren.add(reservationBox);
             /*
-            if (iterator.hasNext()) {
-                Separator separator = new Separator();
-                vbReservationAndTicketsChildren.add(separator);
-            }
-            */
+                customerBox.setOnMouseClicked((e) -> {
+                    handleCustomerEdit(customer);
+                });
+           */
+            vbReservationAndTicketsChildren.add(reservationBox);
         }
-
     }
 }

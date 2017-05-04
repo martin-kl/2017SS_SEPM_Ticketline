@@ -16,7 +16,7 @@
             <children>
                 <Label fx:id="lbCustomerFirstName" text="&lt;CustomerFirstName&gt;">
                     <HBox.margin>
-                        <Insets right="10.0"/>
+                        <Insets right="5.0"/>
                     </HBox.margin>
                 </Label>
                 <Label fx:id="lbCustomerLastName" layoutX="10.0" layoutY="10.0"
@@ -30,11 +30,7 @@
                         <Insets right="10.0"/>
                     </HBox.margin>
                 </Label>
-                <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;">
-                    <HBox.margin>
-                        <Insets right="10.0"/>
-                    </HBox.margin>
-                </Label>
+                <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;"/>
             </children>
         </HBox>
     </children>

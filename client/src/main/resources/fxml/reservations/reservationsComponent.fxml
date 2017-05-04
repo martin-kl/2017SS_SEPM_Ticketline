@@ -54,10 +54,8 @@
         <Separator/>
         <ButtonBar buttonMinWidth="0.0">
             <buttons>
-                <Button fx:id="btnReservationSell" mnemonicParsing="false"
-                    onAction="#handleReservationSell" text="%reservation.sell"/>
-                <Button fx:id="btnReservationCancel" mnemonicParsing="false"
-                    onAction="#handleReservationCancel" text="%reservation.cancel"/>
+                <Button fx:id="btnReservationDetails" mnemonicParsing="false"
+                    onAction="#handleReservationDetails" text="%reservation.showDetails"/>
             </buttons>
             <VBox.margin>
                 <Insets left="10.0" right="10.0"/>

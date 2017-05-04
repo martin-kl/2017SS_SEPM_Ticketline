@@ -39,9 +39,8 @@ public class ReservationsController {
     @FXML
     private Button btnSearch;
     @FXML
-    private Button btnReservationSell;
-    @FXML
-    private Button btnReservationCancel;
+    private Button btnReservationDetails;
+
     @FXML
     private VBox vbReservationsElements;
     @FXML
@@ -119,12 +118,9 @@ public class ReservationsController {
         new Thread(task).start();
     }
 
-    public void handleReservationSell(ActionEvent actionEvent) {
-    }
-
-    public void handleReservationCancel(ActionEvent actionEvent) {
-    }
-
     public void handleSearch(ActionEvent actionEvent) {
+    }
+
+    public void handleReservationDetails(ActionEvent actionEvent) {
     }
 }
