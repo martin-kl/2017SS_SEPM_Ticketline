@@ -5,34 +5,34 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- TODO change customersElement.css to support selecting of reservations -->
+<!-- TODO change ReservationsElement.css to support selecting of reservations -->
 
 <VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement"
-    stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.111"
+    stylesheets="@../../css/ReservationsElement.css" xmlns="http://javafx.com/javafx/8.0.112"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsElementController">
     <children>
-        <HBox>
+        <HBox fx:id="hbReservation">
             <children>
                 <Label fx:id="lbCustomerFirstName" text="&lt;CustomerFirstName&gt;">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets right="10.0"/>
                     </HBox.margin>
                 </Label>
                 <Label fx:id="lbCustomerLastName" layoutX="10.0" layoutY="10.0"
                     text="&lt;CustomerLastName&gt;">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets right="10.0"/>
                     </HBox.margin>
                 </Label>
                 <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;">
-                <HBox.margin>
-                        <Insets/>
+                    <HBox.margin>
+                        <Insets right="10.0"/>
                     </HBox.margin>
                 </Label>
                 <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;">
-                 <HBox.margin>
-                        <Insets/>
+                    <HBox.margin>
+                        <Insets right="10.0"/>
                     </HBox.margin>
                 </Label>
             </children>

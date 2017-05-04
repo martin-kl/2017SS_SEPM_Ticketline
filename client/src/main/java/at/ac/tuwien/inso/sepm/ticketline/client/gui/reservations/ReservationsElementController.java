@@ -21,6 +21,8 @@ public class ReservationsElementController {
     @FXML
     private VBox vbReservationAndTickets;
     @FXML
+    private HBox hbReservation;
+    @FXML
     private Label lbCustomerFirstName;
     @FXML
     private Label lbCustomerLastName;
@@ -48,7 +50,9 @@ public class ReservationsElementController {
 
         ObservableList<Node> vbReservationAndTicketsChildren = vbReservationAndTickets
             .getChildren();
-        //vbReservationAndTicketsChildren.clear();
+        HBox hbReservationTemp = hbReservation;
+        vbReservationAndTicketsChildren.clear();
+        vbReservationAndTicketsChildren.add(hbReservationTemp);
 
         Iterator<TicketDTO> iterator = ticketTransactionDTO.getTickets().iterator();
 

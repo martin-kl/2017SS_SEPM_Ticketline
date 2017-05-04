@@ -1,13 +1,8 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
-import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketHistoryRepository;
-import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +29,9 @@ public class TicketServiceImpl implements TicketService {
             log.error("Bad status for TicketStatus - status is {}", status);
             throw new BadRequestException("Bad status");
         }
-        return ticketTransactionRepository.findByStatus(ticketStatus);
+
+        //TODO replace top100 again with all - is just so for testing everything and to load faster
+        return ticketTransactionRepository.findTop100ByStatus(ticketStatus);
+        //return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 }

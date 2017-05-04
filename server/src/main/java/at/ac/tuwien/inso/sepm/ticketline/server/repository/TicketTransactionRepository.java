@@ -13,6 +13,19 @@ import java.util.UUID;
 @Repository
 public interface TicketTransactionRepository extends JpaRepository<TicketTransaction, UUID> {
 
+    /**
+     * Returns all TicketTransactions with the given status
+     * @param status The status, that the transactions have to have
+     * @return All TicketTransactions with the status
+     */
     List<TicketTransaction> findByStatus(TicketStatus status);
+
+    /**
+     *
+     * Returns only the first 100 TicketTransactions with the given status
+     * @param status The status, that the transactions have to have
+     * @return The first 100 TicketTransactions with the status
+     */
+    List<TicketTransaction> findTop100ByStatus(TicketStatus status);
 
 }
