@@ -32,7 +32,7 @@ public class PerformanceElementController {
     private Label labelLocationName;
 
     private static final DateTimeFormatter DTF =
-        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
+        DateTimeFormatter.ofPattern("d.M.yyyy HH:mm");
 
     public void initializeData(PerformanceDTO performanceDTO) {
         labelPerformanceName.setText(performanceDTO.getName());

@@ -10,9 +10,9 @@
       <HBox prefHeight="17.0" prefWidth="508.0" spacing="10.0">
          <children>
             <Label fx:id="labelPerformanceName" prefHeight="17.0" prefWidth="200.0" text="PerformanceName" />
-            <Label fx:id="labelStartTime" prefHeight="17.0" prefWidth="145.0" text="StartTime" />
-            <Label text="-" />
-            <Label fx:id="labelEndTime" prefHeight="17.0" prefWidth="160.0" text="EndTime" />
+            <Label fx:id="labelStartTime" prefHeight="17.0" prefWidth="96.0" text="StartTime" />
+            <Label prefHeight="17.0" prefWidth="15.0" text="-" />
+            <Label fx:id="labelEndTime" prefHeight="17.0" prefWidth="130.0" text="EndTime" />
             <Label fx:id="labelLocationLabelling" prefHeight="17.0" prefWidth="97.0" text="Location" />
             <Label fx:id="labelLocationName" prefHeight="17.0" prefWidth="180.0" text="LocationName" />
          </children>
