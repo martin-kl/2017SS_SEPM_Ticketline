@@ -5,7 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 
 import java.util.List;
 
-public interface EventsControllerService {
+public interface EventService {
 
     /**
      * Find all event entries.

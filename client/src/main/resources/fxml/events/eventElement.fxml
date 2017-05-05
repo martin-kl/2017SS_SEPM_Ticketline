@@ -15,11 +15,12 @@
     </padding>
    <HBox prefHeight="0.0" prefWidth="200.0" spacing="10.0">
       <children>
-          <Label fx:id="labelEventName" styleClass="newsPublishDate" text="EventName" />
-         <Label fx:id="firstPerf" text="FirstPerformanceName" />
+         <Label fx:id="labelEventName" text="EventName" />
+         <Label fx:id="labelEventCategory" text="EventCategory" />
       </children>
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
    </HBox>
+   <VBox fx:id="vbPerformanceElements" />
 </VBox>

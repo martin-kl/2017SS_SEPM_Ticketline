@@ -1,7 +1,26 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service.implementation;
 
-/**
- * Created by Benni on 04.05.2017.
- */
-public class EventServiceImpl {
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.rest.EventRestClient;
+import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
+import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Slf4j
+public class EventServiceImpl implements EventService {
+
+    private final EventRestClient eventRestClient;
+
+    public EventServiceImpl(EventRestClient eventRestClient){
+        this.eventRestClient = eventRestClient;
+    }
+
+    @Override
+    public List<EventDTO> findAll() throws DataAccessException {
+        return eventRestClient.findAll();
+    }
 }

@@ -39,7 +39,7 @@
               <Separator />
             <AnchorPane>
                <children>
-                  <GridPane prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.0" minWidth="10.0" prefWidth="398.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0" minWidth="10.0" prefWidth="557.0" />
@@ -48,7 +48,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ButtonBar prefHeight="25.0" prefWidth="739.0" GridPane.columnIndex="1">
+                        <ButtonBar minHeight="-Infinity" prefHeight="25.0" prefWidth="739.0" GridPane.columnIndex="1">
                            <buttons>
                               <Button mnemonicParsing="false" text="Extended Search" />
                            </buttons>
