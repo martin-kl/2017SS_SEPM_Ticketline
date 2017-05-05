@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventElementController">
     <stylesheets>
@@ -13,14 +14,19 @@
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
-   <HBox prefHeight="0.0" prefWidth="200.0" spacing="10.0">
+   <HBox alignment="BOTTOM_LEFT" prefHeight="0.0" prefWidth="200.0" spacing="10.0">
       <children>
-         <Label fx:id="labelEventName" text="EventName" />
-         <Label fx:id="labelEventCategory" text="EventCategory" />
+         <Label fx:id="labelEventName" alignment="BOTTOM_LEFT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="193.0" text="EventName">
+            <font>
+               <Font name="System Bold" size="16.0" />
+            </font></Label>
+         <Label fx:id="labelEventCategoryLabelling" text="Category" />
+         <Label fx:id="labelEventCategory" prefHeight="17.0" prefWidth="93.0" text="EventCategory" />
       </children>
       <opaqueInsets>
          <Insets />
       </opaqueInsets>
    </HBox>
+   <Label fx:id="labelDescription" prefHeight="26.0" prefWidth="488.0" text="Description" textFill="#00000099" />
    <VBox fx:id="vbPerformanceElements" />
 </VBox>

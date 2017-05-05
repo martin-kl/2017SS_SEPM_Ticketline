@@ -47,6 +47,7 @@ public class EventsController {
 
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("events.title"));
+        loadEvents();
     }
 
     public void setFont(FontAwesome fontAwesome){

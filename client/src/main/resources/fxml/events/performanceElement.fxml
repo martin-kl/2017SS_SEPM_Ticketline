@@ -5,13 +5,16 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceElementController">
+<VBox prefHeight="37.0" prefWidth="870.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceElementController">
    <children>
-      <HBox prefHeight="0.0" prefWidth="200.0" spacing="10.0">
+      <HBox prefHeight="17.0" prefWidth="508.0" spacing="10.0">
          <children>
-            <Label fx:id="labelStartTime" text="StartTime" />
-            <Label fx:id="labelEndTime" text="EndTime" />
-            <Label fx:id="labelLocationName" text="LocationName" />
+            <Label fx:id="labelPerformanceName" prefHeight="17.0" prefWidth="200.0" text="PerformanceName" />
+            <Label fx:id="labelStartTime" prefHeight="17.0" prefWidth="145.0" text="StartTime" />
+            <Label text="-" />
+            <Label fx:id="labelEndTime" prefHeight="17.0" prefWidth="160.0" text="EndTime" />
+            <Label fx:id="labelLocationLabelling" prefHeight="17.0" prefWidth="97.0" text="Location" />
+            <Label fx:id="labelLocationName" prefHeight="17.0" prefWidth="180.0" text="LocationName" />
          </children>
       </HBox>
    </children>

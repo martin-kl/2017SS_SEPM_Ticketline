@@ -20,7 +20,7 @@
           <children>
             <AnchorPane>
                <children>
-                  <ButtonBar layoutY="-4.0" prefHeight="23.0" prefWidth="1041.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+                  <ButtonBar disable="true" layoutY="-4.0" prefHeight="23.0" prefWidth="1041.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
                     <buttons>
                       <Button mnemonicParsing="false" text="List" />
                         <Button layoutX="20.0" layoutY="10.0" mnemonicParsing="false" text="Graph" />
@@ -36,10 +36,10 @@
                </children>
             </AnchorPane>
 
-              <Separator />
-            <AnchorPane>
+              <Separator disable="true" />
+            <AnchorPane disable="true">
                <children>
-                  <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <GridPane disable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.0" minWidth="10.0" prefWidth="398.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0" minWidth="10.0" prefWidth="557.0" />
@@ -81,7 +81,7 @@
                   <Insets />
                </VBox.margin>
             </AnchorPane>
-            <Separator />
+            <Separator disable="true" />
 
               <!--
             <AnchorPane layoutX="20.0" layoutY="54.0" prefHeight="111.0" prefWidth="955.0">

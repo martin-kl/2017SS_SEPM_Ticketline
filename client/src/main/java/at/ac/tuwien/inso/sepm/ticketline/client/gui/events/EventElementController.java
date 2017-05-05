@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -20,10 +21,17 @@ public class EventElementController {
     private Label labelEventName;
 
     @FXML
+    private Label labelEventCategoryLabelling;
+
+    @FXML
     private Label labelEventCategory;
 
     @FXML
+    private Label labelDescription;
+
+    @FXML
     private VBox vbPerformanceElements;
+
 
     private final SpringFxmlLoader springFxmlLoader;
 
@@ -33,9 +41,15 @@ public class EventElementController {
 
     public void initializeData(EventDTO eventDTO) {
         labelEventName.setText(eventDTO.getName());
-        labelEventCategory.setText("NO_CATEGORY");
-        eventDTO.getCategory();
+        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category"));
+        labelEventCategory.setText(eventDTO.getCategory().toString());
+        labelDescription.setText(eventDTO.getDescription());
         showPerformances(eventDTO);
+        reloadLanguage();
+    }
+
+    private void reloadLanguage(){
+        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category"));
     }
 
     private void showPerformances(EventDTO eventDTO){
