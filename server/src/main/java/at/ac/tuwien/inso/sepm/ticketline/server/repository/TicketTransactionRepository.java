@@ -43,6 +43,6 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @param performance the name of the performance
      * @return a list of TicketTransactions
      */
-    @Query("select tr from TicketTransaction tr where tr.customer");
-    List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerName, String performance);
+    //@Query("select tr from TicketTransaction tr where tr.customer");
+    List<TicketTransaction> findByCustomerAndLocation(String customerName, String performance);
 }

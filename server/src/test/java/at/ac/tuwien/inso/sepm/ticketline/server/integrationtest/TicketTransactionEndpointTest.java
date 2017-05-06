@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.integrationtest;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import com.jayway.restassured.RestAssured;
@@ -24,6 +25,7 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 
 public class TicketTransactionEndpointTest extends BaseIntegrationTest {
+
     private static final String TRANSACTION_ENDPOINT = "/tickettransaction";
 
     private static final UUID TEST_TRANSACTION_ID = UUID.randomUUID();
@@ -79,7 +81,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .when().get(TRANSACTION_ENDPOINT + "?status=RESERVED")
             .then().extract().response();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
-        Assert.assertTrue("No Transaction Found", response.as(DetailedTicketTransactionDTO[].class).length == 1);
+        Assert.assertTrue("No Transaction Found",
+            response.as(DetailedTicketTransactionDTO[].class).length == 1);
         DetailedTicketTransactionDTO[] list = response.as(DetailedTicketTransactionDTO[].class);
         for (DetailedTicketTransactionDTO item : list) {
             Assert.assertTrue(item.getCustomer() != null);
@@ -112,7 +115,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .when().get(TRANSACTION_ENDPOINT + "?status=BOUGHT")
             .then().extract().response();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
-        Assert.assertTrue("No Transaction Found",response.as(DetailedTicketTransactionDTO[].class).length == 1);
+        Assert.assertTrue("No Transaction Found",
+            response.as(DetailedTicketTransactionDTO[].class).length == 1);
         DetailedTicketTransactionDTO[] list = response.as(DetailedTicketTransactionDTO[].class);
         for (DetailedTicketTransactionDTO item : list) {
             Assert.assertTrue(item.getCustomer() != null);
@@ -144,7 +148,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .when().get(TRANSACTION_ENDPOINT + "?status=STORNO")
             .then().extract().response();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
-        Assert.assertTrue("No Transaction Found",response.as(DetailedTicketTransactionDTO[].class).length == 1);
+        Assert.assertTrue("No Transaction Found",
+            response.as(DetailedTicketTransactionDTO[].class).length == 1);
         DetailedTicketTransactionDTO[] list = response.as(DetailedTicketTransactionDTO[].class);
         for (DetailedTicketTransactionDTO item : list) {
             Assert.assertTrue(item.getCustomer() != null);
@@ -165,4 +170,39 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
     }
 
+    //TODO this test is NOT working - i`ve no idea how to fix the problem
+
+    @Test
+    public void findTransactionByValidId() {
+        BDDMockito
+            .given(ticketTransactionRepository.findByID(TEST_TRANSACTION_ID))
+            .willReturn(TicketTransaction
+                .builder()
+                .id(TEST_TRANSACTION_ID)
+                .status(TicketStatus.RESERVED)
+                .customer(TEST_CUSTOMER)
+                .ticketHistories(Collections.singleton(
+                    TEST_TICKET_HISTORY
+                ))
+                .build()
+            );
+
+        Response response = RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when().get(TRANSACTION_ENDPOINT + "?id=" + TEST_TRANSACTION_ID)
+            .then().extract().response();
+
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+        //TODO bei response.as auch auf array? - weil eig. liefert die Methode ja nur 1 Transaction retour
+        Assert.assertTrue("No Transaction Found",
+            response.as(DetailedTicketTransactionDTO[].class).length == 1);
+
+        DetailedTicketTransactionDTO item = response.as(DetailedTicketTransactionDTO.class);
+        Assert.assertTrue(item.getCustomer() != null);
+        Assert.assertTrue(item.getId() != null);
+        Assert.assertTrue(item.getStatus() == TicketStatus.RESERVED);
+        Assert.assertFalse(item.getTickets().isEmpty());
+    }
 }

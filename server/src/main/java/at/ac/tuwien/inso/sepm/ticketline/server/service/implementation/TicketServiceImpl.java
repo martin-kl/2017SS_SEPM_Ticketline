@@ -45,6 +45,6 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customer,
         String performance) {
-        return ticketTransactionRepository.findTransactionsByCustomerAndLocation(customer, performance);
+        return ticketTransactionRepository.findByCustomerAndLocation(customer, performance);
     }
 }

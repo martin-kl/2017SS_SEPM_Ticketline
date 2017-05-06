@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,15 +43,16 @@ public class TicketTransactionEndpoint {
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a Ticket Transaction by ID")
     public DetailedTicketTransactionDTO findTicketTransactionByID(
-        @RequestParam(value = "id")UUID id) {
+        @RequestParam(value = "id") UUID id) {
         TicketTransaction transaction = ticketService.findTransactionsByID(id);
         return ticketTransactionMapper.fromEntity(transaction);
     }
 
+
     @RequestMapping(method = RequestMethod.GET)
-    @ApiOperation(value = "Gets a list of Ticket Reservations")
+    @ApiOperation(value = "Gets a list of Ticket Reservations for the customer and the performance name")
     public List<DetailedTicketTransactionDTO> findTicketTransaction(
-        @RequestParam(value = "customeName") String customerName,
+        @RequestParam(value = "customerName") String customerName,
         @RequestParam(value = "performance") String performance) {
         return ticketService
             .findTransactionsByCustomerAndLocation(customerName, performance)
@@ -58,5 +60,4 @@ public class TicketTransactionEndpoint {
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
     }
-
 }
