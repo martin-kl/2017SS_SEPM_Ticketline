@@ -6,12 +6,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-/**
- * Created by Alex on 04.05.2017.
- */
-@Mapper(
-    componentModel = "spring"
-)
+@Mapper(componentModel = "spring")
 public interface EventArtistMapper {
     EventArtistDTO fromEntity(EventArtist eventArtist);
 

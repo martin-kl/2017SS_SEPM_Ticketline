@@ -7,14 +7,8 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.Location;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatLocation;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.SectorLocation;
 import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
 
-import java.util.List;
-
-@Mapper(
-    componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
+@Mapper(componentModel = "spring")
 public interface LocationMapper {
 
     default LocationDTO fromEntity(Location location) {
@@ -23,7 +17,15 @@ public interface LocationMapper {
         return fromEntity((SectorLocation) location);
     }
 
+    default Location fromDTO(LocationDTO locationDTO){
+        if(locationDTO instanceof SeatLocationDTO)
+            return fromDTO((SeatLocationDTO) locationDTO);
+        return fromDTO((SectorLocationDTO) locationDTO);
+    }
+
     SeatLocationDTO fromEntity(SeatLocation location);
     SectorLocationDTO fromEntity(SectorLocation location);
 
+    SeatLocation fromDTO(SeatLocationDTO seatLocation);
+    SectorLocation fromDTO(SectorLocationDTO sectorLocation);
 }
