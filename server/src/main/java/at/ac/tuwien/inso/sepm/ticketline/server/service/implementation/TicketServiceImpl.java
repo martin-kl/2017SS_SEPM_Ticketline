@@ -31,7 +31,7 @@ public class TicketServiceImpl implements TicketService {
         }
 
         //TODO replace top100 again with all - is just so for testing everything and to load faster
-        return ticketTransactionRepository.findTop100ByStatus(ticketStatus);
-        //return ticketTransactionRepository.findByStatus(ticketStatus);
+        //return ticketTransactionRepository.findTop100ByStatus(ticketStatus);
+        return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 }
