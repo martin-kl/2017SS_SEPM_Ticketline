@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
+import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -14,4 +15,21 @@ public interface TicketService {
      * @return a list of TicketTransactions
      */
     List<TicketTransaction> getAllTransactions(String status);
+
+     /**
+     * Returns a list of Transactions for a customer and a performance
+     *
+     * @param uuid the id of the transaction
+     * @return a list of TicketTransactions
+     */
+    TicketTransaction findTransactionsByID(UUID uuid);
+
+     /**
+     * Returns a list of Transactions for a customer and a performance
+     *
+     * @param customer the name of the customer who bought/reserved a ticket
+     * @param performance the name of the performance
+     * @return a list of TicketTransactions
+     */
+    List<TicketTransaction> findTransactionsByCustomerAndLocation(String customer, String performance);
 }

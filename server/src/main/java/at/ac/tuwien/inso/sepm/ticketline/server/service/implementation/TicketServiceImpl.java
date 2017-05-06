@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,5 +34,17 @@ public class TicketServiceImpl implements TicketService {
         //TODO replace top100 again with all - is just so for testing everything and to load faster
         return ticketTransactionRepository.findTop100ByStatus(ticketStatus);
         //return ticketTransactionRepository.findByStatus(ticketStatus);
+    }
+
+    @Override
+    public TicketTransaction findTransactionsByID(UUID uuid) {
+        //TODO error handling? - if id is not in dataabse what happens?
+        return ticketTransactionRepository.findByID(uuid);
+    }
+
+    @Override
+    public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customer,
+        String performance) {
+        return ticketTransactionRepository.findTransactionsByCustomerAndLocation(customer, performance);
     }
 }
