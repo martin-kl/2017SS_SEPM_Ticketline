@@ -9,6 +9,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepo
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.BDDMockito;
@@ -175,9 +176,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
     @Test
     public void findTransactionByValidId() {
         BDDMockito
-            .given(ticketTransactionRepository.findByID(TEST_TRANSACTION_ID))
-            .willReturn(TicketTransaction
-                .builder()
+            .given(ticketTransactionRepository.findOneById(TEST_TRANSACTION_ID))
+            .willReturn(Optional.of(TicketTransaction.builder()
                 .id(TEST_TRANSACTION_ID)
                 .status(TicketStatus.RESERVED)
                 .customer(TEST_CUSTOMER)
@@ -185,13 +185,14 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
                     TEST_TICKET_HISTORY
                 ))
                 .build()
-            );
+            ));
 
         Response response = RestAssured
             .given()
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .when().get(TRANSACTION_ENDPOINT + "?id=" + TEST_TRANSACTION_ID)
+            //.when().get(TRANSACTION_ENDPOINT + "?id=" + TEST_TRANSACTION_ID)
+            .when().get(TRANSACTION_ENDPOINT + "/" + TEST_TRANSACTION_ID)
             .then().extract().response();
 
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));

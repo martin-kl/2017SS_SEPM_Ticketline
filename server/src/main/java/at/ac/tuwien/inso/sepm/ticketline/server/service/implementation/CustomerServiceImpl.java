@@ -35,7 +35,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer save(Customer customer) {
         try {
-            //TODO validate customer here too?
             return customerRepository.save(customer);
         } catch(TransactionSystemException e) {
             throw new BadRequestException(ValidationHelper.getErrorMessages(e).toString());

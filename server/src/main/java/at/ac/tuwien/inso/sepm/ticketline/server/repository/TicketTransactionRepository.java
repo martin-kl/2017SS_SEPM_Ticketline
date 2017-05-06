@@ -2,10 +2,10 @@ package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,10 +31,10 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
 
      /**
      * Returns the Transaction with the id of the parameter
-     * @param uuid The id of the transaction
+     * @param id The id of the transaction
      * @return the Transaction with the id of the parameter
      */
-    TicketTransaction findByID(UUID uuid);
+    Optional<TicketTransaction> findOneById(UUID id);
 
      /**
      * Returns a list of Transactions for a customer and a performance
@@ -43,6 +43,6 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @param performance the name of the performance
      * @return a list of TicketTransactions
      */
-    //@Query("select tr from TicketTransaction tr where tr.customer");
-    List<TicketTransaction> findByCustomerAndLocation(String customerName, String performance);
+     //TODO custom implementation
+    //List<TicketTransaction> findByCustomerAndLocation(String customerName, String performance);
 }

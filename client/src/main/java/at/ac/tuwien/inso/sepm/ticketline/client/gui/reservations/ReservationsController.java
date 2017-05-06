@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
@@ -11,11 +12,14 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -29,6 +33,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ReservationsController {
+
     @FXML
     private Label lblHeaderIcon;
     @FXML
@@ -39,7 +44,7 @@ public class ReservationsController {
     @FXML
     private TextField tfCustomerName;
     @FXML
-    private TextField tfReservationID;
+    private TextField tfPerformanceName;
     @FXML
     private Button btnSearch;
     @FXML
@@ -63,30 +68,37 @@ public class ReservationsController {
     }
 
     @FXML
-    private void initialize() { }
+    private void initialize() {
+    }
 
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
-        tfResBillNumber.setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
-        tfCustomerName.setPromptText(BundleManager.getBundle().getString("reservation.prompt.customerName"));
-        tfReservationID.setPromptText(BundleManager.getBundle().getString("reservation.prompt.performanceName"));
+        tfResBillNumber
+            .setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
+        tfCustomerName
+            .setPromptText(BundleManager.getBundle().getString("reservation.prompt.customerName"));
+        tfPerformanceName.setPromptText(
+            BundleManager.getBundle().getString("reservation.prompt.performanceName"));
 
         btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
-        btnReservationDetails.setText(BundleManager.getBundle().getString("reservation.showDetails"));
+        btnReservationDetails
+            .setText(BundleManager.getBundle().getString("reservation.showDetails"));
     }
 
-    public void setFont(FontAwesome fontAwesome){
+    public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.TICKET);
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
     }
+
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
                 .create(glyph)
                 .size(HEADER_ICON_SIZE));
     }
+
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
@@ -149,6 +161,29 @@ public class ReservationsController {
     }
 
     public void handleSearch(ActionEvent actionEvent) {
+        if (tfResBillNumber.getText().length() != 0) {
+            //search with id
+            try {
+                reservationService.findReservationWithID(tfResBillNumber.getText().trim());
+            } catch (ExceptionWithDialog exceptionWithDialog) {
+                exceptionWithDialog.showDialog();
+            }
+        } else {
+            if (tfCustomerName.getText().length() == 0
+                || tfPerformanceName.getText().length() == 0) {
+                ValidationException e = new ValidationException("reservation.error.emptySearch");
+                e.showDialog();
+            } else {
+                //search with customerName / performance name
+                try {
+                    reservationService
+                        .findReservationsByCustomerAndPerformance(tfCustomerName.getText().trim(),
+                            tfPerformanceName.getText().trim());
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.showDialog();
+                }
+            }
+        }
     }
 
     public void handleReservationDetails(ActionEvent actionEvent) {

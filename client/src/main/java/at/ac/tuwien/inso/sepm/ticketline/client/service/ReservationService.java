@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.service;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import java.util.List;
+import java.util.UUID;
 
 public interface ReservationService {
      /**
@@ -16,15 +17,18 @@ public interface ReservationService {
     /**
      * Find a single reservation entry by id.
      *
-     * @param id the is of the reservation entry
-     * @return the news entry
+     * @param id the id of the reservation entry
+     * @return the Transaction/Reservation entry
      */
-//    DetailedTicketTransactionDTO findOne(UUID id) throws ExceptionWithDialog;
+    DetailedTicketTransactionDTO findReservationWithID(String id) throws ExceptionWithDialog;
 
     /**
-     * saves a new or edited customer
-     * @param customer The customer object to save or edit
-     * @return the same customer passed into the method with fields updated
+     * Finds a Transaction/Reservation by the
+     * @param customerName the customer name to search for
+     * @param performanceName the performance name to search for
+     * @return list of reservations/transactions for the customer and the performance name
      */
-//    DetailedTicketTransactionDTO save(DetailedTicketTransactionDTO customer) throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findReservationsByCustomerAndPerformance(String customerName, String performanceName)
+        throws ExceptionWithDialog;
+
 }

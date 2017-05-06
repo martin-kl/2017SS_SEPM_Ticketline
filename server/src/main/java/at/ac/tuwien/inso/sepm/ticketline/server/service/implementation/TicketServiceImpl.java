@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import java.util.UUID;
@@ -37,14 +38,15 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketTransaction findTransactionsByID(UUID uuid) {
-        //TODO error handling? - if id is not in dataabse what happens?
-        return ticketTransactionRepository.findByID(uuid);
+    public TicketTransaction findTransactionsByID(UUID id) {
+        //return ticketTransactionRepository.findOne(id);
+        return ticketTransactionRepository.findOneById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
     public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customer,
         String performance) {
-        return ticketTransactionRepository.findByCustomerAndLocation(customer, performance);
+        return null;
+        //return ticketTransactionRepository.findByCustomerAndLocation(customer, performance);
     }
 }

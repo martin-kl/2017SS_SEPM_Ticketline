@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import io.swagger.annotations.Api;
@@ -40,20 +39,17 @@ public class TicketTransactionEndpoint {
             .collect(Collectors.toList());
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ApiOperation(value = "Gets a Ticket Transaction by ID")
-    public DetailedTicketTransactionDTO findTicketTransactionByID(
-        @RequestParam(value = "id") UUID id) {
-        TicketTransaction transaction = ticketService.findTransactionsByID(id);
-        return ticketTransactionMapper.fromEntity(transaction);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get one Ticket Transaction by ID")
+    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {
+        return ticketTransactionMapper.fromEntity(ticketService.findTransactionsByID(id));
     }
 
-
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/{customerName}/{performance}", method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of Ticket Reservations for the customer and the performance name")
     public List<DetailedTicketTransactionDTO> findTicketTransaction(
-        @RequestParam(value = "customerName") String customerName,
-        @RequestParam(value = "performance") String performance) {
+        @PathVariable(value = "customerName") String customerName,
+        @PathVariable(value = "performance") String performance) {
         return ticketService
             .findTransactionsByCustomerAndLocation(customerName, performance)
             .stream()
