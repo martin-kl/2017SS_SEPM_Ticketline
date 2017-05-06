@@ -30,6 +30,8 @@ public class TicketServiceImpl implements TicketService {
             throw new BadRequestException("Bad status");
         }
 
+        //TODO replace top100 again with all - is just so for testing everything and to load faster
+        //return ticketTransactionRepository.findTop100ByStatus(ticketStatus);
         return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 }
