@@ -1,9 +1,11 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.integrationtest;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.customer.CustomerMapper;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.ticket.TicketMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import com.jayway.restassured.RestAssured;
@@ -12,18 +14,23 @@ import com.jayway.restassured.response.Response;
 import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
+import org.omg.IOP.TAG_CODE_SETS;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.UUID;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TicketTransactionEndpointTest extends BaseIntegrationTest {
 
@@ -34,6 +41,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         .id(UUID.randomUUID())
         .firstName("TestuserFN")
         .lastName("TestuserLN")
+        .email("mail@mail.com")
+        .address("First Street 12, 2019 City")
         .build();
 
     private static final Ticket TEST_TICKET = SeatTicket.builder()
@@ -171,8 +180,6 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
     }
 
-    //TODO this test is NOT working - i`ve no idea how to fix the problem
-
     @Test
     public void findTransactionByValidId() {
         BDDMockito
@@ -196,14 +203,13 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .then().extract().response();
 
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
-        //TODO bei response.as auch auf array? - weil eig. liefert die Methode ja nur 1 Transaction retour
-        Assert.assertTrue("No Transaction Found",
-            response.as(DetailedTicketTransactionDTO[].class).length == 1);
 
         DetailedTicketTransactionDTO item = response.as(DetailedTicketTransactionDTO.class);
+
         Assert.assertTrue(item.getCustomer() != null);
         Assert.assertTrue(item.getId() != null);
         Assert.assertTrue(item.getStatus() == TicketStatus.RESERVED);
         Assert.assertFalse(item.getTickets().isEmpty());
     }
+
 }
