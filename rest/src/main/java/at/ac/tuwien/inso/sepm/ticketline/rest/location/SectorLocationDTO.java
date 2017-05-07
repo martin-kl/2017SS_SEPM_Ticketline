@@ -1,7 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.location;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +15,4 @@ import lombok.ToString;
 @Builder
 @ApiModel(value = "SectorLocationDTO", description = "Sector location DTO for Location Entity")
 public class SectorLocationDTO extends LocationDTO {
-    @ApiModelProperty(readOnly = true, name = "The type of the location")
-    private final String type = "Sector";
 }
