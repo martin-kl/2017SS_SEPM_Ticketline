@@ -14,15 +14,12 @@ import java.util.UUID;
 @Service
 public class EventServiceImpl implements EventService {
 
-    private final EventRepository eventRepository;
-
-    public EventServiceImpl(EventRepository eventRepository) {
-        this.eventRepository = eventRepository;
-    }
+    @Autowired
+    private EventRepository eventRepository;
 
     @Override
     public List<Event> findAll() {
-        return eventRepository.findAll(new Sort("name"));
+        return eventRepository.findAll();
     }
 
     @Override

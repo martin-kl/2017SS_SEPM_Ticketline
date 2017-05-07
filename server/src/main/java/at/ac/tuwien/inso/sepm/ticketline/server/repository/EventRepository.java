@@ -10,10 +10,10 @@ import java.util.UUID;
 @Repository
 public interface EventRepository extends JpaRepository<Event, UUID> {
     /**
-     * Find a single customer entry by id.
+     * Find a single event entry by id.
      *
-     * @param id the is of the customer entry
-     * @return Optional containing the customer entry
+     * @param id the is of the event entry
+     * @return Optional containing the event entry
      */
     Optional<Event> findOneById(UUID id);
 }

@@ -1,11 +1,11 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.event;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,10 +33,9 @@ public class EventDTO {
     @ApiModelProperty(required = true, readOnly = true, name = "The description of the event")
     private String description;
 
-    // TODO: implement
-    /*@ApiModelProperty(required = true, readOnly = true, name = "The artists playing in the event")
-    private List<EventArtistDTO> artists;*/
-
     @ApiModelProperty(required = true, readOnly = true, name = "The performances for the event")
     private List<PerformanceDTO> performances;
+
+    /*@ApiModelProperty(required = true, readOnly = true, name = "The artists playing in the event")
+    private List<EventArtistDTO> artists;*/
 }

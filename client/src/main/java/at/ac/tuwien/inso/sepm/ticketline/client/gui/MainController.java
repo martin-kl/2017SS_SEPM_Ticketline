@@ -95,7 +95,7 @@ public class MainController {
                     reloadCustomerList();
                     break;
                 case "events":
-                    //reloadCustomerList();
+                    reloadEventList();
                     break;
                  case "accounts":
                     //reloadCustomerList();
@@ -254,6 +254,8 @@ public class MainController {
     }
 
     public void reloadNewsList() { newsController.loadNews(); }
+
+    public void reloadEventList() { eventsController.loadEvents(); }
 
     private void reloadReservationList() {
         reservationsController.loadReservations();
