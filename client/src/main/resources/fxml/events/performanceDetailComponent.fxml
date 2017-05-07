@@ -26,6 +26,9 @@
                      <font>
                         <Font size="20.0" />
                      </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                   </Label>
                </children>
                <padding>

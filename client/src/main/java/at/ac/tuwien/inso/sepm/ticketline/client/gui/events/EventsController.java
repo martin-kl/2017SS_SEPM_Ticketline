@@ -6,15 +6,20 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
@@ -38,6 +43,8 @@ public class EventsController {
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final EventService eventService;
+
+    private PerformanceDTO selectedPerformance = null;
 
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService) {
         this.mainController = mainController;
@@ -65,6 +72,15 @@ public class EventsController {
         lblHeaderTitle.setText(title);
     }
 
+
+    public void setSelectedPerformance(PerformanceDTO selectedPerformance){
+        this.selectedPerformance = selectedPerformance;
+    }
+
+    public void manageTicketsHandler(){
+        log.debug("Clicked manage tickets in Events Tab");
+        mainController.showPerformanceDetailWindow(selectedPerformance);
+    }
 
     public void loadEvents() {
         ObservableList<Node> vbEventsBoxChildren = vbEventsElements.getChildren();

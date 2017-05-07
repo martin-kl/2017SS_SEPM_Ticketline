@@ -185,7 +185,7 @@
             <Separator />
             <ButtonBar prefHeight="25.0" prefWidth="1041.0">
                <buttons>
-                  <Button mnemonicParsing="false" text="Manage Tickets" />
+                  <Button mnemonicParsing="false" onAction="#manageTicketsHandler" text="Manage Tickets" />
                </buttons>
             </ButtonBar>
           </children>
