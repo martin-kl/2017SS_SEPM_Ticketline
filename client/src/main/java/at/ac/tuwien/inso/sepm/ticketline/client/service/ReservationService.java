@@ -31,11 +31,12 @@ public interface ReservationService {
 
     /**
      * Finds a Transaction/Reservation by the
-     * @param customerName the customer name to search for
+     * @param customerFirstName the customer first name to search for
+     * @param customerLastName the customer last name to search for
      * @param performanceName the performance name to search for
      * @return list of reservations/transactions for the customer and the performance name
      */
-    List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerName, String performanceName)
+    List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerFirstName, String customerLastName, String performanceName)
         throws ExceptionWithDialog;
 
 }

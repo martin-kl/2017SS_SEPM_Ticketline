@@ -212,4 +212,18 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         Assert.assertFalse(item.getTickets().isEmpty());
     }
 
+    @Test
+    public void findTransactionByInvalidId() {
+
+        //TODO this test is not yet working cause of an error in Service/Repository
+
+        Response response = RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when().get(TRANSACTION_ENDPOINT + "/" + UUID.randomUUID())
+            .then().extract().response();
+
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
+    }
 }

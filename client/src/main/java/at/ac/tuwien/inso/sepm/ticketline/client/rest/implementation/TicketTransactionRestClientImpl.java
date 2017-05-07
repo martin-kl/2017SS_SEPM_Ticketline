@@ -109,17 +109,18 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerName, String performanceName) throws ExceptionWithDialog {
+        String customerFirstName, String customerLastName, String performanceName)
+        throws ExceptionWithDialog {
         try {
             log.debug(
-                "Retrieving ticket transactions from {} for customerName {} and performanceName {}",
+                "Retrieving ticket transactions from {} for customerFirstName {}, customerLastName {} and performanceName {}",
                 restClient.getServiceURI(
-                    TRANSACTION_URL), customerName, performanceName);
+                    TRANSACTION_URL), customerFirstName, customerLastName, performanceName);
 
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "/" + customerName
-                        + "/" + performanceName,
+                    restClient.getServiceURI(TRANSACTION_URL) + "/" + customerFirstName + "/"
+                        + customerLastName + "/" + performanceName,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {

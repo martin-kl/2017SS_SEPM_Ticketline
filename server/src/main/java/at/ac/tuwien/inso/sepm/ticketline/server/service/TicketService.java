@@ -23,7 +23,7 @@ public interface TicketService {
      */
     List<TicketTransaction> getAllBoughtReservedTransactions();
 
-     /**
+    /**
      * Returns a list of Transactions for a customer and a performance
      *
      * @param uuid the id of the transaction
@@ -31,12 +31,14 @@ public interface TicketService {
      */
     TicketTransaction findTransactionsByID(UUID uuid);
 
-     /**
+    /**
      * Returns a list of Transactions for a customer and a performance
      *
-     * @param customer the name of the customer who bought/reserved a ticket
+     * @param customerFirstName the customer first name to search for
+     * @param customerLastName the customer last name to search for
      * @param performance the name of the performance
      * @return a list of TicketTransactions
      */
-    List<TicketTransaction> findTransactionsByCustomerAndLocation(String customer, String performance);
+    List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
+        String customerLastName, String performance);
 }

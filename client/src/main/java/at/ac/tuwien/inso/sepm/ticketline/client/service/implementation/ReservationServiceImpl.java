@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
@@ -36,16 +37,23 @@ public class ReservationServiceImpl implements ReservationService {
     public DetailedTicketTransactionDTO findTransactionWithID(String id)
         throws ExceptionWithDialog {
         //TODO cast here to uuid? better to search for a string as part of uuid or?
-        UUID uuid = UUID.fromString(id);
-        System.out.println(
-            "uuid from string \"" + id + "\" = \"" + uuid + "\"");
-        return ticketTransactionRestClient.findTransactionWithID(uuid);
+        try {
+            UUID uuid = UUID.fromString(id);
+            System.out.println(
+                "uuid from string \"" + id + "\" = \"" + uuid + "\"");
+            return ticketTransactionRestClient.findTransactionWithID(uuid);
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("reservation.error.invalidID");
+        }
     }
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerName, String performanceName) throws ExceptionWithDialog {
-        return ticketTransactionRestClient.findTransactionsByCustomerAndPerformance(customerName, performanceName);
+        String customerFirstName, String customerLastName, String performanceName)
+        throws ExceptionWithDialog {
+        return ticketTransactionRestClient
+            .findTransactionsByCustomerAndPerformance(customerFirstName, customerLastName,
+                performanceName);
     }
 
 }

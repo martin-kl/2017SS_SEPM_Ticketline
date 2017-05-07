@@ -6,9 +6,9 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,11 @@ import java.util.List;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    @Autowired
     private TicketTransactionRepository ticketTransactionRepository;
+
+    public TicketServiceImpl(TicketTransactionRepository ticketTransactionRepository) {
+        this.ticketTransactionRepository = ticketTransactionRepository;
+    }
 
     @Override
     public List<TicketTransaction> getAllTransactions(String status) {
@@ -33,13 +36,16 @@ public class TicketServiceImpl implements TicketService {
         }
 
         //TODO replace top100 again with all - is just so for testing everything and to load faster
+
         return ticketTransactionRepository.findTop100ByStatus(ticketStatus);
         //return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 
     @Override
     public List<TicketTransaction> getAllBoughtReservedTransactions() {
+
         //TODO replace top100 again with all - is just so for testing everything and to load faster
+
         return ticketTransactionRepository
             .findTop100ByStatusOrStatusOrderByIdDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED);
         //return ticketTransactionRepository.findByStatus(ticketStatus);
@@ -47,14 +53,26 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketTransaction findTransactionsByID(UUID id) {
-        //return ticketTransactionRepository.findOne(id);
-        return ticketTransactionRepository.findOneById(id).orElseThrow(NotFoundException::new);
+
+        //TODO hier gibt es noch ein Problem - das mit dem Optional als Type funktioniert nicht ganz
+        //das Repository liefert irgendwie einfach NULL retour aber der Optional erkennt das nicht
+        //deswegen gibt es einen NullPointer
+
+        Optional<TicketTransaction> transaction = ticketTransactionRepository.findOneById(id);
+        if (!transaction.isPresent()) {
+            throw new NotFoundException();
+        }
+        return transaction.get();
+
+        //had a problem with the line, so i changed it to the code above
+        //return ticketTransactionRepository.findOneById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customer,
-        String performance) {
-        return null;
-        //return ticketTransactionRepository.findByCustomerAndLocation(customer, performance);
+    public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
+        String customerLastName, String performance) {
+        //return null;
+        return ticketTransactionRepository
+            .findByCustomerAndLocation(customerFirstName, customerLastName, performance);
     }
 }

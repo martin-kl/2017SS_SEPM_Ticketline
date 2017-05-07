@@ -40,7 +40,9 @@ public class ReservationsController {
     @FXML
     private TextField tfResBillNumber;
     @FXML
-    private TextField tfCustomerName;
+    private TextField tfCustomerFirstName;
+    @FXML
+    private TextField tfCustomerLastName;
     @FXML
     private TextField tfPerformanceName;
     @FXML
@@ -65,23 +67,25 @@ public class ReservationsController {
         this.reservationService = reservationService;
     }
 
-    @FXML
-    private void initialize() {
-    }
-
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
         tfResBillNumber
             .setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
-        tfCustomerName
-            .setPromptText(BundleManager.getBundle().getString("reservation.prompt.customerName"));
+        tfCustomerFirstName
+            .setPromptText(
+                BundleManager.getBundle().getString("reservation.prompt.customerFirstName"));
+        tfCustomerLastName
+            .setPromptText(
+                BundleManager.getBundle().getString("reservation.prompt.customerLastName"));
         tfPerformanceName.setPromptText(
             BundleManager.getBundle().getString("reservation.prompt.performanceName"));
 
         btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
         btnReservationDetails
             .setText(BundleManager.getBundle().getString("reservation.showDetails"));
+
+        //TODO Labels in the table are not refreshed after language change
     }
 
     public void setFont(FontAwesome fontAwesome) {
@@ -104,7 +108,8 @@ public class ReservationsController {
     public void loadReservations() {
         //delete possible entries from before
         tfResBillNumber.setText("");
-        tfCustomerName.setText("");
+        tfCustomerFirstName.setText("");
+        tfCustomerLastName.setText("");
         tfPerformanceName.setText("");
 
         ObservableList<Node> vbReservationBoxChildren = vbReservationsElements.getChildren();
@@ -157,7 +162,8 @@ public class ReservationsController {
                 exceptionWithDialog.showDialog();
             }
         } else {
-            if (tfCustomerName.getText().length() == 0
+            if (tfCustomerFirstName.getText().length() == 0
+                || tfCustomerLastName.getText().trim().length() == 0
                 || tfPerformanceName.getText().length() == 0) {
                 ValidationException e = new ValidationException("reservation.error.emptySearch");
                 e.showDialog();
@@ -165,8 +171,10 @@ public class ReservationsController {
                 //search with customerName / performance name
                 try {
                     List<DetailedTicketTransactionDTO> searchResult = reservationService
-                        .findTransactionsByCustomerAndPerformance(tfCustomerName.getText().trim(),
+                        .findTransactionsByCustomerAndPerformance(tfCustomerFirstName.getText().trim(),
+                            tfCustomerLastName.getText().trim(),
                             tfPerformanceName.getText().trim());
+                    //System.out.println("got #"+searchResult.size()+ " results");
                     //load new elements
                     loadNewElements(searchResult);
                 } catch (ExceptionWithDialog exceptionWithDialog) {

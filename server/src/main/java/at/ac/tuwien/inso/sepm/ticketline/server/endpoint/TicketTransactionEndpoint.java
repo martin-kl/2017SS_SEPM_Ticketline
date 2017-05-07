@@ -55,13 +55,14 @@ public class TicketTransactionEndpoint {
         return ticketTransactionMapper.fromEntity(ticketService.findTransactionsByID(id));
     }
 
-    @RequestMapping(value = "/{customerName}/{performance}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{customerFirstName}/{customerLastName}/{performance}", method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of Ticket Reservations for the customer and the performance name")
     public List<DetailedTicketTransactionDTO> findTicketTransaction(
-        @PathVariable(value = "customerName") String customerName,
+        @PathVariable(value = "customerFirstName") String customerFirstName,
+        @PathVariable(value = "customerLastName") String customerLastName,
         @PathVariable(value = "performance") String performance) {
         return ticketService
-            .findTransactionsByCustomerAndLocation(customerName, performance)
+            .findTransactionsByCustomerAndLocation(customerFirstName, customerLastName, performance)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
