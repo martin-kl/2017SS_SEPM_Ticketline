@@ -18,15 +18,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
@@ -41,7 +38,7 @@ public class ReservationsController {
     private Label lblHeaderTitle;
 
     @FXML
-    private TextField tfResBillNumber;
+    private TextField tfTransactionNumber;
     @FXML
     private TextField tfCustomerFirstName;
     @FXML
@@ -75,7 +72,7 @@ public class ReservationsController {
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
-        tfResBillNumber
+        tfTransactionNumber
             .setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
         tfCustomerFirstName
             .setPromptText(
@@ -90,7 +87,8 @@ public class ReservationsController {
         btnReservationDetails
             .setText(BundleManager.getBundle().getString("reservation.showDetails"));
 
-        //TODO Labels in the table are not refreshed after language change
+        //TODO Labels in the table are not refreshed after language change - is done with new loading
+        loadTransactions();
     }
 
     public void setFont(FontAwesome fontAwesome) {
@@ -110,9 +108,9 @@ public class ReservationsController {
         lblHeaderTitle.setText(title);
     }
 
-    public void loadReservations() {
+    public void loadTransactions() {
         //delete possible entries from before
-        tfResBillNumber.setText("");
+        tfTransactionNumber.setText("");
         tfCustomerFirstName.setText("");
         tfCustomerLastName.setText("");
         tfPerformanceName.setText("");
@@ -152,11 +150,11 @@ public class ReservationsController {
     }
 
     public void handleSearch(ActionEvent actionEvent) {
-        if (tfResBillNumber.getText().length() != 0) {
+        if (tfTransactionNumber.getText().length() != 0) {
             //search with id
             try {
                 DetailedTicketTransactionDTO transactionDTO = reservationService
-                    .findTransactionWithID(tfResBillNumber.getText().trim());
+                    .findTransactionWithID(tfTransactionNumber.getText().trim());
                 //System.out.println("got transaction = " + transactionDTO);
 
                 //search result is one entry, but method loadNewElements requires a list
@@ -180,7 +178,7 @@ public class ReservationsController {
                             tfCustomerFirstName.getText().trim(),
                             tfCustomerLastName.getText().trim(),
                             tfPerformanceName.getText().trim());
-                    //System.out.println("got #"+searchResult.size()+ " results");
+                    System.out.println("got #"+searchResult.size()+ " results");
                     //load new elements
                     loadNewElements(searchResult);
                 } catch (ExceptionWithDialog exceptionWithDialog) {

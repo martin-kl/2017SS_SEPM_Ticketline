@@ -258,7 +258,7 @@ public class MainController {
     public void reloadEventList() { eventsController.loadEvents(); }
 
     private void reloadReservationList() {
-        reservationsController.loadReservations();
+        reservationsController.loadTransactions();
     }
 
     public void changeToGerman(ActionEvent actionEvent) {
