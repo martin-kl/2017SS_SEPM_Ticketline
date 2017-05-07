@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Performance;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.performance.DetailedPerformanceMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.performance.PerformanceMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import io.swagger.annotations.Api;
@@ -18,17 +19,17 @@ import java.util.UUID;
 @Api(value = "performance")
 public class PerformanceEndpoint {
     private final PerformanceService performanceService;
-    private final PerformanceMapper performanceMapper;
+    private final DetailedPerformanceMapper detailedPerformanceMapper;
 
     public PerformanceEndpoint(PerformanceService performanceService,
-                               PerformanceMapper performanceMapper){
+                               DetailedPerformanceMapper detailedPerformanceMapper){
         this.performanceService = performanceService;
-        this.performanceMapper = performanceMapper;
+        this.detailedPerformanceMapper = detailedPerformanceMapper;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get detailed information about a specific performance")
     public PerformanceDTO findOne(@PathVariable UUID id){
-        return performanceMapper.fromEntity(performanceService.findOne(id));
+        return detailedPerformanceMapper.fromEntity(performanceService.findOne(id));
     }
 }

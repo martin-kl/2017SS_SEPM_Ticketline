@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class NewsMapperTest {
 
     @Configuration
-    @ComponentScan(basePackages = "at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper")
+    @ComponentScan(basePackages = "at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.news")
     public static class NewsMapperTestContextConfiguration {
     }
 
