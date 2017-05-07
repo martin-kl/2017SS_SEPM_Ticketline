@@ -9,11 +9,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "LocationDTO", description = "default DTO for location entries via rest")
-public abstract class LocationDTO {
+public class LocationDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
     private UUID id;
