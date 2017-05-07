@@ -164,7 +164,32 @@ public class ReservationsController {
         if (tfResBillNumber.getText().length() != 0) {
             //search with id
             try {
-                reservationService.findReservationWithID(tfResBillNumber.getText().trim());
+                DetailedTicketTransactionDTO transactionDTO = reservationService
+                    .findReservationWithID(tfResBillNumber.getText().trim());
+                System.out.println("got transaction = " + transactionDTO);
+
+                ObservableList<Node> vbReservationBoxChildren = vbReservationsElements
+                    .getChildren();
+                vbReservationBoxChildren.clear();
+
+                SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                    .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
+
+                ((ReservationsElementController) wrapper.getController())
+                    .initializeData(transactionDTO);
+                VBox reservationBox = (VBox) wrapper.getLoadedObject();
+                    /*
+                    customerBox.setOnMouseClicked((e) -> {
+                        handleCustomerEdit(customer);
+                    });
+                    */
+                vbReservationBoxChildren.add(reservationBox);
+                /*
+                if (iterator.hasNext()) {
+                    Separator separator = new Separator();
+                    vbReservationBoxChildren.add(separator);
+                }
+                */
             } catch (ExceptionWithDialog exceptionWithDialog) {
                 exceptionWithDialog.showDialog();
             }

@@ -86,7 +86,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
             ResponseEntity<DetailedTicketTransactionDTO> reservation =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "?id=" + uuid,
+                    restClient.getServiceURI(TRANSACTION_URL) + "/" + uuid,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<DetailedTicketTransactionDTO>() {
