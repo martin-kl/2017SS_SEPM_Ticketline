@@ -29,6 +29,8 @@ public class ReservationsElementController {
     @FXML
     private Label lbReservationID;
     @FXML
+    private Label lbPerformanceName;
+    @FXML
     private Label lbBoughtReserved;
 
     private final SpringFxmlLoader springFxmlLoader;
@@ -41,6 +43,7 @@ public class ReservationsElementController {
         lbCustomerFirstName.setText(ticketTransactionDTO.getCustomer().getFirstName());
         lbCustomerLastName.setText(ticketTransactionDTO.getCustomer().getLastName());
         lbReservationID.setText(ticketTransactionDTO.getId().toString());
+        lbPerformanceName.setText(ticketTransactionDTO.getPerformanceName());
 
         TicketStatus status = ticketTransactionDTO.getStatus();
         lbBoughtReserved.setText(

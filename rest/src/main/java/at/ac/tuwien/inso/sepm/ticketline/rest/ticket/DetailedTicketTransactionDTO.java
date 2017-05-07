@@ -30,4 +30,7 @@ public class DetailedTicketTransactionDTO {
 
     @ApiModelProperty(readOnly = true, name = "Reserved Tickets")
     private List<TicketDTO> tickets;
+
+    @ApiModelProperty(readOnly = true, name = "Performance Name")
+    private String performanceName;
 }
