@@ -20,7 +20,7 @@ public abstract class TicketTransactionTicketsMapper implements TicketTransactio
 
     @Override
     public DetailedTicketTransactionDTO fromEntity(TicketTransaction ticketTransaction) {
-        DetailedTicketTransactionDTO dto = delegate.fromEntity( ticketTransaction );
+        DetailedTicketTransactionDTO dto = delegate.fromEntity(ticketTransaction);
 
         dto.setTickets(
             ticketTransaction
@@ -31,11 +31,11 @@ public abstract class TicketTransactionTicketsMapper implements TicketTransactio
                 .collect(Collectors.toList())
         );
 
-        if(ticketTransaction.getTicketHistories().size() > 0) {
-            for(TicketHistory history : ticketTransaction.getTicketHistories()) {
-                dto.setPerformanceName(history.getTicket().getPerformance().getName());
-                return dto;
-            }
+        if (ticketTransaction.getTicketHistories().size() > 0) {
+            dto.setPerformanceName(
+                ticketTransaction.getTicketHistories().iterator().next().getTicket()
+                    .getPerformance().getName());
+            return dto;
         }
         dto.setPerformanceName("no name found");
         return dto;

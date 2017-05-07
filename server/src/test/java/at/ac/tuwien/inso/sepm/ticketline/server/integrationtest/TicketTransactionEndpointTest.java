@@ -45,9 +45,14 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         .address("First Street 12, 2019 City")
         .build();
 
+    private static final Performance TEST_PERFORMANCE = Performance.builder()
+        .name("Testperformance")
+        .build();
+
     private static final Ticket TEST_TICKET = SeatTicket.builder()
         .id(UUID.randomUUID())
         .price(new BigDecimal(100))
+        .performance(TEST_PERFORMANCE)
         .build();
 
     private static final TicketHistory TEST_TICKET_HISTORY = TicketHistory.builder()
@@ -68,6 +73,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED.value()));
     }
 
+    //the method we wanted to test here is not existing now
+    /*
     @Test
     public void findAllReservedTransactions() {
         BDDMockito
@@ -179,6 +186,7 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .then().extract().response();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST.value()));
     }
+    */
 
     @Test
     public void findTransactionByValidId() {

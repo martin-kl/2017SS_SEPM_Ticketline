@@ -18,12 +18,15 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
@@ -59,6 +62,8 @@ public class ReservationsController {
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final ReservationService reservationService;
+
+    private DetailedTicketTransactionDTO selectedTransaction;
 
     public ReservationsController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         ReservationService reservationService) {
@@ -171,7 +176,8 @@ public class ReservationsController {
                 //search with customerName / performance name
                 try {
                     List<DetailedTicketTransactionDTO> searchResult = reservationService
-                        .findTransactionsByCustomerAndPerformance(tfCustomerFirstName.getText().trim(),
+                        .findTransactionsByCustomerAndPerformance(
+                            tfCustomerFirstName.getText().trim(),
                             tfCustomerLastName.getText().trim(),
                             tfPerformanceName.getText().trim());
                     //System.out.println("got #"+searchResult.size()+ " results");
@@ -184,6 +190,7 @@ public class ReservationsController {
         }
     }
 
+
     private void loadNewElements(List<DetailedTicketTransactionDTO> elements) {
         ObservableList<Node> vbReservationBoxChildren = vbReservationsElements
             .getChildren();
@@ -195,14 +202,22 @@ public class ReservationsController {
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
 
-            ((ReservationsElementController) wrapper.getController())
-                .initializeData(ticketTransaction);
+            ((ReservationsElementController) wrapper.getController()).initializeData(ticketTransaction);
             VBox reservationBox = (VBox) wrapper.getLoadedObject();
-                    /*
-                    customerBox.setOnMouseClicked((e) -> {
-                        handleCustomerEdit(customer);
-                    });
-                    */
+
+            reservationBox.setOnMouseClicked((e) -> {
+                reservationBox.requestFocus();
+
+                //TODO should just mark the last selected one and the selection just gives us one transaction, always the same one
+
+                reservationBox.setStyle("-fx-background-color: #2196F3");
+                selectedTransaction = ticketTransaction;
+                System.out
+                    .println("user selected transaction with id = " + ticketTransaction.getId()
+                        + " performance = " + ticketTransaction.getPerformanceName()
+                        + "\n\tcustomer = " + ticketTransaction.getCustomer());
+            });
+
             vbReservationBoxChildren.add(reservationBox);
             if (iterator.hasNext()) {
                 Separator separator = new Separator();
@@ -211,6 +226,14 @@ public class ReservationsController {
         }
     }
 
+
     public void handleReservationDetails(ActionEvent actionEvent) {
+        //start it with selectedTransaction as argument
+        if(selectedTransaction == null) {
+            //show alert
+            ValidationException e = new ValidationException("reservation.error.nothingSelected");
+            e.showDialog();
+            return;
+        }
     }
 }
