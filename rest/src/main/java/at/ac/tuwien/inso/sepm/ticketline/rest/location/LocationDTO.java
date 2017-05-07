@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.location;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -13,6 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "LocationDTO", description = "default DTO for location entries via rest")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = SeatLocationDTO.class, name = "seat"),
+    @JsonSubTypes.Type(value = SectorLocationDTO.class, name = "sector")
+})
 public abstract class LocationDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")

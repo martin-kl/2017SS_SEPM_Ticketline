@@ -1,7 +1,15 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.util;
 
-/**
- * Created by benni on 07.05.2017.
- */
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class TicketWrapper {
+    private Ticket ticket;
+    private TicketStatus status;
 }

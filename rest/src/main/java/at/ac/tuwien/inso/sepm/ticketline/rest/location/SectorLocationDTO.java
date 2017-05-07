@@ -15,6 +15,4 @@ import lombok.ToString;
 @Builder
 @ApiModel(value = "SectorLocationDTO", description = "Sector location DTO for Location Entity")
 public class SectorLocationDTO extends LocationDTO {
-    @ApiModelProperty(readOnly = true, name = "The type of the location")
-    private final String type = "Sector";
 }
