@@ -11,8 +11,15 @@ public interface ReservationService {
      *
      * @return ordered list of al reservations
      */
-    List<DetailedTicketTransactionDTO> findReservationsWithStatus(String status) throws ExceptionWithDialog;
+     //not needed right now
+    //List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status) throws ExceptionWithDialog;
 
+     /**
+     * Find all transactions with status bought or reserved
+     *
+     * @return ordered list of all transactions with status bought or reserved
+     */
+    List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved() throws ExceptionWithDialog;
 
     /**
      * Find a single reservation entry by id.
@@ -20,7 +27,7 @@ public interface ReservationService {
      * @param id the id of the reservation entry
      * @return the Transaction/Reservation entry
      */
-    DetailedTicketTransactionDTO findReservationWithID(String id) throws ExceptionWithDialog;
+    DetailedTicketTransactionDTO findTransactionWithID(String id) throws ExceptionWithDialog;
 
     /**
      * Finds a Transaction/Reservation by the
@@ -28,7 +35,7 @@ public interface ReservationService {
      * @param performanceName the performance name to search for
      * @return list of reservations/transactions for the customer and the performance name
      */
-    List<DetailedTicketTransactionDTO> findReservationsByCustomerAndPerformance(String customerName, String performanceName)
+    List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerName, String performanceName)
         throws ExceptionWithDialog;
 
 }

@@ -26,32 +26,10 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
         this.restClient = restClient;
     }
 
-    //this method is not supported over rest
+    //not needed now
     /*
     @Override
-    public List<DetailedTicketTransactionDTO> findReservationsWithStatus() throws ExceptionWithDialog {
-       try {
-            log.debug("Retrieving all ticket transactions from {}", restClient.getServiceURI(
-                TRANSACTION_URL));
-            ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
-                restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL),
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
-                    });
-            log.debug("Result status was {} with content {}", reservations.getStatusCode(), reservations.getBody());
-            return reservations.getBody();
-        } catch (HttpStatusCodeException e) {
-            throw new DataAccessException("Failed retrieve list of all ticket transactions with status code " + e.getStatusCode().toString());
-        } catch (RestClientException e) {
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-    */
-
-    @Override
-    public List<DetailedTicketTransactionDTO> findReservationsWithStatus(String status)
+    public List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status)
         throws ExceptionWithDialog {
         try {
             log.debug("Retrieving all ticket transactions from {}", restClient.getServiceURI(
@@ -75,9 +53,35 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
             throw new DataAccessException(e.getMessage(), e);
         }
     }
+    */
 
     @Override
-    public DetailedTicketTransactionDTO findReservationsWithID(UUID uuid)
+    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
+        throws ExceptionWithDialog {
+        try {
+            log.debug("Retrieving all ticket transactions (bought and reserved) from {}",
+                restClient.getServiceURI(TRANSACTION_URL));
+            ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
+                restClient.exchange(
+                    restClient.getServiceURI(TRANSACTION_URL),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
+                    });
+            log.debug("Result status was {} with content {}", reservations.getStatusCode(),
+                reservations.getBody());
+            return reservations.getBody();
+        } catch (HttpStatusCodeException e) {
+            throw new DataAccessException(
+                "Failed retrieve list of all ticket transactions (bought and reserved) with status "
+                    + "code " + e.getStatusCode().toString());
+        } catch (RestClientException e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public DetailedTicketTransactionDTO findTransactionWithID(UUID uuid)
         throws ExceptionWithDialog {
         try {
             log.debug("Retrieving a ticket transactions from {} with id {}",
@@ -104,7 +108,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     }
 
     @Override
-    public List<DetailedTicketTransactionDTO> findReservationsByCustomerAndPerformance(
+    public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
         String customerName, String performanceName) throws ExceptionWithDialog {
         try {
             log.debug(
@@ -114,8 +118,8 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "?customerName=" + customerName
-                        + "?performance=" + performanceName,
+                    restClient.getServiceURI(TRANSACTION_URL) + "/" + customerName
+                        + "/" + performanceName,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {

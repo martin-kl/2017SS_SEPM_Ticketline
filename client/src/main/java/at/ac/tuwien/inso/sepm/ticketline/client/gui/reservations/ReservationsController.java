@@ -11,15 +11,13 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDT
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -104,13 +102,18 @@ public class ReservationsController {
     }
 
     public void loadReservations() {
+        //delete possible entries from before
+        tfResBillNumber.setText("");
+        tfCustomerName.setText("");
+        tfPerformanceName.setText("");
+
         ObservableList<Node> vbReservationBoxChildren = vbReservationsElements.getChildren();
         vbReservationBoxChildren.clear();
         Task<List<DetailedTicketTransactionDTO>> task = new Task<List<DetailedTicketTransactionDTO>>() {
             @Override
             protected List<DetailedTicketTransactionDTO> call() throws DataAccessException {
                 try {
-                    return reservationService.findReservationsWithStatus("BOUGHT");
+                    return reservationService.findTransactionsBoughtReserved();
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();
@@ -120,7 +123,8 @@ public class ReservationsController {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                drawReservations(getValue().iterator());
+                loadNewElements(getValue());
+                //drawReservations(getValue().iterator());
             }
 
             @Override
@@ -128,29 +132,6 @@ public class ReservationsController {
                 super.failed();
                 JavaFXUtils.createExceptionDialog(getException(),
                     vbReservationsElements.getScene().getWindow()).showAndWait();
-            }
-
-            private void drawReservations(Iterator<DetailedTicketTransactionDTO> iterator) {
-                while (iterator.hasNext()) {
-                    DetailedTicketTransactionDTO ticketTransaction = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                        .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
-
-                    ((ReservationsElementController) wrapper.getController())
-                        .initializeData(ticketTransaction);
-                    VBox reservationBox = (VBox) wrapper.getLoadedObject();
-                    /*
-                    customerBox.setOnMouseClicked((e) -> {
-                        handleCustomerEdit(customer);
-                    });
-                    */
-                    vbReservationBoxChildren.add(reservationBox);
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        vbReservationBoxChildren.add(separator);
-                    }
-                }
-
             }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->
@@ -165,31 +146,13 @@ public class ReservationsController {
             //search with id
             try {
                 DetailedTicketTransactionDTO transactionDTO = reservationService
-                    .findReservationWithID(tfResBillNumber.getText().trim());
-                System.out.println("got transaction = " + transactionDTO);
+                    .findTransactionWithID(tfResBillNumber.getText().trim());
+                //System.out.println("got transaction = " + transactionDTO);
 
-                ObservableList<Node> vbReservationBoxChildren = vbReservationsElements
-                    .getChildren();
-                vbReservationBoxChildren.clear();
-
-                SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                    .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
-
-                ((ReservationsElementController) wrapper.getController())
-                    .initializeData(transactionDTO);
-                VBox reservationBox = (VBox) wrapper.getLoadedObject();
-                    /*
-                    customerBox.setOnMouseClicked((e) -> {
-                        handleCustomerEdit(customer);
-                    });
-                    */
-                vbReservationBoxChildren.add(reservationBox);
-                /*
-                if (iterator.hasNext()) {
-                    Separator separator = new Separator();
-                    vbReservationBoxChildren.add(separator);
-                }
-                */
+                //search result is one entry, but method loadNewElements requires a list
+                List<DetailedTicketTransactionDTO> searchResultList = new LinkedList<>();
+                searchResultList.add(transactionDTO);
+                loadNewElements(searchResultList);
             } catch (ExceptionWithDialog exceptionWithDialog) {
                 exceptionWithDialog.showDialog();
             }
@@ -201,12 +164,41 @@ public class ReservationsController {
             } else {
                 //search with customerName / performance name
                 try {
-                    reservationService
-                        .findReservationsByCustomerAndPerformance(tfCustomerName.getText().trim(),
+                    List<DetailedTicketTransactionDTO> searchResult = reservationService
+                        .findTransactionsByCustomerAndPerformance(tfCustomerName.getText().trim(),
                             tfPerformanceName.getText().trim());
+                    //load new elements
+                    loadNewElements(searchResult);
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                 }
+            }
+        }
+    }
+
+    private void loadNewElements(List<DetailedTicketTransactionDTO> elements) {
+        ObservableList<Node> vbReservationBoxChildren = vbReservationsElements
+            .getChildren();
+        vbReservationBoxChildren.clear();
+
+        Iterator<DetailedTicketTransactionDTO> iterator = elements.iterator();
+        while (iterator.hasNext()) {
+            DetailedTicketTransactionDTO ticketTransaction = iterator.next();
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
+
+            ((ReservationsElementController) wrapper.getController())
+                .initializeData(ticketTransaction);
+            VBox reservationBox = (VBox) wrapper.getLoadedObject();
+                    /*
+                    customerBox.setOnMouseClicked((e) -> {
+                        handleCustomerEdit(customer);
+                    });
+                    */
+            vbReservationBoxChildren.add(reservationBox);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbReservationBoxChildren.add(separator);
             }
         }
     }

@@ -38,6 +38,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<TicketTransaction> getAllBoughtReservedTransactions() {
+        //TODO replace top100 again with all - is just so for testing everything and to load faster
+        return ticketTransactionRepository
+            .findTop100ByStatusOrStatusOrderByIdDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED);
+        //return ticketTransactionRepository.findByStatus(ticketStatus);
+    }
+
+    @Override
     public TicketTransaction findTransactionsByID(UUID id) {
         //return ticketTransactionRepository.findOne(id);
         return ticketTransactionRepository.findOneById(id).orElseThrow(NotFoundException::new);

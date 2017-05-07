@@ -13,30 +13,39 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final TicketTransactionRestClient ticketTransactionRestClient;
 
-    public ReservationServiceImpl(TicketTransactionRestClient customerRestClient) {
-        this.ticketTransactionRestClient = customerRestClient;
+    public ReservationServiceImpl(TicketTransactionRestClient ticketTransactionRestClient) {
+        this.ticketTransactionRestClient = ticketTransactionRestClient;
     }
 
+    //not needed right now
+    /*
     @Override
-    public List<DetailedTicketTransactionDTO> findReservationsWithStatus(String status)
+    public List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status)
         throws ExceptionWithDialog {
-        return ticketTransactionRestClient.findReservationsWithStatus(status);
+        return ticketTransactionRestClient.findTransactionsWithStatus(status);
+    }
+    */
+
+    @Override
+    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
+        throws ExceptionWithDialog {
+        return ticketTransactionRestClient.findTransactionsBoughtReserved();
     }
 
     @Override
-    public DetailedTicketTransactionDTO findReservationWithID(String id)
+    public DetailedTicketTransactionDTO findTransactionWithID(String id)
         throws ExceptionWithDialog {
         //TODO cast here to uuid? better to search for a string as part of uuid or?
         UUID uuid = UUID.fromString(id);
         System.out.println(
             "uuid from string \"" + id + "\" = \"" + uuid + "\"");
-        return ticketTransactionRestClient.findReservationsWithID(uuid);
+        return ticketTransactionRestClient.findTransactionWithID(uuid);
     }
 
     @Override
-    public List<DetailedTicketTransactionDTO> findReservationsByCustomerAndPerformance(
+    public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
         String customerName, String performanceName) throws ExceptionWithDialog {
-        return ticketTransactionRestClient.findReservationsByCustomerAndPerformance(customerName, performanceName);
+        return ticketTransactionRestClient.findTransactionsByCustomerAndPerformance(customerName, performanceName);
     }
 
 }

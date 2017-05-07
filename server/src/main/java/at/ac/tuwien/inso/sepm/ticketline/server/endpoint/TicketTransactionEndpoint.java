@@ -29,16 +29,26 @@ public class TicketTransactionEndpoint {
     private TicketTransactionMapper ticketTransactionMapper;
 
     @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "Gets a list of bought and reserved Ticket Reservations")
+    public List<DetailedTicketTransactionDTO> getAllReservedAndBoughtTransactions() {
+        return ticketService
+            .getAllBoughtReservedTransactions()
+            .stream()
+            .map(ticketTransactionMapper::fromEntity)
+            .collect(Collectors.toList());
+    }
+/*
+    @RequestMapping(value = "/{status}", method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of Ticket Reservations")
     public List<DetailedTicketTransactionDTO> getAllTransactions(
-        @RequestParam(value = "status") String status) {
+        @PathVariable String status) {
         return ticketService
             .getAllTransactions(status)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
     }
-
+*/
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get one Ticket Transaction by ID")
     public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {

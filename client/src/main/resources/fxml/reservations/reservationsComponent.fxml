@@ -11,59 +11,66 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController">
-        <children>
-            <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
-                <children>
-                    <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
-                    <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
-                </children>
-            </HBox>
-            <Separator />
-            <FlowPane>
-                <children>
-                    <TextField fx:id="tfResBillNumber" promptText="%reservation.prompt.resBillNumber">
-                        <FlowPane.margin>
-                            <Insets left="10.0" right="10.0" />
-                        </FlowPane.margin>
-                    </TextField>
-                    <Separator orientation="VERTICAL" />
-                    <TextField fx:id="tfCustomerName" promptText="%reservation.prompt.customerName">
-                        <FlowPane.margin>
-                            <Insets left="10.0" />
-                        </FlowPane.margin>
-                    </TextField>
-                    <TextField fx:id="tfPerformanceName" promptText="%reservation.prompt.performanceName">
-                        <FlowPane.margin>
-                            <Insets left="10.0" />
-                        </FlowPane.margin>
-                    </TextField>
-                    <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleSearch" text="%reservation.search">
-                        <FlowPane.margin>
-                            <Insets left="10.0" />
-                        </FlowPane.margin>
-                    </Button>
-                </children>
-            </FlowPane>
-            <Separator />
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
-                <VBox fx:id="vbReservationsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </padding>
-                </VBox>
-            </ScrollPane>
-            <Separator />
-            <ButtonBar buttonMinWidth="0.0">
-                <buttons>
-                    <Button fx:id="btnReservationDetails" mnemonicParsing="false" onAction="#handleReservationDetails" text="%reservation.showDetails" />
-                </buttons>
-                <VBox.margin>
-                    <Insets left="10.0" right="10.0" />
-                </VBox.margin>
-            </ButtonBar>
-        </children>
-        <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-        </padding>
-    </VBox>
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0"
+    xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController">
+    <children>
+        <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
+            <children>
+                <Label fx:id="lblHeaderIcon" styleClass="headerIcon"/>
+                <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;"/>
+            </children>
+        </HBox>
+        <Separator/>
+        <FlowPane>
+            <children>
+                <TextField fx:id="tfResBillNumber" promptText="%reservation.prompt.resBillNumber">
+                    <FlowPane.margin>
+                        <Insets left="10.0" right="10.0"/>
+                    </FlowPane.margin>
+                </TextField>
+                <Separator orientation="VERTICAL"/>
+                <TextField fx:id="tfCustomerName" promptText="%reservation.prompt.customerName">
+                    <FlowPane.margin>
+                        <Insets left="10.0"/>
+                    </FlowPane.margin>
+                </TextField>
+                <TextField fx:id="tfPerformanceName"
+                    promptText="%reservation.prompt.performanceName">
+                    <FlowPane.margin>
+                        <Insets left="10.0"/>
+                    </FlowPane.margin>
+                </TextField>
+                <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleSearch"
+                    text="%reservation.search">
+                    <FlowPane.margin>
+                        <Insets left="10.0"/>
+                    </FlowPane.margin>
+                </Button>
+            </children>
+        </FlowPane>
+        <Separator/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
+            style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+            <VBox fx:id="vbReservationsElements" fillWidth="true" maxHeight="1.7976931348623157E308"
+                maxWidth="1.7976931348623157E308">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+            </VBox>
+        </ScrollPane>
+        <Separator/>
+        <ButtonBar buttonMinWidth="0.0">
+            <buttons>
+                <Button fx:id="btnReservationDetails" mnemonicParsing="false"
+                    onAction="#handleReservationDetails" text="%reservation.showDetails"/>
+            </buttons>
+            <VBox.margin>
+                <Insets left="10.0" right="10.0"/>
+            </VBox.margin>
+        </ButtonBar>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</VBox>

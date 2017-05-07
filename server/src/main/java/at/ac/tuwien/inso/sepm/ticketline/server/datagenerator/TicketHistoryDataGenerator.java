@@ -84,7 +84,8 @@ public class TicketHistoryDataGenerator {
                     ticketsToBuyStornoAndReserve.add(tickets.get(i));
                 }
             }
-            buyStornoAndReserveTickets(ticketsToBuyAndStorno, customers);
+            //buyStornoAndReserveTickets(ticketsToBuyAndStorno, customers);
+            buyStornoAndReserveTickets(ticketsToBuyStornoAndReserve, customers);
 
         }
     }

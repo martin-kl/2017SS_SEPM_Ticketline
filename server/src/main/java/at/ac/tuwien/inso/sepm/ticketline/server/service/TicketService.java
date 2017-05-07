@@ -16,6 +16,13 @@ public interface TicketService {
      */
     List<TicketTransaction> getAllTransactions(String status);
 
+    /**
+     * Simply returns a list of all bought and reserved Transactions
+     *
+     * @return a list of TicketTransactions
+     */
+    List<TicketTransaction> getAllBoughtReservedTransactions();
+
      /**
      * Returns a list of Transactions for a customer and a performance
      *

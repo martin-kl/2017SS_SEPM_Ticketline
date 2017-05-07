@@ -1,44 +1,42 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.rest;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import java.util.List;
 import java.util.UUID;
 
 public interface TicketTransactionRestClient {
-     /**
-     * Find all reservations
-     *
-     * @return ordered list of all reservations
-     */
-     //this method is not supported over rest
-    //List<DetailedTicketTransactionDTO> findReservationsWithStatus() throws ExceptionWithDialog;
 
      /**
-     * Find all reservations with a given status
+     * Find all transactions with a given status
      *
-      * @param status The reservations that are returned have this status
-     * @return ordered list of all reservations
+      * @param status The transactions that are returned have this status
+     * @return ordered list of all transactions
      */
-    List<DetailedTicketTransactionDTO> findReservationsWithStatus(String status) throws ExceptionWithDialog;
+     //not needed now
+    //List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status) throws ExceptionWithDialog;
 
+     /**
+     * Find all transactions with status bought or reserved
+     *
+     * @return ordered list of all transactions with status bought or reserved
+     */
+    List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved() throws ExceptionWithDialog;
 
     /**
-     * Find a single reservation entry by id.
+     * Find a single transactions entry by id.
      *
-     * @param uuid the id of the reservation entry
-     * @return the Transaction/Reservation entry
+     * @param uuid the id of the transactions entry
+     * @return the transaction entry
      */
-    DetailedTicketTransactionDTO findReservationsWithID(UUID uuid) throws ExceptionWithDialog;
+    DetailedTicketTransactionDTO findTransactionWithID(UUID uuid) throws ExceptionWithDialog;
 
     /**
-     * Finds a Transaction/Reservation by the
+     * Finds a Transaction by the Customer name and the performance name.
      * @param customerName the customer name to search for
      * @param performanceName the performance name to search for
-     * @return list of reservations/transactions for the customer and the performance name
+     * @return list of transactions for the customer and the performance name
      */
-    List<DetailedTicketTransactionDTO> findReservationsByCustomerAndPerformance(String customerName, String performanceName)
+    List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerName, String performanceName)
         throws ExceptionWithDialog;
-
 }

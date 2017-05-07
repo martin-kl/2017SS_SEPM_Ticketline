@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,6 +29,11 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      */
     List<TicketTransaction> findTop100ByStatus(TicketStatus status);
 
+    /**
+     * Returns only the first 100 TicketTransactions with status bought or reserved
+     * @return The first 100 TicketTransactions with status bought or reserved
+     */
+    List<TicketTransaction> findTop100ByStatusOrStatusOrderByIdDesc(TicketStatus status1, TicketStatus status2);
 
      /**
      * Returns the Transaction with the id of the parameter
