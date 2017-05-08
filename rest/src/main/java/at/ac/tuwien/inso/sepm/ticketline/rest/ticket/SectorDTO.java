@@ -25,4 +25,6 @@ public class SectorDTO {
     @ApiModelProperty(readOnly = true, name = "name of the sector")
     private String name;
 
+    @ApiModelProperty(readOnly = true, name = "priceCategory for a sector")
+    private PriceCategoryDTO priceCategory;
 }
