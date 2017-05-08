@@ -6,10 +6,15 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersControlle
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.util.List;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -97,14 +102,15 @@ public class MainController {
                 case "events":
                     reloadEventList();
                     break;
-                 case "accounts":
+                case "accounts":
                     //reloadCustomerList();
                     break;
-                 case "reservations":
+                case "reservations":
                     reloadReservationList();
                     break;
                 default:
-                    log.error("invalid argument in tab pane switch, argument is = {}", tpContent.getSelectionModel().getSelectedItem().getId());
+                    log.error("invalid argument in tab pane switch, argument is = {}",
+                        tpContent.getSelectionModel().getSelectedItem().getId());
                     break;
             }
         });
@@ -136,7 +142,8 @@ public class MainController {
         dialog.initOwner(stage);
 
         //wrapper contains controller and loaded object
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/addEditCustomer.fxml");
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/customers/addEditCustomer.fxml");
         CustomerAddEditController controller = (CustomerAddEditController) wrapper.getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
@@ -154,6 +161,47 @@ public class MainController {
             alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
             alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
             alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                event.consume();
+            }
+        });
+        dialog.showAndWait();
+    }
+
+    public void showTransactionDetailWindow(DetailedTicketTransactionDTO detailedTicketTransactionDTO,
+        List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
+        Stage stage = (Stage) spMainContent.getScene().getWindow();
+        Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
+        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        if(detailedTicketTransactionDTO != null && ticketDTOList == null && performanceDTO == null) {
+            controller.initData(detailedTicketTransactionDTO);
+        }else if(ticketDTOList != null && performanceDTO != null) {
+            controller.initData(detailedTicketTransactionDTO);
+        }else {
+            log.error(
+                "showTransactionDetailWindow was called with not clear parameters - detailedTicketTransaction is loaded now!");
+            controller.initData(detailedTicketTransactionDTO);
+        }
+        dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
+
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.detail.closeTitle"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.detail.closeHeader"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.detail.closeContent"));
             Optional<ButtonType> result = alert.showAndWait();
             if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
                 event.consume();
@@ -253,9 +301,13 @@ public class MainController {
         customersController.loadCustomers();
     }
 
-    public void reloadNewsList() { newsController.loadNews(); }
+    public void reloadNewsList() {
+        newsController.loadNews();
+    }
 
-    public void reloadEventList() { eventsController.loadEvents(); }
+    public void reloadEventList() {
+        eventsController.loadEvents();
+    }
 
     private void reloadReservationList() {
         reservationsController.loadTransactions();

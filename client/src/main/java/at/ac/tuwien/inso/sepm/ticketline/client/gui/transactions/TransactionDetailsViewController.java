@@ -4,8 +4,9 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class TransactionDetailsViewController {
     @FXML
     private Label reservationNumber;
