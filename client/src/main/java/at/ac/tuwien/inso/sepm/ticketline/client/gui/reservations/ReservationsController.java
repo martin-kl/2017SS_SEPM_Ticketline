@@ -74,7 +74,7 @@ public class ReservationsController {
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
         tfTransactionNumber
-            .setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
+            .setPromptText(BundleManager.getBundle().getString("reservation.prompt.transactionNumber"));
         tfCustomerFirstName
             .setPromptText(
                 BundleManager.getBundle().getString("reservation.prompt.customerFirstName"));
