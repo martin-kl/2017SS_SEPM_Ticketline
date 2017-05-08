@@ -179,7 +179,7 @@ public class ReservationsController {
                             tfCustomerFirstName.getText().trim(),
                             tfCustomerLastName.getText().trim(),
                             tfPerformanceName.getText().trim());
-                    System.out.println("got #"+searchResult.size()+ " results");
+                    //System.out.println("got #"+searchResult.size()+ " results");
                     //load new elements
                     loadNewElements(searchResult);
                 } catch (ExceptionWithDialog exceptionWithDialog) {
@@ -227,7 +227,6 @@ public class ReservationsController {
             }
         }
     }
-
 
     public void handleReservationDetails(ActionEvent actionEvent) {
         //start it with selectedTransaction as argument
