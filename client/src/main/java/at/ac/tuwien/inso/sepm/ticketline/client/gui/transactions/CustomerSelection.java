@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -37,7 +38,9 @@ public class CustomerSelection {
     private Button btnContinue;
 
 
-    private LambdaExpression onSelectionChange;
+    private CustomerDTO lastSelectedCustomer;
+    private Callable onSelectionChange;
+    private Callable onContinueClicked;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
@@ -49,15 +52,26 @@ public class CustomerSelection {
         this.customerService = customerService;
     }
 
+    public void setOnContinueClicked(Callable onContinueClicked) {
+        this.onContinueClicked = onContinueClicked;
+    }
 
-    public void setOnSelectionChange(LambdaExpression onSelectionChange) {
+    public void setOnSelectionChange(Callable onSelectionChange) {
         this.onSelectionChange = onSelectionChange;
     }
+
 
     public void reloadCustomers() {
         drawCustomers();
     }
 
+    private void updateCurrentlySelectedCustomer() {
+        if (lastSelectedCustomer != null) {
+            selectedCustomer.setText(lastSelectedCustomer.getFirstName() + " " + lastSelectedCustomer.getLastName());
+        } else {
+            selectedCustomer.setText("-");
+        }
+    }
 
 
     private void drawCustomers() {
@@ -94,7 +108,13 @@ public class CustomerSelection {
                     ((CustomersElementController) wrapper.getController()).initializeData(customer);
                     HBox customerBox = (HBox) wrapper.getLoadedObject();
                     customerBox.setOnMouseClicked((e) -> {
-                        onSelectionChange.invoke(customer);
+                        if (customer.equals(lastSelectedCustomer)) {
+                            onSelectionChange.call(null); //deselection
+                        } else {
+                            onSelectionChange.call(customer);
+                        }
+                        updateCurrentlySelectedCustomer();
+                        onSelectionChange.call(lastSelectedCustomer);
                     });
                     customerSelection.getChildren().add(customerBox);
                     if (iterator.hasNext()) {

@@ -1,5 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
+import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
@@ -18,6 +20,8 @@ import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.el.LambdaExpression;
+
 @Slf4j
 @Component
 public class TransactionDetailController {
@@ -30,6 +34,8 @@ public class TransactionDetailController {
 
     private final SpringFxmlLoader springFxmlLoader;
 
+    private CustomerDTO selectedCustomer;
+
     public TransactionDetailController(SpringFxmlLoader springFxmlLoader) {
         this.springFxmlLoader = springFxmlLoader;
     }
@@ -38,13 +44,30 @@ public class TransactionDetailController {
     public void initData(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
         setHeader(performanceDTO.getName());
         setTickets(ticketDTOList);
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
+        CustomerSelection tdvc = (CustomerSelection) wrapper.getController();
+        hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
+        tdvc.reloadCustomers();
+        tdvc.setOnContinueClicked(o -> {
+            //CONTINUE WAS CLICKED
+        });
+        tdvc.setOnSelectionChange(o -> {
+            //o is null if selection is removed
+            if (o == null) {
+                selectedCustomer = null;
+            } else {
+                CustomerDTO customer = (CustomerDTO) o;
+                selectedCustomer = customer;
+            }
+        });
     }
 
 
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetailView.fxml");
+            .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
         TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper.getController();
         tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
 
