@@ -61,6 +61,7 @@ public class ReservationsController {
     private final ReservationService reservationService;
 
     private DetailedTicketTransactionDTO selectedTransaction;
+    private VBox previousSelectedBox = null;
 
     public ReservationsController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         ReservationService reservationService) {
@@ -204,16 +205,19 @@ public class ReservationsController {
             VBox reservationBox = (VBox) wrapper.getLoadedObject();
 
             reservationBox.setOnMouseClicked((e) -> {
-                reservationBox.requestFocus();
-
-                //TODO should just mark the last selected one and the selection just gives us one transaction, always the same one
-
+                //unmark previous selected box
+                if(previousSelectedBox != null) {
+                    previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+                }
+                previousSelectedBox = reservationBox;
                 reservationBox.setStyle("-fx-background-color: #2196F3");
                 selectedTransaction = ticketTransaction;
+                /*
                 System.out
                     .println("user selected transaction with id = " + ticketTransaction.getId()
                         + " performance = " + ticketTransaction.getPerformanceName()
                         + "\n\tcustomer = " + ticketTransaction.getCustomer());
+                */
             });
 
             vbReservationBoxChildren.add(reservationBox);
