@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class TransactionDetailController {
+
     @FXML
     private Label lbDetailHeader;
     @FXML
@@ -65,13 +66,23 @@ public class TransactionDetailController {
         setTickets(ticketDTOList);
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
-        CustomerSelection tdvc = (CustomerSelection) wrapper.getController();
+        CustomerSelection cc = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
-        tdvc.reloadCustomers();
-        tdvc.setOnContinueClicked(o -> {
+        cc.reloadCustomers();
+        cc.setOnContinueClicked(o -> {
             //CONTINUE WAS CLICKED
+            //TODO this is not called if continue is clicked
+            System.out.println("continue was clicked");
+            SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
+                .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
+            TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
+                .getController();
+            tdvc.initController(selectedCustomer, performanceDTO, ticketDTOList);
+            ObservableList<Node> children = hbMain.getChildren();
+            children.clear();
+            children.add((VBox) wrapper2.getLoadedObject());
         });
-        tdvc.setOnSelectionChange(o -> {
+        cc.setOnSelectionChange(o -> {
             //o is null if selection is removed
             if (o == null) {
                 selectedCustomer = null;
@@ -87,7 +98,8 @@ public class TransactionDetailController {
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
-        TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper.getController();
+        TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper
+            .getController();
         tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
 
         //TODO check if this works so - do we have to clean the children before inserting?
