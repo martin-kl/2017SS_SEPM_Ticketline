@@ -5,42 +5,53 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<?import javafx.scene.control.TextField?>
-<VBox fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.CustomerSelection"
-    maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-    prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111"
-    xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.CustomerSelection">
     <children>
-        <Label text="%transaction.detail.customerSelection"/>
-        <Separator prefWidth="200.0"/>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <Label text="%transaction.detail.customerSelection" />
+        <Separator prefWidth="200.0">
+            <VBox.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </VBox.margin>
+        </Separator>
+        <HBox>
             <children>
-                <TextField fx:id="customerSearchField" promptText="%search"/>
-                <Button fx:id="btnAddNewCustomer" mnemonicParsing="false" text="%customer.add.new"/>
+                <TextField fx:id="customerSearchField" promptText="%search">
+                    <HBox.margin>
+                        <Insets right="10.0" />
+                    </HBox.margin>
+                </TextField>
+                <Button fx:id="btnAddNewCustomer" mnemonicParsing="false" text="%customer.add.new" />
             </children>
         </HBox>
-        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+        <ScrollPane>
             <content>
-                <VBox fx:id="customerSelection"/>
+                <VBox fx:id="customerSelection" />
             </content>
+            <VBox.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </VBox.margin>
         </ScrollPane>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <HBox>
             <children>
-                <Label text="%customer.selected"/>
+                <Label text="%customer.selected" />
                 <Label fx:id="selectedCustomer" text="-">
                     <HBox.margin>
-                        <Insets left="5.0"/>
+                        <Insets left="5.0" />
                     </HBox.margin>
                 </Label>
             </children>
         </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <HBox>
             <children>
-                <Button fx:id="btnContinue" mnemonicParsing="false" text="Continue"/>
+                <Button fx:id="btnContinue" mnemonicParsing="false" text="Continue">
+                    <HBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                    </HBox.margin>
+                </Button>
             </children>
         </HBox>
     </children>
