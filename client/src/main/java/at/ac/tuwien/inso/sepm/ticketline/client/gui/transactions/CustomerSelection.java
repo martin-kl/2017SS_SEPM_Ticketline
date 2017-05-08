@@ -5,12 +5,12 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -44,12 +44,15 @@ public class CustomerSelection {
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
+    private final TransactionDetailController transactionDetailController;
 
     public CustomerSelection(MainController mainController, SpringFxmlLoader springFxmlLoader,
-        CustomerService customerService) {
+        CustomerService customerService,
+        TransactionDetailController transactionDetailController) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.customerService = customerService;
+        this.transactionDetailController = transactionDetailController;
     }
 
     public void setOnContinueClicked(Callable onContinueClicked) {
@@ -140,5 +143,9 @@ public class CustomerSelection {
         } else {
             selectedCustomer.setText("-");
         }
+    }
+
+    public void handleContinue(ActionEvent actionEvent) {
+        transactionDetailController.changeToDetailView(lastSelectedCustomer);
     }
 }

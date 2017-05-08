@@ -48,7 +48,7 @@ public class TransactionDetailsViewController {
             "€" + Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString());
     }
 
-    //TODO if we are coming from the saalplan, the initController method is called and this calls the loadButtonsAccordingToStatus with the flag TRUE - so the status is ignored
+    //if we are coming from the saalplan, the initController method is called and this calls the loadButtonsAccordingToStatus with the flag TRUE - so the status is ignored
 
     public void initController(CustomerDTO customerDTO, PerformanceDTO performanceDTO, List<TicketDTO> ticketDTOList) {
         loadButtonsAccordingToStatus(TicketStatus.BOUGHT, true);

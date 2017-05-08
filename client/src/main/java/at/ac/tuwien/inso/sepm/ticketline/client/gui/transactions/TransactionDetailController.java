@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.time.Instant;
 import java.util.UUID;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
@@ -29,11 +30,15 @@ public class TransactionDetailController {
     @FXML
     private HBox hbMain;
     @FXML
+    private VBox vbTicketsInclLabel;
+    @FXML
     private VBox vbTickets;
+    @FXML
+    private Separator spSeparator;
+
+    private List<TicketDTO> ticketDTOList;
 
     private final SpringFxmlLoader springFxmlLoader;
-
-    private CustomerDTO selectedCustomer;
 
     public TransactionDetailController(SpringFxmlLoader springFxmlLoader) {
         this.springFxmlLoader = springFxmlLoader;
@@ -48,22 +53,27 @@ public class TransactionDetailController {
         CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         customerSelection.reloadCustomers();
+        this.ticketDTOList = ticketDTOList;
+    }
 
-        customerSelection.setOnContinueClicked(o -> {
-            //CONTINUE WAS CLICKED
-            //TODO this is not called if continue is clicked
-            System.out.println("\n\tcontinue was clicked, object o = " + o.toString());
-            SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
-                .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
-            TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
-                .getController();
-            //just to test - create random performance
-            tdvc.initController(selectedCustomer, new PerformanceDTO(UUID.randomUUID(), "musterPerformance",
-                Instant.now(), Instant.now(), null, null) , ticketDTOList);
-            ObservableList<Node> children = hbMain.getChildren();
-            children.clear();
-            children.add((VBox) wrapper2.getLoadedObject());
-        });
+    public void changeToDetailView(CustomerDTO selectedCustomer) {
+        SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
+        TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
+            .getController();
+        //just to test - create random performance
+        if(selectedCustomer == null) {
+            //TODO no customer was selected - take a "guest" user
+        }
+        tdvc.initController(selectedCustomer,
+            new PerformanceDTO(UUID.randomUUID(), "musterPerformance",
+                Instant.now(), Instant.now(), null, null), ticketDTOList);
+
+        ObservableList<Node> children = hbMain.getChildren();
+        children.clear();
+        children.add(vbTicketsInclLabel);
+        children.add(spSeparator);
+        children.add((VBox) wrapper2.getLoadedObject());
     }
 
     //this is the "normal" method that should be called after the saalplan
@@ -75,6 +85,7 @@ public class TransactionDetailController {
         CustomerSelection cc = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         cc.reloadCustomers();
+        this.ticketDTOList = ticketDTOList;
         cc.setOnContinueClicked(o -> {
             //CONTINUE WAS CLICKED
         });
@@ -92,6 +103,8 @@ public class TransactionDetailController {
         //TODO check if this works so - do we have to clean the children before inserting?
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         setTickets(detailedTicketTransactionDTO.getTickets());
+
+        this.ticketDTOList = detailedTicketTransactionDTO.getTickets();
     }
 
     private void setHeader(String performanceName) {
