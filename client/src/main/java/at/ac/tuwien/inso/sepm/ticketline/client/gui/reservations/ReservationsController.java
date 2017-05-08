@@ -74,7 +74,8 @@ public class ReservationsController {
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
         tfTransactionNumber
-            .setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
+            .setPromptText(
+                BundleManager.getBundle().getString("reservation.prompt.transactionNumber"));
         tfCustomerFirstName
             .setPromptText(
                 BundleManager.getBundle().getString("reservation.prompt.customerFirstName"));
@@ -89,6 +90,8 @@ public class ReservationsController {
             .setText(BundleManager.getBundle().getString("reservation.showDetails"));
 
         //TODO Labels in the table are not refreshed after language change - is done with new loading
+        selectedTransaction = null;
+        previousSelectedBox = null;
         loadTransactions();
     }
 
@@ -201,23 +204,18 @@ public class ReservationsController {
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
 
-            ((ReservationsElementController) wrapper.getController()).initializeData(ticketTransaction);
+            ((ReservationsElementController) wrapper.getController())
+                .initializeData(ticketTransaction);
             VBox reservationBox = (VBox) wrapper.getLoadedObject();
 
             reservationBox.setOnMouseClicked((e) -> {
-                //unmark previous selected box
-                if(previousSelectedBox != null) {
+                //un-mark previous selected box
+                if (previousSelectedBox != null) {
                     previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
                 }
                 previousSelectedBox = reservationBox;
                 reservationBox.setStyle("-fx-background-color: #2196F3");
                 selectedTransaction = ticketTransaction;
-                /*
-                System.out
-                    .println("user selected transaction with id = " + ticketTransaction.getId()
-                        + " performance = " + ticketTransaction.getPerformanceName()
-                        + "\n\tcustomer = " + ticketTransaction.getCustomer());
-                */
             });
 
             vbReservationBoxChildren.add(reservationBox);
@@ -230,11 +228,12 @@ public class ReservationsController {
 
     public void handleReservationDetails(ActionEvent actionEvent) {
         //start it with selectedTransaction as argument
-        if(selectedTransaction == null) {
+        if (selectedTransaction == null) {
             //show alert
             ValidationException e = new ValidationException("reservation.error.nothingSelected");
             e.showDialog();
             return;
         }
+        mainController.showTransactionDetailWindow(selectedTransaction);
     }
 }
