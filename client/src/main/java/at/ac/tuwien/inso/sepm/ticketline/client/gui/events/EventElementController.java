@@ -8,11 +8,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
+@Slf4j
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class EventElementController {
@@ -32,10 +34,12 @@ public class EventElementController {
     @FXML
     private VBox vbPerformanceElements;
 
+    private EventsController eventsController;
 
     private final SpringFxmlLoader springFxmlLoader;
 
-    public EventElementController(SpringFxmlLoader springFxmlLoader){
+    public EventElementController(SpringFxmlLoader springFxmlLoader, EventsController eventsController){
+        this.eventsController = eventsController;
         this.springFxmlLoader = springFxmlLoader;
     }
 
@@ -59,8 +63,17 @@ public class EventElementController {
         for(PerformanceDTO performanceDTO : eventDTO.getPerformances()){
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/performanceElement.fxml");
             ((PerformanceElementController) wrapper.getController()).initializeData(performanceDTO);
+
+            VBox performanceBox = (VBox) wrapper.getLoadedObject();
+            performanceBox.setOnMouseClicked((e) -> {
+                handlePerformanceClick(performanceDTO, performanceBox);
+            });
             vbPerformanceChildren.add((Node) wrapper.getLoadedObject());
         }
     }
 
+    private void handlePerformanceClick(PerformanceDTO performanceDTO, VBox performanceBox){
+        log.debug("Selected a performance: " + performanceDTO.getName());
+        eventsController.setSelectedPerformance(performanceDTO, performanceBox);
+    }
 }

@@ -31,8 +31,9 @@ public class PerformanceDetailController {
     private PerformanceDTO performance;
 
     public void initializeData(PerformanceDTO performance){
-        // TODO: load complete performanceDTO
-        
+        log.debug("Initializing performance in PerformanceDetail: " + performance.getName());
+        this.performance = performance;
+
         reloadLanguage();
 
     }

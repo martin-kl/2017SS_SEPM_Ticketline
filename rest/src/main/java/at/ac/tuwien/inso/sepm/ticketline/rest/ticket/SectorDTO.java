@@ -13,19 +13,18 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "SeatDTO", description = "default DTO for Seat Entity")
-public class SeatDTO {
+@ApiModel(value = "SectorDTO", description = "default DTO for Sector Entity")
+public class SectorDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
     private UUID id;
 
-    @ApiModelProperty(readOnly = true, name = "row of the seat")
-    private int row;
+    @ApiModelProperty(readOnly = true, name = "size of the sector")
+    private int size;
 
-    @ApiModelProperty(readOnly = true, name = "column of the seat")
-    private int column;
+    @ApiModelProperty(readOnly = true, name = "name of the sector")
+    private String name;
 
-    @ApiModelProperty(readOnly = true, name = "priceCategory for a seat")
+    @ApiModelProperty(readOnly = true, name = "priceCategory for a sector")
     private PriceCategoryDTO priceCategory;
-
 }

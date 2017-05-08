@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Performance;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TicketWrapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
