@@ -29,7 +29,7 @@ public class DetailedTicketTransactionDTO {
     private CustomerDTO customer;
 
     @ApiModelProperty(readOnly = true, name = "Reserved Tickets")
-    private List<TicketDTO> tickets;
+    private List<? extends TicketDTO> tickets;
 
     @ApiModelProperty(readOnly = true, name = "Performance Name")
     private String performanceName;
