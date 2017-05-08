@@ -1,14 +1,17 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.Optional;
 import javafx.application.Platform;
@@ -19,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -126,6 +130,57 @@ public class MainController {
         dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/aboutDialog.fxml")));
         dialog.setTitle(BundleManager.getBundle().getString("dialog.about.title"));
         dialog.showAndWait();
+    }
+
+    public void showPerformanceDetailWindow(PerformanceDTO performance){
+        Stage stage = (Stage) spMainContent.getScene().getWindow();
+        Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+
+        if(performance != null) {
+            //wrapper contains controller and loaded object
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
+            PerformanceDetailController controller = (PerformanceDetailController) wrapper
+                .getController();
+            dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+            controller.initializeData(performance);
+            dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
+
+            dialog.setOnCloseRequest(event -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initOwner(dialog);
+                alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+                alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+                alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+                Optional<ButtonType> result = alert.showAndWait();
+                if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                    event.consume();
+                }
+            });
+            dialog.showAndWait();
+        }
+        else {
+            /* No performance selected, show error dialog */
+            ValidationException e = new ValidationException("event.error.dialog.noselection.header");
+            e.showDialog();
+            /*
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(stage);
+            alert.setTitle(BundleManager.getBundle().getString("event.error.dialog.noselection.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
+            alert.setContentText(BundleManager.getBundle().getString("event.error.dialog.noselection.content"));
+            alert.showAndWait();*/
+            /*Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                event.consume();
+            }*/
+        }
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
