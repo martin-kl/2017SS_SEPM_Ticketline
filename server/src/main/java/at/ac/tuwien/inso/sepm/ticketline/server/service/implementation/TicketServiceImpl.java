@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +73,20 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
         String customerLastName, String performance) {
         //return null;
-        return ticketTransactionRepository
+        List<TicketTransaction> result = ticketTransactionRepository
             .findByCustomerAndLocation(customerFirstName, customerLastName, performance);
+
+        //filter all double elements
+        List<TicketTransaction> filteredList = new ArrayList<>();
+        for(TicketTransaction tt : result) {
+            if(filteredList.size() > 0) {
+                if (tt.getId() != filteredList.get(filteredList.size() - 1).getId()) {
+                    filteredList.add(tt);
+                }
+            }else {
+                filteredList.add(tt);
+            }
+        }
+        return filteredList;
     }
 }
