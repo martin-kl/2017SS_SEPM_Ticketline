@@ -61,14 +61,16 @@ public class TransactionDetailController {
             .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
         TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
             .getController();
-        //just to test - create random performance
         if(selectedCustomer == null) {
-            //TODO no customer was selected - take a "guest" user
+            //TODO no customer was selected - take a "guest" user or insert null?
         }
+
+        //TODO delete this - just to test - create random performance
         tdvc.initController(selectedCustomer,
             new PerformanceDTO(UUID.randomUUID(), "musterPerformance",
                 Instant.now(), Instant.now(), null, null), ticketDTOList);
 
+        //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
         children.clear();
         children.add(vbTicketsInclLabel);
@@ -82,13 +84,10 @@ public class TransactionDetailController {
         setTickets(ticketDTOList);
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
-        CustomerSelection cc = (CustomerSelection) wrapper.getController();
+        CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
-        cc.reloadCustomers();
+        customerSelection.reloadCustomers();
         this.ticketDTOList = ticketDTOList;
-        cc.setOnContinueClicked(o -> {
-            //CONTINUE WAS CLICKED
-        });
     }
 
 
