@@ -11,6 +11,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TicketWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class PerformanceServiceImpl implements PerformanceService {
     private final PerformanceRepository performanceRepository;
@@ -44,6 +46,7 @@ public class PerformanceServiceImpl implements PerformanceService {
         return ticketsToPerformance;
     }
 
+    @Override
     public List<TicketWrapper> addStatusToTickets(List<Ticket> tickets){
         List<TicketWrapper> ticketsWithStatus = new ArrayList<>(tickets.size());
 
@@ -65,14 +68,18 @@ public class PerformanceServiceImpl implements PerformanceService {
             // add ticket to list and set the appropriate status
             TicketWrapper ticketWrapper = new TicketWrapper();
             ticketWrapper.setTicket(ticket);
+
             if(latestTransaction == null){
                 ticketWrapper.setStatus(TicketStatus.STORNO);
             } else {
                 ticketWrapper.setStatus(latestTransaction.getStatus());
             }
+
             ticketsWithStatus.add(ticketWrapper);
         }
 
         return ticketsWithStatus;
     }
+
+
 }
