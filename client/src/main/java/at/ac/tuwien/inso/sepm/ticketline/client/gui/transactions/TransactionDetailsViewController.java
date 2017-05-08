@@ -17,7 +17,7 @@ public class TransactionDetailsViewController {
     private Label totalPrice;
 
     public void setDetailedTicketTransactionDTO(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
-        reservationNumber.setText(detailedTicketTransactionDTO.setId());
+        reservationNumber.setText(detailedTicketTransactionDTO.getId().toString());
         customer.setText(detailedTicketTransactionDTO.getCustomer().getFirstName() + " " + detailedTicketTransactionDTO.getCustomer().getLastName());
         totalPrice.setText("€" + Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString());
     }

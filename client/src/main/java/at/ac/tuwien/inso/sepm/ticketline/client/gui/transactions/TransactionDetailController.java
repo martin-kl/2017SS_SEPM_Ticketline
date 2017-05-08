@@ -50,10 +50,6 @@ public class TransactionDetailController {
         setTickets(detailedTicketTransactionDTO.getTickets());
     }
 
-    private Parent loadTransactionDetails() {
-
-    }
-
     private void setTickets(List<TicketDTO> ticketDTOList) {
         ObservableList<Node> vbTicketBoxChildren = vbTickets.getChildren();
         vbTicketBoxChildren.clear();
