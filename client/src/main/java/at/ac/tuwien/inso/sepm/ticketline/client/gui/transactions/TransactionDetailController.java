@@ -83,6 +83,8 @@ public class TransactionDetailController {
     }
 
     private void setTickets(List<TicketDTO> ticketDTOList) {
+
+        //TODO add support to select multiple tickets if it is a reservation
         ObservableList<Node> vbTicketBoxChildren = vbTickets.getChildren();
         vbTicketBoxChildren.clear();
 
