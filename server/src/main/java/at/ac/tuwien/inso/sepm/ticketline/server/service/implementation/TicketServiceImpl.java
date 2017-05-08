@@ -43,12 +43,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketTransaction> getAllBoughtReservedTransactions() {
-
-        //TODO replace top100 again with all - is just so for testing everything and to load faster
-
+    public List<TicketTransaction> getAllBoughtReservedTransactions(Pageable pageable) {
         return ticketTransactionRepository
-            .findTop100ByStatusOrStatusOrderByIdDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED);
+            .findByStatusOrStatusOrderByIdDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED, pageable);
         //return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 

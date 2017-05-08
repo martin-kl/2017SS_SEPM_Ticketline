@@ -21,7 +21,7 @@ public interface TicketService {
      *
      * @return a list of TicketTransactions
      */
-    List<TicketTransaction> getAllBoughtReservedTransactions();
+    List<TicketTransaction> getAllBoughtReservedTransactions(Pageable pageable);
 
     /**
      * Returns a list of Transactions for a customer and a performance

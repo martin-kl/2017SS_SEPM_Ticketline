@@ -30,9 +30,9 @@ public class TicketTransactionEndpoint {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of bought and reserved Ticket Reservations")
-    public List<DetailedTicketTransactionDTO> getAllReservedAndBoughtTransactions() {
+    public List<DetailedTicketTransactionDTO> getAllReservedAndBoughtTransactions(Pageable pageable) {
         return ticketService
-            .getAllBoughtReservedTransactions()
+            .getAllBoughtReservedTransactions(pageable)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());

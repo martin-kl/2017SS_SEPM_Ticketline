@@ -37,8 +37,8 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      *
      * @return The first 100 TicketTransactions with status bought or reserved
      */
-    List<TicketTransaction> findTop100ByStatusOrStatusOrderByIdDesc(TicketStatus status1,
-        TicketStatus status2);
+    List<TicketTransaction> findByStatusOrStatusOrderByIdDesc(TicketStatus status1,
+        TicketStatus status2, Pageable pageable);
 
     /**
      * Returns the Transaction with the id of the parameter
