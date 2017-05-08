@@ -15,8 +15,4 @@ import lombok.ToString;
 @Builder
 @ApiModel(value = "SeatTicketDTO", description = "seat DTO for Ticket Entity")
 public class SeatTicketDTO extends TicketDTO {
-
-    @ApiModelProperty(readOnly = true, name = "The seat for this ticket")
-    private SeatDTO seat;
-
 }
