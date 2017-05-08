@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class Helper {
-    public static BigDecimal getTotalPrice(List<TicketDTO> tickets) {
+    public static BigDecimal getTotalPrice(List<? extends TicketDTO> tickets) {
         BigDecimal result = new BigDecimal(0);
         for (TicketDTO ticket : tickets) {
             result = result.add(ticket.getPrice());

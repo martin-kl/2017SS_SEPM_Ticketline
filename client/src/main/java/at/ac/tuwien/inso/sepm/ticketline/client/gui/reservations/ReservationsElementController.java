@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import at.ac.tuwien.inso.springfx.SpringFxmlLoader.LoadWrapper;
 import java.util.Iterator;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -62,11 +63,8 @@ public class ReservationsElementController {
         vbReservationAndTicketsChildren.clear();
         vbReservationAndTicketsChildren.add(hbReservationTemp);
 
-        Iterator<TicketDTO> iterator = ticketTransactionDTO.getTickets().iterator();
-
-        while (iterator.hasNext()) {
-            TicketDTO ticket = iterator.next();
-            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+        for (TicketDTO ticket : ticketTransactionDTO.getTickets()) {
+            LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/reservations/ticketsElement.fxml");
 
             ((TicketElementsController) wrapper.getController()).initializeData(ticket);
