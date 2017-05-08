@@ -33,25 +33,35 @@ public class TransactionDetailsViewController {
     private Button btnReserve;
     private Button btnCancelReservation;
 
+    //TODO if we are coming from the Saalplan - then the status is not set or? (now i try all other stati and if none is set, then I assume to come from Saalplan)
+
     public void setDetailedTicketTransactionDTO(
         DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         ObservableList<Node> buttons = btnBar.getButtons();
         buttons.clear();
+
         if (detailedTicketTransactionDTO.getStatus() == TicketStatus.RESERVED) {
+            //TODO add buttons
             lbTransactionID.setText(
                 BundleManager.getBundle().getString("transaction.detail.reservationNumber"));
 
-            btnReserve = new Button(
-                BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
-            btnReserve.setOnAction(event -> {
+            btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
+            btnCancelReservation.setOnAction(event -> {
                 //TODO cancel reservation
                 System.out.println("cancel reservation button has been clicked");
             });
-            buttons.add(btnReserve);
+            btnBuy = new Button(BundleManager.getBundle().getString("transaction.detail.buy"));
+            btnBuy.setOnAction(event -> {
+                //TODO buy selected tickets
+                System.out.println("buy tickets button has been clicked");
+            });
+
+            buttons.add(btnCancelReservation);
+            buttons.add(btnBuy);
         } else if (detailedTicketTransactionDTO.getStatus() == TicketStatus.BOUGHT) {
             lbTransactionID
                 .setText(BundleManager.getBundle().getString("transaction.detail.billNumber"));
-            //TODO add buttons to cancel the payment
+            //TODO add buttons to cancel the payment and possible others
 
             btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
@@ -60,30 +70,36 @@ public class TransactionDetailsViewController {
                 System.out
                     .println("print pdf button in already bought transaction has been clicked");
             });
+
             buttons.add(btnPrintPDF);
-        } else {
+        } else if(detailedTicketTransactionDTO.getStatus() == TicketStatus.STORNO) {
+            //TODO add buttons
             lbTransactionID
                 .setText(BundleManager.getBundle().getString("transaction.detail.stornoNumber"));
-        }
+             btnPrintPDF = new Button(
+                BundleManager.getBundle().getString("transaction.detail.printPDF"));
+            btnPrintPDF.setOnAction(event -> {
+                //TODO cancel reservation
+                System.out
+                    .println("print pdf button in cancelled transaction has been clicked");
+            });
 
-        /*
-            <Button fx:id="btnReserve" layoutX="61.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleReserveButton" text="%transaction.detail.reserve" />
-          <Button fx:id="btnBuy" mnemonicParsing="false" onAction="#handleBuyButton" text="%transaction.detail.buy" />
-         */
+            buttons.add(btnPrintPDF);
+        } else {
+            //we are coming from the saalplan - status is not yet set
+            btnReserve = new Button(BundleManager.getBundle().getString("transaction.detail.reserve"));
+            btnReserve.setOnAction(event -> {
+                //TODO reserve tickets
+                System.out.println("reserve ticket button has been clicked");
+            });
+
+            buttons.add(btnReserve);
+        }
 
         transactionNumber.setText(detailedTicketTransactionDTO.getId().toString());
         customer.setText(detailedTicketTransactionDTO.getCustomer().getFirstName() + " "
             + detailedTicketTransactionDTO.getCustomer().getLastName());
         totalPrice.setText(
             "€" + Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString());
-    }
-
-    public void handleBuyButton(ActionEvent actionEvent) {
-    }
-
-    public void handlePrintButton(ActionEvent actionEvent) {
-    }
-
-    public void handleCancelButton(ActionEvent actionEvent) {
     }
 }

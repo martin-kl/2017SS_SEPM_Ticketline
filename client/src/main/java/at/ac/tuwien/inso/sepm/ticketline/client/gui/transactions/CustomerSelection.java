@@ -43,7 +43,8 @@ public class CustomerSelection {
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
 
-    public CustomerSelection(MainController mainController, SpringFxmlLoader springFxmlLoader, CustomerService customerService) {
+    public CustomerSelection(MainController mainController, SpringFxmlLoader springFxmlLoader,
+        CustomerService customerService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.customerService = customerService;
@@ -63,7 +64,8 @@ public class CustomerSelection {
 
     private void updateCurrentlySelectedCustomer() {
         if (lastSelectedCustomer != null) {
-            selectedCustomer.setText(lastSelectedCustomer.getFirstName() + " " + lastSelectedCustomer.getLastName());
+            selectedCustomer.setText(
+                lastSelectedCustomer.getFirstName() + " " + lastSelectedCustomer.getLastName());
         } else {
             selectedCustomer.setText("-");
         }
@@ -98,7 +100,8 @@ public class CustomerSelection {
                 customerSelection.getChildren().removeAll();
                 while (iterator.hasNext()) {
                     CustomerDTO customer = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/customersElement.fxml");
+                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                        .loadAndWrap("/fxml/customers/customersElement.fxml");
 
                     ((CustomersElementController) wrapper.getController()).initializeData(customer);
                     HBox customerBox = (HBox) wrapper.getLoadedObject();
@@ -117,7 +120,6 @@ public class CustomerSelection {
                         customerSelection.getChildren().add(separator);
                     }
                 }
-
             }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->

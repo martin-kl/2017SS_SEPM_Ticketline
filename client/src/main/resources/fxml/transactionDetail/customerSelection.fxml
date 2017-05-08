@@ -11,13 +11,13 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.CustomerSelection">
     <children>
-        <Label text="%transaction.detail.customerSelection" />
+        <Label alignment="TOP_CENTER" text="%transaction.detail.customerSelection" wrapText="true" />
         <Separator prefWidth="200.0">
             <VBox.margin>
                 <Insets bottom="10.0" top="10.0" />
             </VBox.margin>
         </Separator>
-        <HBox>
+        <HBox alignment="TOP_CENTER">
             <children>
                 <TextField fx:id="customerSearchField" promptText="%search">
                     <HBox.margin>
@@ -32,10 +32,10 @@
                 <VBox fx:id="customerSelection" />
             </content>
             <VBox.margin>
-                <Insets bottom="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </VBox.margin>
         </ScrollPane>
-        <HBox>
+        <HBox alignment="TOP_CENTER">
             <children>
                 <Label text="%customer.selected" />
                 <Label fx:id="selectedCustomer" text="-">
@@ -45,7 +45,7 @@
                 </Label>
             </children>
         </HBox>
-        <HBox>
+        <HBox alignment="TOP_CENTER">
             <children>
                 <Button fx:id="btnContinue" mnemonicParsing="false" text="Continue">
                     <HBox.margin>
