@@ -50,7 +50,9 @@ public class ReservationsElementController {
         lbBoughtReserved.setText(
             status == TicketStatus.BOUGHT ? BundleManager.getBundle()
                 .getString("reservation.ticket.bought")
-                : BundleManager.getBundle().getString("reservation.ticket.reserved"));
+                : status == TicketStatus.RESERVED ? BundleManager.getBundle()
+                    .getString("reservation.ticket.reserved")
+                    : BundleManager.getBundle().getString("reservation.ticket.canceled"));
 
         ObservableList<Node> vbReservationAndTicketsChildren = vbReservationAndTickets
             .getChildren();
