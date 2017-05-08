@@ -39,7 +39,6 @@ public class CustomerSelection {
 
     private CustomerDTO lastSelectedCustomer;
     private HBox previousSelectedBox = null;
-    private Callable onSelectionChange;
     private Callable onContinueClicked;
 
     private final MainController mainController;
@@ -55,10 +54,6 @@ public class CustomerSelection {
 
     public void setOnContinueClicked(Callable onContinueClicked) {
         this.onContinueClicked = onContinueClicked;
-    }
-
-    public void setOnSelectionChange(Callable onSelectionChange) {
-        this.onSelectionChange = onSelectionChange;
     }
 
     public void reloadCustomers() {

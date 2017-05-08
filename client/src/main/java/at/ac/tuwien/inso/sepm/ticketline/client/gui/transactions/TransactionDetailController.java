@@ -64,16 +64,6 @@ public class TransactionDetailController {
             children.clear();
             children.add((VBox) wrapper2.getLoadedObject());
         });
-        customerSelection.setOnSelectionChange(o -> {
-            System.out.println("detected selection change");
-            //o is null if selection is removed
-            if (o == null) {
-                selectedCustomer = null;
-            } else {
-                CustomerDTO customer = (CustomerDTO) o;
-                selectedCustomer = customer;
-            }
-        });
     }
 
     //this is the "normal" method that should be called after the saalplan
@@ -87,15 +77,6 @@ public class TransactionDetailController {
         cc.reloadCustomers();
         cc.setOnContinueClicked(o -> {
             //CONTINUE WAS CLICKED
-        });
-        cc.setOnSelectionChange(o -> {
-            //o is null if selection is removed
-            if (o == null) {
-                selectedCustomer = null;
-            } else {
-                CustomerDTO customer = (CustomerDTO) o;
-                selectedCustomer = customer;
-            }
         });
     }
 
