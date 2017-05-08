@@ -20,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
@@ -30,17 +31,24 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class CustomersController {
+    private static final int HEADER_ICON_SIZE = 25;
+    @FXML
+    private Label lblHeaderIcon;
+    @FXML
+    private Label lblHeaderTitle;
+    private FontAwesome fontAwesome;
 
     @FXML
-    private Button bn_addCustomer;
+    private Button btnAddCustomer;
     @FXML
     private VBox vbCustomersElements;
-    @FXML
-    private TabHeaderController tabHeaderController;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
+
+    @FXML
+    private void initialize() {}
 
     public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService) {
@@ -49,10 +57,24 @@ public class CustomersController {
         this.customerService = customerService;
     }
 
-    @FXML
-    private void initialize() {
-        tabHeaderController.setIcon(FontAwesome.Glyph.USER);
-        tabHeaderController.setTitle(BundleManager.getBundle().getString("customers.title"));
+    public void setFont(FontAwesome fontAwesome){
+        this.fontAwesome = fontAwesome;
+        setIcon(FontAwesome.Glyph.USER);
+        setTitle(BundleManager.getBundle().getString("customers.title"));
+    }
+    private void setIcon(FontAwesome.Glyph glyph) {
+        lblHeaderIcon.setGraphic(
+            fontAwesome
+                .create(glyph)
+                .size(HEADER_ICON_SIZE));
+    }
+    private void setTitle(String title) {
+        lblHeaderTitle.setText(title);
+    }
+
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("customers.title"));
+        btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
     }
 
     public void loadCustomers() {

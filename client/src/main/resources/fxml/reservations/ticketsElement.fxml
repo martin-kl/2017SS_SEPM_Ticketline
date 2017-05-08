@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<!-- TODO change ReservationsElement.css to support selecting of reservations -->
+
+<HBox prefHeight="100.0" spacing="5.0" styleClass="customersElement"
+    stylesheets="@../../css/ReservationsElement.css" xmlns="http://javafx.com/javafx/8.0.112"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.TicketElementsController">
+    <children>
+        <Label fx:id="lbPlace" text="&lt;Place&gt;">
+            <HBox.margin>
+                <Insets right="10.0"/>
+            </HBox.margin>
+        </Label>
+        <Label fx:id="lbPrice" text="&lt;Price&gt;">
+            <HBox.margin>
+                <Insets right="10.0"/>
+            </HBox.margin>
+        </Label>
+    </children>
+    <padding>
+        <Insets left="40.0" right="10.0"/>
+    </padding>
+</HBox>

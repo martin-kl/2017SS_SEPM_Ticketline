@@ -39,7 +39,7 @@ public class NewsEndpoint {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Publish a new news entry")
     public DetailedNewsDTO publishNews(@RequestBody DetailedNewsDTO detailedNewsDTO) {
         News news = newsMapper.detailedNewsDTOToNews(detailedNewsDTO);

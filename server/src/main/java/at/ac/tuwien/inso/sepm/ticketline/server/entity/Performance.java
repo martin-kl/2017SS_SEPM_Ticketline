@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
+import org.hibernate.validator.constraints.Length;
 
 @Setter
 @Getter
@@ -24,6 +25,10 @@ public class Performance extends Audited {
     @GeneratedValue
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
+
+    @Column(nullable = false, length = 10_000)
+    @Length(min = 1)
+    private String name;
 
     @Column
     private Instant startTime;

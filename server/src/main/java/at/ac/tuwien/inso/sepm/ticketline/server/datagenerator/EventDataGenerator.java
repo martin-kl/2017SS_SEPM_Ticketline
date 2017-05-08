@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.datagenerator;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Artist;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.EventArtist;
@@ -51,7 +52,7 @@ public class EventDataGenerator {
             for (int i = 0; i < NUMBER_OF_EVENTS_TO_GENERATE; i++) {
 
                 Event event = Event.builder()
-                    .category(Event.Category.NO_CATEGORY)
+                    .category(EventCategory.NO_CATEGORY)
                     .description(faker.lorem().characters(25, 100))
                     .name("Event " + faker.name().lastName())
                     .build();

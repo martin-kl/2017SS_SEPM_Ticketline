@@ -55,7 +55,7 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             log.debug("Retrieving one customer with uuid {} from {}", id, restClient.getServiceURI(CUSTOMER_URL));
             ResponseEntity<CustomerDTO> customer =
                 restClient.exchange(
-                    restClient.getServiceURI(CUSTOMER_URL)+"/" + id,
+                    restClient.getServiceURI(CUSTOMER_URL)+"?status=" + id,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<CustomerDTO>() {

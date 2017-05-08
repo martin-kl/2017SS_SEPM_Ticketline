@@ -1,24 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx/8.0.92"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController"
-      maxHeight="1.7976931348623157E308"
-      maxWidth="1.7976931348623157E308"
-      spacing="5.0">
-    <children>
-        <fx:include source="/fxml/tabHeader.fxml" fx:id="tabHeader"/>
-        <Separator/>
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS"
-                    style="-fx-background-color: transparent;">
 
-        </ScrollPane>
-    </children>
-    <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-    </padding>
-</VBox>
+<AnchorPane minWidth="678.0" prefHeight="678.0" prefWidth="975.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController">
+   <children>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="678.0" prefWidth="975.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <children>
+            <AnchorPane>
+               <children>
+                  <ButtonBar disable="true" layoutY="-4.0" prefHeight="23.0" prefWidth="1041.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+                    <buttons>
+                      <Button mnemonicParsing="false" text="List" />
+                        <Button layoutX="20.0" layoutY="10.0" mnemonicParsing="false" text="Graph" />
+                    </buttons>
+                  </ButtonBar>
+                   <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
+                       <children>
+                           <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
+                           <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
+                       </children>
+                   </HBox>
+
+               </children>
+            </AnchorPane>
+
+              <Separator disable="true" />
+            <AnchorPane disable="true">
+               <children>
+                  <GridPane disable="true" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.0" minWidth="10.0" prefWidth="398.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0" minWidth="10.0" prefWidth="557.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ButtonBar minHeight="-Infinity" prefHeight="25.0" prefWidth="739.0" GridPane.columnIndex="1">
+                           <buttons>
+                              <Button mnemonicParsing="false" text="Extended Search" />
+                           </buttons>
+                        </ButtonBar>
+                        <GridPane prefWidth="424.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="236.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="162.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <TextField prefWidth="225.0" promptText="Search ..">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextField>
+                              <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets left="10.0" />
+                                 </GridPane.margin>
+                              </Button>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </GridPane>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </AnchorPane>
+            <Separator disable="true" />
+
+              <!--
+            <AnchorPane layoutX="20.0" layoutY="54.0" prefHeight="111.0" prefWidth="955.0">
+               <children>
+                  <SplitPane dividerPositions="0.31584470094438616" prefHeight="160.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane prefHeight="145.0" prefWidth="294.0">
+                           <children>
+                              <Label layoutX="99.0" layoutY="-1.0" text="Event Filter">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Separator layoutY="28.0" prefHeight="3.0" prefWidth="281.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0" />
+                              <TextField layoutX="14.0" layoutY="40.0" prefHeight="25.0" prefWidth="149.0" promptText="Search for ..">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextField>
+                              <TextField layoutX="14.0" layoutY="73.0" prefHeight="25.0" prefWidth="149.0" promptText="Artist name ..">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextField>
+                              <SplitMenuButton layoutX="173.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="Eventname">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                                  <MenuItem mnemonicParsing="false" text="Action 2" />
+                                </items>
+                              </SplitMenuButton>
+                              <SplitMenuButton layoutX="173.0" layoutY="73.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="111.0" text="Artist-Match">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem mnemonicParsing="false" text="Action 2" />
+                                 </items>
+                              </SplitMenuButton>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="109.0" prefWidth="650.0">
+                           <children>
+                              <Label layoutX="252.0" layoutY="-1.0" text="Performance Filter">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <Separator layoutY="28.0" prefHeight="3.0" prefWidth="666.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0" />
+                              <DatePicker layoutX="14.0" layoutY="39.0" prefHeight="25.0" prefWidth="90.0" promptText="Date .." />
+                              <TextField layoutX="14.0" layoutY="73.0" prefHeight="25.0" prefWidth="174.0" promptText="Price ..">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextField>
+                              <SplitMenuButton layoutX="198.0" layoutY="73.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Room">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem mnemonicParsing="false" text="Action 2" />
+                                 </items>
+                              </SplitMenuButton>
+                              <DatePicker layoutX="128.0" layoutY="39.0" prefHeight="25.0" prefWidth="90.0" promptText="Start .." />
+                              <DatePicker layoutX="231.0" layoutY="39.0" prefHeight="25.0" prefWidth="90.0" promptText="End .." />
+                              <TextField layoutX="354.0" layoutY="39.0" prefHeight="25.0" prefWidth="149.0" promptText="Search for ..">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextField>
+                              <SplitMenuButton layoutX="515.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Locationname">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem mnemonicParsing="false" text="Action 2" />
+                                 </items>
+                              </SplitMenuButton>
+                              <SplitMenuButton layoutX="354.0" layoutY="72.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Location-Match">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem mnemonicParsing="false" text="Action 2" />
+                                 </items>
+                              </SplitMenuButton>
+                              <SplitMenuButton layoutX="515.0" layoutY="73.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Type">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem mnemonicParsing="false" text="Action 2" />
+                                 </items>
+                              </SplitMenuButton>
+                              <Separator layoutX="333.0" layoutY="28.0" orientation="VERTICAL" prefHeight="86.0" prefWidth="13.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="333.0" AnchorPane.topAnchor="28.0" />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+
+              -->
+            <Separator layoutX="20.0" layoutY="259.0" visible="false" />
+              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+                  <VBox fx:id="vbEventsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                      <padding>
+                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                      </padding>
+                  </VBox>
+              </ScrollPane>
+            <Separator />
+            <ButtonBar prefHeight="25.0" prefWidth="1041.0">
+               <buttons>
+                  <Button mnemonicParsing="false" text="Manage Tickets" />
+               </buttons>
+            </ButtonBar>
+          </children>
+          <padding>
+              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </padding>
+      </VBox>
+   </children>
+</AnchorPane>
