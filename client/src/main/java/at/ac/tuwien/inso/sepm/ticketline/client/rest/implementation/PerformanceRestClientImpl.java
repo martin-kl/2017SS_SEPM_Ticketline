@@ -15,8 +15,6 @@ import org.springframework.web.client.RestClientException;
 @Slf4j
 @Component
 public class PerformanceRestClientImpl implements PerformanceRestClient {
-
-    // TODO: change to bennis data
     private static final String PERFORMANCE_URL = "/performance";
 
     private final RestClient restClient;
@@ -28,10 +26,10 @@ public class PerformanceRestClientImpl implements PerformanceRestClient {
     @Override
     public DetailedPerformanceDTO findOne(UUID id) throws DataAccessException {
         try {
-            log.debug("Retrieving one performanec with uuid {} from {}", id, restClient.getServiceURI(PERFORMANCE_URL));
+            log.debug("Retrieving one performance with uuid {} from {}", id, restClient.getServiceURI(PERFORMANCE_URL));
             ResponseEntity<DetailedPerformanceDTO> performance =
                 restClient.exchange(
-                    restClient.getServiceURI(PERFORMANCE_URL)+"?id=" + id,
+                    restClient.getServiceURI(PERFORMANCE_URL)+"/" + id,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<DetailedPerformanceDTO>() {
