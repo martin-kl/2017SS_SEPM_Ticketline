@@ -36,7 +36,7 @@ public class TransactionDetailController {
     @FXML
     private Separator spSeparator;
 
-    private List<TicketDTO> ticketDTOList;
+    private List<? extends TicketDTO> ticketDTOList;
 
     private final SpringFxmlLoader springFxmlLoader;
 
@@ -45,7 +45,7 @@ public class TransactionDetailController {
     }
 
     //TODO this method is just for testing while we dont have a saalplan - should be deleted afterwards
-    public void initData(List<TicketDTO> ticketDTOList, String performanceName) {
+    public void initData(List<? extends TicketDTO> ticketDTOList, String performanceName) {
         setHeader(performanceName);
         setTickets(ticketDTOList);
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -77,7 +77,7 @@ public class TransactionDetailController {
     }
 
     //this is the "normal" method that should be called after the saalplan
-    public void initData(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
+    public void initData(List<? extends TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
         setHeader(performanceDTO.getName());
         setTickets(ticketDTOList);
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -113,7 +113,7 @@ public class TransactionDetailController {
                 + performanceName);
     }
 
-    private void setTickets(List<TicketDTO> ticketDTOList) {
+    private void setTickets(List<? extends TicketDTO> ticketDTOList) {
 
         //TODO add support to select multiple tickets if it is a reservation
         ObservableList<Node> vbTicketBoxChildren = vbTickets.getChildren();

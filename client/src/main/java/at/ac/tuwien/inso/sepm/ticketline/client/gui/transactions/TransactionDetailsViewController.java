@@ -50,7 +50,7 @@ public class TransactionDetailsViewController {
 
     //if we are coming from the saalplan, the initController method is called and this calls the loadButtonsAccordingToStatus with the flag TRUE - so the status is ignored
 
-    public void initController(CustomerDTO customerDTO, PerformanceDTO performanceDTO, List<TicketDTO> ticketDTOList) {
+    public void initController(CustomerDTO customerDTO, PerformanceDTO performanceDTO, List<? extends TicketDTO> ticketDTOList) {
         loadButtonsAccordingToStatus(TicketStatus.BOUGHT, true);
 
         transactionNumber.setText("/");
