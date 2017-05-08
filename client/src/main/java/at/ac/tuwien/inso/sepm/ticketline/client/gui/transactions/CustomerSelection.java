@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
@@ -12,6 +13,7 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -36,6 +38,7 @@ public class CustomerSelection {
 
 
     private CustomerDTO lastSelectedCustomer;
+    private HBox previousSelectedBox = null;
     private Callable onSelectionChange;
     private Callable onContinueClicked;
 
@@ -62,14 +65,6 @@ public class CustomerSelection {
         drawCustomers();
     }
 
-    private void updateCurrentlySelectedCustomer() {
-        if (lastSelectedCustomer != null) {
-            selectedCustomer.setText(
-                lastSelectedCustomer.getFirstName() + " " + lastSelectedCustomer.getLastName());
-        } else {
-            selectedCustomer.setText("-");
-        }
-    }
 
     private void drawCustomers() {
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
@@ -104,16 +99,30 @@ public class CustomerSelection {
                         .loadAndWrap("/fxml/customers/customersElement.fxml");
 
                     ((CustomersElementController) wrapper.getController()).initializeData(customer);
+
                     HBox customerBox = (HBox) wrapper.getLoadedObject();
-                    customerBox.setOnMouseClicked((e) -> {
-                        if (customer.equals(lastSelectedCustomer)) {
-                            onSelectionChange.call(null); //deselection
-                        } else {
-                            onSelectionChange.call(customer);
+                    customerBox.setOnMouseClicked((MouseEvent e) -> {
+                        if(previousSelectedBox != customerBox) {
+                            //set a new customer
+                            if (previousSelectedBox != null) {
+                                previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+                                //onSelectionChange.call(null); //deselection
+                            } else {
+                                //onSelectionChange.call(customer);
+                            }
+                            lastSelectedCustomer = customer;
+                            customerBox.setStyle("-fx-background-color: #2196F3");
+                            previousSelectedBox = customerBox;
+                            //onSelectionChange.call(lastSelectedCustomer);
+                        }else {
+                            //deselection:
+                            customerBox.setStyle("-fx-background-color: #FFFFFF");
+                            lastSelectedCustomer = null;
+                            previousSelectedBox = null;
                         }
                         updateCurrentlySelectedCustomer();
-                        onSelectionChange.call(lastSelectedCustomer);
                     });
+
                     customerSelection.getChildren().add(customerBox);
                     if (iterator.hasNext()) {
                         Separator separator = new Separator();
@@ -127,5 +136,14 @@ public class CustomerSelection {
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
+    }
+
+    private void updateCurrentlySelectedCustomer() {
+        if (lastSelectedCustomer != null) {
+            selectedCustomer.setText(
+                lastSelectedCustomer.getFirstName() + " " + lastSelectedCustomer.getLastName());
+        } else {
+            selectedCustomer.setText("-");
+        }
     }
 }

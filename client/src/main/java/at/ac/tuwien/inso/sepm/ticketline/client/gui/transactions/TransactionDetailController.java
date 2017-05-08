@@ -2,6 +2,8 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.time.Instant;
+import java.util.UUID;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
@@ -43,13 +45,27 @@ public class TransactionDetailController {
         setTickets(ticketDTOList);
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
-        CustomerSelection tdvc = (CustomerSelection) wrapper.getController();
+        CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
-        tdvc.reloadCustomers();
-        tdvc.setOnContinueClicked(o -> {
+        customerSelection.reloadCustomers();
+
+        customerSelection.setOnContinueClicked(o -> {
             //CONTINUE WAS CLICKED
+            //TODO this is not called if continue is clicked
+            System.out.println("\n\tcontinue was clicked, object o = " + o.toString());
+            SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
+                .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
+            TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
+                .getController();
+            //just to test - create random performance
+            tdvc.initController(selectedCustomer, new PerformanceDTO(UUID.randomUUID(), "musterPerformance",
+                Instant.now(), Instant.now(), null, null) , ticketDTOList);
+            ObservableList<Node> children = hbMain.getChildren();
+            children.clear();
+            children.add((VBox) wrapper2.getLoadedObject());
         });
-        tdvc.setOnSelectionChange(o -> {
+        customerSelection.setOnSelectionChange(o -> {
+            System.out.println("detected selection change");
             //o is null if selection is removed
             if (o == null) {
                 selectedCustomer = null;
@@ -71,16 +87,6 @@ public class TransactionDetailController {
         cc.reloadCustomers();
         cc.setOnContinueClicked(o -> {
             //CONTINUE WAS CLICKED
-            //TODO this is not called if continue is clicked
-            System.out.println("continue was clicked");
-            SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
-                .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
-            TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
-                .getController();
-            tdvc.initController(selectedCustomer, performanceDTO, ticketDTOList);
-            ObservableList<Node> children = hbMain.getChildren();
-            children.clear();
-            children.add((VBox) wrapper2.getLoadedObject());
         });
         cc.setOnSelectionChange(o -> {
             //o is null if selection is removed

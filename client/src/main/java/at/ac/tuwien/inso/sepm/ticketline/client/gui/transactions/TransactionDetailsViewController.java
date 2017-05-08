@@ -17,7 +17,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import org.springframework.stereotype.Component;
-import sun.security.krb5.internal.Ticket;
 
 @Component
 public class TransactionDetailsViewController {

@@ -47,7 +47,7 @@
         </HBox>
         <HBox alignment="TOP_CENTER">
             <children>
-                <Button fx:id="btnContinue" mnemonicParsing="false" text="Continue">
+                <Button fx:id="btnContinue" mnemonicParsing="false" text="%continue">
                     <HBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                     </HBox.margin>

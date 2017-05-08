@@ -90,6 +90,8 @@ public class ReservationsController {
             .setText(BundleManager.getBundle().getString("reservation.showDetails"));
 
         //TODO Labels in the table are not refreshed after language change - is done with new loading
+        selectedTransaction = null;
+        previousSelectedBox = null;
         loadTransactions();
     }
 
