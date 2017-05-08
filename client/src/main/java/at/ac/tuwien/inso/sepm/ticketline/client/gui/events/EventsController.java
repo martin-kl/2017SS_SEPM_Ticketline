@@ -43,8 +43,9 @@ public class EventsController {
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final EventService eventService;
-
     private PerformanceDTO selectedPerformance = null;
+    private VBox previousSelectedBox = null;
+
 
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService) {
         this.mainController = mainController;
@@ -73,7 +74,13 @@ public class EventsController {
     }
 
 
-    public void setSelectedPerformance(PerformanceDTO selectedPerformance){
+    public void setSelectedPerformance(PerformanceDTO selectedPerformance, VBox performanceBox){
+        if(previousSelectedBox != null){
+            previousSelectedBox.setStyle("-fx-background-color: #f4f4f4");
+        }
+        previousSelectedBox = performanceBox;
+        performanceBox.setStyle("-fx-background-color: #2196F3");
+
         this.selectedPerformance = selectedPerformance;
     }
 

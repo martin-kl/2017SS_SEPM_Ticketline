@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
@@ -155,8 +156,7 @@ public class MainController {
                 alert.initOwner(dialog);
                 alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
                 alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-                alert
-                    .setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+                alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
                 Optional<ButtonType> result = alert.showAndWait();
                 if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
                     event.consume();
@@ -166,13 +166,16 @@ public class MainController {
         }
         else {
             /* No performance selected, show error dialog */
+            ValidationException e = new ValidationException("event.error.dialog.noselection.header");
+            e.showDialog();
+            /*
             Alert alert = new Alert(AlertType.ERROR);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.initOwner(stage);
             alert.setTitle(BundleManager.getBundle().getString("event.error.dialog.noselection.title"));
             alert.setHeaderText(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
             alert.setContentText(BundleManager.getBundle().getString("event.error.dialog.noselection.content"));
-            alert.showAndWait();
+            alert.showAndWait();*/
             /*Optional<ButtonType> result = alert.showAndWait();
             if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
                 event.consume();

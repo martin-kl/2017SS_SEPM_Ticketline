@@ -64,17 +64,16 @@ public class EventElementController {
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/performanceElement.fxml");
             ((PerformanceElementController) wrapper.getController()).initializeData(performanceDTO);
 
-            VBox performancesBox = (VBox) wrapper.getLoadedObject();
-            performancesBox.setOnMouseClicked((e) -> {
-                handlePerformanceClick(performanceDTO);
+            VBox performanceBox = (VBox) wrapper.getLoadedObject();
+            performanceBox.setOnMouseClicked((e) -> {
+                handlePerformanceClick(performanceDTO, performanceBox);
             });
-
             vbPerformanceChildren.add((Node) wrapper.getLoadedObject());
         }
     }
 
-    private void handlePerformanceClick(PerformanceDTO performanceDTO){
+    private void handlePerformanceClick(PerformanceDTO performanceDTO, VBox performanceBox){
         log.debug("Selected a performance: " + performanceDTO.getName());
-        eventsController.setSelectedPerformance(performanceDTO);
+        eventsController.setSelectedPerformance(performanceDTO, performanceBox);
     }
 }
