@@ -214,13 +214,6 @@ public class ReservationsController {
                 previousSelectedBox = reservationBox;
                 reservationBox.setStyle("-fx-background-color: #2196F3");
                 selectedTransaction = ticketTransaction;
-
-                /*
-                System.out
-                    .println("user selected transaction with id = " + ticketTransaction.getId()
-                        + " performance = " + ticketTransaction.getPerformanceName()
-                        + "\n\tcustomer = " + ticketTransaction.getCustomer());
-                */
             });
 
             vbReservationBoxChildren.add(reservationBox);
@@ -239,6 +232,6 @@ public class ReservationsController {
             e.showDialog();
             return;
         }
-        mainController.showTransactionDetailWindow(selectedTransaction, null, null);
+        mainController.showTransactionDetailWindow(selectedTransaction);
     }
 }

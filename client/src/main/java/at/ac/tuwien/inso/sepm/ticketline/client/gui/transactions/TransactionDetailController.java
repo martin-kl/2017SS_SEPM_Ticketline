@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.scene.layout.VBox;
@@ -15,12 +14,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import javax.el.LambdaExpression;
 
 @Slf4j
 @Component
@@ -40,7 +36,30 @@ public class TransactionDetailController {
         this.springFxmlLoader = springFxmlLoader;
     }
 
+    //TODO this method is just for testing while we dont have a saalplan - should be deleted afterwards
+    public void initData(List<TicketDTO> ticketDTOList, String performanceName) {
+        setHeader(performanceName);
+        setTickets(ticketDTOList);
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
+        CustomerSelection tdvc = (CustomerSelection) wrapper.getController();
+        hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
+        tdvc.reloadCustomers();
+        tdvc.setOnContinueClicked(o -> {
+            //CONTINUE WAS CLICKED
+        });
+        tdvc.setOnSelectionChange(o -> {
+            //o is null if selection is removed
+            if (o == null) {
+                selectedCustomer = null;
+            } else {
+                CustomerDTO customer = (CustomerDTO) o;
+                selectedCustomer = customer;
+            }
+        });
+    }
 
+    //this is the "normal" method that should be called after the saalplan
     public void initData(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
         setHeader(performanceDTO.getName());
         setTickets(ticketDTOList);
@@ -72,7 +91,7 @@ public class TransactionDetailController {
         tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
 
         //TODO check if this works so - do we have to clean the children before inserting?
-        hbMain.getChildren().add((GridPane) wrapper.getLoadedObject());
+        hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         setTickets(detailedTicketTransactionDTO.getTickets());
     }
 

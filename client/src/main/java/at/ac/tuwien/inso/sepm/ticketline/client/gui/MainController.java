@@ -169,14 +169,8 @@ public class MainController {
         dialog.showAndWait();
     }
 
-    public void showTransactionDetailWindow(DetailedTicketTransactionDTO detailedTicketTransactionDTO,
-        List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-
+    public void showTransactionDetailWindow(DetailedTicketTransactionDTO detailedTicketTransactionDTO){
+        Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
@@ -184,15 +178,34 @@ public class MainController {
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        if(detailedTicketTransactionDTO != null && ticketDTOList == null && performanceDTO == null) {
-            controller.initData(detailedTicketTransactionDTO);
-        }else if(ticketDTOList != null && performanceDTO != null) {
-            controller.initData(detailedTicketTransactionDTO);
-        }else {
-            log.error(
-                "showTransactionDetailWindow was called with not clear parameters - detailedTicketTransaction is loaded now!");
-            controller.initData(detailedTicketTransactionDTO);
-        }
+        //TODO the next line is just for testing because there is no saalplan here yet, it should be replaced with the line after it
+        controller.initData(detailedTicketTransactionDTO.getTickets(), detailedTicketTransactionDTO.getPerformanceName());
+        //controller.initData(detailedTicketTransactionDTO);
+        showTransactionDetailStage(dialog);
+    }
+
+    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
+        Stage dialog = initStage();
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
+        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.initData(ticketDTOList, performanceDTO);
+        showTransactionDetailStage(dialog);
+    }
+
+    private Stage initStage() {
+        Stage stage = (Stage) spMainContent.getScene().getWindow();
+        Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+        return dialog;
+    }
+    private void showTransactionDetailStage(Stage dialog) {
         dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
 
         dialog.setOnCloseRequest(event -> {

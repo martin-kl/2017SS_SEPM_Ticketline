@@ -15,25 +15,22 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import javax.el.LambdaExpression;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CustomerSelection {
 
     @FXML
     private TextField customerSearchField;
-
     @FXML
     private Button btnAddNewCustomer;
-
     @FXML
     private VBox customerSelection;
-
     @FXML
     private Label selectedCustomer;
-
     @FXML
     private Button btnContinue;
 
@@ -60,7 +57,6 @@ public class CustomerSelection {
         this.onSelectionChange = onSelectionChange;
     }
 
-
     public void reloadCustomers() {
         drawCustomers();
     }
@@ -72,7 +68,6 @@ public class CustomerSelection {
             selectedCustomer.setText("-");
         }
     }
-
 
     private void drawCustomers() {
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {

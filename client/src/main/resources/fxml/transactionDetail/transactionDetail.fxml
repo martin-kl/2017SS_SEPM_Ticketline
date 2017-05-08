@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController">
     <top>
         <Label fx:id="lbDetailHeader" text="%transaction.detail.header" BorderPane.alignment="CENTER_LEFT">
             <BorderPane.margin>
@@ -26,7 +26,7 @@
                 <Separator prefWidth="200.0" />
                 <HBox fx:id="hbMain">
                     <children>
-                  <VBox alignment="TOP_CENTER" prefWidth="300.0">
+                  <VBox alignment="TOP_CENTER" minWidth="275.0" prefWidth="300.0">
                      <children>
                         <Label alignment="TOP_LEFT" text="%transaction.detail.tickets">
                            <VBox.margin>
