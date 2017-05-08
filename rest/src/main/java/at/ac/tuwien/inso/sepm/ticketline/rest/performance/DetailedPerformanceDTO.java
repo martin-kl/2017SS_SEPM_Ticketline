@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -15,5 +14,5 @@ import java.util.List;
 @ApiModel(value = "DetailedPerformanceDTO", description = "a detailed DTO for a performance")
 public class DetailedPerformanceDTO extends PerformanceDTO {
     @ApiModelProperty(readOnly = true, name = "Wrapped Ticketlist")
-    private List<TicketWrapperDTO> ticketWrapperDTOs;
+    private List<TicketWrapperDTO> ticketWrapperList;
 }

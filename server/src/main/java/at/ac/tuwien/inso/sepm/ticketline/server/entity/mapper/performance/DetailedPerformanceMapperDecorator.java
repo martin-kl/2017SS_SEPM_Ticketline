@@ -32,7 +32,7 @@ public abstract class DetailedPerformanceMapperDecorator implements DetailedPerf
                     detailedPerformanceDTO.getId()));
 
         List<TicketWrapperDTO> ticketWrapperDTOList = ticketWrapperMapper.fromEntity(ticketWrapperList);
-        detailedPerformanceDTO.setTicketWrapperDTOs(ticketWrapperDTOList);
+        detailedPerformanceDTO.setTicketWrapperList(ticketWrapperDTOList);
 
         return detailedPerformanceDTO;
     }

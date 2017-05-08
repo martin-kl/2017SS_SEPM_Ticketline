@@ -28,6 +28,12 @@ public class Sector extends Audited {
     @NotNull
     private int size;
 
+    @Getter
+    @Setter
+    @Column
+    @NotNull
+    private String name;
+
     @Setter
     @Getter
     @NotNull
