@@ -4,6 +4,8 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
+
+import java.net.MalformedURLException;
 import java.util.UUID;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Component
@@ -119,8 +122,11 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "/" + customerFirstName + "/"
-                        + customerLastName + "/" + performanceName,
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL + "/filter"))
+                        .queryParam("firstname", customerFirstName)
+                        .queryParam("lastname", customerLastName)
+                        .queryParam("performance", performanceName)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {

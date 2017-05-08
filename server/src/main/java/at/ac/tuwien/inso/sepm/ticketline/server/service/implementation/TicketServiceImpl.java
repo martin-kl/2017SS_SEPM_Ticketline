@@ -61,11 +61,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
-        String customerLastName, String performance) {
-        //return null;
+    public List<TicketTransaction> findTransactionsByCustomerAndLocation(
+        String customerFirstName,
+        String customerLastName,
+        String performance) {
+
         List<TicketTransaction> result = ticketTransactionRepository
-            .findByCustomerAndLocation(customerFirstName, customerLastName, performance);
+            .findByCustomerAndLocation(
+                "%" + customerFirstName + "%",
+                "%" + customerLastName + "%",
+                "%" + performance + "%"
+            );
 
         //filter all double elements
         List<TicketTransaction> filteredList = new ArrayList<>();
