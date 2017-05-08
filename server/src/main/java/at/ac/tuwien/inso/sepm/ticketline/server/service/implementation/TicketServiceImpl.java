@@ -54,19 +54,13 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketTransaction findTransactionsByID(UUID id) {
-
-        //TODO hier gibt es noch ein Problem - das mit dem Optional als Type funktioniert nicht ganz
-        //das Repository liefert irgendwie einfach NULL retour aber der Optional erkennt das nicht
-        //deswegen gibt es einen NullPointer
-
         Optional<TicketTransaction> transaction = ticketTransactionRepository.findOneById(id);
+        if(transaction == null)
+            throw new NotFoundException();
         if (!transaction.isPresent()) {
             throw new NotFoundException();
         }
         return transaction.get();
-
-        //had a problem with the line, so i changed it to the code above
-        //return ticketTransactionRepository.findOneById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override

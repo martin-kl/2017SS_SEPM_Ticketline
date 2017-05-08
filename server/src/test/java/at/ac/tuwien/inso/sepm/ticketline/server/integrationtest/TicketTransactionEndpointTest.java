@@ -222,9 +222,6 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
 
     @Test
     public void findTransactionByInvalidId() {
-
-        //TODO this test is not yet working cause of an error in Service/Repository
-
         Response response = RestAssured
             .given()
             .contentType(ContentType.JSON)
