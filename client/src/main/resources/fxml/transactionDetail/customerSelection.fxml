@@ -11,45 +11,47 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.CustomerSelection">
     <children>
-        <Label alignment="TOP_CENTER" text="%transaction.detail.customerSelection" wrapText="true" />
+        <Label alignment="TOP_CENTER" text="%transaction.detail.customerSelection" wrapText="true"/>
         <Separator prefWidth="200.0">
             <VBox.margin>
-                <Insets bottom="10.0" top="10.0" />
+                <Insets bottom="10.0" top="10.0"/>
             </VBox.margin>
         </Separator>
         <HBox alignment="TOP_CENTER">
             <children>
                 <TextField fx:id="customerSearchField" onKeyReleased="#onSearchChange" promptText="%search">
                     <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="10.0"/>
                     </HBox.margin>
                 </TextField>
-                <Button fx:id="btnAddNewCustomer" mnemonicParsing="false" text="%customer.add.new" />
+                <Button fx:id="btnAddNewCustomer" mnemonicParsing="false"
+                    onAction="#handleNewCustomer" text="%customer.add.new"/>
             </children>
         </HBox>
         <ScrollPane>
             <content>
-                <VBox fx:id="customerSelection" />
+                <VBox fx:id="customerSelection"/>
             </content>
             <VBox.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </VBox.margin>
         </ScrollPane>
         <HBox alignment="TOP_CENTER">
             <children>
-                <Label text="%customer.selected" />
+                <Label text="%customer.selected"/>
                 <Label fx:id="selectedCustomer" text="-">
                     <HBox.margin>
-                        <Insets left="5.0" />
+                        <Insets left="5.0"/>
                     </HBox.margin>
                 </Label>
             </children>
         </HBox>
         <HBox alignment="TOP_CENTER">
             <children>
-                <Button fx:id="btnContinue" mnemonicParsing="false" onAction="#handleContinue" text="%continue">
+                <Button fx:id="btnContinue" mnemonicParsing="false" onAction="#handleContinue"
+                    text="%continue">
                     <HBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
+                        <Insets bottom="5.0" top="5.0"/>
                     </HBox.margin>
                 </Button>
             </children>

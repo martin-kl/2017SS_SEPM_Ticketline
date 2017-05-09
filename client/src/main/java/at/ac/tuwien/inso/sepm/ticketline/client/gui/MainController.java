@@ -11,6 +11,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsCon
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
@@ -154,6 +155,7 @@ public class MainController {
             controller.initializeData(performance);
             dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
+            /*
             dialog.setOnCloseRequest(event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.initModality(Modality.APPLICATION_MODAL);
@@ -166,6 +168,8 @@ public class MainController {
                     event.consume();
                 }
             });
+            */
+            dialog = Helper.setDefaultOnCloseRequest(dialog);
             dialog.showAndWait();
         }
         else {
@@ -206,7 +210,7 @@ public class MainController {
         } else {
             dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
         }
-
+        /*
         dialog.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -219,6 +223,8 @@ public class MainController {
                 event.consume();
             }
         });
+        */
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
     }
 

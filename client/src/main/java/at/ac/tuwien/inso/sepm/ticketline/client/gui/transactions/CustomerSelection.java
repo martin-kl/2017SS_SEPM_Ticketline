@@ -3,16 +3,19 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +25,8 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -41,7 +46,6 @@ public class CustomerSelection {
 
     private CustomerDTO lastSelectedCustomer;
     private HBox previousSelectedBox = null;
-    private Callable onContinueClicked;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
@@ -55,10 +59,6 @@ public class CustomerSelection {
         this.springFxmlLoader = springFxmlLoader;
         this.customerService = customerService;
         this.transactionDetailController = transactionDetailController;
-    }
-
-    public void setOnContinueClicked(Callable onContinueClicked) {
-        this.onContinueClicked = onContinueClicked;
     }
 
     public void reloadCustomers() {
@@ -161,4 +161,30 @@ public class CustomerSelection {
     }
 
 
+    public void handleNewCustomer(ActionEvent actionEvent) {
+        Stage stage = (Stage) transactionDetailController.getBpDetailMainPane().getScene().getWindow();
+        Stage dialog = new Stage();
+        dialog.setResizable(false);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/customers/addEditCustomer.fxml");
+        CustomerAddEditController controller = (CustomerAddEditController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        //tell the controller that we are coming from the customer selection
+        controller.initAddCustomerFromSelection(this);
+        dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
+
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        dialog.showAndWait();
+    }
+
+    public void returnFromAddCustomer(CustomerDTO customerDTO) {
+        //TODO reload list that it contains the new customer too
+        lastSelectedCustomer = customerDTO;
+        updateCurrentlySelectedCustomer();
+    }
 }
