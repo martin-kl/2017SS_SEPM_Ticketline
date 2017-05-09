@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
 @ApiModel(value = "SeatTicketDTO", description = "seat DTO for Ticket Entity")
 public class SeatTicketDTO extends TicketDTO {
     @ApiModelProperty(name = "Seat to the ticket")

@@ -151,16 +151,8 @@ public class MainController {
         dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
         dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                event.consume();
-            }
+            controller.handleCancel();
+            event.consume();
         });
         dialog.showAndWait();
 

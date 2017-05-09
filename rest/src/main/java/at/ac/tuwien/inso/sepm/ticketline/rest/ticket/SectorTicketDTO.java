@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode
 @ApiModel(value = "SectorTicketDTO", description = "sector DTO for Ticket Entity")
 public class SectorTicketDTO extends TicketDTO {
     @ApiModelProperty(name = "Sector to the ticket")

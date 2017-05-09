@@ -13,7 +13,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
 @ApiModel(value = "SeatLocationDTO", description = "Seat location DTO for Location Entity")
 public class SeatLocationDTO extends LocationDTO {
 }
