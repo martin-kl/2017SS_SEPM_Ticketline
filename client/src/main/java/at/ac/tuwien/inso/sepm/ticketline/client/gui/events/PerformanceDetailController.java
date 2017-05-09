@@ -166,6 +166,7 @@ public class PerformanceDetailController {
     public boolean handleCancel(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(btnCancel.getScene().getWindow());
 
         alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
         alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
@@ -180,6 +181,7 @@ public class PerformanceDetailController {
         }
         return false;
     }
+
     public void handleContinue(){
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         mainController.showTransactionDetailWindow(chosenTickets, detailedPerformance, stage);

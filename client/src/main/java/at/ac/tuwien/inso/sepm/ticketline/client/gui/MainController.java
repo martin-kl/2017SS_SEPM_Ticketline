@@ -138,7 +138,7 @@ public class MainController {
         dialog.showAndWait();
     }
 
-    public void showPerformanceDetailWindow(DetailedPerformanceDTO performance){
+    public void showPerformanceDetailWindow(DetailedPerformanceDTO performance) {
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
@@ -155,47 +155,10 @@ public class MainController {
         controller.initializeData(performance);
         dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
-        //TODO alex hat ab hier nichts mehr bis unten nächsten todo
-            /*
-            dialog.setOnCloseRequest(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.initModality(Modality.APPLICATION_MODAL);
-                alert.initOwner(dialog);
-                alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-                alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-                alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-                Optional<ButtonType> result = alert.showAndWait();
-                if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                    event.consume();
-                }
-            });
-            */
-            dialog = Helper.setDefaultOnCloseRequest(dialog);
-            dialog.showAndWait();
-        }
-        else {
-            /* No performance selected, show error dialog */
-            ValidationException e = new ValidationException("event.error.dialog.noselection.header");
-            e.showDialog();
-            /*
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(stage);
-            alert.setTitle(BundleManager.getBundle().getString("event.error.dialog.noselection.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
-            alert.setContentText(BundleManager.getBundle().getString("event.error.dialog.noselection.content"));
-            alert.showAndWait();*/
-            /*Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                event.consume();
-            }*/
-        }
-        //TODO dafür hat er da dann das:
-
         dialog.setOnCloseRequest(event -> {
-        controller.handleCancel();
-        event.consume();
-    });
+            controller.handleCancel();
+            event.consume();
+        });
         dialog.showAndWait();
     }
 
@@ -236,7 +199,8 @@ public class MainController {
         dialog.showAndWait();
     }
 
-    public void showTransactionDetailWindow(DetailedTicketTransactionDTO detailedTicketTransactionDTO){
+    public void showTransactionDetailWindow(
+        DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -245,13 +209,12 @@ public class MainController {
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        //TODO the next line is just for testing because there is no saalplan here yet, it should be replaced with the line after it
-        controller.initData(detailedTicketTransactionDTO.getTickets(), detailedTicketTransactionDTO.getPerformanceName());
-        //controller.initData(detailedTicketTransactionDTO);
+        controller.initData(detailedTicketTransactionDTO);
         showTransactionDetailStage(dialog);
     }
 
-    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO, Stage hallplanStage) {
+    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList,
+        DetailedPerformanceDTO detailedPerformanceDTO, Stage hallplanStage) {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -260,7 +223,7 @@ public class MainController {
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        controller.initData(ticketDTOList, performanceDTO);
+        controller.initData(ticketDTOList, detailedPerformanceDTO);
         showTransactionDetailStage(dialog);
     }
 
@@ -272,6 +235,7 @@ public class MainController {
         dialog.initOwner(stage);
         return dialog;
     }
+
     private void showTransactionDetailStage(Stage dialog) {
         dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
 
