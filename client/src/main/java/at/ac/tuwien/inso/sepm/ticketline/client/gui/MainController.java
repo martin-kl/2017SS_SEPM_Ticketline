@@ -212,7 +212,7 @@ public class MainController {
         showTransactionDetailStage(dialog);
     }
 
-    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
+    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO, Stage hallplanStage) {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader

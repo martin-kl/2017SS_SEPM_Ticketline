@@ -181,7 +181,8 @@ public class PerformanceDetailController {
         return false;
     }
     public void handleContinue(){
-        // TODO: open next dialog and put the list of chosenTickets in it
+        Stage stage = (Stage) btnCancel.getScene().getWindow();
+        mainController.showTransactionDetailWindow(chosenTickets, detailedPerformance, stage);
     }
 
     public void clearData(){
