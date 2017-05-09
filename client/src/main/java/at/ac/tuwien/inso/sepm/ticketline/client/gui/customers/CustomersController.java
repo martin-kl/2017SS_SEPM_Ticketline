@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class CustomersController {
+
     private static final int HEADER_ICON_SIZE = 25;
     @FXML
     private Label lblHeaderIcon;
@@ -48,7 +49,8 @@ public class CustomersController {
     private final CustomerService customerService;
 
     @FXML
-    private void initialize() {}
+    private void initialize() {
+    }
 
     public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService) {
@@ -57,17 +59,19 @@ public class CustomersController {
         this.customerService = customerService;
     }
 
-    public void setFont(FontAwesome fontAwesome){
+    public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.USER);
         setTitle(BundleManager.getBundle().getString("customers.title"));
     }
+
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
                 .create(glyph)
                 .size(HEADER_ICON_SIZE));
     }
+
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
@@ -107,11 +111,14 @@ public class CustomersController {
             private void drawCustomers(Iterator<CustomerDTO> iterator) {
                 while (iterator.hasNext()) {
                     CustomerDTO customer = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/customers/customersElement.fxml");
+                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                        .loadAndWrap("/fxml/customers/customersElement.fxml");
 
                     ((CustomersElementController) wrapper.getController()).initializeData(customer);
                     HBox customerBox = (HBox) wrapper.getLoadedObject();
                     customerBox.setOnMouseClicked((e) -> {
+                        log.debug("Selected a customer: " + customer.getFirstName() + " " + customer
+                            .getLastName() + " with id = " + customer.getId());
                         handleCustomerEdit(customer);
                     });
                     vbCustomerBoxChildren.add(customerBox);

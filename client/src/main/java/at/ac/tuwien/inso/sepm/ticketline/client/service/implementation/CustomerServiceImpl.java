@@ -29,6 +29,12 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
+    public List<CustomerDTO> search(String query) throws DataAccessException {
+        if (query == null || query.equals("")) { return customerRestClient.findAll(); }
+        return customerRestClient.search(query);
+    }
+
+    @Override
     public CustomerDTO findOne(UUID id) throws DataAccessException {
         return customerRestClient.findOne(id);
     }
@@ -61,7 +67,6 @@ public class CustomerServiceImpl implements CustomerService{
             throw new ValidationException("customer.error.birthday");
         }
 
-        customerRestClient.save(customer);
-        return customer;
+        return customerRestClient.save(customer);
     }
 }

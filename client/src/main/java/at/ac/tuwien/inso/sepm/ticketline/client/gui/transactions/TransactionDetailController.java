@@ -1,10 +1,13 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.time.Instant;
 import java.util.UUID;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
@@ -18,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +30,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionDetailController {
 
+    @Getter
+    @FXML
+    private BorderPane bpDetailMainPane;
     @FXML
     private Label lbDetailHeader;
     @FXML
@@ -39,36 +47,24 @@ public class TransactionDetailController {
     private List<? extends TicketDTO> ticketDTOList;
 
     private final SpringFxmlLoader springFxmlLoader;
+    private DetailedPerformanceDTO detailedPerformanceDTO;
+    private PerformanceDetailController performanceDetailController;
 
     public TransactionDetailController(SpringFxmlLoader springFxmlLoader) {
         this.springFxmlLoader = springFxmlLoader;
     }
 
-    //TODO this method is just for testing while we dont have a saalplan - should be deleted afterwards
-    public void initData(List<? extends TicketDTO> ticketDTOList, String performanceName) {
-        setHeader(performanceName);
-        setTickets(ticketDTOList);
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
-        CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
-        hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
-        customerSelection.reloadCustomers();
-        this.ticketDTOList = ticketDTOList;
-    }
 
     public void changeToDetailView(CustomerDTO selectedCustomer) {
         SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
         TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
             .getController();
-        if(selectedCustomer == null) {
-            //TODO no customer was selected - take a "guest" user or insert null?
+        if (selectedCustomer == null) {
+            //TODO no customer was selected - take a "guest" user or insert null? currently null is passed
         }
 
-        //TODO delete this - just to test - create random performance
-        tdvc.initController(selectedCustomer,
-            new PerformanceDTO(UUID.randomUUID(), "musterPerformance",
-                Instant.now(), Instant.now(), null, null), ticketDTOList);
+        tdvc.initController(selectedCustomer, detailedPerformanceDTO, ticketDTOList);
 
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
@@ -78,10 +74,16 @@ public class TransactionDetailController {
         children.add((VBox) wrapper2.getLoadedObject());
     }
 
-    //this is the "normal" method that should be called after the saalplan
-    public void initData(List<? extends TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
-        setHeader(performanceDTO.getName());
+    //this is the "normal" method that is called after the hallplan
+    public void initData(List<? extends TicketDTO> ticketDTOList,
+        DetailedPerformanceDTO detailedPerformanceDTO,
+        PerformanceDetailController performanceDetailController) {
+        this.detailedPerformanceDTO = detailedPerformanceDTO;
+        this.performanceDetailController = performanceDetailController;
+
+        setHeader(detailedPerformanceDTO.getName());
         setTickets(ticketDTOList);
+
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
         CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
@@ -90,16 +92,25 @@ public class TransactionDetailController {
         this.ticketDTOList = ticketDTOList;
     }
 
-
+    //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
+        this.detailedPerformanceDTO = null;
+        this.performanceDetailController = null;
+
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
+
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
         TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper
             .getController();
         tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
 
-        //TODO check if this works so - do we have to clean the children before inserting?
+        //clear list and add relevant items again
+        ObservableList<Node> children = hbMain.getChildren();
+        children.clear();
+        children.add(vbTicketsInclLabel);
+        children.add(spSeparator);
+
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         setTickets(detailedTicketTransactionDTO.getTickets());
 

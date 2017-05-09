@@ -4,15 +4,17 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController">
    <center>
@@ -20,7 +22,34 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Pane fx:id="pHallplan" layoutX="147.0" layoutY="171.0" prefHeight="542.0" prefWidth="493.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <BorderPane layoutX="15.0" layoutY="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <top>
+                        <Label fx:id="lblHallplanHeader" alignment="CENTER" minHeight="42.0" prefHeight="42.0" prefWidth="295.0" text="&lt;Available Seats/Sectors&gt;" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </Label>
+                     </top>
+                     <center>
+                        <GridPane fx:id="pHallplan" maxHeight="450.0" maxWidth="450.0" minHeight="450.0" minWidth="450.0" prefHeight="450.0" prefWidth="450.0" BorderPane.alignment="CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </center>
+                  </BorderPane>
                </children>
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
@@ -34,8 +63,8 @@
                            <center>
                               <ButtonBar prefHeight="41.0" prefWidth="284.0">
                                 <buttons>
-                                  <Button fx:id="btnCancel" mnemonicParsing="false" prefHeight="25.0" prefWidth="156.0" text="Cancel" />
-                                    <Button fx:id="btnContinue" layoutX="219.0" layoutY="18.0" mnemonicParsing="false" text="Continue" />
+                                  <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="156.0" text="Cancel" />
+                                    <Button fx:id="btnContinue" layoutX="219.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
                                 </buttons>
                                  <padding>
                                     <Insets bottom="10.0" right="15.0" top="10.0" />
@@ -48,11 +77,15 @@
                         </BorderPane>
                      </bottom>
                      <center>
-                        <VBox fx:id="vbSelectedTickets" prefHeight="474.0" prefWidth="295.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <Separator prefWidth="200.0" />
-                           </children>
-                        </VBox>
+                        <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                           <content>
+                              <VBox fx:id="vbSelectedTickets" maxHeight="474.0" prefHeight="474.0" prefWidth="295.0">
+                                 <children>
+                                    <Separator prefWidth="200.0" />
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                      </center>
                      <top>
                         <Label fx:id="lblTicketsHeader" alignment="CENTER" minHeight="42.0" prefHeight="42.0" prefWidth="295.0" text="&lt;Currently selected Tickets:&gt;" BorderPane.alignment="CENTER">

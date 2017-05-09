@@ -33,7 +33,7 @@ public interface CustomerService {
     Customer save(Customer customer);
 
     /**
-     * searches for customers by name (first and last)
+     * fuzzy searches for customers
      * @param query the serach query
      * @return list of customers
      */

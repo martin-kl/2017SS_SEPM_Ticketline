@@ -14,14 +14,17 @@
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
-   <HBox alignment="BOTTOM_LEFT" prefHeight="0.0" prefWidth="200.0" spacing="10.0">
+   <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="200.0" spacing="10.0">
       <children>
-         <Label fx:id="labelEventName" alignment="BOTTOM_LEFT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="193.0" text="EventName">
+         <Label fx:id="labelEventName" alignment="BOTTOM_LEFT" text="EventName">
             <font>
                <Font name="System Bold" size="16.0" />
-            </font></Label>
+            </font>
+            <HBox.margin>
+               <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
+            </HBox.margin></Label>
          <Label fx:id="labelEventCategoryLabelling" text="Category" />
-         <Label fx:id="labelEventCategory" prefHeight="17.0" prefWidth="93.0" text="EventCategory" />
+         <Label fx:id="labelEventCategory" text="EventCategory" />
       </children>
       <opaqueInsets>
          <Insets />

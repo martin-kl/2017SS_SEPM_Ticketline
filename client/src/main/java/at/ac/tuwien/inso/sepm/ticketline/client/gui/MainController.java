@@ -11,7 +11,9 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsCon
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
@@ -66,6 +68,7 @@ public class MainController {
     private CustomersController customersController;
     private ReservationsController reservationsController;
     private EventsController eventsController;
+    private PerformanceDetailController performanceDetailController;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -136,55 +139,29 @@ public class MainController {
         dialog.showAndWait();
     }
 
-    public void showPerformanceDetailWindow(PerformanceDTO performance){
+    public void showPerformanceDetailWindow(DetailedPerformanceDTO performance) {
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
 
-        if(performance != null) {
-            //wrapper contains controller and loaded object
-            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
-            PerformanceDetailController controller = (PerformanceDetailController) wrapper
-                .getController();
-            dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
+        performanceDetailController = (PerformanceDetailController) wrapper
+            .getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-            controller.initializeData(performance);
-            dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
+        performanceDetailController.initializeData(performance);
+        dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
-            dialog.setOnCloseRequest(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.initModality(Modality.APPLICATION_MODAL);
-                alert.initOwner(dialog);
-                alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-                alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-                alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-                Optional<ButtonType> result = alert.showAndWait();
-                if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                    event.consume();
-                }
-            });
-            dialog.showAndWait();
-        }
-        else {
-            /* No performance selected, show error dialog */
-            ValidationException e = new ValidationException("event.error.dialog.noselection.header");
-            e.showDialog();
-            /*
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(stage);
-            alert.setTitle(BundleManager.getBundle().getString("event.error.dialog.noselection.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
-            alert.setContentText(BundleManager.getBundle().getString("event.error.dialog.noselection.content"));
-            alert.showAndWait();*/
-            /*Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                event.consume();
-            }*/
-        }
+        dialog.setOnCloseRequest(event -> {
+            performanceDetailController.handleCancel();
+            performanceDetailController = null;
+            event.consume();
+        });
+        dialog.showAndWait();
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
@@ -206,7 +183,39 @@ public class MainController {
         } else {
             dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
         }
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        dialog.showAndWait();
+    }
 
+    public void showTransactionDetailWindow(
+        DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
+        Stage dialog = initStage();
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
+        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.initData(detailedTicketTransactionDTO);
+        //showTransactionDetailStage(dialog);
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        dialog.showAndWait();
+    }
+
+    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList,
+        DetailedPerformanceDTO detailedPerformanceDTO) {
+        Stage dialog = initStage();
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
+        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.initData(ticketDTOList, detailedPerformanceDTO, performanceDetailController);
+        //showTransactionDetailStage(dialog);
+        dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
         dialog.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.initModality(Modality.APPLICATION_MODAL);
@@ -216,38 +225,11 @@ public class MainController {
             alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
             Optional<ButtonType> result = alert.showAndWait();
             if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                performanceDetailController.clearData(true);
                 event.consume();
             }
         });
         dialog.showAndWait();
-    }
-
-    public void showTransactionDetailWindow(DetailedTicketTransactionDTO detailedTicketTransactionDTO){
-        Stage dialog = initStage();
-        //wrapper contains controller and loaded object
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
-        TransactionDetailController controller = (TransactionDetailController) wrapper
-            .getController();
-        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
-
-        //TODO the next line is just for testing because there is no saalplan here yet, it should be replaced with the line after it
-        controller.initData(detailedTicketTransactionDTO.getTickets(), detailedTicketTransactionDTO.getPerformanceName());
-        //controller.initData(detailedTicketTransactionDTO);
-        showTransactionDetailStage(dialog);
-    }
-
-    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
-        Stage dialog = initStage();
-        //wrapper contains controller and loaded object
-        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
-        TransactionDetailController controller = (TransactionDetailController) wrapper
-            .getController();
-        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
-
-        controller.initData(ticketDTOList, performanceDTO);
-        showTransactionDetailStage(dialog);
     }
 
     private Stage initStage() {
@@ -257,23 +239,6 @@ public class MainController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         return dialog;
-    }
-    private void showTransactionDetailStage(Stage dialog) {
-        dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
-
-        dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.detail.closeTitle"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.detail.closeHeader"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.detail.closeContent"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                event.consume();
-            }
-        });
-        dialog.showAndWait();
     }
 
     private void initNewsTabPane() {

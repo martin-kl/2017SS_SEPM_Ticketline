@@ -54,8 +54,12 @@ public class TransactionDetailsViewController {
         loadButtonsAccordingToStatus(TicketStatus.BOUGHT, true);
 
         transactionNumber.setText("/");
-        customer.setText(customerDTO.getFirstName() + " "
-            + customerDTO.getLastName());
+        if(customerDTO == null) {
+            customer.setText(BundleManager.getBundle().getString("transaction.detail.anonymousCustomer"));
+        }else {
+            customer.setText(customerDTO.getFirstName() + " "
+                + customerDTO.getLastName());
+        }
         totalPrice.setText(
             "€" + Helper.getTotalPrice(ticketDTOList).toString());
     }

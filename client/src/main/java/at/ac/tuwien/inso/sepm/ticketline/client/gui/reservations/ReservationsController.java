@@ -89,7 +89,6 @@ public class ReservationsController {
         btnReservationDetails
             .setText(BundleManager.getBundle().getString("reservation.showDetails"));
 
-        //TODO Labels in the table are not refreshed after language change - is done with new loading
         selectedTransaction = null;
         previousSelectedBox = null;
         loadTransactions();
@@ -213,6 +212,7 @@ public class ReservationsController {
                 if (previousSelectedBox != null) {
                     previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
                 }
+                log.debug("Selected a transaction with id: " + ticketTransaction.getId());
                 previousSelectedBox = reservationBox;
                 reservationBox.setStyle("-fx-background-color: #2196F3");
                 selectedTransaction = ticketTransaction;
@@ -229,11 +229,13 @@ public class ReservationsController {
     public void handleReservationDetails(ActionEvent actionEvent) {
         //start it with selectedTransaction as argument
         if (selectedTransaction == null) {
+            log.error("Tried to see details of transaction but no transaction was selected");
             //show alert
             ValidationException e = new ValidationException("reservation.error.nothingSelected");
             e.showDialog();
             return;
         }
+        log.debug("Loading Details of transaction with id: " + selectedTransaction.getId());
         mainController.showTransactionDetailWindow(selectedTransaction);
     }
 }
