@@ -8,7 +8,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,20 +26,20 @@ public class CustomerEndpoint {
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get list of customer")
     public List<CustomerDTO> findAll() {
-        return customerMapper.customerToCustomerDTO(customerService.findAll());
+        return customerMapper.fromEntity(customerService.findAll());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get one Customer by id")
     public CustomerDTO find(@PathVariable UUID id) {
-        return customerMapper.customerToCustomerDTO(customerService.findOne(id));
+        return customerMapper.fromEntity(customerService.findOne(id));
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "Save a customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
-        Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
+        Customer customer = customerMapper.fromDTO(customerDTO);
         customer = customerService.save(customer);
-        return customerMapper.customerToCustomerDTO(customer);
+        return customerMapper.fromEntity(customer);
     }
 }

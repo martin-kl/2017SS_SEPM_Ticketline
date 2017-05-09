@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.ticket;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,8 +21,8 @@ import java.util.UUID;
     include = JsonTypeInfo.As.PROPERTY,
     property = "type")
 @JsonSubTypes({
-    @Type(value = SeatTicketDTO.class, name = "Seat"),
-    @Type(value = SectorTicketDTO.class, name = "Sector")
+    @JsonSubTypes.Type(value = SeatTicketDTO.class, name = "Seat"),
+    @JsonSubTypes.Type(value = SectorTicketDTO.class, name = "Sector")
 })
 public abstract class TicketDTO {
 

@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.sepm.ticketline.server.mapper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.customer.CustomerMapper;
-import java.time.Instant;
 import java.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +50,7 @@ public class CustomerMapperTest {
         customer.setBirthday(CUSTOMER_BIRTHDAY);
 
 
-        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
+        CustomerDTO customerDTO = customerMapper.fromEntity(customer);
         assertThat(customerDTO).isNotNull();
         assertEquals(customerDTO.getId(), CUSTOMER_ID);
         assertEquals(customerDTO.getFirstName(), CUSTOMER_FIRST_NAME);
@@ -73,7 +72,7 @@ public class CustomerMapperTest {
 
         assertThat(customerMapper).isNotNull();
 
-        Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
+        Customer customer = customerMapper.fromDTO(customerDTO);
         assertThat(customer).isNotNull();
         assertEquals(customer.getId(), CUSTOMER_ID);
         assertEquals(customer.getFirstName(), CUSTOMER_FIRST_NAME);

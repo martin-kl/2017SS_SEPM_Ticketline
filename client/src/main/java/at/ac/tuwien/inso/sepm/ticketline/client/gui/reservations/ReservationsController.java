@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
@@ -10,6 +11,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDT
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -29,17 +31,20 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ReservationsController {
+
     @FXML
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
 
     @FXML
-    private TextField tfResBillNumber;
+    private TextField tfTransactionNumber;
     @FXML
-    private TextField tfCustomerName;
+    private TextField tfCustomerFirstName;
     @FXML
-    private TextField tfReservationID;
+    private TextField tfCustomerLastName;
+    @FXML
+    private TextField tfPerformanceName;
     @FXML
     private Button btnSearch;
     @FXML
@@ -55,6 +60,9 @@ public class ReservationsController {
     private final SpringFxmlLoader springFxmlLoader;
     private final ReservationService reservationService;
 
+    private DetailedTicketTransactionDTO selectedTransaction;
+    private VBox previousSelectedBox = null;
+
     public ReservationsController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         ReservationService reservationService) {
         this.mainController = mainController;
@@ -62,43 +70,62 @@ public class ReservationsController {
         this.reservationService = reservationService;
     }
 
-    @FXML
-    private void initialize() { }
-
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
 
-        tfResBillNumber.setPromptText(BundleManager.getBundle().getString("reservation.prompt.resBillNumber"));
-        tfCustomerName.setPromptText(BundleManager.getBundle().getString("reservation.prompt.customerName"));
-        tfReservationID.setPromptText(BundleManager.getBundle().getString("reservation.prompt.performanceName"));
+        tfTransactionNumber
+            .setPromptText(
+                BundleManager.getBundle().getString("reservation.prompt.transactionNumber"));
+        tfCustomerFirstName
+            .setPromptText(
+                BundleManager.getBundle().getString("reservation.prompt.customerFirstName"));
+        tfCustomerLastName
+            .setPromptText(
+                BundleManager.getBundle().getString("reservation.prompt.customerLastName"));
+        tfPerformanceName.setPromptText(
+            BundleManager.getBundle().getString("reservation.prompt.performanceName"));
 
         btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
-        btnReservationDetails.setText(BundleManager.getBundle().getString("reservation.showDetails"));
+        btnReservationDetails
+            .setText(BundleManager.getBundle().getString("reservation.showDetails"));
+
+        //TODO Labels in the table are not refreshed after language change - is done with new loading
+        selectedTransaction = null;
+        previousSelectedBox = null;
+        loadTransactions();
     }
 
-    public void setFont(FontAwesome fontAwesome){
+    public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.TICKET);
         setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
     }
+
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
                 .create(glyph)
                 .size(HEADER_ICON_SIZE));
     }
+
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
 
-    public void loadReservations() {
+    public void loadTransactions() {
+        //delete possible entries from before
+        tfTransactionNumber.setText("");
+        tfCustomerFirstName.setText("");
+        tfCustomerLastName.setText("");
+        tfPerformanceName.setText("");
+
         ObservableList<Node> vbReservationBoxChildren = vbReservationsElements.getChildren();
         vbReservationBoxChildren.clear();
         Task<List<DetailedTicketTransactionDTO>> task = new Task<List<DetailedTicketTransactionDTO>>() {
             @Override
             protected List<DetailedTicketTransactionDTO> call() throws DataAccessException {
                 try {
-                    return reservationService.findReservationsWithStatus("BOUGHT");
+                    return reservationService.findTransactionsBoughtReserved();
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();
@@ -108,7 +135,8 @@ public class ReservationsController {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                drawReservations(getValue().iterator());
+                loadNewElements(getValue());
+                //drawReservations(getValue().iterator());
             }
 
             @Override
@@ -116,29 +144,6 @@ public class ReservationsController {
                 super.failed();
                 JavaFXUtils.createExceptionDialog(getException(),
                     vbReservationsElements.getScene().getWindow()).showAndWait();
-            }
-
-            private void drawReservations(Iterator<DetailedTicketTransactionDTO> iterator) {
-                while (iterator.hasNext()) {
-                    DetailedTicketTransactionDTO ticketTransaction = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                        .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
-
-                    ((ReservationsElementController) wrapper.getController())
-                        .initializeData(ticketTransaction);
-                    VBox reservationBox = (VBox) wrapper.getLoadedObject();
-                    /*
-                    customerBox.setOnMouseClicked((e) -> {
-                        handleCustomerEdit(customer);
-                    });
-                    */
-                    vbReservationBoxChildren.add(reservationBox);
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        vbReservationBoxChildren.add(separator);
-                    }
-                }
-
             }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->
@@ -149,8 +154,86 @@ public class ReservationsController {
     }
 
     public void handleSearch(ActionEvent actionEvent) {
+        if (tfTransactionNumber.getText().length() != 0) {
+            //search with id
+            try {
+                DetailedTicketTransactionDTO transactionDTO = reservationService
+                    .findTransactionWithID(tfTransactionNumber.getText().trim());
+                //System.out.println("got transaction = " + transactionDTO);
+
+                //search result is one entry, but method loadNewElements requires a list
+                List<DetailedTicketTransactionDTO> searchResultList = new LinkedList<>();
+                searchResultList.add(transactionDTO);
+                loadNewElements(searchResultList);
+            } catch (ExceptionWithDialog exceptionWithDialog) {
+                exceptionWithDialog.showDialog();
+            }
+        } else {
+            if (tfCustomerFirstName.getText().length() == 0
+                || tfCustomerLastName.getText().trim().length() == 0
+                || tfPerformanceName.getText().length() == 0) {
+                ValidationException e = new ValidationException("reservation.error.emptySearch");
+                e.showDialog();
+            } else {
+                //search with customerName / performance name
+                try {
+                    List<DetailedTicketTransactionDTO> searchResult = reservationService
+                        .findTransactionsByCustomerAndPerformance(
+                            tfCustomerFirstName.getText().trim(),
+                            tfCustomerLastName.getText().trim(),
+                            tfPerformanceName.getText().trim());
+                    //System.out.println("got #"+searchResult.size()+ " results");
+                    //load new elements
+                    loadNewElements(searchResult);
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.showDialog();
+                }
+            }
+        }
+    }
+
+
+    private void loadNewElements(List<DetailedTicketTransactionDTO> elements) {
+        ObservableList<Node> vbReservationBoxChildren = vbReservationsElements
+            .getChildren();
+        vbReservationBoxChildren.clear();
+
+        Iterator<DetailedTicketTransactionDTO> iterator = elements.iterator();
+        while (iterator.hasNext()) {
+            DetailedTicketTransactionDTO ticketTransaction = iterator.next();
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
+
+            ((ReservationsElementController) wrapper.getController())
+                .initializeData(ticketTransaction);
+            VBox reservationBox = (VBox) wrapper.getLoadedObject();
+
+            reservationBox.setOnMouseClicked((e) -> {
+                //un-mark previous selected box
+                if (previousSelectedBox != null) {
+                    previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+                }
+                previousSelectedBox = reservationBox;
+                reservationBox.setStyle("-fx-background-color: #2196F3");
+                selectedTransaction = ticketTransaction;
+            });
+
+            vbReservationBoxChildren.add(reservationBox);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbReservationBoxChildren.add(separator);
+            }
+        }
     }
 
     public void handleReservationDetails(ActionEvent actionEvent) {
+        //start it with selectedTransaction as argument
+        if (selectedTransaction == null) {
+            //show alert
+            ValidationException e = new ValidationException("reservation.error.nothingSelected");
+            e.showDialog();
+            return;
+        }
+        mainController.showTransactionDetailWindow(selectedTransaction);
     }
 }

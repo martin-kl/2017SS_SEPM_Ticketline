@@ -5,8 +5,10 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,11 +29,10 @@ public class TicketTransactionEndpoint {
     private TicketTransactionMapper ticketTransactionMapper;
 
     @RequestMapping(method = RequestMethod.GET)
-    @ApiOperation(value = "Gets a list of Ticket Reservations")
-    public List<DetailedTicketTransactionDTO> getAllTransactions(
-        @RequestParam(value = "status") String status) {
+    @ApiOperation(value = "Gets a list of bought and reserved Ticket Reservations")
+    public List<DetailedTicketTransactionDTO> getAllReservedAndBoughtTransactions(Pageable pageable) {
         return ticketService
-            .getAllTransactions(status)
+            .getAllBoughtReservedTransactions(pageable)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
@@ -39,13 +40,31 @@ public class TicketTransactionEndpoint {
 /*
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of Ticket Reservations")
-    public List<DetailedTicketTransactionDTO> getAllTransactionsAlternate(
-        @RequestParam(value = "status") String status) {
+    public List<DetailedTicketTransactionDTO> getAllTransactions(
+        @PathVariable String status) {
         return ticketService
             .getAllTransactions(status)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
     }
-    */
+*/
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get one Ticket Transaction by ID")
+    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {
+        return ticketTransactionMapper.fromEntity(ticketService.findTransactionsByID(id));
+    }
+
+    @RequestMapping(value = "/{customerFirstName}/{customerLastName}/{performance}", method = RequestMethod.GET)
+    @ApiOperation(value = "Gets a list of Ticket Reservations for the customer and the performance name")
+    public List<DetailedTicketTransactionDTO> findTicketTransaction(
+        @PathVariable(value = "customerFirstName") String customerFirstName,
+        @PathVariable(value = "customerLastName") String customerLastName,
+        @PathVariable(value = "performance") String performance) {
+        return ticketService
+            .findTransactionsByCustomerAndLocation(customerFirstName, customerLastName, performance)
+            .stream()
+            .map(ticketTransactionMapper::fromEntity)
+            .collect(Collectors.toList());
+    }
 }

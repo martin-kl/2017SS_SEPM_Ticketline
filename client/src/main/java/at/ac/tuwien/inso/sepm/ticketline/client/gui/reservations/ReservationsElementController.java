@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import at.ac.tuwien.inso.springfx.SpringFxmlLoader.LoadWrapper;
 import java.util.Iterator;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,6 +31,8 @@ public class ReservationsElementController {
     @FXML
     private Label lbReservationID;
     @FXML
+    private Label lbPerformanceName;
+    @FXML
     private Label lbBoughtReserved;
 
     private final SpringFxmlLoader springFxmlLoader;
@@ -41,12 +45,15 @@ public class ReservationsElementController {
         lbCustomerFirstName.setText(ticketTransactionDTO.getCustomer().getFirstName());
         lbCustomerLastName.setText(ticketTransactionDTO.getCustomer().getLastName());
         lbReservationID.setText(ticketTransactionDTO.getId().toString());
+        lbPerformanceName.setText(ticketTransactionDTO.getPerformanceName());
 
         TicketStatus status = ticketTransactionDTO.getStatus();
         lbBoughtReserved.setText(
             status == TicketStatus.BOUGHT ? BundleManager.getBundle()
                 .getString("reservation.ticket.bought")
-                : BundleManager.getBundle().getString("reservation.ticket.reserved"));
+                : status == TicketStatus.RESERVED ? BundleManager.getBundle()
+                    .getString("reservation.ticket.reserved")
+                    : BundleManager.getBundle().getString("reservation.ticket.canceled"));
 
         ObservableList<Node> vbReservationAndTicketsChildren = vbReservationAndTickets
             .getChildren();
@@ -56,11 +63,8 @@ public class ReservationsElementController {
         vbReservationAndTicketsChildren.clear();
         vbReservationAndTicketsChildren.add(hbReservationTemp);
 
-        Iterator<TicketDTO> iterator = ticketTransactionDTO.getTickets().iterator();
-
-        while (iterator.hasNext()) {
-            TicketDTO ticket = iterator.next();
-            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+        for (TicketDTO ticket : ticketTransactionDTO.getTickets()) {
+            LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/reservations/ticketsElement.fxml");
 
             ((TicketElementsController) wrapper.getController()).initializeData(ticket);
