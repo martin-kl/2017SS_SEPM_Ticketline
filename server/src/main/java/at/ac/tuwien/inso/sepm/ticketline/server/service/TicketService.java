@@ -14,7 +14,7 @@ public interface TicketService {
      * @param status of the transactions
      * @return a list of TicketTransactions
      */
-    List<TicketTransaction> getAllTransactions(String status);
+    List<TicketTransaction> getAllTransactions(String status, Pageable pageable);
 
     /**
      * Simply returns a list of all bought and reserved Transactions
