@@ -187,12 +187,12 @@ public class PerformanceDetailController {
         mainController.showTransactionDetailWindow(chosenTickets, detailedPerformance);
     }
 
-    //TODO delete boolean flag if other method works
+    //TODO the closing of the stage is not working
     public void clearData(boolean closeStage){
         chosenTickets.clear();
         ObservableList<Node> vbTicketBoxChildren = vbSelectedTickets.getChildren();
         vbTicketBoxChildren.clear();
-        System.out.println("\n in clea data method before if");
+        System.out.println("\n in clear data method before if");
         if(closeStage) {
             System.out.println("\nclose stage (performanceDetailController clearData method");
             Stage stage = (Stage) btnCancel.getScene().getWindow();

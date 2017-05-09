@@ -27,8 +27,10 @@ import java.util.Iterator;
 import java.util.List;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class CustomerSelection {
 
@@ -83,24 +85,24 @@ public class CustomerSelection {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                System.out.println("Call succeeded");
+                //System.out.println("Call succeeded");
                 drawCustomers(getValue().iterator());
             }
 
             @Override
             protected void failed() {
-                System.out.println("Call failed");
+                //System.out.println("Call failed");
                 super.failed();
                 JavaFXUtils.createExceptionDialog(getException(),
                     customerSelection.getScene().getWindow()).showAndWait();
             }
 
             private void drawCustomers(Iterator<CustomerDTO> iterator) {
-                System.out.println("actually drawing them now");
+                //System.out.println("actually drawing them now");
                 customerSelection.getChildren().clear();
                 while (iterator.hasNext()) {
                     CustomerDTO customer = iterator.next();
-                    System.out.println("iterator in here: " +  customer.toString());
+                    //System.out.println("iterator in here: " +  customer.toString());
                     SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                         .loadAndWrap("/fxml/customers/customersElement.fxml");
 
@@ -159,7 +161,7 @@ public class CustomerSelection {
     }
 
     public void onSearchChange(KeyEvent keyEvent) {
-        System.out.println("relaoding customers");
+        //System.out.println("relaoding customers");
         reloadCustomers();
     }
 
