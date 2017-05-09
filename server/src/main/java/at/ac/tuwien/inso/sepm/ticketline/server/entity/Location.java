@@ -38,7 +38,7 @@ public abstract class Location extends Audited {
     private String country;
 
     @Getter
-    @ManyToMany(mappedBy = "location")
+    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private Set<Performance> performances;
 
 }
