@@ -1,11 +1,15 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
+import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.Optional;
@@ -14,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -31,12 +36,15 @@ import java.util.List;
 @Component
 public class EventsController {
     private static final int HEADER_ICON_SIZE = 25;
+    private final PerformanceService performanceService;
     @FXML
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
     @FXML
     private VBox vbEventsElements;
+    @FXML
+    private Button btnManageTickets;
 
     private FontAwesome fontAwesome;
 
@@ -47,10 +55,11 @@ public class EventsController {
     private VBox previousSelectedBox = null;
 
 
-    public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService) {
+    public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService, PerformanceService performanceService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.eventService = eventService;
+        this.performanceService = performanceService;
     }
 
     public void reloadLanguage() {
@@ -86,7 +95,47 @@ public class EventsController {
 
     public void manageTicketsHandler(){
         log.debug("Clicked manage tickets in Events Tab");
-        mainController.showPerformanceDetailWindow(selectedPerformance);
+
+        if(selectedPerformance!=null){
+            btnManageTickets.setDisable(true);
+            loadDetailedPerformance(selectedPerformance);
+        }
+        else
+        {
+            ValidationException e = new ValidationException("event.error.dialog.noselection.header");
+            e.showDialog();
+        }
+
+    }
+
+    private void loadDetailedPerformance(PerformanceDTO performance) {
+        Task<DetailedPerformanceDTO> task = new Task<DetailedPerformanceDTO>() {
+            @Override
+            protected DetailedPerformanceDTO call() throws ExceptionWithDialog {
+                return performanceService.findOne(performance.getId());
+            }
+            @Override
+            protected void succeeded() {
+                super.succeeded();
+                btnManageTickets.setDisable(false);
+                DetailedPerformanceDTO detailedPerformance = getValue();
+                log.debug("Success reading detailedPerformance: " + detailedPerformance.getName());
+                mainController.showPerformanceDetailWindow(detailedPerformance);
+            }
+            @Override
+            protected void failed() {
+                super.failed();
+                btnManageTickets.setDisable(false);
+                ValidationException e = new ValidationException("event.error.dialog.noselection.header");
+                e.showDialog();
+            }
+        };
+
+        task.runningProperty().addListener((observable, oldValue, running) ->
+            mainController.setProgressbarProgress(
+                running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
+        );
+        new Thread(task).start();
     }
 
     public void loadEvents() {

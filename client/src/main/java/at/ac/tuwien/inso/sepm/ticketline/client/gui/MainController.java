@@ -13,6 +13,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformatio
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
@@ -137,24 +138,24 @@ public class MainController {
         dialog.showAndWait();
     }
 
-    public void showPerformanceDetailWindow(PerformanceDTO performance){
+    public void showPerformanceDetailWindow(DetailedPerformanceDTO performance){
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
 
-        if(performance != null) {
-            //wrapper contains controller and loaded object
-            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
-            PerformanceDetailController controller = (PerformanceDetailController) wrapper
-                .getController();
-            dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
+        PerformanceDetailController controller = (PerformanceDetailController) wrapper
+            .getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-            controller.initializeData(performance);
-            dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
+        controller.initializeData(performance);
+        dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
+        //TODO alex hat ab hier nichts mehr bis unten nächsten todo
             /*
             dialog.setOnCloseRequest(event -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -189,6 +190,13 @@ public class MainController {
                 event.consume();
             }*/
         }
+        //TODO dafür hat er da dann das:
+
+        dialog.setOnCloseRequest(event -> {
+        controller.handleCancel();
+        event.consume();
+    });
+        dialog.showAndWait();
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
@@ -243,7 +251,7 @@ public class MainController {
         showTransactionDetailStage(dialog);
     }
 
-    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO) {
+    public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList, PerformanceDTO performanceDTO, Stage hallplanStage) {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
