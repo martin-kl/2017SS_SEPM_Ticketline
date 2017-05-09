@@ -36,7 +36,6 @@ public class Helper {
         }
     }
 
-
     public static Stage setDefaultOnCloseRequest(Stage dialog) {
         dialog.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

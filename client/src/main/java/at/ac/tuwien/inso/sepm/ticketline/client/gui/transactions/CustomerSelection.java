@@ -107,8 +107,6 @@ public class CustomerSelection {
                             if (previousSelectedBox != null) {
                                 previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
                                 //onSelectionChange.call(null); //deselection
-                            } else {
-                                //onSelectionChange.call(customer);
                             }
                             lastSelectedCustomer = customer;
                             customerBox.setStyle("-fx-background-color: #2196F3");
@@ -173,7 +171,7 @@ public class CustomerSelection {
     }
 
     public void returnFromAddCustomer(CustomerDTO customerDTO) {
-        //TODO reload list that it contains the new customer too
+        reloadCustomers();
         lastSelectedCustomer = customerDTO;
         updateCurrentlySelectedCustomer();
     }
