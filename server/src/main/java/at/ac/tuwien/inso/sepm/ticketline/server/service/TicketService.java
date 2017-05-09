@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import java.util.UUID;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +42,14 @@ public interface TicketService {
      */
     List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
         String customerLastName, String performance);
+
+    /**
+     * trys to update the ticket transaction. if the transaction id is null, then a
+     * a transaction will be created (after verification of all tickets), otherwise
+     * we try to update the status
+     *
+     * @param ticketTransaction
+     * @return returns the updated transaction
+     */
+    TicketTransaction setTransactionStatus(DetailedTicketTransactionDTO ticketTransaction);
 }
