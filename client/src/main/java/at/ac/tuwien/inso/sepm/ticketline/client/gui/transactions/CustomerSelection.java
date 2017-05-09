@@ -105,6 +105,9 @@ public class CustomerSelection {
                     ((CustomersElementController) wrapper.getController()).initializeData(customer);
 
                     HBox customerBox = (HBox) wrapper.getLoadedObject();
+                    if (customer.equals(lastSelectedCustomer)) {
+                        customerBox.setStyle("-fx-background-color: #2196F3");
+                    }
                     customerBox.setOnMouseClicked((MouseEvent e) -> {
                         if(previousSelectedBox != customerBox) {
                             //set a new customer
@@ -181,8 +184,8 @@ public class CustomerSelection {
     }
 
     public void returnFromAddCustomer(CustomerDTO customerDTO) {
-        reloadCustomers();
         lastSelectedCustomer = customerDTO;
+        reloadCustomers();
         updateCurrentlySelectedCustomer();
     }
 }
