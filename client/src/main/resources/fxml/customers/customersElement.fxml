@@ -13,7 +13,12 @@
                 <Insets/>
             </HBox.margin>
         </Label>
-        <Label fx:id="lblLastname" text="&lt;Lastname&gt;"/>
+        <Label fx:id="lblLastname" text="&lt;Lastname&gt;">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </Label>
+        <Label fx:id="lbEMail" layoutX="89.0" layoutY="20.0" text="&lt;EMail&gt;"/>
     </children>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
