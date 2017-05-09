@@ -42,6 +42,8 @@ public class CustomerSelection {
     private Label selectedCustomer;
     @FXML
     private Button btnContinue;
+    @FXML
+    private Button btnReturn;
 
 
     private CustomerDTO lastSelectedCustomer;
@@ -161,7 +163,6 @@ public class CustomerSelection {
         reloadCustomers();
     }
 
-
     public void handleNewCustomer(ActionEvent actionEvent) {
         Stage stage = (Stage) transactionDetailController.getBpDetailMainPane().getScene().getWindow();
         Stage dialog = new Stage();
@@ -187,5 +188,17 @@ public class CustomerSelection {
         lastSelectedCustomer = customerDTO;
         reloadCustomers();
         updateCurrentlySelectedCustomer();
+    }
+
+    public void handleReturnButton(ActionEvent actionEvent) {
+        Stage transactionDetailStage = (Stage) transactionDetailController.getBpDetailMainPane().getScene().getWindow();
+        transactionDetailStage.close();
+        if(previousSelectedBox != null) {
+            previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+            previousSelectedBox = null;
+        }
+        lastSelectedCustomer = null;
+        updateCurrentlySelectedCustomer();
+
     }
 }

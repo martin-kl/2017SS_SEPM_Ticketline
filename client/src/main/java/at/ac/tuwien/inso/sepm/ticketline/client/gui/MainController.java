@@ -68,6 +68,7 @@ public class MainController {
     private CustomersController customersController;
     private ReservationsController reservationsController;
     private EventsController eventsController;
+    private PerformanceDetailController performanceDetailController;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -148,15 +149,16 @@ public class MainController {
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
-        PerformanceDetailController controller = (PerformanceDetailController) wrapper
+        performanceDetailController = (PerformanceDetailController) wrapper
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        controller.initializeData(performance);
+        performanceDetailController.initializeData(performance);
         dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
         dialog.setOnCloseRequest(event -> {
-            controller.handleCancel();
+            performanceDetailController.handleCancel();
+            performanceDetailController = null;
             event.consume();
         });
         dialog.showAndWait();
@@ -181,20 +183,6 @@ public class MainController {
         } else {
             dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
         }
-        /*
-        dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                event.consume();
-            }
-        });
-        */
         dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
     }
@@ -210,11 +198,13 @@ public class MainController {
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
         controller.initData(detailedTicketTransactionDTO);
-        showTransactionDetailStage(dialog);
+        //showTransactionDetailStage(dialog);
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        dialog.showAndWait();
     }
 
     public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList,
-        DetailedPerformanceDTO detailedPerformanceDTO, Stage hallplanStage) {
+        DetailedPerformanceDTO detailedPerformanceDTO) {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -223,8 +213,23 @@ public class MainController {
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        controller.initData(ticketDTOList, detailedPerformanceDTO);
-        showTransactionDetailStage(dialog);
+        controller.initData(ticketDTOList, detailedPerformanceDTO, performanceDetailController);
+        //showTransactionDetailStage(dialog);
+        dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                performanceDetailController.clearData(true);
+                event.consume();
+            }
+        });
+        dialog.showAndWait();
     }
 
     private Stage initStage() {
@@ -234,24 +239,6 @@ public class MainController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         return dialog;
-    }
-
-    private void showTransactionDetailStage(Stage dialog) {
-        dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
-
-        dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.detail.closeTitle"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.detail.closeHeader"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.detail.closeContent"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
-                event.consume();
-            }
-        });
-        dialog.showAndWait();
     }
 
     private void initNewsTabPane() {

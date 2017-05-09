@@ -174,7 +174,7 @@ public class PerformanceDetailController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (!result.isPresent() || ButtonType.OK.equals(result.get())) {
-            clearData();
+            clearData(false);
             Stage stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
             return true;
@@ -183,14 +183,21 @@ public class PerformanceDetailController {
     }
 
     public void handleContinue(){
-        Stage stage = (Stage) btnCancel.getScene().getWindow();
-        mainController.showTransactionDetailWindow(chosenTickets, detailedPerformance, stage);
+        //Stage stage = (Stage) btnCancel.getScene().getWindow();
+        mainController.showTransactionDetailWindow(chosenTickets, detailedPerformance);
     }
 
-    public void clearData(){
+    //TODO delete boolean flag if other method works
+    public void clearData(boolean closeStage){
         chosenTickets.clear();
         ObservableList<Node> vbTicketBoxChildren = vbSelectedTickets.getChildren();
         vbTicketBoxChildren.clear();
+        System.out.println("\n in clea data method before if");
+        if(closeStage) {
+            System.out.println("\nclose stage (performanceDetailController clearData method");
+            Stage stage = (Stage) btnCancel.getScene().getWindow();
+            stage.close();
+        }
     }
 }
 

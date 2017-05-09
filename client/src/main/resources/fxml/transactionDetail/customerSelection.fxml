@@ -48,6 +48,11 @@
         </HBox>
         <HBox alignment="TOP_CENTER">
             <children>
+            <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturnButton" text="%transaction.detail.returnToHallplan">
+               <HBox.margin>
+                  <Insets bottom="5.0" right="10.0" top="5.0" />
+               </HBox.margin>
+            </Button>
                 <Button fx:id="btnContinue" mnemonicParsing="false" onAction="#handleContinue" text="%continue">
                     <HBox.margin>
                         <Insets bottom="5.0" top="5.0" />
