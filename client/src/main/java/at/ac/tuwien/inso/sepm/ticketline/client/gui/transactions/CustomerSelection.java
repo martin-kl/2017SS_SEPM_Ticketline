@@ -12,7 +12,9 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -69,7 +71,7 @@ public class CustomerSelection {
             @Override
             protected List<CustomerDTO> call() throws DataAccessException {
                 try {
-                    return customerService.findAll();
+                    return customerService.search(customerSearchField.getText());
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();
@@ -79,20 +81,24 @@ public class CustomerSelection {
             @Override
             protected void succeeded() {
                 super.succeeded();
+                System.out.println("Call succeeded");
                 drawCustomers(getValue().iterator());
             }
 
             @Override
             protected void failed() {
+                System.out.println("Call failed");
                 super.failed();
                 JavaFXUtils.createExceptionDialog(getException(),
                     customerSelection.getScene().getWindow()).showAndWait();
             }
 
             private void drawCustomers(Iterator<CustomerDTO> iterator) {
-                customerSelection.getChildren().removeAll();
+                System.out.println("actually drawing them now");
+                customerSelection.getChildren().clear();
                 while (iterator.hasNext()) {
                     CustomerDTO customer = iterator.next();
+                    System.out.println("iterator in here: " +  customer.toString());
                     SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                         .loadAndWrap("/fxml/customers/customersElement.fxml");
 
@@ -148,4 +154,11 @@ public class CustomerSelection {
     public void handleContinue(ActionEvent actionEvent) {
         transactionDetailController.changeToDetailView(lastSelectedCustomer);
     }
+
+    public void onSearchChange(KeyEvent keyEvent) {
+        System.out.println("relaoding customers");
+        reloadCustomers();
+    }
+
+
 }

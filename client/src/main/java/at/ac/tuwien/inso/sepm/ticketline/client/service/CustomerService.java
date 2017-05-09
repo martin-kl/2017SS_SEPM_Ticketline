@@ -7,12 +7,20 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CustomerService {
-     /**
+    /**
      * Find all customers
      *
      * @return ordered list of al customers
      */
     List<CustomerDTO> findAll() throws ExceptionWithDialog;
+
+
+    /**
+     * fuzzy seraches for customers
+     * @param query the serach query
+     * @return list of customers
+     */
+    List<CustomerDTO> search(String query) throws ExceptionWithDialog;
 
 
     /**
