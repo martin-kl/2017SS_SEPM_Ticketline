@@ -34,8 +34,7 @@ public class CustomerServiceTest {
     private static final String CUSTOMER_LAST_NAME = "Muster";
     private static final String CUSTOMER_NAME_INVALID = "";
 
-    private static final String CUSTOMER_EMAIL = "max.muster@muster.com";
-    private static final String CUSTOMER_EMAIL_INVALID = "max.mustermuster.com";
+    private static final String CUSTOMER_EMAIL = "max.muster@muster.com"; private static final String CUSTOMER_EMAIL_INVALID = "max.mustermuster.com";
     private static final String CUSTOMER_ADDRESS = "Musterstraße 14, 1010 Wien";
     private static final LocalDate CUSTOMER_BIRTHDAY = LocalDate.now();
     private Customer unsavedCustomer;
@@ -112,6 +111,25 @@ public class CustomerServiceTest {
         List<Customer> listAfterInsert = customerService.findAll();
         assertTrue(listAfterInsert.contains(editedVersion));
         assertEquals(listBeforeInsert.size()+1, listAfterInsert.size());
+    }
+
+    @Test
+    public void canFuzzySearchForCustomersEmail() {
+        customerRepository.save(unsavedCustomer);
+        List<Customer> result = customerService.search("@mus");
+        assertTrue(result.contains(unsavedCustomer));
+
+        result = customerService.search("straße");
+        assertTrue(result.contains(unsavedCustomer));
+
+        result = customerService.search("milian straße 1010");
+        assertTrue(result.contains(unsavedCustomer));
+
+        result = customerService.search("max");
+        assertTrue(result.contains(unsavedCustomer));
+
+        result = customerService.search("@mus Peter");
+        assertFalse(result.contains(unsavedCustomer));
     }
 
 

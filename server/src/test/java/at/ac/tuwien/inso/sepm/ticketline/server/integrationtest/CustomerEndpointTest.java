@@ -31,6 +31,8 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
     private static final String CUSTOMER_ENDPOINT = "/customer";
     private static final String SPECIFIC_CUSTOMER_PATH = "/{customerId}";
 
+    private static final String SEARCH_CUTOMER_PATH = "/search/{query}";
+
     private static final String CUSTOMER_1_FIRSTNAME = "Firstname";
     private static final String CUSTOMER_1_LASTNAME = "Lastname";
     private static final String CUSTOMER_1_ADDRESS = "Street 1 APP. 112132-.,,;:s%%46";
@@ -130,6 +132,25 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
         assertTrue(customers.get(customers.size()-1).equals(lastInAlphabet));
     }
 
+    @Test
+    public void userCanFuzzySearchForCusomers() {
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstName("Foo");
+        customerDTO.setLastName("Bar");
+        customerDTO.setAddress("Adress 123, 1010 Wien");
+        customerDTO.setEmail("mymail@mail.com");
+        customerDTO.setBirthday(LocalDate.ofEpochDay(100));
+        saveCustomerRequest(getCustomerDTO(null)); //save another customer
+        Response savedResponse = saveCustomerRequest(customerDTO);
+        customerDTO = savedResponse.as(CustomerDTO.class);
+
+        Response response = searchCustomer("Bar oo 123 mail.com");
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+        List<CustomerDTO> customers = Arrays.asList(response.as(CustomerDTO[].class));
+        assertTrue(customers.contains(customerDTO));
+        assertTrue(customers.size() == 1);
+    }
+
     public static CustomerDTO getCustomerDTO(UUID uuid) {
         CustomerDTO customerDTO = new CustomerDTO();
         if (uuid != null) {
@@ -164,6 +185,15 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
             .when().get(CUSTOMER_ENDPOINT + SPECIFIC_CUSTOMER_PATH, uuid)
+            .then().extract().response();
+    }
+
+    private Response searchCustomer(String query) {
+        return RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when().get(CUSTOMER_ENDPOINT + SEARCH_CUTOMER_PATH, query)
             .then().extract().response();
     }
 
