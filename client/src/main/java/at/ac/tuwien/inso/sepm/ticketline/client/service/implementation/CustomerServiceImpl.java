@@ -67,7 +67,6 @@ public class CustomerServiceImpl implements CustomerService{
             throw new ValidationException("customer.error.birthday");
         }
 
-        customerRestClient.save(customer);
-        return customer;
+        return customerRestClient.save(customer);
     }
 }
