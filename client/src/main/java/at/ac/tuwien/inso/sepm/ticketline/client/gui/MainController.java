@@ -214,7 +214,6 @@ public class MainController {
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
         controller.initData(ticketDTOList, detailedPerformanceDTO, performanceDetailController);
-        //showTransactionDetailStage(dialog);
         dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
         dialog.setOnCloseRequest(event -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -224,9 +223,9 @@ public class MainController {
             alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
             alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
             Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
                 performanceDetailController.clearData(true);
-                event.consume();
+                performanceDetailController = null;
             }
         });
         dialog.showAndWait();
