@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class TicketElementController {
+public class PerformanceTicketElementController {
     @FXML
     private Label lblPlace;
 

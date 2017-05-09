@@ -150,7 +150,7 @@ public class PerformanceDetailController {
             TicketDTO ticket = iterator.next();
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/ticketElement.fxml");
 
-            ((TicketElementController) wrapper.getController()).initializeData(ticket);
+            ((PerformanceTicketElementController) wrapper.getController()).initializeData(ticket);
             HBox ticketBox = (HBox) wrapper.getLoadedObject();
             ticketBox.setOnMouseClicked((e) -> {
                 // TODO: implement (removing or something)
