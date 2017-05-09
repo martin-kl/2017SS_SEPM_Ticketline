@@ -188,6 +188,8 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
     }
     */
 
+    /*
+
     @Test
     public void findTransactionByValidId() {
         BDDMockito
@@ -231,4 +233,6 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
 
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
     }
+
+    */
 }
