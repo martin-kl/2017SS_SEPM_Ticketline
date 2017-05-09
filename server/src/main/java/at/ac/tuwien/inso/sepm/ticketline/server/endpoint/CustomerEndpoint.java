@@ -35,6 +35,12 @@ public class CustomerEndpoint {
         return customerMapper.fromEntity(customerService.findOne(id));
     }
 
+    @RequestMapping(value="/search/{query}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get searched customers")
+    public List<CustomerDTO> search(@PathVariable String query) {
+        return customerMapper.fromEntity(customerService.search(query));
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     @ApiOperation(value = "Save a customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
