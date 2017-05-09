@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.time.Instant;
 import java.util.UUID;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionDetailController {
 
+    @Getter
+    @FXML
+    private BorderPane bpDetailMainPane;
     @FXML
     private Label lbDetailHeader;
     @FXML
@@ -89,7 +94,6 @@ public class TransactionDetailController {
         customerSelection.reloadCustomers();
         this.ticketDTOList = ticketDTOList;
     }
-
 
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         setHeader(detailedTicketTransactionDTO.getPerformanceName());

@@ -6,6 +6,11 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class Helper {
 
@@ -29,5 +34,22 @@ public class Helper {
             return BundleManager.getBundle().getString("sector") + " " +
                 sectorTicket.getSector().getName();
         }
+    }
+
+
+    public static Stage setDefaultOnCloseRequest(Stage dialog) {
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || !ButtonType.OK.equals(result.get())) {
+                event.consume();
+            }
+        });
+        return dialog;
     }
 }
