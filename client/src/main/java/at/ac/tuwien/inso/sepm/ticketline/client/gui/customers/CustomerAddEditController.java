@@ -122,7 +122,6 @@ public class CustomerAddEditController {
             alert.showAndWait();
 
             if(fromSelection) {
-                //TODO return to selection
                 customerSelection.returnFromAddCustomer(customerDTO);
             }else {
                 mainController.reloadCustomerList();
