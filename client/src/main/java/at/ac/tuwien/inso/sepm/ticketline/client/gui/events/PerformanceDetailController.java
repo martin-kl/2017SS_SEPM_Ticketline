@@ -97,7 +97,10 @@ public class PerformanceDetailController {
             for(TicketWrapperDTO ticketWrapper : detailedPerformance.getTicketWrapperList()){
                 // each TicketWrapper contains (TicketDTO + TicketStatus)
                 if(ticketWrapper.getTicket() instanceof SectorTicketDTO) {
-                    sectorList.add(((SectorTicketDTO) ticketWrapper.getTicket()).getSector());
+                    SectorDTO currSector = ((SectorTicketDTO) ticketWrapper.getTicket()).getSector();
+                    log.debug("" + currSector.getId());
+                    if(!sectorList.contains(currSector))
+                        sectorList.add(currSector);
                 }
             }
             log.debug("Sectors available: " + sectorList.toString());
