@@ -4,24 +4,24 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailCont
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-import java.time.Instant;
-import java.util.UUID;
+
+import java.util.ArrayList;
+
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
-import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader.LoadWrapper;
 
+import java.util.Collection;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -49,13 +49,14 @@ public class TransactionDetailController {
     private final SpringFxmlLoader springFxmlLoader;
     private DetailedPerformanceDTO detailedPerformanceDTO;
     private PerformanceDetailController performanceDetailController;
+    private List<TicketDTO> selectedTickets = new ArrayList<>();
 
     public TransactionDetailController(SpringFxmlLoader springFxmlLoader) {
         this.springFxmlLoader = springFxmlLoader;
     }
 
 
-    public void changeToDetailView(CustomerDTO selectedCustomer) {
+    public void onContinue(CustomerDTO selectedCustomer) {
         SpringFxmlLoader.LoadWrapper wrapper2 = springFxmlLoader
             .loadAndWrap("/fxml/transactionDetail/transactionDetailsView.fxml");
         TransactionDetailsViewController tdvc = (TransactionDetailsViewController) wrapper2
@@ -64,7 +65,10 @@ public class TransactionDetailController {
             //TODO no customer was selected - take a "guest" user or insert null? currently null is passed
         }
 
+        //selected tickets can be passed here
+
         tdvc.initController(selectedCustomer, detailedPerformanceDTO, ticketDTOList);
+
 
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
@@ -112,9 +116,9 @@ public class TransactionDetailController {
         children.add(spSeparator);
 
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
-        setTickets(detailedTicketTransactionDTO.getTickets());
-
-        this.ticketDTOList = detailedTicketTransactionDTO.getTickets();
+        ticketDTOList = detailedTicketTransactionDTO.getTickets();
+        selectedTickets.addAll(ticketDTOList); //all selected form the start
+        setTickets(ticketDTOList);
     }
 
     private void setHeader(String performanceName) {
@@ -124,8 +128,6 @@ public class TransactionDetailController {
     }
 
     private void setTickets(List<? extends TicketDTO> ticketDTOList) {
-
-        //TODO add support to select multiple tickets if it is a reservation
         ObservableList<Node> vbTicketBoxChildren = vbTickets.getChildren();
         vbTicketBoxChildren.clear();
 
@@ -134,7 +136,20 @@ public class TransactionDetailController {
                 .loadAndWrap("/fxml/transactionDetail/ticketElement.fxml");
 
             ((TicketElementController) wrapper.getController()).initializeData(ticket);
-            vbTicketBoxChildren.add((HBox) wrapper.getLoadedObject());
+            HBox ticketBox = (HBox) wrapper.getLoadedObject();
+            if (selectedTickets.contains(ticket)) {
+                ticketBox.setStyle("-fx-background-color: #2196F3");
+            }
+            ticketBox.setOnMouseClicked((e) -> {
+                if (!selectedTickets.contains(ticket)) {
+                    selectedTickets.add(ticket);
+                    ticketBox.setStyle("-fx-background-color: #2196F3");
+                } else {
+                    selectedTickets.remove(ticket);
+                    ticketBox.setStyle("-fx-background-color: default");
+                }
+            });
+            vbTicketBoxChildren.add(ticketBox);
         }
     }
 }

@@ -157,7 +157,7 @@ public class CustomerSelection {
     }
 
     public void handleContinue(ActionEvent actionEvent) {
-        transactionDetailController.changeToDetailView(lastSelectedCustomer);
+        transactionDetailController.onContinue(lastSelectedCustomer);
     }
 
     public void onSearchChange(KeyEvent keyEvent) {
