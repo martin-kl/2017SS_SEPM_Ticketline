@@ -90,6 +90,8 @@ public class TransactionDetailController {
 
         ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
+        this.ticketDTOList = ticketDTOList;
+        selectedTickets.addAll(ticketDTOList); //all selected form the start
         setTickets(ticketDTOList);
 
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -97,7 +99,6 @@ public class TransactionDetailController {
         CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         customerSelection.reloadCustomers();
-        this.ticketDTOList = ticketDTOList;
     }
 
     //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
