@@ -66,12 +66,8 @@ public class CustomerSelection {
     }
 
     public void initData() {
-         if(previousSelectedBox != null) {
-            previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
-            previousSelectedBox = null;
-        }
+        previousSelectedBox = null;
         lastSelectedCustomer = null;
-        //updateCurrentlySelectedCustomer();
         drawCustomers();
     }
 
@@ -122,7 +118,7 @@ public class CustomerSelection {
                         if(previousSelectedBox != customerBox) {
                             //set a new customer
                             if (previousSelectedBox != null) {
-                                previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+                                previousSelectedBox.setStyle("-fx-background-color: inherit");
                                 //onSelectionChange.call(null); //deselection
                             }
                             lastSelectedCustomer = customer;
@@ -131,7 +127,7 @@ public class CustomerSelection {
                             //onSelectionChange.call(lastSelectedCustomer);
                         }else {
                             //deselection:
-                            customerBox.setStyle("-fx-background-color: #FFFFFF");
+                            customerBox.setStyle("-fx-background-color: inherit");
                             lastSelectedCustomer = null;
                             previousSelectedBox = null;
                         }

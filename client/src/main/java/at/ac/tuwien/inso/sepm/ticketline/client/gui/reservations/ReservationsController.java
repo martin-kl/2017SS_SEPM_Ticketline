@@ -210,7 +210,7 @@ public class ReservationsController {
             reservationBox.setOnMouseClicked((e) -> {
                 //un-mark previous selected box
                 if (previousSelectedBox != null) {
-                    previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+                    previousSelectedBox.setStyle("-fx-background-color: inherit");
                 }
                 log.debug("Selected a transaction with id: " + ticketTransaction.getId());
                 previousSelectedBox = reservationBox;
