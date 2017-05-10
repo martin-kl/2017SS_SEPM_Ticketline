@@ -59,7 +59,8 @@ public class TicketTransactionEndpoint {
     public List<DetailedTicketTransactionDTO> findTicketTransaction(
         @RequestParam(value = "firstname") String customerFirstName,
         @RequestParam(value = "lastname") String customerLastName,
-        @RequestParam(value = "performance") String performance) {
+        @RequestParam(value = "performance") String performance
+    ) {
         return ticketService
             .findTransactionsByCustomerAndLocation(customerFirstName, customerLastName, performance)
             .stream()
@@ -71,7 +72,7 @@ public class TicketTransactionEndpoint {
     @ApiOperation(value = "Updates the a single Ticket Transaction")
     public DetailedTicketTransactionDTO patchTicketTransaction(
         @RequestBody DetailedTicketTransactionDTO dto
-        ) {
+    ) {
         TicketTransaction tt = ticketService.setTransactionStatus(dto);
         return ticketTransactionMapper.fromEntity(tt);
     }
