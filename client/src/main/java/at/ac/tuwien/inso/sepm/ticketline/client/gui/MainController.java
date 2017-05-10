@@ -165,7 +165,7 @@ public class MainController {
         dialog.setOnCloseRequest(event -> {
             performanceDetailController.handleCancel();
             performanceDetailController = null;
-            event.consume();
+            //event.consume();
         });
         dialog.showAndWait();
     }
@@ -232,6 +232,7 @@ public class MainController {
             if (result.isPresent() && ButtonType.OK.equals(result.get())) {
                 performanceDetailController.clearData(true);
                 performanceDetailController = null;
+                //event.consume();
             }
         });
         dialog.showAndWait();

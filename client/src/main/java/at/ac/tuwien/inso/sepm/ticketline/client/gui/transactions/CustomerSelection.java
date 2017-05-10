@@ -65,7 +65,13 @@ public class CustomerSelection {
         this.transactionDetailController = transactionDetailController;
     }
 
-    public void reloadCustomers() {
+    public void initData() {
+         if(previousSelectedBox != null) {
+            previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+            previousSelectedBox = null;
+        }
+        lastSelectedCustomer = null;
+        //updateCurrentlySelectedCustomer();
         drawCustomers();
     }
 
@@ -162,7 +168,7 @@ public class CustomerSelection {
 
     public void onSearchChange(KeyEvent keyEvent) {
         //System.out.println("relaoding customers");
-        reloadCustomers();
+        drawCustomers();
     }
 
     public void handleNewCustomer(ActionEvent actionEvent) {
@@ -188,7 +194,7 @@ public class CustomerSelection {
 
     public void returnFromAddCustomer(CustomerDTO customerDTO) {
         lastSelectedCustomer = customerDTO;
-        reloadCustomers();
+        drawCustomers();
         updateCurrentlySelectedCustomer();
     }
 

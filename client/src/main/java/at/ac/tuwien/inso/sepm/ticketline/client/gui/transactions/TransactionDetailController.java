@@ -51,7 +51,7 @@ public class TransactionDetailController {
 
     private final SpringFxmlLoader springFxmlLoader;
     private DetailedPerformanceDTO detailedPerformanceDTO;
-    private PerformanceDetailController performanceDetailController;
+    //private PerformanceDetailController performanceDetailController;
     private List<TicketDTO> selectedTickets = new ArrayList<>();
 
     public TransactionDetailController(SpringFxmlLoader springFxmlLoader) {
@@ -86,7 +86,7 @@ public class TransactionDetailController {
         DetailedPerformanceDTO detailedPerformanceDTO,
         PerformanceDetailController performanceDetailController) {
         this.detailedPerformanceDTO = detailedPerformanceDTO;
-        this.performanceDetailController = performanceDetailController;
+        //this.performanceDetailController = performanceDetailController;
 
         ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
@@ -98,13 +98,13 @@ public class TransactionDetailController {
             .loadAndWrap("/fxml/transactionDetail/customerSelection.fxml");
         CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
-        customerSelection.reloadCustomers();
+        customerSelection.initData();
     }
 
     //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         this.detailedPerformanceDTO = null;
-        this.performanceDetailController = null;
+        //this.performanceDetailController = null;
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
