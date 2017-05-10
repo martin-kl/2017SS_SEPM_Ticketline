@@ -76,6 +76,7 @@ public class SectorLocationDataGenerator {
                         .location(sectorLocation)
                         .priceCategory(priceCategoryList.get(randomPriceCategoryId))
                         .size((int) (Math.random() * MAX_NUMBER_OF_SECTOR_PLACES + MIN_NUMBER_OF_SECTOR_PLACES))
+                        .name("Sector " + faker.name().firstName())
                         .build();
                     log.debug("saving sector {}", sector);
                     sectorRepository.save(sector);

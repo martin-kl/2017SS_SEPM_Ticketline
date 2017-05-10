@@ -67,7 +67,7 @@ public class Principal extends Audited implements UserDetails {
     // Relations
 
     @Getter
-    @OneToMany(mappedBy = "principal")
+    @OneToMany(mappedBy = "principal", cascade = CascadeType.REMOVE)
     private Set<PrincipalNews> principalNews;
 
     // User Details implementations

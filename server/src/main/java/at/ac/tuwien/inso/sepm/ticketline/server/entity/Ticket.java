@@ -35,7 +35,7 @@ public abstract class Ticket extends Audited {
     private Performance performance;
 
     @Getter
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.REMOVE)
     private Set<TicketHistory> ticketHistories;
 
 }

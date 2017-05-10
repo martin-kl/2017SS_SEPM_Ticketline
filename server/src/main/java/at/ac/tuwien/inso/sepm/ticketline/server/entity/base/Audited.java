@@ -17,9 +17,10 @@ import java.time.Instant;
 @MappedSuperclass
 public abstract class Audited {
 
-    @CreatedDate
     @Column
-    @NotNull
+    //should work but on edit customer createdAt is somehow set to NULL
+    //@NotNull
+    @CreatedDate
     @Getter
     protected Instant createdAt;
 

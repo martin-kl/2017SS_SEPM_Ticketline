@@ -4,6 +4,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx/8.0.92"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController"
@@ -11,8 +13,12 @@
       maxWidth="1.7976931348623157E308"
       spacing="5.0">
     <children>
-        <fx:include source="/fxml/tabHeader.fxml" fx:id="tabHeader"/>
-        <Separator/>
+        <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
+            <children>
+                <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
+                <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
+            </children>
+        </HBox>        <Separator/>
         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS"
                     style="-fx-background-color: transparent;">
             <VBox fx:id="vbNewsElements" fillWidth="true" maxHeight="1.7976931348623157E308"

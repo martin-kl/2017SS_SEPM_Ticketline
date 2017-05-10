@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 
@@ -16,22 +17,11 @@ import java.util.UUID;
 @Entity
 public class TicketHistory extends Audited {
 
-    public enum Status {
-        RESERVED,
-        STORNO,
-        BOUGHT
-    }
-
     @Getter
     @Id
     @GeneratedValue
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
-
-    @Column(updatable = false)
-    @NotNull
-    @Enumerated(value = EnumType.STRING)
-    private Status status = Status.RESERVED;
 
     @NotNull
     @ManyToOne
@@ -43,8 +33,8 @@ public class TicketHistory extends Audited {
     @NotNull
     @ManyToOne
     @JoinColumn(
-        foreignKey = @ForeignKey(name = "fk_tickethistory_customer")
+        foreignKey = @ForeignKey(name = "fk_tickettransaction_tickethistory")
     )
-    private Customer customer;
+    private TicketTransaction ticketTransaction;
 
 }
