@@ -29,34 +29,6 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
         this.restClient = restClient;
     }
 
-    //not needed now
-    /*
-    @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status)
-        throws ExceptionWithDialog {
-        try {
-            log.debug("Retrieving all ticket transactions from {}", restClient.getServiceURI(
-                TRANSACTION_URL));
-
-            ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
-                restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "?status=" + status,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
-                    });
-            log.debug("Result status was {} with content {}", reservations.getStatusCode(),
-                reservations.getBody());
-            return reservations.getBody();
-        } catch (HttpStatusCodeException e) {
-            throw new DataAccessException(
-                "Failed retrieve list of all ticket transactions with status code " + e
-                    .getStatusCode().toString());
-        } catch (RestClientException e) {
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-    */
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()

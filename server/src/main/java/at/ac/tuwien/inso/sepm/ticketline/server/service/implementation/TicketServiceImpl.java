@@ -85,7 +85,7 @@ public class TicketServiceImpl implements TicketService {
             .findByCustomerAndLocation(
                 "%" + customerFirstName + "%",
                 "%" + customerLastName + "%",
-                "%" + performance + "%"
+                performance
             );
 
         //filter all double elements
