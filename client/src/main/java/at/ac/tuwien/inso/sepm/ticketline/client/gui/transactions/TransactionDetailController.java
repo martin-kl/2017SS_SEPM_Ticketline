@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
@@ -46,6 +47,8 @@ public class TransactionDetailController {
 
     private List<? extends TicketDTO> ticketDTOList;
 
+    private boolean ticketsSelectable = false;
+
     private final SpringFxmlLoader springFxmlLoader;
     private DetailedPerformanceDTO detailedPerformanceDTO;
     private PerformanceDetailController performanceDetailController;
@@ -85,6 +88,7 @@ public class TransactionDetailController {
         this.detailedPerformanceDTO = detailedPerformanceDTO;
         this.performanceDetailController = performanceDetailController;
 
+        ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
         setTickets(ticketDTOList);
 
@@ -112,9 +116,11 @@ public class TransactionDetailController {
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
         children.clear();
-        children.add(vbTicketsInclLabel);
-        children.add(spSeparator);
+        children.add(vbTicketsInclLabel); children.add(spSeparator);
 
+        if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT) {
+            ticketsSelectable = true;
+        }
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         ticketDTOList = detailedTicketTransactionDTO.getTickets();
         selectedTickets.addAll(ticketDTOList); //all selected form the start
@@ -137,18 +143,20 @@ public class TransactionDetailController {
 
             ((TicketElementController) wrapper.getController()).initializeData(ticket);
             HBox ticketBox = (HBox) wrapper.getLoadedObject();
-            if (selectedTickets.contains(ticket)) {
-                ticketBox.setStyle("-fx-background-color: #2196F3");
-            }
-            ticketBox.setOnMouseClicked((e) -> {
-                if (!selectedTickets.contains(ticket)) {
-                    selectedTickets.add(ticket);
+            if (ticketsSelectable) {
+                if (selectedTickets.contains(ticket)) {
                     ticketBox.setStyle("-fx-background-color: #2196F3");
-                } else {
-                    selectedTickets.remove(ticket);
-                    ticketBox.setStyle("-fx-background-color: default");
                 }
-            });
+                ticketBox.setOnMouseClicked((e) -> {
+                    if (!selectedTickets.contains(ticket)) {
+                        selectedTickets.add(ticket);
+                        ticketBox.setStyle("-fx-background-color: #2196F3");
+                    } else {
+                        selectedTickets.remove(ticket);
+                        ticketBox.setStyle("-fx-background-color: default");
+                    }
+                });
+            }
             vbTicketBoxChildren.add(ticketBox);
         }
     }
