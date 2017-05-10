@@ -18,15 +18,6 @@ public class ReservationServiceImpl implements ReservationService {
         this.ticketTransactionRestClient = ticketTransactionRestClient;
     }
 
-    //not needed right now
-    /*
-    @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status)
-        throws ExceptionWithDialog {
-        return ticketTransactionRestClient.findTransactionsWithStatus(status);
-    }
-    */
-
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
         throws ExceptionWithDialog {

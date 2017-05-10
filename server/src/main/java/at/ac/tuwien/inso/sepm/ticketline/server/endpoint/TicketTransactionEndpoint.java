@@ -35,19 +35,6 @@ public class TicketTransactionEndpoint {
             .collect(Collectors.toList());
     }
 
-    @RequestMapping(value = "/{status}", method = RequestMethod.GET)
-    @ApiOperation(value = "Gets a list of Ticket Reservations")
-    public List<DetailedTicketTransactionDTO> getAllTransactions(
-        @PathVariable String status,
-        Pageable pageable
-    ) {
-        return ticketService
-            .getAllTransactions(status, pageable)
-            .stream()
-            .map(ticketTransactionMapper::fromEntity)
-            .collect(Collectors.toList());
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get one Ticket Transaction by ID")
     public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {
