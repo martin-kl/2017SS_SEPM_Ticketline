@@ -9,6 +9,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -108,7 +110,7 @@ public class PerformanceDetailController {
                 btnSector.setPrefSize(200,200);
                 GridPane.setMargin(btnSector, new Insets(5));
                 btnSector.setOnMouseClicked(e -> {
-                    handleClick(sector);
+                    handleClick(sector, btnSector);
                 });
                 pHallplan.add(btnSector, column, row);
             }
@@ -125,9 +127,20 @@ public class PerformanceDetailController {
         }
     }
 
-    private void handleClick(SectorDTO clickedSector){
-        chosenTickets.add(hallplanService.getRandomFreeSectorTicket(detailedPerformance, clickedSector, chosenTickets));
-        loadTicketTable();
+    private void handleClick(SectorDTO clickedSector, Button btnSector){
+        SectorTicketDTO chosenSectorTicket = hallplanService.getRandomFreeSectorTicket(detailedPerformance, clickedSector, chosenTickets);
+        if(chosenSectorTicket != null){
+            chosenTickets.add(chosenSectorTicket);
+            loadTicketTable();
+        } else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle(BundleManager.getBundle().getString("performance.dialog.no.ticket.title"));
+            alert.setHeaderText(null);
+            alert.setContentText(BundleManager.getBundle().getString("performance.dialog.no.ticket.body"));
+            alert.showAndWait();
+            btnSector.setDisable(true);
+        }
+
     }
 
     private void handleClick(SeatDTO clickedSeat){
@@ -173,10 +186,8 @@ public class PerformanceDetailController {
         alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
         Optional<ButtonType> result = alert.showAndWait();
 
-        if (!result.isPresent() || ButtonType.OK.equals(result.get())) {
-            clearData(false);
-            Stage stage = (Stage) btnCancel.getScene().getWindow();
-            stage.close();
+        if (result.isPresent() && ButtonType.OK.equals(result.get())) {
+            clearData(true);
             return true;
         }
         return false;
@@ -192,9 +203,7 @@ public class PerformanceDetailController {
         chosenTickets.clear();
         ObservableList<Node> vbTicketBoxChildren = vbSelectedTickets.getChildren();
         vbTicketBoxChildren.clear();
-        System.out.println("\n in clear data method before if");
         if(closeStage) {
-            System.out.println("\nclose stage (performanceDetailController clearData method");
             Stage stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
         }

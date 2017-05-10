@@ -30,6 +30,9 @@
          <Insets />
       </opaqueInsets>
    </HBox>
-   <Label fx:id="labelDescription" prefHeight="26.0" prefWidth="488.0" text="Description" textFill="#00000099" />
+   <Label fx:id="labelDescription" prefHeight="26.0" prefWidth="488.0" text="Description" textFill="#00000099">
+      <padding>
+         <Insets left="5.0" />
+      </padding></Label>
    <VBox fx:id="vbPerformanceElements" />
 </VBox>
