@@ -154,7 +154,7 @@ public class TransactionDetailController {
                         ticketBox.setStyle("-fx-background-color: #2196F3");
                     } else {
                         selectedTickets.remove(ticket);
-                        ticketBox.setStyle("-fx-background-color: default");
+                        ticketBox.setStyle("-fx-background-color: inherit");
                     }
                 });
             }
