@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
@@ -14,7 +13,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -63,12 +61,14 @@ public class MainController {
 
     private final SpringFxmlLoader springFxmlLoader;
     private final FontAwesome fontAwesome;
+    private AuthenticationController authenticationController;
     private NewsController newsController;
     private AccountsController accountsController;
     private CustomersController customersController;
     private ReservationsController reservationsController;
     private EventsController eventsController;
     private PerformanceDetailController performanceDetailController;
+    private boolean alreadyLoggedIn = false;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -85,7 +85,13 @@ public class MainController {
     private void initialize() {
         Platform.runLater(() -> mbMain.setUseSystemMenuBar(true));
         pbLoadingProgress.setProgress(0);
-        login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
+        //login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
+
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/authenticationComponent.fxml");
+        authenticationController = (AuthenticationController) wrapper.getController();
+        //add login node
+        login = (Node) wrapper.getLoadedObject();
         spMainContent.getChildren().add(login);
 
         //add tabs
@@ -313,6 +319,8 @@ public class MainController {
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
+            alreadyLoggedIn = true;
+            authenticationController = null;
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
@@ -358,13 +366,6 @@ public class MainController {
         ResourceBundle bundle = BundleManager.getBundle();
         ObservableList<Menu> menuList = mbMain.getMenus();
 
-        //reload fonts (causing header reload)
-        newsController.setFont(fontAwesome);
-        accountsController.setFont(fontAwesome);
-        customersController.setFont(fontAwesome);
-        reservationsController.setFont(fontAwesome);
-        eventsController.setFont(fontAwesome);
-
         menuList.get(0).setText(bundle.getString("menu.application"));
         menuList.get(1).setText(bundle.getString("menu.help"));
         menuList.get(2).setText(bundle.getString("menu.language"));
@@ -380,11 +381,19 @@ public class MainController {
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
 
         //TODO implement all these methods and update them if something is changing (new button or something like this)
-        newsController.reloadLanguage();
-        customersController.reloadLanguage();
-        eventsController.reloadLanguage();
-        accountsController.reloadLanguage();
-        reservationsController.reloadLanguage();
-
+        if (alreadyLoggedIn) {
+            newsController.reloadLanguage();
+            customersController.reloadLanguage();
+            eventsController.reloadLanguage();
+            accountsController.reloadLanguage();
+            reservationsController.reloadLanguage();
+        } else {
+            authenticationController.reloadLanguage();
+            newsController.setFont(fontAwesome);
+            accountsController.setFont(fontAwesome);
+            customersController.setFont(fontAwesome);
+            reservationsController.setFont(fontAwesome);
+            eventsController.setFont(fontAwesome);
+        }
     }
 }
