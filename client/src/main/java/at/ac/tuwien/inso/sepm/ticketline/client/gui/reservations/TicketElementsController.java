@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,7 +15,7 @@ public class TicketElementsController {
     private Label lbPrice;
 
     public void initializeData(TicketDTO ticketDTO) {
-        lbPlace.setText("TODO insert Place here");//ticketDTO.getLocationName());
+        lbPlace.setText(Helper.getFormattedTicketPlace(ticketDTO));
         lbPrice.setText(ticketDTO.getPrice() + "€");
     }
 }

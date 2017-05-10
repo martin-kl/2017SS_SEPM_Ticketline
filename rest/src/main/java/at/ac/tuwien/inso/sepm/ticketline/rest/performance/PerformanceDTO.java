@@ -38,8 +38,5 @@ public class PerformanceDTO {
 
     @ApiModelProperty(required = true, readOnly = true, name = "The location of the performance")
     private LocationDTO location;
-
-    // TODO: implement detailed version
-    /*@ApiModelProperty(required = true, readOnly = true, name = "The list of tickets available for this performance")
-    private List<TicketDTO> tickets;*/
+    
 }

@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.ticket.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public abstract class TicketTransactionTicketsMapper implements TicketTransactio
 
     @Override
     public DetailedTicketTransactionDTO fromEntity(TicketTransaction ticketTransaction) {
-        DetailedTicketTransactionDTO dto = delegate.fromEntity( ticketTransaction );
+        DetailedTicketTransactionDTO dto = delegate.fromEntity(ticketTransaction);
 
         dto.setTickets(
             ticketTransaction
@@ -30,6 +31,13 @@ public abstract class TicketTransactionTicketsMapper implements TicketTransactio
                 .collect(Collectors.toList())
         );
 
+        if (ticketTransaction.getTicketHistories().size() > 0) {
+            dto.setPerformanceName(
+                ticketTransaction.getTicketHistories().iterator().next().getTicket()
+                    .getPerformance().getName());
+            return dto;
+        }
+        dto.setPerformanceName("no name found");
         return dto;
     }
 

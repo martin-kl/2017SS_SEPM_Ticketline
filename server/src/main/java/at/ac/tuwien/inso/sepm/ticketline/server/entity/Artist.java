@@ -29,7 +29,7 @@ public class Artist extends Audited {
     private String lastname;
 
     @Getter
-    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<EventArtist> eventArtists;
 
 }

@@ -16,6 +16,14 @@ public interface CustomerRestClient {
 
 
     /**
+     * fuzzy seraches for customers
+     * @param query the serach query
+     * @return list of customers
+     */
+    List<CustomerDTO> search(String query) throws DataAccessException;
+
+
+    /**
      * Find a single news entry by id.
      *
      * @param id the is of the news entry

@@ -54,6 +54,6 @@ public class Performance extends Audited {
     private Location location;
 
     @Getter
-    @ManyToMany(mappedBy = "performance")
+    @ManyToMany(mappedBy = "performance", cascade = CascadeType.REMOVE)
     private Set<Ticket> tickets;
 }

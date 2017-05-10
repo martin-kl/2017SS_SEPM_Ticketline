@@ -50,6 +50,26 @@ public class CustomerRestClientImpl implements CustomerRestClient{
     }
 
     @Override
+    public List<CustomerDTO> search(String query) throws DataAccessException {
+        try {
+            log.debug("Searching customers with query {} using url {}", query, restClient.getServiceURI(CUSTOMER_URL)+"/search/" + query);
+            ResponseEntity<List<CustomerDTO>> customer =
+                restClient.exchange(
+                    restClient.getServiceURI(CUSTOMER_URL)+"/search/" + query,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<CustomerDTO>>() {
+                    });
+            log.debug("Result status was {} with content {}", customer.getStatusCode(), customer.getBody());
+            return customer.getBody();
+        } catch (HttpStatusCodeException e) {
+            throw new DataAccessException("Failed to search for customers with status code " + e.getStatusCode().toString());
+        } catch (RestClientException e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public CustomerDTO findOne(UUID id) throws DataAccessException {
         try {
             log.debug("Retrieving one customer with uuid {} from {}", id, restClient.getServiceURI(CUSTOMER_URL));

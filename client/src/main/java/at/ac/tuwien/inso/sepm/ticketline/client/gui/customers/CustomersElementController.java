@@ -14,12 +14,14 @@ public class CustomersElementController {
 
     @FXML
     private Label lblPrename;
-
+    @FXML
+    private Label lbEMail;
     @FXML
     private Label lblLastname;
 
     public void initializeData(CustomerDTO customerDTO) {
         lblPrename.setText(customerDTO.getFirstName());
-        lblLastname.setText(customerDTO.getLastName());
+        lblLastname.setText(customerDTO.getLastName() + ", ");
+        lbEMail.setText(customerDTO.getEmail());
     }
 }

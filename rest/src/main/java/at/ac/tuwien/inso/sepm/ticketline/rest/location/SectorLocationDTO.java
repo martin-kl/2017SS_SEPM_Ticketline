@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.rest.location;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

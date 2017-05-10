@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.CustomerSelection;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
@@ -15,6 +16,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +49,12 @@ public class CustomerAddEditController {
 
     private final CustomerService customerService;
     private final MainController mainController;
+    /**
+     * if we are coming from the customer selection after the "Saalplan" then this flag is set to
+     * true - because we have to handle it differently after the creation
+     */
+    private boolean fromSelection;
+    private CustomerSelection customerSelection;
 
     public CustomerAddEditController(CustomerService customerService,
         MainController mainController) {
@@ -54,14 +63,24 @@ public class CustomerAddEditController {
     }
 
     public void setCustomerToEdit(CustomerDTO customerToEdit) {
+        fromSelection = false;
+        customerSelection = null;
+
         customerDTO = customerToEdit;
         if (customerToEdit == null) return;
+
         lb_CustomerHeadline.setText(BundleManager.getBundle().getString("customer.edit"));
         tf_customerFirstName.setText(customerToEdit.getFirstName());
         tf_customerLastName.setText(customerToEdit.getLastName());
         tf_customerMail.setText(customerToEdit.getEmail());
         tf_customerAddress.setText(customerToEdit.getAddress());
         dp_Birthday.setValue(customerToEdit.getBirthday());
+    }
+
+    public void initAddCustomerFromSelection(CustomerSelection customerSelection) {
+        fromSelection = true;
+        customerDTO = null;
+        this.customerSelection = customerSelection;
     }
 
     public void handleCustomerCancel(ActionEvent actionEvent) {
@@ -102,7 +121,12 @@ public class CustomerAddEditController {
             alert.setHeaderText(BundleManager.getBundle().getString("customer.saved.header"));
             alert.showAndWait();
 
-            mainController.reloadCustomerList();
+            if(fromSelection) {
+                customerSelection.returnFromAddCustomer(customerDTO);
+            }else {
+                mainController.reloadCustomerList();
+            }
+            //close this stage
             Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
             stage.close();
         } catch (ExceptionWithDialog exceptionWithDialog) {

@@ -36,6 +36,6 @@ public class News extends Audited {
     private String text;
 
     @Getter
-    @OneToMany(mappedBy = "news")
+    @OneToMany(mappedBy = "news", cascade = CascadeType.REMOVE)
     private Set<PrincipalNews> principalNews = new HashSet<>();
 }

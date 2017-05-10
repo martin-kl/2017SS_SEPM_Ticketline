@@ -13,7 +13,8 @@ import java.util.Optional;
 
 @Mapper(
     componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.IGNORE
+    unmappedTargetPolicy = ReportingPolicy.IGNORE,
+    uses = {SeatMapper.class, SectorMapper.class}
 )
 public interface TicketMapper {
 

@@ -31,4 +31,11 @@ public interface CustomerService {
      * @throws at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException
      */
     Customer save(Customer customer);
+
+    /**
+     * fuzzy searches for customers
+     * @param query the serach query
+     * @return list of customers
+     */
+    List<Customer> search(String query);
 }

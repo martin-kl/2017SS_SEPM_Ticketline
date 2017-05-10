@@ -1,16 +1,15 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,25 +26,54 @@ public class TicketTransactionEndpoint {
     private TicketTransactionMapper ticketTransactionMapper;
 
     @RequestMapping(method = RequestMethod.GET)
-    @ApiOperation(value = "Gets a list of Ticket Reservations")
-    public List<DetailedTicketTransactionDTO> getAllTransactions(
-        @RequestParam(value = "status") String status) {
+    @ApiOperation(value = "Gets a list of bought and reserved Ticket Reservations")
+    public List<DetailedTicketTransactionDTO> getAllReservedAndBoughtTransactions(Pageable pageable) {
         return ticketService
-            .getAllTransactions(status)
+            .getAllBoughtReservedTransactions(pageable)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
     }
-/*
+
     @RequestMapping(value = "/{status}", method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of Ticket Reservations")
-    public List<DetailedTicketTransactionDTO> getAllTransactionsAlternate(
-        @RequestParam(value = "status") String status) {
+    public List<DetailedTicketTransactionDTO> getAllTransactions(
+        @PathVariable String status,
+        Pageable pageable
+    ) {
         return ticketService
-            .getAllTransactions(status)
+            .getAllTransactions(status, pageable)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());
     }
-    */
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiOperation(value = "Get one Ticket Transaction by ID")
+    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {
+        return ticketTransactionMapper.fromEntity(ticketService.findTransactionsByID(id));
+    }
+
+    @RequestMapping(value = "/filter", method = RequestMethod.GET)
+    @ApiOperation(value = "Gets a list of Ticket Reservations for the customer and the performance name")
+    public List<DetailedTicketTransactionDTO> findTicketTransaction(
+        @RequestParam(value = "firstname") String customerFirstName,
+        @RequestParam(value = "lastname") String customerLastName,
+        @RequestParam(value = "performance") String performance) {
+        return ticketService
+            .findTransactionsByCustomerAndLocation(customerFirstName, customerLastName, performance)
+            .stream()
+            .map(ticketTransactionMapper::fromEntity)
+            .collect(Collectors.toList());
+    }
+
+    @RequestMapping(method = RequestMethod.PATCH)
+    @ApiOperation(value = "Updates the a single Ticket Transaction")
+    public DetailedTicketTransactionDTO patchTicketTransaction(
+        @RequestBody DetailedTicketTransactionDTO dto
+        ) {
+        TicketTransaction tt = ticketService.setTransactionStatus(dto);
+        return ticketTransactionMapper.fromEntity(tt);
+    }
+
 }
