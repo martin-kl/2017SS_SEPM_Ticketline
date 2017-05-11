@@ -63,8 +63,8 @@ public class TestDataGenerator {
 
         //reload location to get seats
         location = seatLocationRepository.getOne(location.getId());
-        
-        assert(location.getSeats().size() == 6);
+
+        assert(location.getSeats().size() == seatRepository.count());
         Performance performance = generatePerformance(event, location);
         generateTickets(performance, location);
     }
@@ -120,8 +120,6 @@ public class TestDataGenerator {
                 seatRepository.save(seat);
             }
         }
-        int sitze = (int) seatRepository.count();
-        log.info("");
     }
 
     private Performance generatePerformance(Event event, Location location){
