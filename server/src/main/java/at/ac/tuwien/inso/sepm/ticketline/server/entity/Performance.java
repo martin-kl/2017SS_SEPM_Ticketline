@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
+
+import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Length;
 
 @Setter
@@ -18,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @ToString(exclude = {"tickets"})
 @Entity
+@Proxy(lazy=false)
 public class Performance extends Audited {
 
     @Getter
@@ -40,20 +43,20 @@ public class Performance extends Audited {
     private BigDecimal defaultPrice;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_performance_event")
     )
     private Event event;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_performance_location")
     )
     private Location location;
 
     @Getter
-    @ManyToMany(mappedBy = "performance")
+    @ManyToMany(mappedBy = "performance", fetch = FetchType.EAGER)
     private Set<Ticket> tickets;
 }

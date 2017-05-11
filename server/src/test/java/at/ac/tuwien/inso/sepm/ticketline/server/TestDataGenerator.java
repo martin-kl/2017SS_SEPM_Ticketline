@@ -3,6 +3,8 @@ package at.ac.tuwien.inso.sepm.ticketline.server;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import java.util.*;
 
 
 @Slf4j
+@Getter
 @Component
 public class TestDataGenerator {
     @Autowired
@@ -23,22 +26,34 @@ public class TestDataGenerator {
     @Autowired
     private SeatLocationRepository seatLocationRepository;
     @Autowired
+    private SectorTicketRepository sectorTicketRepository;
+    @Autowired
     private SeatTicketRepository seatTicketRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
     @Autowired
     private PriceCategoryRepository priceCategoryRepository;
     @Autowired
     private SeatRepository seatRepository;
 
+    private List<Performance> performances;
+    private List<SeatTicket> tickets;
 
     public void generateAllData(boolean deleteAllRepositories){
+        performances = new LinkedList<>();
+        tickets = new LinkedList<>();
+
         //pay attention to the order of the deleteAll calls (foreign keys)
         if(deleteAllRepositories){
+            sectorTicketRepository.deleteAll();
             seatTicketRepository.deleteAll();
+            ticketRepository.deleteAll();
             performanceRepository.deleteAll();
             eventRepository.deleteAll();
             seatRepository.deleteAll();
             seatLocationRepository.deleteAll();
             priceCategoryRepository.deleteAll();
+
         }
 
         Event event = generateEvent();
@@ -115,11 +130,11 @@ public class TestDataGenerator {
             location,
             null
         );
-        return performanceRepository.save(performance);
+        performance = performanceRepository.save(performance);
+        return performance;
     }
 
     private void generateTickets(Performance performance, SeatLocation seatLocation){
-        List<SeatTicket> tickets = new ArrayList<>();
         assert(seatLocation != null);
         assert(seatLocation.getSeats() != null);
         for (Seat seat : seatLocation.getSeats()) {
@@ -130,6 +145,8 @@ public class TestDataGenerator {
                 .build();
             tickets.add(seatTicket);
         }
+        performance = performanceRepository.getOne(performance.getId());
+        performances.add(performance);
         seatTicketRepository.save(tickets);
     }
 }
