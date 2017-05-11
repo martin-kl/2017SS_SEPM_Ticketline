@@ -6,7 +6,6 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.Performance;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatTicket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
-import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -15,10 +14,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.List;
 import java.util.UUID;
 
