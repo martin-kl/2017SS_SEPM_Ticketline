@@ -59,8 +59,12 @@ public class TestDataGenerator {
         Event event = generateEvent();
         PriceCategory priceCategory = generatePriceCategory();
         SeatLocation location = generateLocation();
-        location = generateSeats(priceCategory, location);
-        assert(location.getSeats() != null);
+        generateSeats(priceCategory, location);
+
+        //reload location to get seats
+        location = seatLocationRepository.getOne(location.getId());
+        
+        assert(location.getSeats().size() == 6);
         Performance performance = generatePerformance(event, location);
         generateTickets(performance, location);
     }
@@ -101,11 +105,11 @@ public class TestDataGenerator {
         return priceCategoryRepository.save(priceCategory);
     }
 
-    private SeatLocation generateSeats(PriceCategory priceCategory, SeatLocation location){
-        //15 rows and each 20 seats
-        int rows = 15;
+    private void generateSeats(PriceCategory priceCategory, SeatLocation location){
+        //2 rows with 3 seats each
+        int rows = 2;
+        int seats = 3;
         for (int rowNumber = 0; rowNumber < rows; rowNumber++) {
-            int seats = 20;
             for (int seatNumber = 0; seatNumber < seats; seatNumber++) {
                 Seat seat = Seat.builder()
                     .location(location)
@@ -116,7 +120,8 @@ public class TestDataGenerator {
                 seatRepository.save(seat);
             }
         }
-        return seatLocationRepository.getOne(location.getId());
+        int sitze = (int) seatRepository.count();
+        log.info("");
     }
 
     private Performance generatePerformance(Event event, Location location){

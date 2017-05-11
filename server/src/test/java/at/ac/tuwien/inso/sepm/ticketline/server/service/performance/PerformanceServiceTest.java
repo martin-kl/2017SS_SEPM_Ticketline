@@ -53,13 +53,7 @@ public class PerformanceServiceTest {
         );
 
         Performance performance = testDataGenerator.getPerformances().get(0);
-        log.info("alle tickets zu performance " + performance + " : " + performance.getTickets());
-
-
         List<SeatTicket> expectedTickets = testDataGenerator.getTickets();
-        log.info("performance: " + testDataGenerator.getPerformances().get(0));
-        log.info("TL von service: " + tickets);
-        log.info("TL expected: " + expectedTickets);
         Assert.assertTrue(tickets.containsAll(expectedTickets) && expectedTickets.containsAll(tickets));
     }
 

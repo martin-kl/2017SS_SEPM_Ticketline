@@ -41,16 +41,8 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     public List<Ticket> findAllTicketsToPerformanceID(UUID performanceID) {
-        int before, after;
         List<Ticket> ticketsToPerformance = ticketRepository.findAll();
-        for (Ticket ticket : ticketsToPerformance){
-            log.info("ticket ... zu performance: " + ticket.getPerformance());
-        }
-        before = ticketsToPerformance.size();
         ticketsToPerformance.removeIf(t -> !t.getPerformance().getId().equals(performanceID));
-        after = ticketsToPerformance.size();
-
-        log.info("before: " + before + ",after: " + after + ", removed " + (before-after));
         return ticketsToPerformance;
     }
 
