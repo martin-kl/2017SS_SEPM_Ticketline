@@ -10,16 +10,11 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
-import java.awt.event.AdjustmentListener;
 import java.util.*;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
@@ -80,33 +75,33 @@ public class TransactionListController {
     }
 
     public void reloadLanguage() {
-        setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+        setTitle(BundleManager.getBundle().getString("transaction.title"));
 
         tfTransactionNumber
             .setPromptText(
-                BundleManager.getBundle().getString("reservation.prompt.transactionNumber"));
+                BundleManager.getBundle().getString("transaction.prompt.transactionNumber"));
         tfCustomerFirstName
             .setPromptText(
-                BundleManager.getBundle().getString("reservation.prompt.customerFirstName"));
+                BundleManager.getBundle().getString("transaction.prompt.customerFirstName"));
         tfCustomerLastName
             .setPromptText(
-                BundleManager.getBundle().getString("reservation.prompt.customerLastName"));
+                BundleManager.getBundle().getString("transaction.prompt.customerLastName"));
         tfPerformanceName.setPromptText(
-            BundleManager.getBundle().getString("reservation.prompt.performanceName"));
+            BundleManager.getBundle().getString("transaction.prompt.performanceName"));
 
-        btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
+        btnSearch.setText(BundleManager.getBundle().getString("search"));
         btnReservationDetails
-            .setText(BundleManager.getBundle().getString("reservation.showDetails"));
+            .setText(BundleManager.getBundle().getString("transaction.showDetails"));
 
         selectedTransaction = null;
         previousSelectedBox = null;
-        loadTransactions();
+        initTransactions();
     }
 
     public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.TICKET);
-        setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+        setTitle(BundleManager.getBundle().getString("transaction.title"));
     }
 
     private void setIcon(FontAwesome.Glyph glyph) {
@@ -121,7 +116,7 @@ public class TransactionListController {
     }
     private boolean currentlyLoading = false;
 
-    public void loadTransactions() {
+    public void initTransactions() {
         //delete possible entries from before
         tfTransactionNumber.setText("");
         tfCustomerFirstName.setText("");
@@ -152,7 +147,7 @@ public class TransactionListController {
         if (tfCustomerFirstName.getText().length() == 0
             || tfCustomerLastName.getText().trim().length() == 0
             || tfPerformanceName.getText().length() == 0) {
-            ValidationException e = new ValidationException("reservation.error.emptySearch");
+            ValidationException e = new ValidationException("transaction.error.emptySearch");
             e.showDialog();
             return;
             //don't change list at all
@@ -251,11 +246,16 @@ public class TransactionListController {
         if (selectedTransaction == null) {
             log.error("Tried to see details of transaction but no transaction was selected");
             //show alert
-            ValidationException e = new ValidationException("reservation.error.nothingSelected");
+            ValidationException e = new ValidationException("transaction.error.nothingSelected");
             e.showDialog();
             return;
         }
         log.debug("Loading Details of transaction with id: " + selectedTransaction.getId());
         mainController.showTransactionDetailWindow(selectedTransaction);
+    }
+
+    public void handleReset(ActionEvent actionEvent) {
+        log.debug("reset transaction filters and load a list without filter");
+        initTransactions();
     }
 }

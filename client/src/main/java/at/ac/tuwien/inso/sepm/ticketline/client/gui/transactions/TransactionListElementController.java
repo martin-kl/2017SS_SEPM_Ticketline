@@ -48,10 +48,10 @@ public class TransactionListElementController {
         TicketStatus status = ticketTransactionDTO.getStatus();
         lbBoughtReserved.setText(
             status == TicketStatus.BOUGHT ? BundleManager.getBundle()
-                .getString("reservation.ticket.bought")
+                .getString("transaction.ticket.bought")
                 : status == TicketStatus.RESERVED ? BundleManager.getBundle()
-                    .getString("reservation.ticket.reserved")
-                    : BundleManager.getBundle().getString("reservation.ticket.canceled"));
+                    .getString("transaction.ticket.reserved")
+                    : BundleManager.getBundle().getString("transaction.ticket.canceled"));
 
         ObservableList<Node> vbReservationAndTicketsChildren = vbReservationAndTickets
             .getChildren();
