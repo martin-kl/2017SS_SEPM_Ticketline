@@ -55,8 +55,8 @@ public class TestDataGenerator {
 
     private List<Event> events;
     private List<Performance> performances;
-    private List<SeatTicket> ticketsToPerf0;
-    private List<SeatTicket> ticketsToPerf1;
+    private List<Ticket> ticketsToPerf0;
+    private List<Ticket> ticketsToPerf1;
     private List<Location> locations;
     private List<PriceCategory> priceCategories;
     private List<Customer> customers;
@@ -97,11 +97,13 @@ public class TestDataGenerator {
 
         generateCustomer();
         generateTicketHistoryAndTransaction();
+        reloadTickets();
 
 
         //TODO check why this can fail at commit f3d72446ba2d098470fec2cdceee904855aa7278
         //assert(location.getSeats().size() == seatRepository.count());
 
+        //TODO entfernen, vorher entfernen
         int sitzanzahlfuerLoc0 = ((SeatLocation) this.locations.get(0)).getSeats().size();
         assert(sitzanzahlfuerLoc0 == 6);
     }
@@ -120,6 +122,20 @@ public class TestDataGenerator {
             temp.add(performanceRepository.findOne(performance.getId()));
         }
         this.performances = temp;
+    }
+
+    private void reloadTickets(){
+        List<Ticket> temp0 = new LinkedList<>();
+        for (Ticket ticket : ticketsToPerf0){
+            temp0.add(ticketRepository.findOne(ticket.getId()));
+        }
+        this.ticketsToPerf0 = temp0;
+
+        List<Ticket> temp1 = new LinkedList<>();
+        for (Ticket ticket : ticketsToPerf1){
+            temp1.add(ticketRepository.findOne(ticket.getId()));
+        }
+        this.ticketsToPerf1 = temp1;
     }
 
     private void generateEvents(){
@@ -228,8 +244,8 @@ public class TestDataGenerator {
                 .build();
             ticketsToPerf1.add(seatTicket1);
         }
-        seatTicketRepository.save(ticketsToPerf0);
-        seatTicketRepository.save(ticketsToPerf1);
+        ticketRepository.save(ticketsToPerf0);
+        ticketRepository.save(ticketsToPerf1);
     }
 
     private void generateCustomer(){
