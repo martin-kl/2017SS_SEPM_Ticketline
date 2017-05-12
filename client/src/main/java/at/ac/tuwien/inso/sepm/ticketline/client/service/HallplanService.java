@@ -2,11 +2,13 @@ package at.ac.tuwien.inso.sepm.ticketline.client.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketWrapperDTO;
 import java.util.List;
+import javafx.scene.layout.GridPane;
+import org.controlsfx.glyphfont.FontAwesome;
 
 /**
  * Created by Alex on 09.05.2017.
@@ -37,4 +39,7 @@ public interface HallplanService {
      * @return the SectorTicketDTO or null if there are no free Tickets
      */
     SectorTicketDTO getRandomFreeSectorTicket(DetailedPerformanceDTO detailedPerformanceDTO, SectorDTO sectorDTO, List<TicketDTO> chosenTickets);
+
+
+    GridPane constructHallplan(DetailedPerformanceDTO detailedPerformanceDTO, GridPane gridPane, FontAwesome fontAwesome);
 }

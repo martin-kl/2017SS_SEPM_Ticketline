@@ -1,16 +1,13 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-import java.time.Instant;
-import java.util.UUID;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
-import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader.LoadWrapper;
@@ -21,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -1,16 +1,19 @@
-package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
+package at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.HallplanService;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketWrapperDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
@@ -34,6 +38,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -64,8 +69,10 @@ public class PerformanceDetailController {
     private DetailedPerformanceDTO detailedPerformance;
 
     private List<TicketDTO> chosenTickets = new ArrayList<>();
+    private FontAwesome fontAwesome;
 
-    public PerformanceDetailController(MainController mainController, SpringFxmlLoader springFxmlLoader, PerformanceService performanceService, HallplanService hallplanService) {
+    public PerformanceDetailController(MainController mainController, SpringFxmlLoader springFxmlLoader, PerformanceService performanceService, HallplanService hallplanService, FontAwesome fontAwesome) {
+        this.fontAwesome = fontAwesome;
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.performanceService = performanceService;
@@ -117,13 +124,29 @@ public class PerformanceDetailController {
         } else {
             // WORKING WITH SEATS
             // building a list of seats
-            List<SeatDTO> seatList = hallplanService.getSeatsOfPerformance(detailedPerformance);
-            for(int i = 0, column = 0, row = 0; i < seatList.size(); i++, column = (i % 4 == 0 ? 0 : column + 1), row += (i % 4 == 0 ? 1 : 0)){
-                SeatDTO seat = seatList.get(i);
-                final Label label = new Label(seat.getRow() + "," + seat.getColumn());
-                pHallplan.add(label, column, row);
-            }
+            /*
+            pHallplan = hallplanService.constructHallplan(detailedPerformance, pHallplan, fontAwesome);
+            */
 
+            pHallplan.getChildren().clear();
+            pHallplan.getRowConstraints().clear();
+            pHallplan.getColumnConstraints().clear();
+            pHallplan.setGridLinesVisible(true);
+            pHallplan.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            pHallplan.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            List<TicketWrapperDTO> ticketList = detailedPerformance.getTicketWrapperList();
+            // TODO: get max rows and max columns
+            for (TicketWrapperDTO ticketWrapper : ticketList) {
+                SeatTicketDTO seatTicket = (SeatTicketDTO) ticketWrapper.getTicket();
+                SeatDTO seat = seatTicket.getSeat();
+
+                SeatButton seatButton = new SeatButton(fontAwesome, ticketWrapper);
+                seatButton.setOnMouseClicked(e -> {
+                    handleClick(seat);
+                });
+                log.debug("seat at: " + seat.getRow() + ", " + seat.getColumn());
+                pHallplan.add(seatButton, seat.getColumn(), seat.getRow());
+            }
         }
     }
 

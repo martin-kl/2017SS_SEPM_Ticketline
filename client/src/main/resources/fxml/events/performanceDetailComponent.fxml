@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="600.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController">
+<BorderPane minHeight="700.0" minWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController">
    <center>
-      <SplitPane dividerPositions="0.6215538847117794" prefHeight="400.0" prefWidth="600.0">
+      <SplitPane dividerPositions="0.7" prefHeight="400.0" prefWidth="600.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -34,20 +34,24 @@
                         </Label>
                      </top>
                      <center>
-                        <GridPane fx:id="pHallplan" maxHeight="450.0" maxWidth="450.0" minHeight="450.0" minWidth="450.0" prefHeight="450.0" prefWidth="450.0" BorderPane.alignment="CENTER">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+                           <content>
+                              <GridPane fx:id="pHallplan" prefWidth="660.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints percentHeight="25.0" vgrow="SOMETIMES" />
+                                  <RowConstraints percentHeight="25.0" vgrow="SOMETIMES" />
+                                  <RowConstraints percentHeight="25.0" vgrow="SOMETIMES" />
+                                    <RowConstraints percentHeight="25.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
                      </center>
                   </BorderPane>
                </children>
@@ -57,7 +61,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <BorderPane prefHeight="542.0" prefWidth="299.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <BorderPane prefHeight="648.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <bottom>
                         <BorderPane BorderPane.alignment="CENTER">
                            <center>
@@ -79,23 +83,26 @@
                      <center>
                         <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
                            <content>
-                              <VBox fx:id="vbSelectedTickets" maxHeight="474.0" prefHeight="474.0" prefWidth="295.0">
-                                 <children>
-                                    <Separator prefWidth="200.0" />
-                                 </children>
-                              </VBox>
+                              <VBox fx:id="vbSelectedTickets" maxHeight="474.0" prefHeight="474.0" prefWidth="295.0" />
                            </content>
                         </ScrollPane>
                      </center>
                      <top>
-                        <Label fx:id="lblTicketsHeader" alignment="CENTER" minHeight="42.0" prefHeight="42.0" prefWidth="295.0" text="&lt;Currently selected Tickets:&gt;" BorderPane.alignment="CENTER">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </Label>
+                        <BorderPane BorderPane.alignment="CENTER">
+                           <center>
+                              <Label fx:id="lblTicketsHeader" alignment="CENTER" minHeight="42.0" prefHeight="42.0" prefWidth="295.0" text="&lt;Currently selected Tickets:&gt;">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </Label>
+                           </center>
+                           <bottom>
+                              <Separator BorderPane.alignment="CENTER" />
+                           </bottom>
+                        </BorderPane>
                      </top>
                   </BorderPane>
                </children>

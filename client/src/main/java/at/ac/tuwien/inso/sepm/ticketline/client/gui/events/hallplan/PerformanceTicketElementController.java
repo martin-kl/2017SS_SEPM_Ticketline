@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
+package at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;

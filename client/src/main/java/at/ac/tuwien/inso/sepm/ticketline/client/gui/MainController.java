@@ -1,11 +1,10 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController;
@@ -14,7 +13,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
