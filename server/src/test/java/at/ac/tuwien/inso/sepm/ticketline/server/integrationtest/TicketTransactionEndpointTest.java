@@ -1,36 +1,43 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.integrationtest;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.customer.CustomerMapper;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.ticket.TicketMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.integrationtest.base.BaseIntegrationTest;
+import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
+import at.ac.tuwien.inso.sepm.ticketline.server.repository.PerformanceRepository;
+import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketHistoryRepository;
+import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import javax.validation.constraints.AssertTrue;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.omg.IOP.TAG_CODE_SETS;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.UUID;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 
 public class TicketTransactionEndpointTest extends BaseIntegrationTest {
 
@@ -43,6 +50,7 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         .lastName("TestuserLN")
         .email("mail@mail.com")
         .address("First Street 12, 2019 City")
+        .birthday(LocalDate.now())
         .build();
 
     private static final Performance TEST_PERFORMANCE = Performance.builder()
@@ -62,6 +70,14 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
 
     @MockBean
     private TicketTransactionRepository ticketTransactionRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+    private TicketHistoryRepository ticketHistoryRepository;
+    @Autowired
+    private PerformanceRepository performanceRepository;
 
     @Test
     public void findAllTransactionsUnauthorizedAsAnonymous() {
@@ -72,7 +88,6 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .then().extract().response();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED.value()));
     }
-
 
     @Test
     public void findTransactionByValidId() {
@@ -116,6 +131,33 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .then().extract().response();
 
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
+    }
+
+    @Test
+    public void findAllBoughtReservedAuthorized() {
+        List<TicketTransaction> ttList = new ArrayList<>(2);
+        for(int i = 0; i < 5; i++) {
+            Set<TicketHistory> ttSet = new HashSet<>(1);
+            ttSet.add(TEST_TICKET_HISTORY);
+            TicketTransaction tt = new TicketTransaction(UUID.randomUUID(), TicketStatus.BOUGHT, ttSet, TEST_CUSTOMER);
+            ttList.add(tt);
+        }
+        BDDMockito
+            .given(ticketTransactionRepository.findByStatusOrStatusOrderByIdDesc(
+                eq(TicketStatus.BOUGHT), eq(TicketStatus.RESERVED), any(Pageable.class)))
+            .willReturn(ttList);
+
+        Response response = RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when().get(TRANSACTION_ENDPOINT + "?page=0&size=10")
+            .then().extract().response();
+
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
+        //System.out.println(response.getBody());
+        List<DetailedTicketTransactionDTO> responseList = Arrays.asList(response.as(DetailedTicketTransactionDTO[].class));
+        Assert.assertEquals(5, responseList.size());
     }
 
 }
