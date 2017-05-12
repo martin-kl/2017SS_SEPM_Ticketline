@@ -3,7 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -6,7 +6,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.customer.CustomerM
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 

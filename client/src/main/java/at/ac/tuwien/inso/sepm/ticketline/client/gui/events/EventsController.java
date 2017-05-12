@@ -83,11 +83,10 @@ public class EventsController {
             if (vbEventsElements.getChildren().size() == 0) return;
             if (currentlyLoading) return;
             if (new_val.floatValue() > 0.9) {
-                currentlyLoading = true;
                 loadNext();
             }
         });
-
+        loadNext();
     }
 
     private void prepareForNewList() {
@@ -176,6 +175,7 @@ public class EventsController {
 
 
     private void loadNext() {
+        currentlyLoading = true;
         Task<List<EventDTO>> task = new Task<List<EventDTO>>() {
             @Override
             protected List<EventDTO> call() throws DataAccessException {

@@ -2,7 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 

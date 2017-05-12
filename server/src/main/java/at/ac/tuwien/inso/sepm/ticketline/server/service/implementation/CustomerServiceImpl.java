@@ -7,7 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.ValidationHelper;
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
