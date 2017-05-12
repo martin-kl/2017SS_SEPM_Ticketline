@@ -143,7 +143,7 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             ttList.add(tt);
         }
         BDDMockito
-            .given(ticketTransactionRepository.findByStatusOrStatusOrderByIdDesc(
+            .given(ticketTransactionRepository.findByStatusOrStatusOrderByLastModifiedAtDesc(
                 eq(TicketStatus.BOUGHT), eq(TicketStatus.RESERVED), any(Pageable.class)))
             .willReturn(ttList);
 

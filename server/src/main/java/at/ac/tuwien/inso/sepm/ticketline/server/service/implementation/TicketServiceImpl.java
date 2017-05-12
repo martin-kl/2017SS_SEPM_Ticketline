@@ -59,7 +59,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketTransaction> getAllBoughtReservedTransactions(Pageable pageable) {
         return ticketTransactionRepository
-            .findByStatusOrStatusOrderByIdDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED, pageable);
+            .findByStatusOrStatusOrderByLastModifiedAtDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED, pageable);
         //return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 

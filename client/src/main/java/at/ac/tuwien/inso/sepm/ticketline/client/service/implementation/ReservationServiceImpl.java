@@ -44,11 +44,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerFirstName, String customerLastName, String performanceName)
+        String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog {
         return ticketTransactionRestClient
             .findTransactionsByCustomerAndPerformance(customerFirstName, customerLastName,
-                performanceName);
+                performanceName, page);
     }
 
 }

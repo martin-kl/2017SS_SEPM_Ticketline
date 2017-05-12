@@ -87,7 +87,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerFirstName, String customerLastName, String performanceName)
+        String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog {
         try {
             log.debug(
@@ -101,6 +101,8 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
                         .queryParam("firstname", customerFirstName)
                         .queryParam("lastname", customerLastName)
                         .queryParam("performance", performanceName)
+                        .queryParam("page", page)
+                        .queryParam("size", 20)
                         .build().toUri(),
                     HttpMethod.GET,
                     null,

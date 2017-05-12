@@ -40,6 +40,6 @@ public interface TicketTransactionRestClient {
      * @return list of transactions/details for the customer and the performance name
      */
     List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerFirstName, String customerLastName, String performanceName)
+        String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog;
 }

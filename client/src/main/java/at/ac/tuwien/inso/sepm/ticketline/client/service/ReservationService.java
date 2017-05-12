@@ -36,7 +36,7 @@ public interface ReservationService {
      * @param performanceName the performance name to search for
      * @return list of transactions/details for the customer and the performance name
      */
-    List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerFirstName, String customerLastName, String performanceName)
+    List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog;
 
 }

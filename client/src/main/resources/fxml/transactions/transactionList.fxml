@@ -58,7 +58,8 @@
         </FlowPane>
         <Separator/>
         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
-            style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+            style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS" fx:id="scrollPane"
+        >
             <VBox fx:id="vbReservationsElements" fillWidth="true" maxHeight="1.7976931348623157E308"
                 maxWidth="1.7976931348623157E308">
                 <padding>
