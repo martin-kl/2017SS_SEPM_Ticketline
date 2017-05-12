@@ -10,10 +10,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TicketWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,8 +35,13 @@ public class PerformanceServiceTest {
     private PerformanceService performanceService;
 
     @Before
-    public void setUpTest() {
+    public void beforeTest() {
         testDataGenerator.generateAllData(true);
+    }
+
+    @After
+    public void afterTest(){
+        testDataGenerator.emptyAllRepositories();
     }
 
     @Test(expected = NotFoundException.class)

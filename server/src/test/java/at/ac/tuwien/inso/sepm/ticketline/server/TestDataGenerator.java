@@ -23,9 +23,9 @@ import java.util.*;
 @Component
 public class TestDataGenerator {
     /**
-     * IMPORTANT NOTE: If you want to use data of this Class, you should extend
+     * IMPORTANT NOTE: If you want to use data of this object, you should extend
      * the class instead of editing this file.
-     * The methods of this class only manipulate the lists of the entities.
+     * The methods of this class manipulate the lists of the entities and the repositories.
      * */
 
     @Autowired
@@ -71,19 +71,9 @@ public class TestDataGenerator {
         customers = new LinkedList<>();
 
 
-        //pay attention to the order of the deleteAll calls (foreign keys)
+
         if(deleteAllRepositories){
-            ticketHistoryRepository.deleteAll();
-            ticketTransactionRepository.deleteAll();
-            customerRepository.deleteAll();
-            sectorTicketRepository.deleteAll();
-            seatTicketRepository.deleteAll();
-            ticketRepository.deleteAll();
-            performanceRepository.deleteAll();
-            eventRepository.deleteAll();
-            seatRepository.deleteAll();
-            seatLocationRepository.deleteAll();
-            priceCategoryRepository.deleteAll();
+            emptyAllRepositories();
         }
 
         generateEvents();
@@ -92,7 +82,6 @@ public class TestDataGenerator {
         generateSeats();
         generatePerformances();
         reloadLocations();
-        //reloadPerformances();
         generateTickets();
 
         generateCustomer();
@@ -100,12 +89,26 @@ public class TestDataGenerator {
         reloadTickets();
 
 
-        //TODO check why this can fail at commit f3d72446ba2d098470fec2cdceee904855aa7278
+        //TODO check why this can fail, if number of seats is high
         //assert(location.getSeats().size() == seatRepository.count());
 
-        //TODO entfernen, vorher entfernen
         int sitzanzahlfuerLoc0 = ((SeatLocation) this.locations.get(0)).getSeats().size();
         assert(sitzanzahlfuerLoc0 == 6);
+    }
+
+    public void emptyAllRepositories(){
+        //pay attention to the order of the deleteAll calls (foreign keys)
+        ticketHistoryRepository.deleteAll();
+        ticketTransactionRepository.deleteAll();
+        customerRepository.deleteAll();
+        sectorTicketRepository.deleteAll();
+        seatTicketRepository.deleteAll();
+        ticketRepository.deleteAll();
+        performanceRepository.deleteAll();
+        eventRepository.deleteAll();
+        seatRepository.deleteAll();
+        seatLocationRepository.deleteAll();
+        priceCategoryRepository.deleteAll();
     }
 
     private void reloadLocations(){
