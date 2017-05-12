@@ -6,6 +6,8 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.customer.CustomerM
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.awt.print.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,8 @@ public class CustomerEndpoint {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get list of customer")
-    public List<CustomerDTO> findAll() {
-        return customerMapper.fromEntity(customerService.findAll());
+    public List<CustomerDTO> findAll(Pageable pageable) {
+        return customerMapper.fromEntity(customerService.findAll(pageable));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -34,6 +36,8 @@ public class CustomerEndpoint {
     public CustomerDTO find(@PathVariable UUID id) {
         return customerMapper.fromEntity(customerService.findOne(id));
     }
+
+    //TODO paging is here not yet implemented because @calvin loads everything and searches in service method
 
     @RequestMapping(value="/search/{query}", method = RequestMethod.GET)
     @ApiOperation(value = "Get searched customers")

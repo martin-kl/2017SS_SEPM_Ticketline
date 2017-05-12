@@ -20,7 +20,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> findAll(Pageable pageable) {
-        return eventRepository.findAll(pageable);
+        return eventRepository.findAllOrOrderByLastModifiedAt(pageable);
     }
 
 

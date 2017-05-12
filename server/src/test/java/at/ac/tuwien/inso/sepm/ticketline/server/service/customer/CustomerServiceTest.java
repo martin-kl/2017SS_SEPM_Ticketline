@@ -39,6 +39,7 @@ public class CustomerServiceTest {
     private static final LocalDate CUSTOMER_BIRTHDAY = LocalDate.now();
     private Customer unsavedCustomer;
 
+
     @Before
     public void setUpCustomer() {
         customerRepository.deleteAll();
@@ -53,7 +54,7 @@ public class CustomerServiceTest {
     @Test
     public void canSaveValidCustomer() {
         Customer returnedFromSave = customerService.save(unsavedCustomer);
-        List<Customer> list = customerService.findAll();
+        List<Customer> list = customerService.findAll(null);
         assertTrue(list.contains(unsavedCustomer));
         assertNotNull(unsavedCustomer.getId());
         assertTrue(returnedFromSave == unsavedCustomer);
@@ -84,7 +85,7 @@ public class CustomerServiceTest {
 
     @Test
     public void canSaveAndEditCustomerFindAllAndFindOne() {
-        List<Customer> listBeforeInsert = customerService.findAll();
+        List<Customer> listBeforeInsert = customerService.findAll(null);
 
         //save
         unsavedCustomer = customerService.save(unsavedCustomer);
@@ -108,7 +109,7 @@ public class CustomerServiceTest {
         assertEquals(editedVersion.getId(), custID);
 
         //check is in list
-        List<Customer> listAfterInsert = customerService.findAll();
+        List<Customer> listAfterInsert = customerService.findAll(null);
         assertTrue(listAfterInsert.contains(editedVersion));
         assertEquals(listBeforeInsert.size()+1, listAfterInsert.size());
     }
