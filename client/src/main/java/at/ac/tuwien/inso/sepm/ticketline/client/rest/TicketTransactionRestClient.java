@@ -21,7 +21,7 @@ public interface TicketTransactionRestClient {
      *
      * @return ordered list of all details with status bought or reserved
      */
-    List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved() throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page) throws ExceptionWithDialog;
 
     /**
      * Find a single details entry by id.

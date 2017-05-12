@@ -9,10 +9,9 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+
+import java.util.*;
+
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -62,6 +61,8 @@ public class TransactionListController {
 
     private DetailedTicketTransactionDTO selectedTransaction;
     private VBox previousSelectedBox = null;
+
+    private int loadedUntilPage = -1;
 
     public TransactionListController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         ReservationService reservationService) {
@@ -117,13 +118,83 @@ public class TransactionListController {
         tfCustomerFirstName.setText("");
         tfCustomerLastName.setText("");
         tfPerformanceName.setText("");
+        searchState = SearchState.NOTHING;
+        prepareForNewList();
+        loadNext();
+    }
 
-        ObservableList<Node> vbReservationBoxChildren = vbReservationsElements.getChildren();
-        vbReservationBoxChildren.clear();
+    private SearchState searchState = SearchState.NOTHING;
+    private enum SearchState {
+        NOTHING, ID, TEXT
+    }
+
+    public void handleSearch(ActionEvent actionEvent) {
+        if (tfTransactionNumber.getText().length() != 0) {
+            //search with id
+            searchState = SearchState.ID;
+            loadNext();
+
+            /*try {
+                DetailedTicketTransactionDTO transactionDTO = reservationService
+                    .findTransactionWithID(tfTransactionNumber.getText().trim());
+                //System.out.println("got transaction = " + transactionDTO);
+
+                //search result is one entry, but method loadNewElements requires a list
+                List<DetailedTicketTransactionDTO> searchResultList = new LinkedList<>();
+                searchResultList.add(transactionDTO);
+                loadNewElements(searchResultList);
+            } catch (ExceptionWithDialog exceptionWithDialog) {
+                exceptionWithDialog.showDialog();
+            }*/
+        } else {
+            if (tfCustomerFirstName.getText().length() == 0
+                || tfCustomerLastName.getText().trim().length() == 0
+                || tfPerformanceName.getText().length() == 0) {
+                ValidationException e = new ValidationException("reservation.error.emptySearch");
+                e.showDialog();
+                //don't change list at all
+            } else {
+                //search with customerName / performance name
+                searchState = SearchState.TEXT;
+                loadNext();
+                /*try {
+                    List<DetailedTicketTransactionDTO> searchResult = reservationService
+                        .findTransactionsByCustomerAndPerformance(
+                            tfCustomerFirstName.getText().trim(),
+                            tfCustomerLastName.getText().trim(),
+                            tfPerformanceName.getText().trim());
+                    //System.out.println("got #"+searchResult.size()+ " results");
+                    //load new elements
+                    loadNewElements(searchResult);
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.showDialog();
+                }*/
+            }
+        }
+    }
+
+    private void prepareForNewList() {
+        loadedUntilPage = -1;
+        vbReservationsElements.getChildren().clear();
+    }
+
+    private void loadNext() {
         Task<List<DetailedTicketTransactionDTO>> task = new Task<List<DetailedTicketTransactionDTO>>() {
             @Override
             protected List<DetailedTicketTransactionDTO> call() throws DataAccessException {
                 try {
+                    switch (searchState) {
+                        case NOTHING:
+                            return reservationService.findTransactionsBoughtReserved(++loadedUntilPage);
+                        case ID:
+                            return Collections.singletonList(reservationService.findTransactionWithID(tfTransactionNumber.getText().trim()));
+                        case TEXT:
+                            return reservationService.find
+                    }
+                    //finds out which request to service has to be made:
+                    //  -search by id
+                    //  -search via keywords
+                    //  -findAll
                     return reservationService.findTransactionsBoughtReserved();
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
@@ -150,45 +221,8 @@ public class TransactionListController {
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
-    }
-
-    public void handleSearch(ActionEvent actionEvent) {
-        if (tfTransactionNumber.getText().length() != 0) {
-            //search with id
-            try {
-                DetailedTicketTransactionDTO transactionDTO = reservationService
-                    .findTransactionWithID(tfTransactionNumber.getText().trim());
-                //System.out.println("got transaction = " + transactionDTO);
-
-                //search result is one entry, but method loadNewElements requires a list
-                List<DetailedTicketTransactionDTO> searchResultList = new LinkedList<>();
-                searchResultList.add(transactionDTO);
-                loadNewElements(searchResultList);
-            } catch (ExceptionWithDialog exceptionWithDialog) {
-                exceptionWithDialog.showDialog();
-            }
-        } else {
-            if (tfCustomerFirstName.getText().length() == 0
-                || tfCustomerLastName.getText().trim().length() == 0
-                || tfPerformanceName.getText().length() == 0) {
-                ValidationException e = new ValidationException("reservation.error.emptySearch");
-                e.showDialog();
-            } else {
-                //search with customerName / performance name
-                try {
-                    List<DetailedTicketTransactionDTO> searchResult = reservationService
-                        .findTransactionsByCustomerAndPerformance(
-                            tfCustomerFirstName.getText().trim(),
-                            tfCustomerLastName.getText().trim(),
-                            tfPerformanceName.getText().trim());
-                    //System.out.println("got #"+searchResult.size()+ " results");
-                    //load new elements
-                    loadNewElements(searchResult);
-                } catch (ExceptionWithDialog exceptionWithDialog) {
-                    exceptionWithDialog.showDialog();
-                }
-            }
-        }
+        //then calls the method incrementing the Page variable
+        //adds item to end of list
     }
 
 

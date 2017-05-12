@@ -19,9 +19,9 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
+    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page)
         throws ExceptionWithDialog {
-        return ticketTransactionRestClient.findTransactionsBoughtReserved();
+        return ticketTransactionRestClient.findTransactionsBoughtReserved(page);
     }
 
     @Override

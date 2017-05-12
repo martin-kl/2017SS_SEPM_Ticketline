@@ -31,14 +31,17 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
 
     @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
+    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page)
         throws ExceptionWithDialog {
         try {
             log.debug("Retrieving all ticket details (bought and reserved) from {}",
                 restClient.getServiceURI(TRANSACTION_URL));
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL),
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL))
+                        .queryParam("size", 20)
+                        .queryParam("page", page)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
