@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +28,8 @@ public class EventEndpoint {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of all Events")
-    public List<EventDTO> findAll() {
-        return eventService.findAll().stream().map(eventMapper::fromEntity).collect(Collectors.toList());
+    public List<EventDTO> findAll(Pageable pageable) {
+        return eventService.findAll(pageable).stream().map(eventMapper::fromEntity).collect(Collectors.toList());
     }
 
 }

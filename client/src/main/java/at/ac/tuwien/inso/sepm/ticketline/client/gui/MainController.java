@@ -345,7 +345,7 @@ public class MainController {
     }
 
     public void reloadEventList() {
-        eventsController.loadEvents();
+        eventsController.init();
     }
 
     private void reloadReservationList() {

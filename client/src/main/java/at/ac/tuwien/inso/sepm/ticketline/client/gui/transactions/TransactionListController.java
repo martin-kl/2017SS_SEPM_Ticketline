@@ -66,6 +66,13 @@ public class TransactionListController {
 
     private int loadedUntilPage = -1;
 
+    private SearchState searchState = SearchState.NOTHING;
+
+
+    private enum SearchState {
+        NOTHING, ID, TEXT
+    }
+
     public TransactionListController(MainController mainController, SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
@@ -134,12 +141,6 @@ public class TransactionListController {
         });
     }
 
-    private SearchState searchState = SearchState.NOTHING;
-
-
-    private enum SearchState {
-        NOTHING, ID, TEXT
-    }
 
     public void handleSearch(ActionEvent actionEvent) {
         if (tfTransactionNumber.getText().length() != 0) {

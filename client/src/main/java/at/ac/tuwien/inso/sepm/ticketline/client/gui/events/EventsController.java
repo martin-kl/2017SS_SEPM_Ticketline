@@ -12,17 +12,15 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+
+import java.util.ArrayList;
 import java.util.Optional;
+
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import lombok.extern.slf4j.Slf4j;
@@ -48,11 +46,24 @@ public class EventsController {
 
     private FontAwesome fontAwesome;
 
+    @FXML
+    private ScrollPane scrollPane;
+
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final EventService eventService;
     private PerformanceDTO selectedPerformance = null;
     private VBox previousSelectedBox = null;
+    private boolean currentlyLoading = false;
+
+    private int loadedUntilPage = -1;
+
+    private SearchState searchState = SearchState.NOTHING;
+
+
+    private enum SearchState {
+        NOTHING
+    }
 
 
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService, PerformanceService performanceService) {
@@ -62,29 +73,54 @@ public class EventsController {
         this.performanceService = performanceService;
     }
 
-    public void reloadLanguage() {
-        setTitle(BundleManager.getBundle().getString("events.title"));
-        loadEvents();
+    public void init() {
+        //this is the place to reset state
+        ObservableList<Node> vbEventsBoxChildren = vbEventsElements.getChildren();
+        vbEventsBoxChildren.clear();
+        searchState = SearchState.NOTHING;
+        prepareForNewList();
+        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
+            if (vbEventsElements.getChildren().size() == 0) return;
+            if (currentlyLoading) return;
+            if (new_val.floatValue() > 0.9) {
+                currentlyLoading = true;
+                loadNext();
+            }
+        });
+
     }
 
-    public void setFont(FontAwesome fontAwesome){
+    private void prepareForNewList() {
+        previousSelectedBox = null;
+        loadedUntilPage = -1;
+        vbEventsElements.getChildren().clear();
+    }
+
+    public void reloadLanguage() {
+        setTitle(BundleManager.getBundle().getString("events.title"));
+        init();
+    }
+
+    public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.CALENDAR);
         setTitle(BundleManager.getBundle().getString("events.title"));
     }
+
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
                 .create(glyph)
                 .size(HEADER_ICON_SIZE));
     }
+
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
 
 
-    public void setSelectedPerformance(PerformanceDTO selectedPerformance, VBox performanceBox){
-        if(previousSelectedBox != null){
+    public void setSelectedPerformance(PerformanceDTO selectedPerformance, VBox performanceBox) {
+        if (previousSelectedBox != null) {
             previousSelectedBox.setStyle("-fx-background-color: #f4f4f4");
         }
         previousSelectedBox = performanceBox;
@@ -93,15 +129,13 @@ public class EventsController {
         this.selectedPerformance = selectedPerformance;
     }
 
-    public void manageTicketsHandler(){
+    public void manageTicketsHandler() {
         log.debug("Clicked manage tickets in Events Tab");
 
-        if(selectedPerformance!=null){
+        if (selectedPerformance != null) {
             btnManageTickets.setDisable(true);
             loadDetailedPerformance(selectedPerformance);
-        }
-        else
-        {
+        } else {
             ValidationException e = new ValidationException("event.error.dialog.noselection.header");
             e.showDialog();
         }
@@ -114,6 +148,7 @@ public class EventsController {
             protected DetailedPerformanceDTO call() throws ExceptionWithDialog {
                 return performanceService.findOne(performance.getId());
             }
+
             @Override
             protected void succeeded() {
                 super.succeeded();
@@ -122,6 +157,7 @@ public class EventsController {
                 log.debug("Success reading detailedPerformance: " + detailedPerformance.getName());
                 mainController.showPerformanceDetailWindow(detailedPerformance);
             }
+
             @Override
             protected void failed() {
                 super.failed();
@@ -138,29 +174,21 @@ public class EventsController {
         new Thread(task).start();
     }
 
-    public void loadEvents() {
-        ObservableList<Node> vbEventsBoxChildren = vbEventsElements.getChildren();
-        vbEventsBoxChildren.clear();
 
+    private void loadNext() {
         Task<List<EventDTO>> task = new Task<List<EventDTO>>() {
             @Override
             protected List<EventDTO> call() throws DataAccessException {
-                return eventService.findAll();
+                switch (searchState) {
+                    case NOTHING:
+                        return eventService.findAll(++loadedUntilPage);
+                }
+                return new ArrayList<>();
             }
 
             @Override
             protected void succeeded() {
-                super.succeeded();
-                for (Iterator<EventDTO> iterator = getValue().iterator(); iterator.hasNext(); ) {
-                    EventDTO event = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/eventElement.fxml");
-                    ((EventElementController) wrapper.getController()).initializeData(event);
-                    vbEventsBoxChildren.add((Node) wrapper.getLoadedObject());
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        vbEventsBoxChildren.add(separator);
-                    }
-                }
+                appendElements(getValue());
             }
 
             @Override
@@ -176,6 +204,20 @@ public class EventsController {
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
+    }
+
+    private void appendElements(List<EventDTO> elements) {
+        for (Iterator<EventDTO> iterator = elements.iterator(); iterator.hasNext(); ) {
+            EventDTO event = iterator.next();
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/eventElement.fxml");
+            ((EventElementController) wrapper.getController()).initializeData(event);
+            vbEventsElements.getChildren().add((Node) wrapper.getLoadedObject());
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbEventsElements.getChildren().add(separator);
+            }
+        }
+        currentlyLoading = false;
     }
 
 

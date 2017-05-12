@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +19,10 @@ public class EventServiceImpl implements EventService {
     private EventRepository eventRepository;
 
     @Override
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    public List<Event> findAll(Pageable pageable) {
+        return eventRepository.findAll(pageable);
     }
+
 
     @Override
     public Event findOne(UUID id) {
