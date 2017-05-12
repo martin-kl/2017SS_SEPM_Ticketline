@@ -1,12 +1,9 @@
-
 package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,10 +22,10 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
 
 
     /**
-     * finds all customers and sorts them
+     * finds all customers and orders them
      * @param pageable The next requested page
      * @return a (paged) list of all customers
      */
-    List<Customer> findAllOrderByLastName(Pageable pageable);
+    List<Customer> findAllOrderByLastModifiedAt(Pageable pageable);
 }
 

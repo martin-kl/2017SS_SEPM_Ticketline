@@ -22,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
@@ -37,20 +38,22 @@ public class CustomersController {
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
-    private FontAwesome fontAwesome;
-
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private Button btnAddCustomer;
     @FXML
     private VBox vbCustomersElements;
 
+    private FontAwesome fontAwesome;
+
+    private int loadedUntilPage = -1;
+    private boolean currentlySearching = false;
+    private boolean currentlyLoading = false;
+
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
-
-    @FXML
-    private void initialize() {
-    }
 
     public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService) {
@@ -81,14 +84,37 @@ public class CustomersController {
         btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
     }
 
-    public void loadCustomers() {
-        ObservableList<Node> vbCustomerBoxChildren = vbCustomersElements.getChildren();
-        vbCustomerBoxChildren.clear();
+    public void initCustomers() {
+        //delete possible entries from before in all search fields TODO implement the search
+        currentlySearching = false;
+        prepareForNewList();
+        loadNext();
+
+        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
+            if (vbCustomersElements.getChildren().size() == 0) {
+                return;
+            }
+            if (currentlyLoading) {
+                return;
+            }
+            if (new_val.floatValue() > 0.9) {
+                currentlyLoading = true;
+                loadNext();
+            }
+        });
+    }
+
+    private void prepareForNewList() {
+        loadedUntilPage = -1;
+        vbCustomersElements.getChildren().clear();
+    }
+
+    private void loadNext() {
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
             @Override
             protected List<CustomerDTO> call() throws DataAccessException {
                 try {
-                    return customerService.findAll();
+                    return customerService.search("", ++loadedUntilPage);
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();
@@ -97,8 +123,9 @@ public class CustomersController {
 
             @Override
             protected void succeeded() {
-                super.succeeded();
-                drawCustomers(getValue().iterator());
+                appendElements(getValue());
+                //super.succeeded();
+                //drawCustomers(getValue().iterator());
             }
 
             @Override
@@ -108,33 +135,35 @@ public class CustomersController {
                     vbCustomersElements.getScene().getWindow()).showAndWait();
             }
 
-            private void drawCustomers(Iterator<CustomerDTO> iterator) {
-                while (iterator.hasNext()) {
-                    CustomerDTO customer = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                        .loadAndWrap("/fxml/customers/customersElement.fxml");
-
-                    ((CustomersElementController) wrapper.getController()).initializeData(customer);
-                    HBox customerBox = (HBox) wrapper.getLoadedObject();
-                    customerBox.setOnMouseClicked((e) -> {
-                        log.debug("Selected a customer: " + customer.getFirstName() + " " + customer
-                            .getLastName() + " with id = " + customer.getId());
-                        handleCustomerEdit(customer);
-                    });
-                    vbCustomerBoxChildren.add(customerBox);
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        vbCustomerBoxChildren.add(separator);
-                    }
-                }
-
-            }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->
             mainController.setProgressbarProgress(
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
+    }
+
+    private void appendElements(List<CustomerDTO> elements) {
+        Iterator<CustomerDTO> iterator = elements.iterator();
+        while (iterator.hasNext()) {
+            CustomerDTO customer = iterator.next();
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                .loadAndWrap("/fxml/customers/customersElement.fxml");
+
+            ((CustomersElementController) wrapper.getController()).initializeData(customer);
+            HBox customerBox = (HBox) wrapper.getLoadedObject();
+            customerBox.setOnMouseClicked((e) -> {
+                log.debug("Selected a customer: " + customer.getFirstName() + " " + customer
+                    .getLastName() + " with id = " + customer.getId());
+                handleCustomerEdit(customer);
+            });
+            vbCustomersElements.getChildren().add(customerBox);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbCustomersElements.getChildren().add(separator);
+            }
+        }
+        currentlyLoading = false;
     }
 
     private void handleCustomerEdit(CustomerDTO customerDTO) {

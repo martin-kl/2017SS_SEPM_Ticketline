@@ -77,7 +77,8 @@ public class CustomerSelection {
             @Override
             protected List<CustomerDTO> call() throws DataAccessException {
                 try {
-                    return customerService.search(customerSearchField.getText());
+                    //TODO the 0 is the page number - paging in here is not yet implemented!!!
+                    return customerService.search(customerSearchField.getText(), 0);
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();

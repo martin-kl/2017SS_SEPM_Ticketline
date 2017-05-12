@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController">
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController">
     <children>
         <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
             <children>
@@ -17,8 +18,10 @@
                 <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;"/>
             </children>
         </HBox>
-        <Separator />
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+        <Separator/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
+            style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS"
+            fx:id="scrollPane">
             <VBox fx:id="vbCustomersElements" fillWidth="true">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>

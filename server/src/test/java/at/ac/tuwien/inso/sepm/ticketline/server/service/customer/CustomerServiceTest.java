@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.UUID;
 
 
+//TODO all tests with findAll are probably not working cause paging
+
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CustomerServiceTest {

@@ -12,8 +12,9 @@ public interface CustomerRestClient {
      * Find all customers
      *
      * @return ordered list of al customers
+      * @param page
      */
-    List<CustomerDTO> findAll() throws DataAccessException;
+    List<CustomerDTO> findAll(int page) throws DataAccessException;
 
 
     /**

@@ -58,7 +58,7 @@ public class TransactionListController {
 
     private DetailedTicketTransactionDTO selectedTransaction;
     private VBox previousSelectedBox = null;
-
+    private boolean currentlyLoading = false;
     private int loadedUntilPage = -1;
 
     private SearchState searchState = SearchState.NOTHING;
@@ -114,7 +114,6 @@ public class TransactionListController {
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
-    private boolean currentlyLoading = false;
 
     public void initTransactions() {
         //delete possible entries from before

@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.ValidationHelper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
@@ -28,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> findAll(Pageable pageable) {
-        return customerRepository.findAllOrderByLastName(pageable);
+        return customerRepository.findAllOrderByLastModifiedAt(pageable);
     }
 
     @Override

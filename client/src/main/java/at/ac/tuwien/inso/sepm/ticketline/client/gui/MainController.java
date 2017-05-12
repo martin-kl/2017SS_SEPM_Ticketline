@@ -337,7 +337,7 @@ public class MainController {
     }
 
     public void reloadCustomerList() {
-        customersController.loadCustomers();
+        customersController.initCustomers();
     }
 
     public void reloadNewsList() {
