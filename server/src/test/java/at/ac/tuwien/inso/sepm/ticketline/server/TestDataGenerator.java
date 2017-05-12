@@ -97,6 +97,9 @@ public class TestDataGenerator {
 
         //TODO check why this can fail at commit f3d72446ba2d098470fec2cdceee904855aa7278
         //assert(location.getSeats().size() == seatRepository.count());
+
+        int sitzanzahlfuerLoc0 = ((SeatLocation) this.locations.get(0)).getSeats().size();
+        assert(sitzanzahlfuerLoc0 == 3000);
     }
 
     private void reloadLocations(){
@@ -155,9 +158,9 @@ public class TestDataGenerator {
     }
 
     private void generateSeats(){
-        //2 rows with 3 seats each
-        int rows = 2;
-        int seats = 3;
+        //15 rows with 200 seats each
+        int rows = 15;
+        int seats = 200;
         for (int rowNumber = 0; rowNumber < rows; rowNumber++) {
             for (int seatNumber = 0; seatNumber < seats; seatNumber++) {
                 Seat seat = Seat.builder()

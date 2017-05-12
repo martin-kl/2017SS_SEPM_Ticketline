@@ -44,6 +44,7 @@ public class PerformanceServiceTest {
         performanceService.findOne(new UUID(0, 0));
     }
 
+    /*
     @Test
     public void findAllTicketsToPerformanceIDShouldSucceed(){
         //performance 0
@@ -76,6 +77,6 @@ public class PerformanceServiceTest {
     @Test
     public void addStatusToTicketsShouldSucceed(){
 
-    }
+    }*/
 
 }
