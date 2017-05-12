@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.CustomerSelection">
+<VBox alignment="TOP_CENTER" prefHeight="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.CustomerSelection">
     <children>
       <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="%transaction.detail.customerSelection" />
         <Separator>

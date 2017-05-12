@@ -20,7 +20,7 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
     /**
      * Returns all TicketTransactions with the given status
      *
-     * @param status The status, that the transactions have to have
+     * @param status The status, that the details have to have
      * @return All TicketTransactions with the status
      */
     List<TicketTransaction> findByStatus(TicketStatus status, Pageable pageable);

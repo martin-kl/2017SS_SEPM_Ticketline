@@ -6,8 +6,8 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersControlle
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.TransactionController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
@@ -65,7 +65,7 @@ public class MainController {
     private NewsController newsController;
     private AccountsController accountsController;
     private CustomersController customersController;
-    private ReservationsController reservationsController;
+    private TransactionListController transactionListController;
     private EventsController eventsController;
     private PerformanceDetailController performanceDetailController;
     private boolean alreadyLoggedIn = false;
@@ -116,7 +116,7 @@ public class MainController {
                 case "accounts":
                     //reloadCustomerList();
                     break;
-                case "reservations":
+                case "transactions":
                     reloadReservationList();
                     break;
                 default:
@@ -198,8 +198,8 @@ public class MainController {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
-        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .loadAndWrap("/fxml/transactions/details/transaction.fxml");
+        TransactionController controller = (TransactionController) wrapper
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
@@ -214,8 +214,8 @@ public class MainController {
         Stage dialog = initStage();
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
-        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .loadAndWrap("/fxml/transactions/details/transaction.fxml");
+        TransactionController controller = (TransactionController) wrapper
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
@@ -305,15 +305,15 @@ public class MainController {
 
     private void initReservationsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
-        reservationsController = (ReservationsController) wrapper.getController();
-        reservationsController.setFont(fontAwesome);
+            .loadAndWrap("/fxml/transactions/transactionList.fxml");
+        transactionListController = (TransactionListController) wrapper.getController();
+        transactionListController.setFont(fontAwesome);
         Tab reservationTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
         reservationTab.setGraphic(newsGlyph);
-        reservationTab.setId("reservations");
+        reservationTab.setId("transactions");
         tpContent.getTabs().add(reservationTab);
     }
 
@@ -349,7 +349,7 @@ public class MainController {
     }
 
     private void reloadReservationList() {
-        reservationsController.loadTransactions();
+        transactionListController.loadTransactions();
     }
 
     public void changeToGerman(ActionEvent actionEvent) {
@@ -386,13 +386,13 @@ public class MainController {
             customersController.reloadLanguage();
             eventsController.reloadLanguage();
             accountsController.reloadLanguage();
-            reservationsController.reloadLanguage();
+            transactionListController.reloadLanguage();
         } else {
             authenticationController.reloadLanguage();
             newsController.setFont(fontAwesome);
             accountsController.setFont(fontAwesome);
             customersController.setFont(fontAwesome);
-            reservationsController.setFont(fontAwesome);
+            transactionListController.setFont(fontAwesome);
             eventsController.setFont(fontAwesome);
         }
     }

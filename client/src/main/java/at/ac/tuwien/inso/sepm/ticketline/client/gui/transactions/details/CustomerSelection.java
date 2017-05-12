@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
+package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
@@ -54,15 +54,15 @@ public class CustomerSelection {
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
-    private final TransactionDetailController transactionDetailController;
+    private final TransactionController transactionController;
 
     public CustomerSelection(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService,
-        TransactionDetailController transactionDetailController) {
+        TransactionController transactionController) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.customerService = customerService;
-        this.transactionDetailController = transactionDetailController;
+        this.transactionController = transactionController;
     }
 
     public void initData() {
@@ -159,7 +159,7 @@ public class CustomerSelection {
     }
 
     public void handleContinue(ActionEvent actionEvent) {
-        transactionDetailController.onContinue(lastSelectedCustomer);
+        transactionController.onContinue(lastSelectedCustomer);
     }
 
     public void onSearchChange(KeyEvent keyEvent) {
@@ -168,7 +168,7 @@ public class CustomerSelection {
     }
 
     public void handleNewCustomer(ActionEvent actionEvent) {
-        Stage stage = (Stage) transactionDetailController.getBpDetailMainPane().getScene().getWindow();
+        Stage stage = (Stage) transactionController.getBpDetailMainPane().getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -195,7 +195,7 @@ public class CustomerSelection {
     }
 
     public void handleReturnButton(ActionEvent actionEvent) {
-        Stage transactionDetailStage = (Stage) transactionDetailController.getBpDetailMainPane().getScene().getWindow();
+        Stage transactionDetailStage = (Stage) transactionController.getBpDetailMainPane().getScene().getWindow();
         transactionDetailStage.close();
         if(previousSelectedBox != null) {
             previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");

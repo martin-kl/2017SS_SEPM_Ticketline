@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations;
+package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ReservationsController {
+public class TransactionListController {
 
     @FXML
     private Label lblHeaderIcon;
@@ -63,7 +63,7 @@ public class ReservationsController {
     private DetailedTicketTransactionDTO selectedTransaction;
     private VBox previousSelectedBox = null;
 
-    public ReservationsController(MainController mainController, SpringFxmlLoader springFxmlLoader,
+    public TransactionListController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         ReservationService reservationService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
@@ -201,9 +201,9 @@ public class ReservationsController {
         while (iterator.hasNext()) {
             DetailedTicketTransactionDTO ticketTransaction = iterator.next();
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                .loadAndWrap("/fxml/reservations/reservationsElement.fxml");
+                .loadAndWrap("/fxml/transactions/transactionElement.fxml");
 
-            ((ReservationsElementController) wrapper.getController())
+            ((TransactionListElementController) wrapper.getController())
                 .initializeData(ticketTransaction);
             VBox reservationBox = (VBox) wrapper.getLoadedObject();
 

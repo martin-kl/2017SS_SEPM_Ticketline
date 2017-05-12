@@ -7,17 +7,17 @@ import java.util.UUID;
 
 public interface ReservationService {
      /**
-     * Find all reservations
+     * Find all transactions
      *
-     * @return ordered list of al reservations
+     * @return ordered list of al transactions
      */
      //not needed right now
     //List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status) throws ExceptionWithDialog;
 
      /**
-     * Find all transactions with status bought or reserved
+     * Find all details with status bought or reserved
      *
-     * @return ordered list of all transactions with status bought or reserved
+     * @return ordered list of all details with status bought or reserved
      */
     List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved() throws ExceptionWithDialog;
 
@@ -34,7 +34,7 @@ public interface ReservationService {
      * @param customerFirstName the customer first name to search for
      * @param customerLastName the customer last name to search for
      * @param performanceName the performance name to search for
-     * @return list of reservations/transactions for the customer and the performance name
+     * @return list of transactions/details for the customer and the performance name
      */
     List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(String customerFirstName, String customerLastName, String performanceName)
         throws ExceptionWithDialog;

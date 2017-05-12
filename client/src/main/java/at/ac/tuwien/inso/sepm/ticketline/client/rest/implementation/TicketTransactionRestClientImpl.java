@@ -34,7 +34,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
         throws ExceptionWithDialog {
         try {
-            log.debug("Retrieving all ticket transactions (bought and reserved) from {}",
+            log.debug("Retrieving all ticket details (bought and reserved) from {}",
                 restClient.getServiceURI(TRANSACTION_URL));
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
@@ -48,7 +48,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
             return reservations.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed retrieve list of all ticket transactions (bought and reserved) with status "
+                "Failed retrieve list of all ticket details (bought and reserved) with status "
                     + "code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -59,7 +59,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     public DetailedTicketTransactionDTO findTransactionWithID(UUID uuid)
         throws ExceptionWithDialog {
         try {
-            log.debug("Retrieving a ticket transactions from {} with id {}",
+            log.debug("Retrieving a ticket details from {} with id {}",
                 restClient.getServiceURI(
                     TRANSACTION_URL), uuid.toString());
 
@@ -88,7 +88,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
         throws ExceptionWithDialog {
         try {
             log.debug(
-                "Retrieving ticket transactions from {} for customerFirstName {}, customerLastName {} and performanceName {}",
+                "Retrieving ticket details from {} for customerFirstName {}, customerLastName {} and performanceName {}",
                 restClient.getServiceURI(
                     TRANSACTION_URL), customerFirstName, customerLastName, performanceName);
 
@@ -108,7 +108,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
             return reservations.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed retrieve list of ticket transactions for customer and performance with status code "
+                "Failed retrieve list of ticket details for customer and performance with status code "
                     + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
