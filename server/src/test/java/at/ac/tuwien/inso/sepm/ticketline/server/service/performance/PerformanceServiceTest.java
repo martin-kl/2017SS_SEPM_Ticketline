@@ -10,6 +10,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,6 @@ public class PerformanceServiceTest {
         performanceService.findOne(new UUID(0, 0));
     }
 
-    /*
     @Test
     public void findAllTicketsToPerformanceIDShouldSucceed(){
         //performance 0
@@ -56,8 +56,7 @@ public class PerformanceServiceTest {
         );
 
         Performance performance = testDataGenerator.getPerformances().get(0);
-        List<SeatTicket> expectedTickets = new LinkedList<>(testDataGenerator.getTickets());
-        expectedTickets.removeIf(t -> !t.getPerformance().getId().equals(performance.getId()));
+        List<SeatTicket> expectedTickets = new LinkedList<>(testDataGenerator.getTicketsToPerf0());
         Assert.assertTrue(tickets.containsAll(expectedTickets) && expectedTickets.containsAll(tickets));
 
 
@@ -69,14 +68,13 @@ public class PerformanceServiceTest {
                 .getId()
         );
         Performance performance1 = testDataGenerator.getPerformances().get(1);
-        List<SeatTicket> expectedTickets1 = new LinkedList<>(testDataGenerator.getTickets());
-        expectedTickets1.removeIf(t -> !t.getPerformance().getId().equals(performance1.getId()));
+        List<SeatTicket> expectedTickets1 = new LinkedList<>(testDataGenerator.getTicketsToPerf1());
         Assert.assertTrue(tickets1.containsAll(expectedTickets1) && expectedTickets1.containsAll(tickets1));
     }
 
     @Test
     public void addStatusToTicketsShouldSucceed(){
 
-    }*/
+    }
 
 }

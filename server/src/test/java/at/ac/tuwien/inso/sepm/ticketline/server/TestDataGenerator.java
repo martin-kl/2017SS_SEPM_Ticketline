@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
 import lombok.Getter;
@@ -54,7 +55,8 @@ public class TestDataGenerator {
 
     private List<Event> events;
     private List<Performance> performances;
-    private List<SeatTicket> tickets;
+    private List<SeatTicket> ticketsToPerf0;
+    private List<SeatTicket> ticketsToPerf1;
     private List<Location> locations;
     private List<PriceCategory> priceCategories;
     private List<Customer> customers;
@@ -62,7 +64,8 @@ public class TestDataGenerator {
     public void generateAllData(boolean deleteAllRepositories){
         events = new LinkedList<>();
         performances = new LinkedList<>();
-        tickets = new LinkedList<>();
+        ticketsToPerf0 = new LinkedList<>();
+        ticketsToPerf1= new LinkedList<>();
         locations = new LinkedList<>();
         priceCategories = new LinkedList<>();
         customers = new LinkedList<>();
@@ -70,6 +73,9 @@ public class TestDataGenerator {
 
         //pay attention to the order of the deleteAll calls (foreign keys)
         if(deleteAllRepositories){
+            ticketHistoryRepository.deleteAll();
+            ticketTransactionRepository.deleteAll();
+            customerRepository.deleteAll();
             sectorTicketRepository.deleteAll();
             seatTicketRepository.deleteAll();
             ticketRepository.deleteAll();
@@ -78,9 +84,6 @@ public class TestDataGenerator {
             seatRepository.deleteAll();
             seatLocationRepository.deleteAll();
             priceCategoryRepository.deleteAll();
-            ticketHistoryRepository.deleteAll();
-            ticketTransactionRepository.deleteAll();
-            customerRepository.deleteAll();
         }
 
         generateEvents();
@@ -92,6 +95,7 @@ public class TestDataGenerator {
         //reloadPerformances();
         generateTickets();
 
+        generateCustomer();
         generateTicketHistoryAndTransaction();
 
 
@@ -99,7 +103,7 @@ public class TestDataGenerator {
         //assert(location.getSeats().size() == seatRepository.count());
 
         int sitzanzahlfuerLoc0 = ((SeatLocation) this.locations.get(0)).getSeats().size();
-        assert(sitzanzahlfuerLoc0 == 3000);
+        assert(sitzanzahlfuerLoc0 == 6);
     }
 
     private void reloadLocations(){
@@ -158,9 +162,9 @@ public class TestDataGenerator {
     }
 
     private void generateSeats(){
-        //15 rows with 200 seats each
-        int rows = 15;
-        int seats = 200;
+        //2 rows with 3 seats each
+        int rows = 2;
+        int seats = 3;
         for (int rowNumber = 0; rowNumber < rows; rowNumber++) {
             for (int seatNumber = 0; seatNumber < seats; seatNumber++) {
                 Seat seat = Seat.builder()
@@ -215,16 +219,17 @@ public class TestDataGenerator {
                 .performance(this.performances.get(0))
                 .price(this.performances.get(0).getDefaultPrice())
                 .build();
-            tickets.add(seatTicket);
+            ticketsToPerf0.add(seatTicket);
             //generate tickets for performance 1 (same location, same event)
             SeatTicket seatTicket1 = SeatTicket.builder()
                 .seat(seat)
                 .performance(this.performances.get(1))
                 .price(this.performances.get(1).getDefaultPrice())
                 .build();
-            tickets.add(seatTicket1);
+            ticketsToPerf1.add(seatTicket1);
         }
-        seatTicketRepository.save(tickets);
+        seatTicketRepository.save(ticketsToPerf0);
+        seatTicketRepository.save(ticketsToPerf1);
     }
 
     private void generateCustomer(){
@@ -256,6 +261,114 @@ public class TestDataGenerator {
     }
 
     private void generateTicketHistoryAndTransaction(){
+        //the order of saving the ticketTransactions is important
+        TicketTransaction ticketTransaction0 = new TicketTransaction(
+            null,
+            TicketStatus.STORNO,
+            null,
+            this.customers.get(0)
+        );
+        ticketTransactionRepository.save(ticketTransaction0);
 
+        TicketTransaction ticketTransaction1 = new TicketTransaction(
+            null,
+            TicketStatus.RESERVED,
+            null,
+            this.customers.get(0)
+        );
+        ticketTransactionRepository.save(ticketTransaction1);
+
+        TicketTransaction ticketTransaction2 = new TicketTransaction(
+            null,
+            TicketStatus.BOUGHT,
+            null,
+            this.customers.get(0)
+        );
+        ticketTransactionRepository.save(ticketTransaction2);
+
+        TicketTransaction ticketTransaction3 = new TicketTransaction(
+            null,
+            TicketStatus.STORNO,
+            null,
+            this.customers.get(0)
+        );
+        ticketTransactionRepository.save(ticketTransaction3);
+
+        TicketHistory ticketHistory0 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(1),
+            ticketTransaction0
+        );
+        ticketHistoryRepository.save(ticketHistory0);
+
+        TicketHistory ticketHistory1 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(3),
+            ticketTransaction0
+        );
+        ticketHistoryRepository.save(ticketHistory1);
+
+        TicketHistory ticketHistory2 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(0),
+            ticketTransaction1
+        );
+        ticketHistoryRepository.save(ticketHistory2);
+
+        TicketHistory ticketHistory3 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(1),
+            ticketTransaction1
+        );
+        ticketHistoryRepository.save(ticketHistory3);
+
+        TicketHistory ticketHistory4 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(2),
+            ticketTransaction1
+        );
+        ticketHistoryRepository.save(ticketHistory4);
+
+        TicketHistory ticketHistory5 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(2),
+            ticketTransaction2
+        );
+        ticketHistoryRepository.save(ticketHistory5);
+
+        TicketHistory ticketHistory6 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(3),
+            ticketTransaction2
+        );
+        ticketHistoryRepository.save(ticketHistory6);
+
+        TicketHistory ticketHistory7 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(4),
+            ticketTransaction2
+        );
+        ticketHistoryRepository.save(ticketHistory7);
+
+        TicketHistory ticketHistory8 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(0),
+            ticketTransaction3
+        );
+        ticketHistoryRepository.save(ticketHistory8);
+
+        TicketHistory ticketHistory9 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(4),
+            ticketTransaction3
+        );
+        ticketHistoryRepository.save(ticketHistory9);
+
+        TicketHistory ticketHistory10 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(5),
+            ticketTransaction3
+        );
+        ticketHistoryRepository.save(ticketHistory10);
     }
 }
