@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.rest;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 
 import java.util.List;
@@ -36,5 +37,5 @@ public interface CustomerRestClient {
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */
-    CustomerDTO save(CustomerDTO customer) throws DataAccessException;
+    CustomerDTO save(CustomerDTO customer) throws ExceptionWithDialog;
 }

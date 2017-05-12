@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.rest.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.CustomerRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -90,7 +93,7 @@ public class CustomerRestClientImpl implements CustomerRestClient{
     }
 
     @Override
-    public CustomerDTO save(CustomerDTO customer) throws DataAccessException {
+    public CustomerDTO save(CustomerDTO customer) throws ExceptionWithDialog {
         try {
             log.debug("saving customer with first name {} and last name {} in {}", customer.getFirstName(), customer.getLastName(), restClient.getServiceURI(CUSTOMER_URL));
             HttpHeaders headers = new HttpHeaders();
@@ -107,8 +110,15 @@ public class CustomerRestClientImpl implements CustomerRestClient{
             log.debug("Result status was {} with content {}", customerReturn.getStatusCode(), customerReturn.getBody());
             return customerReturn.getBody();
         } catch (HttpStatusCodeException e) {
-            throw new DataAccessException("Failed save customer with status code " + e.getStatusCode().toString());
+            log.error("Failed save customer with status code " + e.getStatusCode().toString());
+            if(e.getStatusCode() == HttpStatus.CONFLICT) {
+                throw new ValidationException("customer.error.uniqueEmail");
+            }else {
+                throw new DataAccessException(
+                    "Failed save customer with status code " + e.getStatusCode().toString());
+            }
         } catch (RestClientException e) {
+            log.error("Failed save customer with with error message " + e.getMessage());
             throw new DataAccessException(e.getMessage(), e);
         }
     }
