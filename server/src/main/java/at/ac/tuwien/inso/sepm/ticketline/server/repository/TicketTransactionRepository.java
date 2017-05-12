@@ -47,11 +47,13 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @param customerFirstName the customer first name to search for
      * @param customerLastName the customer last name to search for
      * @param performance the name of the performance
+     * @param pageable The requested page
      * @return a list of TicketTransactions
      */
     @Query("SELECT tt FROM TicketTransaction tt join tt.customer c join tt.ticketHistories th join th.ticket t join t.performance p WHERE (c.firstName LIKE ?1 AND c.lastName LIKE ?2) AND p.name = ?3 order by tt.id")
     List<TicketTransaction> findByCustomerAndLocation(String customerFirstName,
-        String customerLastName, String performance);
+        String customerLastName, String performance,
+        Pageable pageable);
 
     @Query("SELECT tt FROM TicketTransaction tt JOIN tt.ticketHistories th" +
         " WHERE th.ticket.id = ?1 ORDER BY th.lastModifiedAt")

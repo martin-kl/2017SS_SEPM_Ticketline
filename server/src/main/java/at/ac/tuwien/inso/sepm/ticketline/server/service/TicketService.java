@@ -38,10 +38,12 @@ public interface TicketService {
      * @param customerFirstName the customer first name to search for
      * @param customerLastName the customer last name to search for
      * @param performance the name of the performance
+     * @param pageable The page to request
      * @return a list of TicketTransactions
      */
     List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
-        String customerLastName, String performance);
+        String customerLastName, String performance,
+        Pageable pageable);
 
     /**
      * trys to update the ticket transaction. if the transaction id is null, then a

@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/tickettransaction")
 @Api(value = "tickettransaction")
@@ -46,10 +48,11 @@ public class TicketTransactionEndpoint {
     public List<DetailedTicketTransactionDTO> findTicketTransaction(
         @RequestParam(value = "firstname") String customerFirstName,
         @RequestParam(value = "lastname") String customerLastName,
-        @RequestParam(value = "performance") String performance
+        @RequestParam(value = "performance") String performance,
+        Pageable pageable
     ) {
         return ticketService
-            .findTransactionsByCustomerAndLocation(customerFirstName, customerLastName, performance)
+            .findTransactionsByCustomerAndLocation(customerFirstName, customerLastName, performance, pageable)
             .stream()
             .map(ticketTransactionMapper::fromEntity)
             .collect(Collectors.toList());

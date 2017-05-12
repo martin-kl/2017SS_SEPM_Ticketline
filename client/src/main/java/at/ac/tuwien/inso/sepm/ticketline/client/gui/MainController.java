@@ -349,7 +349,7 @@ public class MainController {
     }
 
     private void reloadReservationList() {
-        transactionListController.loadTransactions();
+        transactionListController.initTransactions();
     }
 
     public void changeToGerman(ActionEvent actionEvent) {

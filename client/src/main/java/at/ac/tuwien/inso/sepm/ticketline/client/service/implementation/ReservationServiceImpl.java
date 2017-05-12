@@ -38,7 +38,7 @@ public class ReservationServiceImpl implements ReservationService {
             */
             return ticketTransactionRestClient.findTransactionWithID(uuid);
         } catch (IllegalArgumentException e) {
-            throw new ValidationException("reservation.error.invalidID");
+            throw new ValidationException("transaction.error.invalidID");
         }
     }
 

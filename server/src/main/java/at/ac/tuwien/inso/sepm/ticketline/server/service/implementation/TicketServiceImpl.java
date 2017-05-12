@@ -78,13 +78,14 @@ public class TicketServiceImpl implements TicketService {
     public List<TicketTransaction> findTransactionsByCustomerAndLocation(
         String customerFirstName,
         String customerLastName,
-        String performance) {
+        String performance, Pageable pageable) {
 
         List<TicketTransaction> result = ticketTransactionRepository
             .findByCustomerAndLocation(
                 "%" + customerFirstName + "%",
                 "%" + customerLastName + "%",
-                performance
+                performance,
+                pageable
             );
 
         //filter all double elements
