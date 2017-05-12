@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import sun.misc.Perf;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -44,12 +45,19 @@ public class TestDataGenerator {
     private PriceCategoryRepository priceCategoryRepository;
     @Autowired
     private SeatRepository seatRepository;
+    @Autowired
+    private TicketHistoryRepository ticketHistoryRepository;
+    @Autowired
+    private TicketTransactionRepository ticketTransactionRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private List<Event> events;
     private List<Performance> performances;
     private List<SeatTicket> tickets;
     private List<Location> locations;
     private List<PriceCategory> priceCategories;
+    private List<Customer> customers;
 
     public void generateAllData(boolean deleteAllRepositories){
         events = new LinkedList<>();
@@ -57,6 +65,7 @@ public class TestDataGenerator {
         tickets = new LinkedList<>();
         locations = new LinkedList<>();
         priceCategories = new LinkedList<>();
+        customers = new LinkedList<>();
 
 
         //pay attention to the order of the deleteAll calls (foreign keys)
@@ -69,16 +78,21 @@ public class TestDataGenerator {
             seatRepository.deleteAll();
             seatLocationRepository.deleteAll();
             priceCategoryRepository.deleteAll();
+            ticketHistoryRepository.deleteAll();
+            ticketTransactionRepository.deleteAll();
+            customerRepository.deleteAll();
         }
 
         generateEvents();
         generatePriceCategory();
         generateLocation();
         generateSeats();
-        generatePerformance();
+        generatePerformances();
         reloadLocations();
         //reloadPerformances();
         generateTickets();
+
+        generateTicketHistoryAndTransaction();
 
 
         //TODO check why this can fail at commit f3d72446ba2d098470fec2cdceee904855aa7278
@@ -157,7 +171,7 @@ public class TestDataGenerator {
         }
     }
 
-    private void generatePerformance(){
+    private void generatePerformances(){
         Performance performance = new Performance(
             null,
             "TestPerformance",
@@ -171,7 +185,20 @@ public class TestDataGenerator {
         performance = performanceRepository.save(performance);
         performances.add(performance);
 
-        //TODO another performance to the already existing event
+        //another performance, same location, same event
+        Performance performance2 = new Performance(
+            null,
+            "TestPerformance",
+            LocalDateTime.of(2016,11,27,17,15).toInstant(ZoneOffset.UTC),
+            LocalDateTime.of(2016,11,27,19,30).toInstant(ZoneOffset.UTC),
+            new BigDecimal(123.5),
+            this.events.get(0),
+            this.locations.get(0),
+            null
+        );
+        performance2 = performanceRepository.save(performance2);
+        performances.add(performance2);
+
     }
 
     private void generateTickets(){
@@ -179,13 +206,53 @@ public class TestDataGenerator {
         assert(seatLocation != null);
         assert(seatLocation.getSeats() != null);
         for (Seat seat : seatLocation.getSeats()) {
+            //generate tickets for performance 0
             SeatTicket seatTicket = SeatTicket.builder()
                 .seat(seat)
                 .performance(this.performances.get(0))
                 .price(this.performances.get(0).getDefaultPrice())
                 .build();
             tickets.add(seatTicket);
+            //generate tickets for performance 1 (same location, same event)
+            SeatTicket seatTicket1 = SeatTicket.builder()
+                .seat(seat)
+                .performance(this.performances.get(1))
+                .price(this.performances.get(1).getDefaultPrice())
+                .build();
+            tickets.add(seatTicket1);
         }
         seatTicketRepository.save(tickets);
+    }
+
+    private void generateCustomer(){
+        LocalDate birthday1 = LocalDate.of(1990, 5, 15);
+        Customer c1 = new Customer(
+            null,
+            "Max",
+            "Mustermann",
+            "max@mustermann.at",
+            "Karlsplatz 13, 1040 Wien",
+            birthday1,
+            null
+        );
+        customerRepository.save(c1);
+        customers.add(c1);
+
+        LocalDate birthday2 = LocalDate.of(1992, 9, 4);
+        Customer c2 = new Customer(
+            null,
+            "Gabriele",
+            "Musterfrau",
+            "gabriele@musterfrau.at",
+            "Karlsplatz 13, 1040 Wien",
+            birthday2,
+            null
+        );
+        customerRepository.save(c2);
+        customers.add(c2);
+    }
+
+    private void generateTicketHistoryAndTransaction(){
+
     }
 }
