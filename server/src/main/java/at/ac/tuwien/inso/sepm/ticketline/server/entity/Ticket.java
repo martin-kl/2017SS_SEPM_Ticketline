@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @ToString(exclude = {"ticketHistories"})
 @Entity
 @DiscriminatorColumn(columnDefinition = "varchar default 'sector'")
+@Proxy(lazy=false)
 public abstract class Ticket extends Audited {
 
     @Getter
@@ -28,14 +30,14 @@ public abstract class Ticket extends Audited {
     private BigDecimal price;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_performance_ticket")
     )
     private Performance performance;
 
     @Getter
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.EAGER)
     private Set<TicketHistory> ticketHistories;
 
 }

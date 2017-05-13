@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="seat")
+@Proxy(lazy=false)
 public class SeatTicket extends Ticket {
 
     // TODO
