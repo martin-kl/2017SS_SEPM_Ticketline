@@ -155,7 +155,8 @@ public class MainController {
         dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
         dialog.setOnCloseRequest(event -> {
-            performanceDetailController.handleCancel();
+            if(performanceDetailController != null)
+                performanceDetailController.handleCancel();
             performanceDetailController = null;
             event.consume();
         });
