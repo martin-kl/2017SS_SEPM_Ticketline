@@ -198,7 +198,7 @@ public class CustomerSelection {
         Stage transactionDetailStage = (Stage) transactionController.getBpDetailMainPane().getScene().getWindow();
         transactionDetailStage.close();
         if(previousSelectedBox != null) {
-            previousSelectedBox.setStyle("-fx-background-color: #FFFFFF");
+            previousSelectedBox.setStyle("-fx-background-color: inherit");
             previousSelectedBox = null;
         }
         lastSelectedCustomer = null;

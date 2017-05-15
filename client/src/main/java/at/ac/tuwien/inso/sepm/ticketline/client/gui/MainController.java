@@ -162,12 +162,29 @@ public class MainController {
         performanceDetailController.initializeData(performance);
         dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
-        dialog.setOnCloseRequest(event -> {
-            performanceDetailController.handleCancel();
-            performanceDetailController = null;
-            //event.consume();
-        });
+        dialog = setHallplanOnCloseRequest(dialog);
         dialog.showAndWait();
+    }
+
+    private Stage setHallplanOnCloseRequest(Stage dialog) {
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
+                performanceDetailController.clearData(true);
+                performanceDetailController = null;
+                //event.consume();
+            } else {
+                //if event.consume is not fired in here, the window would close even on the cancel button
+                event.consume();
+            }
+        });
+        return dialog;
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
@@ -221,23 +238,8 @@ public class MainController {
 
         controller.initData(ticketDTOList, detailedPerformanceDTO, performanceDetailController);
         dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
-        dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
-                performanceDetailController.clearData(true);
-                performanceDetailController = null;
-                //event.consume();
-            }else {
-                //if event.consume is not fired in here, the window would close even on the cancel button
-                event.consume();
-            }
-        });
+
+        dialog = setHallplanOnCloseRequest(dialog);
         dialog.showAndWait();
     }
 
