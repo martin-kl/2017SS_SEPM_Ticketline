@@ -52,16 +52,14 @@ public class CustomerServiceTest {
         unsavedCustomer.setBirthday(CUSTOMER_BIRTHDAY);
     }
 
-    /*
     @Test
     public void canSaveValidCustomer() {
         Customer returnedFromSave = customerService.save(unsavedCustomer);
-        List<Customer> list = customerService.findAll();
+        List<Customer> list = customerService.findAll(pageable);
         assertTrue(list.contains(unsavedCustomer));
         assertNotNull(unsavedCustomer.getId());
         assertTrue(returnedFromSave == unsavedCustomer);
     }
-    */
 
     @Test(expected = BadRequestException.class)
     public void createCustomerWithFirstNameTooShort() {
