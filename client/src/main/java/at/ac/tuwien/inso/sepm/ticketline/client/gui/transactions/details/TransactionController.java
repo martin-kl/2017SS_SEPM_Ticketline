@@ -106,6 +106,7 @@ public class TransactionController {
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         this.detailedPerformanceDTO = null;
         //this.performanceDetailController = null;
+        ticketsSelectable = false;
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
