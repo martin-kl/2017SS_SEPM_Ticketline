@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,11 +30,7 @@ public class CustomerEndpoint {
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Get list of customer")
     public List<CustomerDTO> findAll(Pageable pageable) {
-         return customerService
-            .findAll(pageable)
-            .stream()
-            .map(customerMapper::fromEntity)
-            .collect(Collectors.toList());
+        return customerMapper.fromEntity(customerService.findAll(pageable));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -42,12 +39,10 @@ public class CustomerEndpoint {
         return customerMapper.fromEntity(customerService.findOne(id));
     }
 
-    //TODO paging is here not yet implemented because @calvin loads everything and searches in service method
-
     @RequestMapping(value="/search/{query}", method = RequestMethod.GET)
     @ApiOperation(value = "Get searched customers")
-    public List<CustomerDTO> search(@PathVariable String query) {
-        return customerMapper.fromEntity(customerService.search(query));
+    public List<CustomerDTO> search(@PathVariable String query, Pageable pageable) {
+        return customerMapper.fromEntity(customerService.search(query, pageable));
     }
 
     @RequestMapping(method = RequestMethod.POST)

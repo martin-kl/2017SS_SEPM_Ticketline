@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.datagenerator.CustomerDataGenerator;
 import at.ac.tuwien.inso.sepm.ticketline.server.integrationtest.base.BaseIntegrationTest;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
+import com.github.javafaker.Faker;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -21,7 +22,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CustomerEndpointTest extends BaseIntegrationTest {
     @Autowired
@@ -39,6 +41,8 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
     private static final LocalDate CUSTOMER_1_BIRHTDAY = LocalDate.ofYearDay(20, 30);
     private static final String CUSTOMER_1_EMAIL = "mail@mail.com";
     private static final int CREATED_CUSTOMERS = 5;
+
+    private static final Faker faker = new Faker();
 
     /**
      * This is a template for future integration tests.
@@ -160,7 +164,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
         customerDTO.setLastName(CUSTOMER_1_LASTNAME);
         customerDTO.setAddress(CUSTOMER_1_ADDRESS);
         customerDTO.setBirthday(CUSTOMER_1_BIRHTDAY);
-        customerDTO.setEmail(CUSTOMER_1_EMAIL);
+        customerDTO.setEmail(faker.internet().emailAddress());
         return customerDTO;
     }
 
@@ -202,7 +206,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
             .given()
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .when().get(CUSTOMER_ENDPOINT)
+            .when().get(CUSTOMER_ENDPOINT + "?size=10000")
             .then().extract().response();
     }
 
