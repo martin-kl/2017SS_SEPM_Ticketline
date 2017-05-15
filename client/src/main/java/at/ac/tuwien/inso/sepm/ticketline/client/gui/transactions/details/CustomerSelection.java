@@ -39,6 +39,8 @@ public class CustomerSelection {
     @FXML
     private Button btnAddNewCustomer;
     @FXML
+    private ScrollPane spCustomerSelection;
+    @FXML
     private VBox customerSelection;
     @FXML
     private Label selectedCustomer;
@@ -50,6 +52,10 @@ public class CustomerSelection {
 
     private CustomerDTO lastSelectedCustomer;
     private HBox previousSelectedBox = null;
+
+    private int loadedUntilPage = -1;
+    private boolean currentlySearching = false;
+    private boolean currentlyLoading = false;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
@@ -66,18 +72,43 @@ public class CustomerSelection {
     }
 
     public void initData() {
+        //drawCustomers();
+
+        //delete possible entries from before in all search fields TODO implement the search
+        currentlySearching = false;
+        prepareForNewList();
+        loadNext();
+
+        spCustomerSelection.vvalueProperty().addListener((ov, old_val, new_val) -> {
+            if (customerSelection.getChildren().size() == 0) {
+                return;
+            }
+            if (currentlyLoading) {
+                return;
+            }
+            if (new_val.floatValue() > 0.9) {
+                currentlyLoading = true;
+                loadNext();
+            }
+        });
+    }
+
+    private void prepareForNewList() {
         previousSelectedBox = null;
         lastSelectedCustomer = null;
-        drawCustomers();
+        updateCurrentlySelectedCustomer();
+        loadedUntilPage = -1;
+        customerSelection.getChildren().clear();
     }
 
 
-    private void drawCustomers() {
+    private void loadNext() {
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
             @Override
             protected List<CustomerDTO> call() throws DataAccessException {
                 try {
-                    return customerService.search(customerSearchField.getText(), 0);
+                    return customerService
+                        .search(customerSearchField.getText().trim(), ++loadedUntilPage);
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
                     return new ArrayList<>();
@@ -87,66 +118,69 @@ public class CustomerSelection {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                //System.out.println("Call succeeded");
-                drawCustomers(getValue().iterator());
+                //drawCustomers(getValue().iterator());
+                appendElements(getValue());
             }
 
             @Override
             protected void failed() {
-                //System.out.println("Call failed");
                 super.failed();
                 JavaFXUtils.createExceptionDialog(getException(),
                     customerSelection.getScene().getWindow()).showAndWait();
             }
 
-            private void drawCustomers(Iterator<CustomerDTO> iterator) {
-                //System.out.println("actually drawing them now");
-                customerSelection.getChildren().clear();
-                while (iterator.hasNext()) {
-                    CustomerDTO customer = iterator.next();
-                    //System.out.println("iterator in here: " +  customer.toString());
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                        .loadAndWrap("/fxml/customers/customersElement.fxml");
-
-                    ((CustomersElementController) wrapper.getController()).initializeData(customer);
-
-                    HBox customerBox = (HBox) wrapper.getLoadedObject();
-                    if (customer.equals(lastSelectedCustomer)) {
-                        customerBox.setStyle("-fx-background-color: #2196F3");
-                    }
-                    customerBox.setOnMouseClicked((MouseEvent e) -> {
-                        if(previousSelectedBox != customerBox) {
-                            //set a new customer
-                            if (previousSelectedBox != null) {
-                                previousSelectedBox.setStyle("-fx-background-color: inherit");
-                                //onSelectionChange.call(null); //deselection
-                            }
-                            lastSelectedCustomer = customer;
-                            customerBox.setStyle("-fx-background-color: #2196F3");
-                            previousSelectedBox = customerBox;
-                            //onSelectionChange.call(lastSelectedCustomer);
-                        }else {
-                            //deselection:
-                            customerBox.setStyle("-fx-background-color: inherit");
-                            lastSelectedCustomer = null;
-                            previousSelectedBox = null;
-                        }
-                        updateCurrentlySelectedCustomer();
-                    });
-
-                    customerSelection.getChildren().add(customerBox);
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        customerSelection.getChildren().add(separator);
-                    }
-                }
-            }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->
             mainController.setProgressbarProgress(
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
+    }
+
+    private void appendElements(List<CustomerDTO> elements) {
+        //System.out.println("actually drawing them now");
+        //customerSelection.getChildren().clear();
+
+        Iterator<CustomerDTO> iterator = elements.iterator();
+        while (iterator.hasNext()) {
+            CustomerDTO customer = iterator.next();
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+                .loadAndWrap("/fxml/customers/customersElement.fxml");
+
+            ((CustomersElementController) wrapper.getController()).initializeData(customer);
+            HBox customerBox = (HBox) wrapper.getLoadedObject();
+
+            //TODO is this necessary now with pagination??????
+            if (customer.equals(lastSelectedCustomer)) {
+                customerBox.setStyle("-fx-background-color: #2196F3");
+            }
+            customerBox.setOnMouseClicked((MouseEvent e) -> {
+                if (previousSelectedBox != customerBox) {
+                    //set a new customer
+                    if (previousSelectedBox != null) {
+                        previousSelectedBox.setStyle("-fx-background-color: inherit");
+                        //onSelectionChange.call(null); //deselection
+                    }
+                    lastSelectedCustomer = customer;
+                    customerBox.setStyle("-fx-background-color: #2196F3");
+                    previousSelectedBox = customerBox;
+                    //onSelectionChange.call(lastSelectedCustomer);
+                } else {
+                    //deselection:
+                    customerBox.setStyle("-fx-background-color: inherit");
+                    lastSelectedCustomer = null;
+                    previousSelectedBox = null;
+                }
+                updateCurrentlySelectedCustomer();
+            });
+
+            customerSelection.getChildren().add(customerBox);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                customerSelection.getChildren().add(separator);
+            }
+        }
+        currentlyLoading = false;
     }
 
     private void updateCurrentlySelectedCustomer() {
@@ -163,8 +197,23 @@ public class CustomerSelection {
     }
 
     public void onSearchChange(KeyEvent keyEvent) {
-        //System.out.println("relaoding customers");
-        drawCustomers();
+        //System.out.println("reloading customers");
+        if(currentlySearching && customerSearchField.getText().trim().equals("")) {
+            //we have been searching but nothing to search entered - load new and reset currentlySearching
+            //prepareForNewList();
+            currentlySearching = false;
+        }else if(!currentlySearching && ! customerSearchField.getText().trim().equals("")) {
+            //start searching
+            currentlySearching = true;
+            //prepareForNewList();
+        }
+        previousSelectedBox = null;
+        customerSelection.getChildren().clear();
+        //lastSelectedCustomer = null;
+        //updateCurrentlySelectedCustomer();
+
+        loadedUntilPage = -1;
+        loadNext();
     }
 
     public void handleNewCustomer(ActionEvent actionEvent) {
@@ -190,14 +239,16 @@ public class CustomerSelection {
 
     public void returnFromAddCustomer(CustomerDTO customerDTO) {
         lastSelectedCustomer = customerDTO;
-        drawCustomers();
+        loadNext();
+        //drawCustomers();
         updateCurrentlySelectedCustomer();
     }
 
     public void handleReturnButton(ActionEvent actionEvent) {
-        Stage transactionDetailStage = (Stage) transactionController.getBpDetailMainPane().getScene().getWindow();
+        Stage transactionDetailStage = (Stage) transactionController.getBpDetailMainPane()
+            .getScene().getWindow();
         transactionDetailStage.close();
-        if(previousSelectedBox != null) {
+        if (previousSelectedBox != null) {
             previousSelectedBox.setStyle("-fx-background-color: inherit");
             previousSelectedBox = null;
         }
