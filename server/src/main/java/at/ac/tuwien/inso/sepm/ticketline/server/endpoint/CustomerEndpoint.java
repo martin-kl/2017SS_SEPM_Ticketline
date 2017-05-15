@@ -39,9 +39,9 @@ public class CustomerEndpoint {
         return customerMapper.fromEntity(customerService.findOne(id));
     }
 
-    @RequestMapping(value="/search/{query}", method = RequestMethod.GET)
+    @RequestMapping(value="/search", method = RequestMethod.GET)
     @ApiOperation(value = "Get searched customers")
-    public List<CustomerDTO> search(@PathVariable String query, Pageable pageable) {
+    public List<CustomerDTO> search(@RequestParam(value = "query") String query, Pageable pageable) {
         return customerMapper.fromEntity(customerService.search(query, pageable));
     }
 

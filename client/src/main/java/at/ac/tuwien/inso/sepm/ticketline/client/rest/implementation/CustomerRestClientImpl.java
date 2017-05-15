@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.CustomerRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import java.net.URI;
+import jdk.nashorn.internal.runtime.URIUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -64,12 +65,13 @@ public class CustomerRestClientImpl implements CustomerRestClient {
     public List<CustomerDTO> search(String query, int page) throws DataAccessException {
         try {
             log.debug("Searching customers with query {} using url {}", query,
-                restClient.getServiceURI(CUSTOMER_URL) + "/search/" + query);
+                restClient.getServiceURI(CUSTOMER_URL) + "?search=" + query);
             ResponseEntity<List<CustomerDTO>> customer =
                 restClient.exchange(
                     //URI.create(baseUrl + "/" + serviceLocation);
                     UriComponentsBuilder.fromUri(
-                        URI.create(restClient.getServiceURI(CUSTOMER_URL) + "/search/" + query))
+                        URI.create(restClient.getServiceURI(CUSTOMER_URL) + "/search"))
+                        .queryParam("query", query)
                         .queryParam("page", page)
                         .queryParam("size", 20)
                         .build().toUri(),
@@ -95,7 +97,7 @@ public class CustomerRestClientImpl implements CustomerRestClient {
                 restClient.getServiceURI(CUSTOMER_URL));
             ResponseEntity<CustomerDTO> customer =
                 restClient.exchange(
-                    restClient.getServiceURI(CUSTOMER_URL) + "?status=" + id,
+                    restClient.getServiceURI(CUSTOMER_URL) + "/" + id,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<CustomerDTO>() {

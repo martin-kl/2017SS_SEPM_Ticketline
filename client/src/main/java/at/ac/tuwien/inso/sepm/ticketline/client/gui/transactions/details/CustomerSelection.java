@@ -77,7 +77,7 @@ public class CustomerSelection {
         //delete possible entries from before in all search fields TODO implement the search
         currentlySearching = false;
         prepareForNewList();
-        loadNext();
+        loadNext(false);
 
         spCustomerSelection.vvalueProperty().addListener((ov, old_val, new_val) -> {
             if (customerSelection.getChildren().size() == 0) {
@@ -88,7 +88,7 @@ public class CustomerSelection {
             }
             if (new_val.floatValue() > 0.9) {
                 currentlyLoading = true;
-                loadNext();
+                loadNext(false);
             }
         });
     }
@@ -102,7 +102,7 @@ public class CustomerSelection {
     }
 
 
-    private void loadNext() {
+    private void loadNext(boolean deleteEverythingBeforeDrawing) {
         Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
             @Override
             protected List<CustomerDTO> call() throws DataAccessException {
@@ -119,6 +119,9 @@ public class CustomerSelection {
             protected void succeeded() {
                 super.succeeded();
                 //drawCustomers(getValue().iterator());
+                if(deleteEverythingBeforeDrawing){
+                    customerSelection.getChildren().clear();
+                }
                 appendElements(getValue());
             }
 
@@ -208,12 +211,12 @@ public class CustomerSelection {
             //prepareForNewList();
         }
         previousSelectedBox = null;
-        customerSelection.getChildren().clear();
+        //customerSelection.getChildren().clear();
         //lastSelectedCustomer = null;
         //updateCurrentlySelectedCustomer();
 
         loadedUntilPage = -1;
-        loadNext();
+        loadNext(true);
     }
 
     public void handleNewCustomer(ActionEvent actionEvent) {
@@ -239,7 +242,7 @@ public class CustomerSelection {
 
     public void returnFromAddCustomer(CustomerDTO customerDTO) {
         lastSelectedCustomer = customerDTO;
-        loadNext();
+        loadNext(true);
         //drawCustomers();
         updateCurrentlySelectedCustomer();
     }
