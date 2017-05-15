@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface CustomerService {
 
     /**
-     * fuzzy seraches for customers
+     * fuzzy searches for customers
      * @param query the serach query
      * @param page the page number to request
      * @return list of customers

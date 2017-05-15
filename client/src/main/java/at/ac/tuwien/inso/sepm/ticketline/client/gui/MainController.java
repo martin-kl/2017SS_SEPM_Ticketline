@@ -233,6 +233,9 @@ public class MainController {
                 performanceDetailController.clearData(true);
                 performanceDetailController = null;
                 //event.consume();
+            }else {
+                //if event.consume is not fired in here, the window would close even on the cancel button
+                event.consume();
             }
         });
         dialog.showAndWait();

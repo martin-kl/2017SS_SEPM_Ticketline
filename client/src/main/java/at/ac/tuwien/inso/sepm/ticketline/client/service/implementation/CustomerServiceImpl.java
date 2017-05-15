@@ -26,8 +26,7 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public List<CustomerDTO> search(String query, int page) throws DataAccessException {
         if (query == null || query.equals("")) { return customerRestClient.findAll(page); }
-        //TODO paging in search is not yet implemented - so we dont pass the page here
-        return customerRestClient.search(query);
+        return customerRestClient.search(query, page);
     }
 
     @Override

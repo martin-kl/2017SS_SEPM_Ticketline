@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.CustomerRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -60,13 +61,18 @@ public class CustomerRestClientImpl implements CustomerRestClient {
     }
 
     @Override
-    public List<CustomerDTO> search(String query) throws DataAccessException {
+    public List<CustomerDTO> search(String query, int page) throws DataAccessException {
         try {
             log.debug("Searching customers with query {} using url {}", query,
                 restClient.getServiceURI(CUSTOMER_URL) + "/search/" + query);
             ResponseEntity<List<CustomerDTO>> customer =
                 restClient.exchange(
-                    restClient.getServiceURI(CUSTOMER_URL) + "/search/" + query,
+                    //URI.create(baseUrl + "/" + serviceLocation);
+                    UriComponentsBuilder.fromUri(
+                        URI.create(restClient.getServiceURI(CUSTOMER_URL) + "/search/" + query))
+                        .queryParam("page", page)
+                        .queryParam("size", 20)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<CustomerDTO>>() {
