@@ -213,6 +213,7 @@ public class MainController {
     public void showTransactionDetailWindow(
         DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         Stage dialog = initStage();
+        dialog.setResizable(true);
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactions/details/transaction.fxml");
@@ -229,6 +230,7 @@ public class MainController {
     public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList,
         DetailedPerformanceDTO detailedPerformanceDTO) {
         Stage dialog = initStage();
+        dialog.setResizable(true);
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/transactions/details/transaction.fxml");

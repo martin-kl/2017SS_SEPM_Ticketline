@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
@@ -32,7 +33,7 @@ public class TransactionController {
 
     @Getter
     @FXML
-    private BorderPane bpDetailMainPane;
+    private VBox vbTransactionDetail;
     @FXML
     private Label lbDetailHeader;
     @FXML
@@ -97,6 +98,7 @@ public class TransactionController {
             .loadAndWrap("/fxml/transactions/details/customerSelection.fxml");
         CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
+        HBox.setHgrow((VBox) wrapper.getLoadedObject(), Priority.ALWAYS);
         customerSelection.initData();
     }
 
@@ -116,12 +118,14 @@ public class TransactionController {
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
         children.clear();
-        children.add(vbTicketsInclLabel); children.add(spSeparator);
+        children.add(vbTicketsInclLabel);
+        children.add(spSeparator);
 
         if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT) {
             ticketsSelectable = true;
         }
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
+        HBox.setHgrow((VBox) wrapper.getLoadedObject(), Priority.ALWAYS);
         ticketDTOList = detailedTicketTransactionDTO.getTickets();
         selectedTickets.addAll(ticketDTOList); //all selected form the start
         setTickets(ticketDTOList);

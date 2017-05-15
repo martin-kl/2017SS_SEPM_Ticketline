@@ -205,7 +205,7 @@ public class CustomerSelection {
     }
 
     public void handleNewCustomer(ActionEvent actionEvent) {
-        Stage stage = (Stage) transactionController.getBpDetailMainPane().getScene().getWindow();
+        Stage stage = (Stage) transactionController.getVbTransactionDetail().getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -234,7 +234,7 @@ public class CustomerSelection {
     }
 
     public void handleReturnButton(ActionEvent actionEvent) {
-        Stage transactionDetailStage = (Stage) transactionController.getBpDetailMainPane()
+        Stage transactionDetailStage = (Stage) transactionController.getVbTransactionDetail()
             .getScene().getWindow();
         transactionDetailStage.close();
         if (previousSelectedBox != null) {
