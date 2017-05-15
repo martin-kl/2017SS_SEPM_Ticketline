@@ -8,6 +8,7 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
 import java.util.ArrayList;
 
+import java.util.Iterator;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
@@ -72,13 +73,13 @@ public class TransactionController {
 
         tdvc.initController(selectedCustomer, detailedPerformanceDTO, ticketDTOList);
 
-
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
         children.clear();
         children.add(vbTicketsInclLabel);
         children.add(spSeparator);
         children.add((VBox) wrapper2.getLoadedObject());
+        HBox.setHgrow((VBox) wrapper2.getLoadedObject(), Priority.ALWAYS);
     }
 
     //this is the "normal" method that is called after the hallplan
@@ -142,7 +143,9 @@ public class TransactionController {
         ObservableList<Node> vbTicketBoxChildren = vbTickets.getChildren();
         vbTicketBoxChildren.clear();
 
-        for (TicketDTO ticket : ticketDTOList) {
+        Iterator<? extends TicketDTO> iterator = ticketDTOList.iterator();
+        while (iterator.hasNext()) {
+            TicketDTO ticket = iterator.next();
             LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/transactions/details/ticketElement.fxml");
 
@@ -163,6 +166,10 @@ public class TransactionController {
                 });
             }
             vbTicketBoxChildren.add(ticketBox);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbTicketBoxChildren.add(separator);
+            }
         }
     }
 }
