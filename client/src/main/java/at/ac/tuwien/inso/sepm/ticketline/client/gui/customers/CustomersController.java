@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.CustomerSelection;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
@@ -19,15 +20,14 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
+
+import javax.xml.soap.Text;
 
 @Slf4j
 @Component
@@ -39,21 +39,24 @@ public class CustomersController {
     @FXML
     private Label lblHeaderTitle;
     @FXML
-    private ScrollPane scrollPane;
-    @FXML
     private Button btnAddCustomer;
+
     @FXML
-    private VBox vbCustomersElements;
+    private VBox main;
+
+    @FXML
+    private VBox customerSelectionParent;
+
+    @FXML
+    private TextField searchField;
+
 
     private FontAwesome fontAwesome;
-
-    private int loadedUntilPage = -1;
-    private boolean currentlySearching = false;
-    private boolean currentlyLoading = false;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final CustomerService customerService;
+    private CustomerList customerList;
 
     public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
         CustomerService customerService) {
@@ -85,90 +88,23 @@ public class CustomersController {
     }
 
     public void initCustomers() {
-        //delete possible entries from before in all search fields TODO implement the search
-        currentlySearching = false;
-        prepareForNewList();
-        loadNext();
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/customers/customerList.fxml");
 
-        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
-            if (vbCustomersElements.getChildren().size() == 0) {
-                return;
-            }
-            if (currentlyLoading) {
-                return;
-            }
-            if (new_val.floatValue() > 0.9) {
-                currentlyLoading = true;
-                loadNext();
-            }
+        customerList = ((CustomerList) wrapper.getController());
+        ScrollPane list = (ScrollPane) wrapper.getLoadedObject();
+        customerSelectionParent.getChildren().clear();
+        customerSelectionParent.getChildren().add(list);
+        customerList.setCustomerClicked((customer, customerBox) ->{
+            mainController.addEditCustomerWindow((CustomerDTO) customer);
         });
+        customerList.reload("");
     }
 
-    private void prepareForNewList() {
-        loadedUntilPage = -1;
-        vbCustomersElements.getChildren().clear();
+    public void onSearchChange(KeyEvent keyEvent) {
+        customerList.reload(searchField.getText());
     }
 
-    private void loadNext() {
-        Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
-            @Override
-            protected List<CustomerDTO> call() throws DataAccessException {
-                try {
-                    return customerService.search("", ++loadedUntilPage);
-                } catch (ExceptionWithDialog exceptionWithDialog) {
-                    exceptionWithDialog.showDialog();
-                    return new ArrayList<>();
-                }
-            }
-
-            @Override
-            protected void succeeded() {
-                appendElements(getValue());
-                //super.succeeded();
-                //drawCustomers(getValue().iterator());
-            }
-
-            @Override
-            protected void failed() {
-                super.failed();
-                JavaFXUtils.createExceptionDialog(getException(),
-                    vbCustomersElements.getScene().getWindow()).showAndWait();
-            }
-
-        };
-        task.runningProperty().addListener((observable, oldValue, running) ->
-            mainController.setProgressbarProgress(
-                running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
-        );
-        new Thread(task).start();
-    }
-
-    private void appendElements(List<CustomerDTO> elements) {
-        Iterator<CustomerDTO> iterator = elements.iterator();
-        while (iterator.hasNext()) {
-            CustomerDTO customer = iterator.next();
-            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                .loadAndWrap("/fxml/customers/customersElement.fxml");
-
-            ((CustomersElementController) wrapper.getController()).initializeData(customer);
-            HBox customerBox = (HBox) wrapper.getLoadedObject();
-            customerBox.setOnMouseClicked((e) -> {
-                log.debug("Selected a customer: " + customer.getFirstName() + " " + customer
-                    .getLastName() + " with id = " + customer.getId());
-                handleCustomerEdit(customer);
-            });
-            vbCustomersElements.getChildren().add(customerBox);
-            if (iterator.hasNext()) {
-                Separator separator = new Separator();
-                vbCustomersElements.getChildren().add(separator);
-            }
-        }
-        currentlyLoading = false;
-    }
-
-    private void handleCustomerEdit(CustomerDTO customerDTO) {
-        mainController.addEditCustomerWindow(customerDTO);
-    }
 
     public void handleCustomerAdd(ActionEvent actionEvent) {
         mainController.addEditCustomerWindow(null);

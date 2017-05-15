@@ -4,23 +4,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox spacing="5.0" styleClass="customersElement" stylesheets="@../../css/customersElement.css"
-    xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController">
+<HBox spacing="5.0" styleClass="customersElement" stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController">
     <children>
-        <Label fx:id="lblPrename" text="&lt;Prename&gt;">
+        <Label fx:id="lblPrename" text="&lt;Prename&gt;" HBox.hgrow="ALWAYS">
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </Label>
-        <Label fx:id="lblLastname" text="&lt;Lastname&gt;">
+        <Label fx:id="lblLastname" text="&lt;Lastname&gt;" HBox.hgrow="ALWAYS">
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </Label>
-        <Label fx:id="lbEMail" layoutX="89.0" layoutY="20.0" text="&lt;EMail&gt;"/>
+        <Label fx:id="lbEMail" layoutX="89.0" layoutY="20.0" text="&lt;EMail&gt;" HBox.hgrow="ALWAYS" />
     </children>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
 </HBox>
