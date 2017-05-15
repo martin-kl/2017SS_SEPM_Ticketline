@@ -90,6 +90,7 @@ public class EventEndpointTest extends BaseIntegrationTest {
         assertEquals(0, events.size());
     }
 
+    /*
     @Test
     public void findAllEvents() {
         BDDMockito.
@@ -125,4 +126,5 @@ public class EventEndpointTest extends BaseIntegrationTest {
                 .build())));
 
     }
+    */
 }

@@ -1,15 +1,20 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.QCustomer;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.ConflictException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.ValidationHelper;
-import java.sql.SQLException;
-import javax.xml.ws.http.HTTPException;
+import com.querydsl.core.BooleanBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
@@ -21,15 +26,21 @@ import java.util.UUID;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private final CustomerRepository customerRepository;
-
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Override
-    public List<Customer> findAll() {
-        return customerRepository.findAll(new Sort("lastName"));
+    public List<Customer> findAll(Pageable pageable) {
+        Pageable adaptedPageable = new PageRequest(
+            pageable.getPageNumber(),
+            pageable.getPageSize(),
+            new Sort("lastName")
+        );
+        Page<Customer> page = customerRepository.findAll(adaptedPageable);
+        if (page == null) {
+            return new ArrayList<>();
+        }
+        return page.getContent();
     }
 
     @Override
@@ -49,29 +60,22 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> search(String query) {
-        List<Customer> customers = customerRepository.findAll();
-        List<Customer> result = new ArrayList<>();
-        String[] searchWords = query.split(" ");
-        for (Customer customer : customers) {
-            if (eachSearchWordMatchesOneColumn(customer, searchWords)) {
-                result.add(customer);
-            }
+    public List<Customer> search(String query, Pageable pageable) {
+        QCustomer customer = QCustomer.customer;
+        BooleanBuilder builder = new BooleanBuilder();
+        for (String token : query.split(" ")) {
+            BooleanBuilder b = new BooleanBuilder();
+            b.or(customer.lastName.containsIgnoreCase(token));
+            b.or(customer.firstName.containsIgnoreCase(token));
+            b.or(customer.address.containsIgnoreCase(token));
+            b.or(customer.email.containsIgnoreCase(token));
+            builder.and(b.getValue());
         }
-        return result;
-    }
-
-    private boolean eachSearchWordMatchesOneColumn(Customer customer, String[] searchWords) {
-        for (String searchWord : searchWords) {
-            searchWord = searchWord.toLowerCase();
-            if (!(customer.getFirstName().toLowerCase().contains(searchWord)
-                || customer.getLastName().toLowerCase().contains(searchWord)
-                || customer.getEmail().toLowerCase().contains(searchWord)
-                || customer.getAddress().toLowerCase().contains(searchWord))) {
-                return false;
-            }
+        Page<Customer> page = customerRepository.findAll(builder.getValue(), pageable);
+        if (page == null) {
+            return new ArrayList<>();
         }
-        return true;
+        return page.getContent();
     }
 
 }
