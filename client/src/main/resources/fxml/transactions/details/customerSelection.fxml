@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.CustomerSelection">
+<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.CustomerSelection">
     <children>
       <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="%transaction.detail.customerSelection" />
         <Separator>
@@ -27,7 +27,7 @@
                 <Button fx:id="btnAddNewCustomer" mnemonicParsing="false" onAction="#handleNewCustomer" text="%customer.add.new" />
             </children>
         </HBox>
-      <VBox fx:id="customerSelectionParent" prefHeight="200.0" prefWidth="100.0" />
+      <VBox fx:id="customerSelectionParent" />
         <HBox alignment="TOP_CENTER">
             <children>
                 <Label text="%customer.selected" />
