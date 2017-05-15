@@ -153,8 +153,8 @@ public class CustomerSelection {
             ((CustomersElementController) wrapper.getController()).initializeData(customer);
             HBox customerBox = (HBox) wrapper.getLoadedObject();
 
-            //TODO is this necessary now with pagination??????
             if (customer.equals(lastSelectedCustomer)) {
+                previousSelectedBox = customerBox;
                 customerBox.setStyle("-fx-background-color: #2196F3");
             }
             customerBox.setOnMouseClicked((MouseEvent e) -> {
@@ -200,21 +200,6 @@ public class CustomerSelection {
     }
 
     public void onSearchChange(KeyEvent keyEvent) {
-        //System.out.println("reloading customers");
-        if(currentlySearching && customerSearchField.getText().trim().equals("")) {
-            //we have been searching but nothing to search entered - load new and reset currentlySearching
-            //prepareForNewList();
-            currentlySearching = false;
-        }else if(!currentlySearching && ! customerSearchField.getText().trim().equals("")) {
-            //start searching
-            currentlySearching = true;
-            //prepareForNewList();
-        }
-        previousSelectedBox = null;
-        //customerSelection.getChildren().clear();
-        //lastSelectedCustomer = null;
-        //updateCurrentlySelectedCustomer();
-
         loadedUntilPage = -1;
         loadNext(true);
     }
@@ -242,6 +227,7 @@ public class CustomerSelection {
 
     public void returnFromAddCustomer(CustomerDTO customerDTO) {
         lastSelectedCustomer = customerDTO;
+        loadedUntilPage = -1;
         loadNext(true);
         //drawCustomers();
         updateCurrentlySelectedCustomer();
