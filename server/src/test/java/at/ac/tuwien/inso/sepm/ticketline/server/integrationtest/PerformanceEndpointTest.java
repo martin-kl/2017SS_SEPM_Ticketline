@@ -28,6 +28,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
 
 public class PerformanceEndpointTest extends BaseIntegrationTest {
     private static final String PERFORMANCE_ENDPOINT = "/performance";
@@ -142,6 +143,21 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
                 .location(locationMapper.fromEntity(TEST_LOCATION))
                 .build()
             ));
+    }
+
+    @Test
+    public void findNonExistentPerformanceAsUser(){
+        BDDMockito.
+            given(performanceRepository.findOneById(any(UUID.class))).
+            willReturn(Optional.empty());
+
+        Response response = RestAssured
+            .given()
+            .contentType(ContentType.JSON)
+            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
+            .when().get(PERFORMANCE_ENDPOINT + SPECIFIC_PERFORMANCE_PATH, "")
+            .then().extract().response();
+        Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
     }
 
 }

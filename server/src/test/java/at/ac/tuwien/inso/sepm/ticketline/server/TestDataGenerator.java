@@ -279,8 +279,6 @@ public class TestDataGenerator {
     }
 
     private void generateTicketHistoryAndTransaction(){
-        log.info("bennis log: " + ticketsToPerf0.size());
-
         //the order of saving the ticketTransactions is important
         TicketTransaction ticketTransaction0 = new TicketTransaction(
             null,
