@@ -103,7 +103,6 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
                 )
             );
 
-
         Response response = RestAssured
             .given()
             .contentType(ContentType.JSON)
@@ -121,7 +120,7 @@ public class PerformanceEndpointTest extends BaseIntegrationTest {
         List<TicketWrapperDTO> ticketWrapperDTOList = new LinkedList<>();
         ticketWrapperDTOList.add(ticketWrapperDTO);
 
-
+        //Create DetailedPerformanceDTO
         DetailedPerformanceDTO detailedPerformanceDTO = new DetailedPerformanceDTO();
         detailedPerformanceDTO.setId(TEST_PERFORMANCE_ID);
         detailedPerformanceDTO.setName(TEST_PERFORMANCE_NAME);

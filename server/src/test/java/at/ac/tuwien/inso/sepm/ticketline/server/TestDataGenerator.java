@@ -5,17 +5,16 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.misc.Perf;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Slf4j
@@ -280,6 +279,8 @@ public class TestDataGenerator {
     }
 
     private void generateTicketHistoryAndTransaction(){
+        log.info("bennis log: " + ticketsToPerf0.size());
+
         //the order of saving the ticketTransactions is important
         TicketTransaction ticketTransaction0 = new TicketTransaction(
             null,
