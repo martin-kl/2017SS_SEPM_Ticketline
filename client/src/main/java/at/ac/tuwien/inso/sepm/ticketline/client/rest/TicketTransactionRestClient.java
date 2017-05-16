@@ -26,10 +26,10 @@ public interface TicketTransactionRestClient {
     /**
      * Find a single details entry by id.
      *
-     * @param uuid the id of the details entry
+     * @param id of the details entry (can be partial)
      * @return the transaction entry
      */
-    DetailedTicketTransactionDTO findTransactionWithID(UUID uuid) throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page) throws ExceptionWithDialog;
 
     /**
      * Finds a Transaction/Reservation by the

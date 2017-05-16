@@ -59,26 +59,30 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     }
 
     @Override
-    public DetailedTicketTransactionDTO findTransactionWithID(UUID uuid)
+    public List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page)
         throws ExceptionWithDialog {
         try {
-            log.debug("Retrieving a ticket details from {} with id {}",
+            log.debug("Retrieving a ticket details from {} with partial id {}",
                 restClient.getServiceURI(
-                    TRANSACTION_URL), uuid.toString());
+                    TRANSACTION_URL), id);
 
-            ResponseEntity<DetailedTicketTransactionDTO> reservation =
+                ResponseEntity<List<DetailedTicketTransactionDTO>> reservation =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "/" + uuid,
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL + "/find"))
+                        .queryParam("id", id)
+                        .queryParam("page", page)
+                        .queryParam("size", 20)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<DetailedTicketTransactionDTO>() {
+                    new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
                     });
             log.debug("Result status was {} with content {}", reservation.getStatusCode(),
                 reservation.getBody());
             return reservation.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed retrieve the ticket transaction with id " + uuid + " with status code " + e
+                "Failed retrieve the ticket transaction with id " + id + " with status code " + e
                     .getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);

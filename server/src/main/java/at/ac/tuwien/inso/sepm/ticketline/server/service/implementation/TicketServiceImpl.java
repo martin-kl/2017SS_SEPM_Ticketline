@@ -77,7 +77,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketTransaction> findById(String id, Pageable pageable) {
         id = "%" + id + "%";
-        List<TicketTransaction> transactions = ticketTransactionRepository.findById(id, pageable);
+        List<TicketTransaction> transactions = ticketTransactionRepository.findWithPartialId(id, pageable.getPageSize()*pageable.getPageNumber(), pageable.getPageSize()*pageable.getPageNumber()+pageable.getPageSize());
         if(transactions == null)
             throw new NotFoundException();
         if(transactions.size() == 0) {

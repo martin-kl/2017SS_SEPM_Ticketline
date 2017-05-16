@@ -25,21 +25,8 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public DetailedTicketTransactionDTO findTransactionWithID(String id)
-        throws ExceptionWithDialog {
-
-        //TODO cast here to uuid? better to search for a string as part of uuid or?
-
-        try {
-            UUID uuid = UUID.fromString(id);
-            /*
-            System.out.println(
-                "uuid from string \"" + id + "\" = \"" + uuid + "\"");
-            */
-            return ticketTransactionRestClient.findTransactionWithID(uuid);
-        } catch (IllegalArgumentException e) {
-            throw new ValidationException("transaction.error.invalidID");
-        }
+    public List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page) throws ExceptionWithDialog {
+        return ticketTransactionRestClient.findTransactionWithID(id, page);
     }
 
     @Override

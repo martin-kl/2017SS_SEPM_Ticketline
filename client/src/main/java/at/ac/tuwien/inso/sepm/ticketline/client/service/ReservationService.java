@@ -27,7 +27,7 @@ public interface ReservationService {
      * @param id the id of the reservation entry
      * @return the Transaction/Reservation entry
      */
-    DetailedTicketTransactionDTO findTransactionWithID(String id) throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page) throws ExceptionWithDialog;
 
     /**
      * Finds a Transaction/Reservation by the

@@ -177,7 +177,7 @@ public class TransactionListController {
                         case NOTHING:
                             return reservationService.findTransactionsBoughtReserved(++loadedUntilPage);
                         case ID:
-                            return Collections.singletonList(reservationService.findTransactionWithID(tfTransactionNumber.getText().trim()));
+                            return reservationService.findTransactionWithID(tfTransactionNumber.getText().trim(), ++loadedUntilPage);
                         case TEXT:
                             return reservationService.findTransactionsByCustomerAndPerformance(
                                 tfCustomerFirstName.getText().trim(),
