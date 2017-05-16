@@ -1,9 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerList;
-import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
@@ -15,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import javafx.stage.Modality;
@@ -45,19 +42,14 @@ public class CustomerSelection {
     private HBox previousSelectedBox = null;
 
 
-    private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
-    private final CustomerService customerService;
     private final TransactionController transactionController;
 
     private CustomerList customerList;
 
-    public CustomerSelection(MainController mainController, SpringFxmlLoader springFxmlLoader,
-        CustomerService customerService,
+    public CustomerSelection(SpringFxmlLoader springFxmlLoader,
         TransactionController transactionController) {
-        this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
-        this.customerService = customerService;
         this.transactionController = transactionController;
 
     }
@@ -157,6 +149,5 @@ public class CustomerSelection {
         }
         lastSelectedCustomer = null;
         redrawCurrentlySelectedCustomer();
-
     }
 }

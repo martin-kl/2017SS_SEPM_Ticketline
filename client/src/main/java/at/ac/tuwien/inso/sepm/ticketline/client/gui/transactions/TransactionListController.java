@@ -41,6 +41,8 @@ public class TransactionListController {
     @FXML
     private Button btnSearch;
     @FXML
+    private Button btnReset;
+    @FXML
     private Button btnReservationDetails;
 
     @FXML
@@ -90,6 +92,7 @@ public class TransactionListController {
             BundleManager.getBundle().getString("transaction.prompt.performanceName"));
 
         btnSearch.setText(BundleManager.getBundle().getString("search"));
+        btnReset.setText(BundleManager.getBundle().getString("reset"));
         btnReservationDetails
             .setText(BundleManager.getBundle().getString("transaction.showDetails"));
 

@@ -8,7 +8,7 @@
     <children>
         <Label fx:id="lbPlace" text="&lt;Place&gt;">
             <HBox.margin>
-                <Insets />
+                <Insets right="10.0" />
             </HBox.margin>
         </Label>
         <Label fx:id="lbPrice" text="&lt;Price&gt;" />

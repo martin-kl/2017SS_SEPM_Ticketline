@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="main" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController">
+<VBox fx:id="main" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController">
     <children>
         <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
             <children>
@@ -19,9 +19,10 @@
         </HBox>
         <Separator />
       <TextField fx:id="searchField" onKeyReleased="#onSearchChange" promptText="%search" />
-      <Separator />
-      <VBox fx:id="customerSelectionParent" />
-        <Separator prefWidth="200.0" />
+      <VBox fx:id="customerSelectionParent">
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin></VBox>
         <ButtonBar buttonMinWidth="0.0">
             <buttons>
                 <Button fx:id="btnAddCustomer" mnemonicParsing="false" onAction="#handleCustomerAdd" text="%customer.add" />
