@@ -21,15 +21,15 @@ public interface TicketTransactionRestClient {
      *
      * @return ordered list of all details with status bought or reserved
      */
-    List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved() throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page) throws ExceptionWithDialog;
 
     /**
      * Find a single details entry by id.
      *
-     * @param uuid the id of the details entry
+     * @param id of the details entry (can be partial)
      * @return the transaction entry
      */
-    DetailedTicketTransactionDTO findTransactionWithID(UUID uuid) throws ExceptionWithDialog;
+    List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page) throws ExceptionWithDialog;
 
     /**
      * Finds a Transaction/Reservation by the
@@ -40,6 +40,6 @@ public interface TicketTransactionRestClient {
      * @return list of transactions/details for the customer and the performance name
      */
     List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerFirstName, String customerLastName, String performanceName)
+        String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog;
 }

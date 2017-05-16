@@ -8,8 +8,10 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
 import java.util.ArrayList;
 
+import java.util.Iterator;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
@@ -32,7 +34,7 @@ public class TransactionController {
 
     @Getter
     @FXML
-    private BorderPane bpDetailMainPane;
+    private VBox vbTransactionDetail;
     @FXML
     private Label lbDetailHeader;
     @FXML
@@ -71,13 +73,13 @@ public class TransactionController {
 
         tdvc.initController(selectedCustomer, detailedPerformanceDTO, ticketDTOList);
 
-
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
         children.clear();
         children.add(vbTicketsInclLabel);
         children.add(spSeparator);
         children.add((VBox) wrapper2.getLoadedObject());
+        HBox.setHgrow((VBox) wrapper2.getLoadedObject(), Priority.ALWAYS);
     }
 
     //this is the "normal" method that is called after the hallplan
@@ -97,6 +99,7 @@ public class TransactionController {
             .loadAndWrap("/fxml/transactions/details/customerSelection.fxml");
         CustomerSelection customerSelection = (CustomerSelection) wrapper.getController();
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
+        HBox.setHgrow((VBox) wrapper.getLoadedObject(), Priority.ALWAYS);
         customerSelection.initData();
     }
 
@@ -104,6 +107,7 @@ public class TransactionController {
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         this.detailedPerformanceDTO = null;
         //this.performanceDetailController = null;
+        ticketsSelectable = false;
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
@@ -116,12 +120,14 @@ public class TransactionController {
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
         children.clear();
-        children.add(vbTicketsInclLabel); children.add(spSeparator);
+        children.add(vbTicketsInclLabel);
+        children.add(spSeparator);
 
         if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT) {
             ticketsSelectable = true;
         }
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
+        HBox.setHgrow((VBox) wrapper.getLoadedObject(), Priority.ALWAYS);
         ticketDTOList = detailedTicketTransactionDTO.getTickets();
         selectedTickets.addAll(ticketDTOList); //all selected form the start
         setTickets(ticketDTOList);
@@ -137,7 +143,9 @@ public class TransactionController {
         ObservableList<Node> vbTicketBoxChildren = vbTickets.getChildren();
         vbTicketBoxChildren.clear();
 
-        for (TicketDTO ticket : ticketDTOList) {
+        Iterator<? extends TicketDTO> iterator = ticketDTOList.iterator();
+        while (iterator.hasNext()) {
+            TicketDTO ticket = iterator.next();
             LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/transactions/details/ticketElement.fxml");
 
@@ -158,6 +166,10 @@ public class TransactionController {
                 });
             }
             vbTicketBoxChildren.add(ticketBox);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbTicketBoxChildren.add(separator);
+            }
         }
     }
 }

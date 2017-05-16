@@ -19,36 +19,23 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
+    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page)
         throws ExceptionWithDialog {
-        return ticketTransactionRestClient.findTransactionsBoughtReserved();
+        return ticketTransactionRestClient.findTransactionsBoughtReserved(page);
     }
 
     @Override
-    public DetailedTicketTransactionDTO findTransactionWithID(String id)
-        throws ExceptionWithDialog {
-
-        //TODO cast here to uuid? better to search for a string as part of uuid or?
-
-        try {
-            UUID uuid = UUID.fromString(id);
-            /*
-            System.out.println(
-                "uuid from string \"" + id + "\" = \"" + uuid + "\"");
-            */
-            return ticketTransactionRestClient.findTransactionWithID(uuid);
-        } catch (IllegalArgumentException e) {
-            throw new ValidationException("reservation.error.invalidID");
-        }
+    public List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page) throws ExceptionWithDialog {
+        return ticketTransactionRestClient.findTransactionWithID(id, page);
     }
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerFirstName, String customerLastName, String performanceName)
+        String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog {
         return ticketTransactionRestClient
             .findTransactionsByCustomerAndPerformance(customerFirstName, customerLastName,
-                performanceName);
+                performanceName, page);
     }
 
 }

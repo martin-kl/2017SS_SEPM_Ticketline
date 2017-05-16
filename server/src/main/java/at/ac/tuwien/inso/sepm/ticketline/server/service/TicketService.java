@@ -33,15 +33,26 @@ public interface TicketService {
     TicketTransaction findTransactionsByID(UUID uuid);
 
     /**
+     * Returns a list of transactions with the id
+     *
+     * @param id the id to search for
+     * @param pageable The requested page
+     * @return A list of transactions with the id (or parts of it)
+     */
+    List<TicketTransaction> findById(String id, Pageable pageable);
+
+    /**
      * Returns a list of Transactions for a customer and a performance
      *
      * @param customerFirstName the customer first name to search for
      * @param customerLastName the customer last name to search for
      * @param performance the name of the performance
+     * @param pageable The page to request
      * @return a list of TicketTransactions
      */
     List<TicketTransaction> findTransactionsByCustomerAndLocation(String customerFirstName,
-        String customerLastName, String performance);
+        String customerLastName, String performance,
+        Pageable pageable);
 
     /**
      * trys to update the ticket transaction. if the transaction id is null, then a

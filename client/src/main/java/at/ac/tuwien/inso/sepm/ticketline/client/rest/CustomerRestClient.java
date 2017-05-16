@@ -11,17 +11,19 @@ public interface CustomerRestClient {
      /**
      * Find all customers
      *
+     * @param page the next requested page number
      * @return ordered list of al customers
      */
-    List<CustomerDTO> findAll() throws DataAccessException;
+    List<CustomerDTO> findAll(int page) throws DataAccessException;
 
 
     /**
-     * fuzzy seraches for customers
-     * @param query the serach query
+     * fuzzy searches for customers
+     * @param query the search query
+     * @param page the next requested page number
      * @return list of customers
      */
-    List<CustomerDTO> search(String query) throws DataAccessException;
+    List<CustomerDTO> search(String query, int page) throws DataAccessException;
 
 
     /**

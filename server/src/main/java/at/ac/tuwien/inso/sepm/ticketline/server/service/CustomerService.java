@@ -4,6 +4,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ public interface CustomerService {
     /**
      * Find all customers
      *
-     * @param pageable
+     * @param pageable The next requested page
      * @return list of customers (ordered by lastname)
      */
     List<Customer> findAll(Pageable pageable);
@@ -36,8 +37,9 @@ public interface CustomerService {
 
     /**
      * fuzzy searches for customers
+     * @param query the search query
      * @param query the serach query
-     * @param pageable
+     * @param pageable the next requested page
      * @return list of customers
      */
     List<Customer> search(String query, Pageable pageable);

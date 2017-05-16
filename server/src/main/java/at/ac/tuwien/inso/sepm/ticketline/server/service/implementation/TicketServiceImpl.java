@@ -19,7 +19,6 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +59,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketTransaction> getAllBoughtReservedTransactions(Pageable pageable) {
         return ticketTransactionRepository
-            .findByStatusOrStatusOrderByIdDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED, pageable);
+            .findByStatusOrStatusOrderByLastModifiedAtDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED, pageable);
         //return ticketTransactionRepository.findByStatus(ticketStatus);
     }
 
@@ -76,16 +75,31 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<TicketTransaction> findById(String id, Pageable pageable) {
+        id = "%" + id + "%";
+        List<TicketTransaction> transactions = ticketTransactionRepository.findWithPartialId(id, pageable.getPageSize()*pageable.getPageNumber(), pageable.getPageSize()*pageable.getPageNumber()+pageable.getPageSize());
+        if(transactions == null)
+            throw new NotFoundException();
+        if(transactions.size() == 0) {
+            return new ArrayList<>(0);
+        }
+        return transactions;
+        //return null;
+    }
+
+
+    @Override
     public List<TicketTransaction> findTransactionsByCustomerAndLocation(
         String customerFirstName,
         String customerLastName,
-        String performance) {
+        String performance, Pageable pageable) {
 
         List<TicketTransaction> result = ticketTransactionRepository
             .findByCustomerAndLocation(
                 "%" + customerFirstName + "%",
                 "%" + customerLastName + "%",
-                performance
+                performance,
+                pageable
             );
 
         //filter all double elements

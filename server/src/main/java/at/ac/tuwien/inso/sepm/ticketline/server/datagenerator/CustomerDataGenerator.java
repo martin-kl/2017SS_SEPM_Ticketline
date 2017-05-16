@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
 @Profile("generateData")
 @Component
 public class CustomerDataGenerator {
-    private static final int NUMBER_OF_CUSTOMER_TO_GENERATE = 25;
+    private static final int NUMBER_OF_CUSTOMER_TO_GENERATE = 1000;
 
     @Autowired
     private CustomerRepository customerRepository;

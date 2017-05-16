@@ -9,20 +9,13 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import javafx.collections.ObservableList;
+
+import java.util.*;
+
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -48,7 +41,12 @@ public class TransactionListController {
     @FXML
     private Button btnSearch;
     @FXML
+    private Button btnReset;
+    @FXML
     private Button btnReservationDetails;
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private VBox vbReservationsElements;
@@ -62,42 +60,51 @@ public class TransactionListController {
 
     private DetailedTicketTransactionDTO selectedTransaction;
     private VBox previousSelectedBox = null;
+    private boolean currentlyLoading = false;
+    private int loadedUntilPage = -1;
 
-    public TransactionListController(MainController mainController, SpringFxmlLoader springFxmlLoader,
-        ReservationService reservationService) {
+    private SearchState searchState = SearchState.NOTHING;
+
+
+    private enum SearchState {
+        NOTHING, ID, TEXT
+    }
+
+    public TransactionListController(MainController mainController, SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
         this.reservationService = reservationService;
     }
 
     public void reloadLanguage() {
-        setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+        setTitle(BundleManager.getBundle().getString("transaction.title"));
 
         tfTransactionNumber
             .setPromptText(
-                BundleManager.getBundle().getString("reservation.prompt.transactionNumber"));
+                BundleManager.getBundle().getString("transaction.prompt.transactionNumber"));
         tfCustomerFirstName
             .setPromptText(
-                BundleManager.getBundle().getString("reservation.prompt.customerFirstName"));
+                BundleManager.getBundle().getString("transaction.prompt.customerFirstName"));
         tfCustomerLastName
             .setPromptText(
-                BundleManager.getBundle().getString("reservation.prompt.customerLastName"));
+                BundleManager.getBundle().getString("transaction.prompt.customerLastName"));
         tfPerformanceName.setPromptText(
-            BundleManager.getBundle().getString("reservation.prompt.performanceName"));
+            BundleManager.getBundle().getString("transaction.prompt.performanceName"));
 
-        btnSearch.setText(BundleManager.getBundle().getString("reservation.search"));
+        btnSearch.setText(BundleManager.getBundle().getString("search"));
+        btnReset.setText(BundleManager.getBundle().getString("reset"));
         btnReservationDetails
-            .setText(BundleManager.getBundle().getString("reservation.showDetails"));
+            .setText(BundleManager.getBundle().getString("transaction.showDetails"));
 
         selectedTransaction = null;
         previousSelectedBox = null;
-        loadTransactions();
+        initTransactions();
     }
 
     public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.TICKET);
-        setTitle(BundleManager.getBundle().getString("reservation/sales.title"));
+        setTitle(BundleManager.getBundle().getString("transaction.title"));
     }
 
     private void setIcon(FontAwesome.Glyph glyph) {
@@ -111,31 +118,83 @@ public class TransactionListController {
         lblHeaderTitle.setText(title);
     }
 
-    public void loadTransactions() {
+    public void initTransactions() {
         //delete possible entries from before
         tfTransactionNumber.setText("");
         tfCustomerFirstName.setText("");
         tfCustomerLastName.setText("");
         tfPerformanceName.setText("");
+        searchState = SearchState.NOTHING;
+        prepareForNewList();
+        loadNext();
 
-        ObservableList<Node> vbReservationBoxChildren = vbReservationsElements.getChildren();
-        vbReservationBoxChildren.clear();
+        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
+            if (vbReservationsElements.getChildren().size() == 0) return;
+            if (currentlyLoading) return;
+            if (new_val.floatValue() > 0.9) {
+                currentlyLoading = true;
+                loadNext();
+            }
+        });
+    }
+
+
+    public void handleSearch(ActionEvent actionEvent) {
+        if (tfTransactionNumber.getText().length() != 0) {
+            searchState = SearchState.ID;
+            prepareForNewList();
+            loadNext();
+            return;
+        }
+        if (tfCustomerFirstName.getText().length() == 0
+            || tfCustomerLastName.getText().trim().length() == 0
+            || tfPerformanceName.getText().length() == 0) {
+            ValidationException e = new ValidationException("transaction.error.emptySearch");
+            e.showDialog();
+            return;
+            //don't change list at all
+        }
+        //search with customerName / performance name
+        searchState = SearchState.TEXT;
+        prepareForNewList();
+        loadNext();
+    }
+
+
+    private void prepareForNewList() {
+        selectedTransaction = null;
+        previousSelectedBox = null;
+        loadedUntilPage = -1;
+        vbReservationsElements.getChildren().clear();
+    }
+
+    private void loadNext() {
         Task<List<DetailedTicketTransactionDTO>> task = new Task<List<DetailedTicketTransactionDTO>>() {
             @Override
             protected List<DetailedTicketTransactionDTO> call() throws DataAccessException {
                 try {
-                    return reservationService.findTransactionsBoughtReserved();
+                    switch (searchState) {
+                        case NOTHING:
+                            return reservationService.findTransactionsBoughtReserved(++loadedUntilPage);
+                        case ID:
+                            return reservationService.findTransactionWithID(tfTransactionNumber.getText().trim(), ++loadedUntilPage);
+                        case TEXT:
+                            return reservationService.findTransactionsByCustomerAndPerformance(
+                                tfCustomerFirstName.getText().trim(),
+                                tfCustomerLastName.getText().trim(),
+                                tfPerformanceName.getText().trim(),
+                                ++loadedUntilPage
+                            );
+                    }
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.showDialog();
-                    return new ArrayList<>();
                 }
+                return new ArrayList<>();
             }
 
             @Override
             protected void succeeded() {
-                super.succeeded();
-                loadNewElements(getValue());
-                //drawReservations(getValue().iterator());
+                appendElements(getValue());
             }
 
             @Override
@@ -152,54 +211,10 @@ public class TransactionListController {
         new Thread(task).start();
     }
 
-    public void handleSearch(ActionEvent actionEvent) {
-        if (tfTransactionNumber.getText().length() != 0) {
-            //search with id
-            try {
-                DetailedTicketTransactionDTO transactionDTO = reservationService
-                    .findTransactionWithID(tfTransactionNumber.getText().trim());
-                //System.out.println("got transaction = " + transactionDTO);
 
-                //search result is one entry, but method loadNewElements requires a list
-                List<DetailedTicketTransactionDTO> searchResultList = new LinkedList<>();
-                searchResultList.add(transactionDTO);
-                loadNewElements(searchResultList);
-            } catch (ExceptionWithDialog exceptionWithDialog) {
-                exceptionWithDialog.showDialog();
-            }
-        } else {
-            if (tfCustomerFirstName.getText().length() == 0
-                || tfCustomerLastName.getText().trim().length() == 0
-                || tfPerformanceName.getText().length() == 0) {
-                ValidationException e = new ValidationException("reservation.error.emptySearch");
-                e.showDialog();
-            } else {
-                //search with customerName / performance name
-                try {
-                    List<DetailedTicketTransactionDTO> searchResult = reservationService
-                        .findTransactionsByCustomerAndPerformance(
-                            tfCustomerFirstName.getText().trim(),
-                            tfCustomerLastName.getText().trim(),
-                            tfPerformanceName.getText().trim());
-                    //System.out.println("got #"+searchResult.size()+ " results");
-                    //load new elements
-                    loadNewElements(searchResult);
-                } catch (ExceptionWithDialog exceptionWithDialog) {
-                    exceptionWithDialog.showDialog();
-                }
-            }
-        }
-    }
-
-
-    private void loadNewElements(List<DetailedTicketTransactionDTO> elements) {
-        ObservableList<Node> vbReservationBoxChildren = vbReservationsElements
-            .getChildren();
-        vbReservationBoxChildren.clear();
-
+    private void appendElements(List<DetailedTicketTransactionDTO> elements) {
         Iterator<DetailedTicketTransactionDTO> iterator = elements.iterator();
-        while (iterator.hasNext()) {
-            DetailedTicketTransactionDTO ticketTransaction = iterator.next();
+        for (DetailedTicketTransactionDTO ticketTransaction : elements) {
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/transactions/transactionElement.fxml");
 
@@ -218,12 +233,14 @@ public class TransactionListController {
                 selectedTransaction = ticketTransaction;
             });
 
-            vbReservationBoxChildren.add(reservationBox);
+            vbReservationsElements.getChildren().add(reservationBox);
             if (iterator.hasNext()) {
                 Separator separator = new Separator();
-                vbReservationBoxChildren.add(separator);
+                vbReservationsElements.getChildren().add(separator);
             }
+
         }
+        currentlyLoading = false;
     }
 
     public void handleReservationDetails(ActionEvent actionEvent) {
@@ -231,11 +248,16 @@ public class TransactionListController {
         if (selectedTransaction == null) {
             log.error("Tried to see details of transaction but no transaction was selected");
             //show alert
-            ValidationException e = new ValidationException("reservation.error.nothingSelected");
+            ValidationException e = new ValidationException("transaction.error.nothingSelected");
             e.showDialog();
             return;
         }
         log.debug("Loading Details of transaction with id: " + selectedTransaction.getId());
         mainController.showTransactionDetailWindow(selectedTransaction);
+    }
+
+    public void handleReset(ActionEvent actionEvent) {
+        log.debug("reset transaction filters and load a list without filter");
+        initTransactions();
     }
 }

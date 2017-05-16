@@ -6,6 +6,9 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.customer.CustomerM
 import at.ac.tuwien.inso.sepm.ticketline.server.service.CustomerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +39,9 @@ public class CustomerEndpoint {
         return customerMapper.fromEntity(customerService.findOne(id));
     }
 
-    @RequestMapping(value="/search/{query}", method = RequestMethod.GET)
+    @RequestMapping(value="/search", method = RequestMethod.GET)
     @ApiOperation(value = "Get searched customers")
-    public List<CustomerDTO> search(@PathVariable String query, Pageable pageable) {
+    public List<CustomerDTO> search(@RequestParam(value = "query") String query, Pageable pageable) {
         return customerMapper.fromEntity(customerService.search(query, pageable));
     }
 

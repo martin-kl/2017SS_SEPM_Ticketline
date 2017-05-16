@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -25,12 +26,15 @@ public class EventRestClientImpl implements EventRestClient {
     }
 
     @Override
-    public List<EventDTO> findAll() throws DataAccessException {
+    public List<EventDTO> findAll(int page) throws DataAccessException {
         try {
             log.debug("Retrieving all events from {}", restClient.getServiceURI(EVENT_URL));
             ResponseEntity<List<EventDTO>> event =
                 restClient.exchange(
-                    restClient.getServiceURI(EVENT_URL),
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(EVENT_URL))
+                        .queryParam("size", 20)
+                        .queryParam("page", page)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<EventDTO>>() {
