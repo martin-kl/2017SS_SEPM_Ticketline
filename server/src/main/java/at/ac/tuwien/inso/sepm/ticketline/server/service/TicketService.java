@@ -33,6 +33,15 @@ public interface TicketService {
     TicketTransaction findTransactionsByID(UUID uuid);
 
     /**
+     * Returns a list of transactions with the id
+     *
+     * @param id the id to search for
+     * @param pageable The requested page
+     * @return A list of transactions with the id (or parts of it)
+     */
+    List<TicketTransaction> findById(String id, Pageable pageable);
+
+    /**
      * Returns a list of Transactions for a customer and a performance
      *
      * @param customerFirstName the customer first name to search for

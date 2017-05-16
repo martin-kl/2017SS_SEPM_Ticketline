@@ -26,9 +26,12 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
     List<TicketTransaction> findByStatus(TicketStatus status, Pageable pageable);
 
     /**
-     * Returns only the first 100 TicketTransactions with status bought or reserved
+     * Returns all ticket transactions with status either status1 oder status2
      *
-     * @return The first 100 TicketTransactions with status bought or reserved
+     * @param status1 The first status the transactions can have
+     * @param status2 The second status the transactions can have
+     * @param pageable The requested page
+     * @return All ticket transactions with status either status1 oder status2
      */
     List<TicketTransaction> findByStatusOrStatusOrderByLastModifiedAtDesc(TicketStatus status1,
         TicketStatus status2, Pageable pageable);
@@ -40,6 +43,16 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @return the Transaction with the id of the parameter
      */
     Optional<TicketTransaction> findOneById(UUID id);
+
+    /**
+     * Returns the
+     *
+     * @param id the id to search for
+     * @param pageable The requested page
+     * @return A list of transactions with the id (or parts of it)
+     */
+    @Query("SELECT tt from TicketTransaction tt WHERE tt.id like ?1 order by tt.id")
+    List<TicketTransaction> findById(String id, Pageable pageable);
 
     /**
      * Returns a list of Transactions for a customer and a performance
