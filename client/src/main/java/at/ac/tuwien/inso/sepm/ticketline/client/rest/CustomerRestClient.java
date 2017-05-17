@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface CustomerRestClient {
      /**
-     * Find all customers
+     * Find all customers (paged)
      *
      * @param page the next requested page number
      * @return ordered list of al customers
@@ -19,6 +19,7 @@ public interface CustomerRestClient {
 
     /**
      * fuzzy searches for customers
+     *
      * @param query the search query
      * @param page the next requested page number
      * @return list of customers
@@ -27,15 +28,16 @@ public interface CustomerRestClient {
 
 
     /**
-     * Find a single news entry by id.
+     * Find a single customer entry by id.
      *
-     * @param id the is of the news entry
-     * @return the news entry
+     * @param id the is of the customer entry
+     * @return the customer entry
      */
     CustomerDTO findOne(UUID id) throws DataAccessException;
 
     /**
      * saves a new or edited customer
+     *
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */

@@ -10,6 +10,7 @@ public interface CustomerService {
 
     /**
      * fuzzy searches for customers
+     *
      * @param query the serach query
      * @param page the page number to request
      * @return list of customers
@@ -18,7 +19,7 @@ public interface CustomerService {
 
 
     /**
-     * Find a single news entry by id.
+     * Find a single customer entry by id.
      *
      * @param id the is of the customer entry
      * @return the customer entry
@@ -27,6 +28,7 @@ public interface CustomerService {
 
     /**
      * saves a new or edit a customer
+     *
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */
