@@ -1,4 +1,4 @@
-/*package at.ac.tuwien.inso.sepm.ticketline.server.integrationtest;
+package at.ac.tuwien.inso.sepm.ticketline.server.integrationtest;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.datagenerator.CustomerDataGenerator;
@@ -60,7 +60,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
      * 8.) Use @Before and @After methods to empty repositories.
      */
 
-    /*@Before
+    @Before
     public void fillWithCustomers() {
         customerRepository.deleteAll();
         for (int i = 0; i < CREATED_CUSTOMERS; i++) {
@@ -209,7 +209,4 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
             .when().get(CUSTOMER_ENDPOINT + "?size=10000")
             .then().extract().response();
     }
-
-
 }
-*/
