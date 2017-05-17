@@ -4,10 +4,10 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.TransactionController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
@@ -61,12 +61,14 @@ public class MainController {
 
     private final SpringFxmlLoader springFxmlLoader;
     private final FontAwesome fontAwesome;
+    private AuthenticationController authenticationController;
     private NewsController newsController;
     private AccountsController accountsController;
     private CustomersController customersController;
-    private ReservationsController reservationsController;
+    private TransactionListController transactionListController;
     private EventsController eventsController;
     private PerformanceDetailController performanceDetailController;
+    private boolean alreadyLoggedIn = false;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -83,7 +85,13 @@ public class MainController {
     private void initialize() {
         Platform.runLater(() -> mbMain.setUseSystemMenuBar(true));
         pbLoadingProgress.setProgress(0);
-        login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
+        //login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
+
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/authenticationComponent.fxml");
+        authenticationController = (AuthenticationController) wrapper.getController();
+        //add login node
+        login = (Node) wrapper.getLoadedObject();
         spMainContent.getChildren().add(login);
 
         //add tabs
@@ -108,7 +116,7 @@ public class MainController {
                 case "accounts":
                     //reloadCustomerList();
                     break;
-                case "reservations":
+                case "transactions":
                     reloadReservationList();
                     break;
                 default:
@@ -154,13 +162,29 @@ public class MainController {
         performanceDetailController.initializeData(performance);
         dialog.setTitle(BundleManager.getBundle().getString("performance.window.title"));
 
-        dialog.setOnCloseRequest(event -> {
-            if(performanceDetailController != null)
-                performanceDetailController.handleCancel();
-            performanceDetailController = null;
-            event.consume();
-        });
+        dialog = setHallplanOnCloseRequest(dialog);
         dialog.showAndWait();
+    }
+
+    private Stage setHallplanOnCloseRequest(Stage dialog) {
+        dialog.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(dialog);
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
+                performanceDetailController.clearData(true);
+                performanceDetailController = null;
+                //event.consume();
+            } else {
+                //if event.consume is not fired in here, the window would close even on the cancel button
+                event.consume();
+            }
+        });
+        return dialog;
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
@@ -189,10 +213,11 @@ public class MainController {
     public void showTransactionDetailWindow(
         DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         Stage dialog = initStage();
+        dialog.setResizable(true);
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
-        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .loadAndWrap("/fxml/transactions/details/transaction.fxml");
+        TransactionController controller = (TransactionController) wrapper
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
@@ -205,28 +230,18 @@ public class MainController {
     public void showTransactionDetailWindow(List<TicketDTO> ticketDTOList,
         DetailedPerformanceDTO detailedPerformanceDTO) {
         Stage dialog = initStage();
+        dialog.setResizable(true);
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/transactionDetail/transactionDetail.fxml");
-        TransactionDetailController controller = (TransactionDetailController) wrapper
+            .loadAndWrap("/fxml/transactions/details/transaction.fxml");
+        TransactionController controller = (TransactionController) wrapper
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
         controller.initData(ticketDTOList, detailedPerformanceDTO, performanceDetailController);
         dialog.setTitle(BundleManager.getBundle().getString("transaction.detail.title"));
-        dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
-                performanceDetailController.clearData(true);
-                performanceDetailController = null;
-            }
-        });
+
+        dialog = setHallplanOnCloseRequest(dialog);
         dialog.showAndWait();
     }
 
@@ -297,20 +312,22 @@ public class MainController {
 
     private void initReservationsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/reservations/reservationsComponent.fxml");
-        reservationsController = (ReservationsController) wrapper.getController();
-        reservationsController.setFont(fontAwesome);
+            .loadAndWrap("/fxml/transactions/transactionList.fxml");
+        transactionListController = (TransactionListController) wrapper.getController();
+        transactionListController.setFont(fontAwesome);
         Tab reservationTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.TICKET);
         newsGlyph.setFontSize(TAB_ICON_FONT_SIZE);
         newsGlyph.setColor(Color.WHITE);
         reservationTab.setGraphic(newsGlyph);
-        reservationTab.setId("reservations");
+        reservationTab.setId("transactions");
         tpContent.getTabs().add(reservationTab);
     }
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
+            alreadyLoggedIn = true;
+            authenticationController = null;
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
@@ -327,7 +344,7 @@ public class MainController {
     }
 
     public void reloadCustomerList() {
-        customersController.loadCustomers();
+        customersController.initCustomers();
     }
 
     public void reloadNewsList() {
@@ -335,11 +352,11 @@ public class MainController {
     }
 
     public void reloadEventList() {
-        eventsController.loadEvents();
+        eventsController.init();
     }
 
     private void reloadReservationList() {
-        reservationsController.loadTransactions();
+        transactionListController.initTransactions();
     }
 
     public void changeToGerman(ActionEvent actionEvent) {
@@ -356,13 +373,6 @@ public class MainController {
         ResourceBundle bundle = BundleManager.getBundle();
         ObservableList<Menu> menuList = mbMain.getMenus();
 
-        //reload fonts (causing header reload)
-        newsController.setFont(fontAwesome);
-        accountsController.setFont(fontAwesome);
-        customersController.setFont(fontAwesome);
-        reservationsController.setFont(fontAwesome);
-        eventsController.setFont(fontAwesome);
-
         menuList.get(0).setText(bundle.getString("menu.application"));
         menuList.get(1).setText(bundle.getString("menu.help"));
         menuList.get(2).setText(bundle.getString("menu.language"));
@@ -378,11 +388,19 @@ public class MainController {
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
 
         //TODO implement all these methods and update them if something is changing (new button or something like this)
-        newsController.reloadLanguage();
-        customersController.reloadLanguage();
-        eventsController.reloadLanguage();
-        accountsController.reloadLanguage();
-        reservationsController.reloadLanguage();
-
+        if (alreadyLoggedIn) {
+            newsController.reloadLanguage();
+            customersController.reloadLanguage();
+            eventsController.reloadLanguage();
+            accountsController.reloadLanguage();
+            transactionListController.reloadLanguage();
+        } else {
+            authenticationController.reloadLanguage();
+            newsController.setFont(fontAwesome);
+            accountsController.setFont(fontAwesome);
+            customersController.setFont(fontAwesome);
+            transactionListController.setFont(fontAwesome);
+            eventsController.setFont(fontAwesome);
+        }
     }
 }

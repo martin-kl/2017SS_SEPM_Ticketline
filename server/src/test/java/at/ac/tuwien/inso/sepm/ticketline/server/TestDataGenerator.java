@@ -5,17 +5,16 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.misc.Perf;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Slf4j
@@ -70,8 +69,6 @@ public class TestDataGenerator {
         priceCategories = new LinkedList<>();
         customers = new LinkedList<>();
 
-
-
         if(deleteAllRepositories){
             emptyAllRepositories();
         }
@@ -88,12 +85,9 @@ public class TestDataGenerator {
         generateTicketHistoryAndTransaction();
         reloadTickets();
 
-
-        //TODO check why this can fail, if number of seats is high
-        //assert(location.getSeats().size() == seatRepository.count());
-
-        int sitzanzahlfuerLoc0 = ((SeatLocation) this.locations.get(0)).getSeats().size();
-        assert(sitzanzahlfuerLoc0 == 6);
+        //int sitzanzahlfuerLoc0 = ((SeatLocation) this.locations.get(0)).getSeats().size();
+        //long sitzeImRepo = seatRepository.count();
+        //assert(sitzanzahlfuerLoc0 == 600 && sitzanzahlfuerLoc0 == sitzeImRepo);
     }
 
     public void emptyAllRepositories(){

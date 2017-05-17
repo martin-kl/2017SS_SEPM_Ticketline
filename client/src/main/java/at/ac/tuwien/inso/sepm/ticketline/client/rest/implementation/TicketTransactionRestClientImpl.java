@@ -4,6 +4,8 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
+
+import java.net.MalformedURLException;
 import java.util.UUID;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Component
@@ -26,44 +29,19 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
         this.restClient = restClient;
     }
 
-    //not needed now
-    /*
-    @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status)
-        throws ExceptionWithDialog {
-        try {
-            log.debug("Retrieving all ticket transactions from {}", restClient.getServiceURI(
-                TRANSACTION_URL));
-
-            ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
-                restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "?status=" + status,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
-                    });
-            log.debug("Result status was {} with content {}", reservations.getStatusCode(),
-                reservations.getBody());
-            return reservations.getBody();
-        } catch (HttpStatusCodeException e) {
-            throw new DataAccessException(
-                "Failed retrieve list of all ticket transactions with status code " + e
-                    .getStatusCode().toString());
-        } catch (RestClientException e) {
-            throw new DataAccessException(e.getMessage(), e);
-        }
-    }
-    */
 
     @Override
-    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved()
+    public List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page)
         throws ExceptionWithDialog {
         try {
-            log.debug("Retrieving all ticket transactions (bought and reserved) from {}",
+            log.debug("Retrieving all ticket details (bought and reserved) from {}",
                 restClient.getServiceURI(TRANSACTION_URL));
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL),
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL))
+                        .queryParam("size", 20)
+                        .queryParam("page", page)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
@@ -73,7 +51,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
             return reservations.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed retrieve list of all ticket transactions (bought and reserved) with status "
+                "Failed retrieve list of all ticket details (bought and reserved) with status "
                     + "code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -81,26 +59,30 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     }
 
     @Override
-    public DetailedTicketTransactionDTO findTransactionWithID(UUID uuid)
+    public List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page)
         throws ExceptionWithDialog {
         try {
-            log.debug("Retrieving a ticket transactions from {} with id {}",
+            log.debug("Retrieving a ticket details from {} with partial id {}",
                 restClient.getServiceURI(
-                    TRANSACTION_URL), uuid.toString());
+                    TRANSACTION_URL), id);
 
-            ResponseEntity<DetailedTicketTransactionDTO> reservation =
+                ResponseEntity<List<DetailedTicketTransactionDTO>> reservation =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "/" + uuid,
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL + "/find"))
+                        .queryParam("id", id)
+                        .queryParam("page", page)
+                        .queryParam("size", 20)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<DetailedTicketTransactionDTO>() {
+                    new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
                     });
             log.debug("Result status was {} with content {}", reservation.getStatusCode(),
                 reservation.getBody());
             return reservation.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed retrieve the ticket transaction with id " + uuid + " with status code " + e
+                "Failed retrieve the ticket transaction with id " + id + " with status code " + e
                     .getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
@@ -109,18 +91,23 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
     @Override
     public List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
-        String customerFirstName, String customerLastName, String performanceName)
+        String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog {
         try {
             log.debug(
-                "Retrieving ticket transactions from {} for customerFirstName {}, customerLastName {} and performanceName {}",
+                "Retrieving ticket details from {} for customerFirstName {}, customerLastName {} and performanceName {}",
                 restClient.getServiceURI(
                     TRANSACTION_URL), customerFirstName, customerLastName, performanceName);
 
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    restClient.getServiceURI(TRANSACTION_URL) + "/" + customerFirstName + "/"
-                        + customerLastName + "/" + performanceName,
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL + "/filter"))
+                        .queryParam("firstname", customerFirstName)
+                        .queryParam("lastname", customerLastName)
+                        .queryParam("performance", performanceName)
+                        .queryParam("page", page)
+                        .queryParam("size", 20)
+                        .build().toUri(),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<DetailedTicketTransactionDTO>>() {
@@ -130,7 +117,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
             return reservations.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed retrieve list of ticket transactions for customer and performance with status code "
+                "Failed retrieve list of ticket details for customer and performance with status code "
                     + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);

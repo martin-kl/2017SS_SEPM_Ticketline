@@ -4,24 +4,25 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.performance;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.TestDataGenerator;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Performance;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatTicket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TicketWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import sun.misc.Perf;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.hamcrest.Matchers.is;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -120,10 +121,7 @@ public class PerformanceServiceTest {
         expectedTicketWrapperList.add(ticketWrapper5);
 
 
-        Assert.assertTrue(
-            ticketWrapperList.containsAll(expectedTicketWrapperList) &&
-                expectedTicketWrapperList.containsAll(ticketWrapperList)
-        );
+        Assert.assertThat(ticketWrapperList, is(expectedTicketWrapperList));
     }
 
 }

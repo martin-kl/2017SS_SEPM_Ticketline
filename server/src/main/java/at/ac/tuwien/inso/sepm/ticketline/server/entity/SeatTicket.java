@@ -17,7 +17,6 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="seat")
-@Proxy(lazy=false)
 public class SeatTicket extends Ticket {
 
     // TODO

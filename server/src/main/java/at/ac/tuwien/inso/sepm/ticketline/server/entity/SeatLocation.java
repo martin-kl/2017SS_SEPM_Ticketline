@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,7 +16,6 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="seat")
-@Proxy(lazy=false)
 public class SeatLocation extends Location {
 
     // TODO
@@ -36,7 +37,7 @@ public class SeatLocation extends Location {
     }
 
     @Getter
-    @ManyToMany(mappedBy = "location", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Seat> seats;
 
 }

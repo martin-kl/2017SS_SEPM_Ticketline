@@ -175,7 +175,7 @@
 
               -->
             <Separator layoutX="20.0" layoutY="259.0" visible="false" />
-              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+              <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS" fx:id="scrollPane">
                   <VBox fx:id="vbEventsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                       <padding>
                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

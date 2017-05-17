@@ -221,7 +221,6 @@ public class PerformanceDetailController {
         mainController.showTransactionDetailWindow(chosenTickets, detailedPerformance);
     }
 
-    //TODO the closing of the stage is not working
     public void clearData(boolean closeStage){
         chosenTickets.clear();
         ObservableList<Node> vbTicketBoxChildren = vbSelectedTickets.getChildren();

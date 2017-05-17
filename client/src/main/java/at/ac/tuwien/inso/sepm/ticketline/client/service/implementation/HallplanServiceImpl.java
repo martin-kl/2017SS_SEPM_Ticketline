@@ -100,7 +100,7 @@ public class HallplanServiceImpl implements HallplanService {
     @Override
     public SectorTicketDTO getRandomFreeSectorTicket(DetailedPerformanceDTO detailedPerformanceDTO, SectorDTO sectorDTO, List<TicketDTO> chosenTickets) {
         for(TicketWrapperDTO ticketWrapper : detailedPerformanceDTO.getTicketWrapperList()){
-            log.debug("in ticketwrapper : " + ticketWrapper);
+            //log.debug("in ticketwrapper : " + ticketWrapper);
             // each TicketWrapper contains (TicketDTO + TicketStatus)
             if(ticketWrapper.getTicket() instanceof SectorTicketDTO) {
                 if(((SectorTicketDTO) ticketWrapper.getTicket()).getSector().equals(sectorDTO)){
