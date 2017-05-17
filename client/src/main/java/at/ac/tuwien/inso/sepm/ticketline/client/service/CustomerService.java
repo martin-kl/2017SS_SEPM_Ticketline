@@ -11,12 +11,11 @@ public interface CustomerService {
     /**
      * fuzzy searches for customers
      *
-     * @param query the serach query
+     * @param query the search query
      * @param page the page number to request
      * @return list of customers
      */
     List<CustomerDTO> search(String query, int page) throws ExceptionWithDialog;
-
 
     /**
      * Find a single customer entry by id.

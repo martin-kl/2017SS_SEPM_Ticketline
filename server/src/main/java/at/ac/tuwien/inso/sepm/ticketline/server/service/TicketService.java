@@ -18,22 +18,23 @@ public interface TicketService {
     List<TicketTransaction> getAllTransactions(String status, Pageable pageable);
 
     /**
-     * Simply returns a list of all bought and reserved Transactions
+     * Simply returns a list of all bought and reserved Transactions.
      *
+     * @param pageable The requested page
      * @return a list of TicketTransactions
      */
     List<TicketTransaction> getAllBoughtReservedTransactions(Pageable pageable);
 
     /**
-     * Returns a list of Transactions for a customer and a performance
+     * Returns the Transaction with the id.
      *
      * @param uuid the id of the transaction
-     * @return a list of TicketTransactions
+     * @return the transaction with the id
      */
     TicketTransaction findTransactionsByID(UUID uuid);
 
     /**
-     * Returns a list of transactions with the id
+     * Returns a (paged) list of transactions with the (partial) id.
      *
      * @param id the id to search for
      * @param pageable The requested page
@@ -59,7 +60,7 @@ public interface TicketService {
      * a transaction will be created (after verification of all tickets), otherwise
      * we try to update the status
      *
-     * @param ticketTransaction
+     * @param ticketTransaction The transaction to update / save
      * @return returns the updated transaction
      */
     TicketTransaction setTransactionStatus(DetailedTicketTransactionDTO ticketTransaction);

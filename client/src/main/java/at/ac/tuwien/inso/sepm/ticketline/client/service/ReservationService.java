@@ -6,13 +6,6 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDT
 import java.util.List;
 
 public interface ReservationService {
-    /**
-     * Find all transactions
-     *
-     * @return ordered list of al transactions
-     */
-    //not needed right now
-    //List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status) throws ExceptionWithDialog;
 
     /**
      * Find all transactions with status bought or reserved.
@@ -23,7 +16,7 @@ public interface ReservationService {
     List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page) throws ExceptionWithDialog;
 
     /**
-     * Find a single transaction entry by id.
+     * Find a single transaction entry by id (which can be partial).
      *
      * @param id  The id of the transaction entry
      * @param page The requested page number

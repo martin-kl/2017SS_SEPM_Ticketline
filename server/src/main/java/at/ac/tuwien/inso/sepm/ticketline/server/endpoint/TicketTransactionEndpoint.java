@@ -72,7 +72,7 @@ public class TicketTransactionEndpoint {
     }
 
     @RequestMapping(method = RequestMethod.PATCH)
-    @ApiOperation(value = "Updates the a single Ticket Transaction")
+    @ApiOperation(value = "Updates a single Ticket Transaction")
     public DetailedTicketTransactionDTO patchTicketTransaction(
         @RequestBody DetailedTicketTransactionDTO dto
     ) {

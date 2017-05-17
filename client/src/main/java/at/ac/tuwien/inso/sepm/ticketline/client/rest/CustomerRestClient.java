@@ -12,10 +12,9 @@ public interface CustomerRestClient {
      * Find all customers (paged)
      *
      * @param page the next requested page number
-     * @return ordered list of al customers
+     * @return ordered list of all customers
      */
     List<CustomerDTO> findAll(int page) throws DataAccessException;
-
 
     /**
      * fuzzy searches for customers
@@ -25,7 +24,6 @@ public interface CustomerRestClient {
      * @return list of customers
      */
     List<CustomerDTO> search(String query, int page) throws DataAccessException;
-
 
     /**
      * Find a single customer entry by id.

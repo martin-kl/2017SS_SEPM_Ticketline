@@ -66,7 +66,7 @@ public class TransactionController {
         TransactionDetailsController tdvc = (TransactionDetailsController) wrapper2
             .getController();
         if (selectedCustomer == null) {
-            //TODO no customer was selected - take a "guest" user or insert null? currently null is passed
+            //TODO no customer was selected - pass null to server
         }
 
         //selected tickets can be passed here

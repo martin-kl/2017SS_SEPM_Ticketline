@@ -6,7 +6,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.CustomerRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import java.net.URI;
-import jdk.nashorn.internal.runtime.URIUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

@@ -3,22 +3,13 @@ package at.ac.tuwien.inso.sepm.ticketline.client.rest;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import java.util.List;
-import java.util.UUID;
 
 public interface TicketTransactionRestClient {
 
     /**
-     * Find all details with a given status.
-     *
-     * @param status The details that are returned have this status
-     * @return ordered list of all details
-     */
-    //not needed now
-    //List<DetailedTicketTransactionDTO> findTransactionsWithStatus(String status) throws ExceptionWithDialog;
-
-    /**
      * Find all transactions with status bought or reserved.
      *
+     * @param page The request page number
      * @return ordered list of all transactions with status bought or reserved
      */
     List<DetailedTicketTransactionDTO> findTransactionsBoughtReserved(int page) throws ExceptionWithDialog;
@@ -26,7 +17,7 @@ public interface TicketTransactionRestClient {
     /**
      * Find a single transaction detail entry by id.
      *
-     * @param id of the transacion detail entry (can be partial)
+     * @param id of the transaction detail entry (can be partial)
      * @return the transaction entry
      */
     List<DetailedTicketTransactionDTO> findTransactionWithID(String id, int page) throws ExceptionWithDialog;

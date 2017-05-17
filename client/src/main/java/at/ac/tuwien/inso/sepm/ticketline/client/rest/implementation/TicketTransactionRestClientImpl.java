@@ -5,8 +5,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 
-import java.net.MalformedURLException;
-import java.util.UUID;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import java.util.List;
