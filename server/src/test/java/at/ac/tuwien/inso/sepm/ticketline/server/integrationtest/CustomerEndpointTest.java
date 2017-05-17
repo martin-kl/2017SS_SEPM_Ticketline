@@ -15,7 +15,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +35,7 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
     private static final String CUSTOMER_ENDPOINT = "/customer";
     private static final String SPECIFIC_CUSTOMER_PATH = "/{customerId}";
 
-    private static final String SEARCH_CUTOMER_PATH = "/search/{query}";
+    private static final String SEARCH_CUTOMER_PATH = "/search";
 
     private static final String CUSTOMER_1_FIRSTNAME = "Firstname";
     private static final String CUSTOMER_1_LASTNAME = "Lastname";
@@ -197,7 +199,8 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
             .given()
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .when().get(CUSTOMER_ENDPOINT + SEARCH_CUTOMER_PATH, query)
+            .param("query", query)
+            .when().get(CUSTOMER_ENDPOINT+SEARCH_CUTOMER_PATH)
             .then().extract().response();
     }
 
