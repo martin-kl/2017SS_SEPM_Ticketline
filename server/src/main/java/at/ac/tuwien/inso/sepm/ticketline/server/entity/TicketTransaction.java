@@ -30,7 +30,7 @@ public class TicketTransaction extends Audited {
     private TicketStatus status = TicketStatus.RESERVED;
 
     @Getter
-    @OneToMany(mappedBy = "ticketTransaction")
+    @OneToMany(mappedBy = "ticketTransaction", cascade = CascadeType.REMOVE)
     private Set<TicketHistory> ticketHistories;
 
     @NotNull

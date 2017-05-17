@@ -37,7 +37,7 @@ public class SeatLocation extends Location {
     }
 
     @Getter
-    @ManyToMany(mappedBy = "location", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Seat> seats;
 
 }

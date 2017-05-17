@@ -1,28 +1,14 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
-import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.TabHeaderController;
-import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -37,26 +23,26 @@ public class CustomersController {
     private Label lblHeaderIcon;
     @FXML
     private Label lblHeaderTitle;
-    private FontAwesome fontAwesome;
-
     @FXML
     private Button btnAddCustomer;
+
     @FXML
-    private VBox vbCustomersElements;
+    private VBox main;
+
+    @FXML
+    private VBox customerSelectionParent;
+    @FXML
+    private TextField searchField;
+
+    private FontAwesome fontAwesome;
 
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
-    private final CustomerService customerService;
+    private CustomerList customerList;
 
-    @FXML
-    private void initialize() {
-    }
-
-    public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader,
-        CustomerService customerService) {
+    public CustomersController(MainController mainController, SpringFxmlLoader springFxmlLoader) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
-        this.customerService = customerService;
     }
 
     public void setFont(FontAwesome fontAwesome) {
@@ -78,67 +64,26 @@ public class CustomersController {
 
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("customers.title"));
+        searchField.setPromptText(BundleManager.getBundle().getString("search"));
         btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
     }
 
-    public void loadCustomers() {
-        ObservableList<Node> vbCustomerBoxChildren = vbCustomersElements.getChildren();
-        vbCustomerBoxChildren.clear();
-        Task<List<CustomerDTO>> task = new Task<List<CustomerDTO>>() {
-            @Override
-            protected List<CustomerDTO> call() throws DataAccessException {
-                try {
-                    return customerService.findAll();
-                } catch (ExceptionWithDialog exceptionWithDialog) {
-                    exceptionWithDialog.showDialog();
-                    return new ArrayList<>();
-                }
-            }
+    public void initCustomers() {
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/customers/customerList.fxml");
 
-            @Override
-            protected void succeeded() {
-                super.succeeded();
-                drawCustomers(getValue().iterator());
-            }
-
-            @Override
-            protected void failed() {
-                super.failed();
-                JavaFXUtils.createExceptionDialog(getException(),
-                    vbCustomersElements.getScene().getWindow()).showAndWait();
-            }
-
-            private void drawCustomers(Iterator<CustomerDTO> iterator) {
-                while (iterator.hasNext()) {
-                    CustomerDTO customer = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-                        .loadAndWrap("/fxml/customers/customersElement.fxml");
-
-                    ((CustomersElementController) wrapper.getController()).initializeData(customer);
-                    HBox customerBox = (HBox) wrapper.getLoadedObject();
-                    customerBox.setOnMouseClicked((e) -> {
-                        log.debug("Selected a customer: " + customer.getFirstName() + " " + customer
-                            .getLastName() + " with id = " + customer.getId());
-                        handleCustomerEdit(customer);
-                    });
-                    vbCustomerBoxChildren.add(customerBox);
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        vbCustomerBoxChildren.add(separator);
-                    }
-                }
-
-            }
-        };
-        task.runningProperty().addListener((observable, oldValue, running) ->
-            mainController.setProgressbarProgress(
-                running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
-        );
-        new Thread(task).start();
+        customerList = ((CustomerList) wrapper.getController());
+        ScrollPane list = (ScrollPane) wrapper.getLoadedObject();
+        customerSelectionParent.getChildren().clear();
+        customerSelectionParent.getChildren().add(list);
+        customerList.setCustomerClicked((customer, customerBox) ->{
+            mainController.addEditCustomerWindow((CustomerDTO) customer);
+        });
+        customerList.reload(searchField.getText().trim());
     }
 
-    private void handleCustomerEdit(CustomerDTO customerDTO) {
-        mainController.addEditCustomerWindow(customerDTO);
+    public void onSearchChange(KeyEvent keyEvent) {
+        customerList.reload(searchField.getText());
     }
 
     public void handleCustomerAdd(ActionEvent actionEvent) {

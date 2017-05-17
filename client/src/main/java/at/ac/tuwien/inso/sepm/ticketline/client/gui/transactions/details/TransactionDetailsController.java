@@ -1,4 +1,4 @@
-package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions;
+package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
@@ -9,8 +9,6 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDT
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import java.util.List;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -19,7 +17,7 @@ import javafx.scene.control.Label;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TransactionDetailsViewController {
+public class TransactionDetailsController {
 
     @FXML
     private Label lbTransactionID;

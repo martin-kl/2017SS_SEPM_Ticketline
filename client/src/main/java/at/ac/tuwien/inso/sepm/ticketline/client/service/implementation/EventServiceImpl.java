@@ -20,7 +20,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDTO> findAll() throws DataAccessException {
-        return eventRestClient.findAll();
+    public List<EventDTO> findAll(int page) throws DataAccessException {
+        return eventRestClient.findAll(page);
     }
 }

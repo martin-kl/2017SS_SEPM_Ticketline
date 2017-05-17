@@ -24,14 +24,9 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<CustomerDTO> findAll() throws DataAccessException {
-        return customerRestClient.findAll();
-    }
-
-    @Override
-    public List<CustomerDTO> search(String query) throws DataAccessException {
-        if (query == null || query.equals("")) { return customerRestClient.findAll(); }
-        return customerRestClient.search(query);
+    public List<CustomerDTO> search(String query, int page) throws DataAccessException {
+        if (query == null || query.equals("")) { return customerRestClient.findAll(page); }
+        return customerRestClient.search(query, page);
     }
 
     @Override

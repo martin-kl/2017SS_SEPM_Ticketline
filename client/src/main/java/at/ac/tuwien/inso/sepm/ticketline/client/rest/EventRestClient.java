@@ -12,5 +12,5 @@ public interface EventRestClient {
      * @return list of events
      * @throws DataAccessException in case something went wrong
      */
-    List<EventDTO> findAll() throws DataAccessException;
+    List<EventDTO> findAll(int page) throws DataAccessException;
 }

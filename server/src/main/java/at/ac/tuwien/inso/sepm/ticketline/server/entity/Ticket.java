@@ -37,7 +37,11 @@ public abstract class Ticket extends Audited {
     private Performance performance;
 
     @Getter
+<<<<<<< HEAD
     @OneToMany(mappedBy = "ticket", fetch = FetchType.EAGER)
+=======
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.REMOVE)
+>>>>>>> dev
     private Set<TicketHistory> ticketHistories;
 
 }

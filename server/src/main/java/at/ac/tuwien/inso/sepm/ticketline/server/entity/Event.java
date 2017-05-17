@@ -37,11 +37,11 @@ public class Event extends Audited {
     private String description;
 
     @Getter
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<EventArtist> eventArtists;
 
     @Getter
-    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Performance> performances;
 }
 

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.reservations.ReservationsElementController">
+<VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListElementController">
     <children>
         <HBox fx:id="hbReservation">
             <children>

@@ -6,9 +6,9 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,8 +27,12 @@ public class EventEndpoint {
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of all Events")
-    public List<EventDTO> findAll() {
-        return eventService.findAll().stream().map(eventMapper::fromEntity).collect(Collectors.toList());
+    public List<EventDTO> findAll(Pageable pageable) {
+        return eventService
+            .findAll(pageable)
+            .stream()
+            .map(eventMapper::fromEntity)
+            .collect(Collectors.toList());
     }
 
 }

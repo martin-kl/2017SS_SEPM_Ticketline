@@ -35,7 +35,7 @@ public class Customer extends Audited {
     @Length(min = 1)
     private String lastName;
 
-    @Column(nullable = false, length = 10_000)
+    @Column(nullable = false, length = 10_000, unique = true)
     @Email
     @Length(min = 1)
     private String email;
@@ -48,6 +48,6 @@ public class Customer extends Audited {
     private LocalDate birthday;
 
     @Getter
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<TicketTransaction> ticketTransactions;
 }
