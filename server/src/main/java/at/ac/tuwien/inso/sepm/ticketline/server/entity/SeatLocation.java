@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 

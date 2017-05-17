@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.is;
+
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -119,10 +121,7 @@ public class PerformanceServiceTest {
         expectedTicketWrapperList.add(ticketWrapper5);
 
 
-        Assert.assertTrue(
-            ticketWrapperList.containsAll(expectedTicketWrapperList) &&
-                expectedTicketWrapperList.containsAll(ticketWrapperList)
-        );
+        Assert.assertThat(ticketWrapperList, is(expectedTicketWrapperList));
     }
 
 }
