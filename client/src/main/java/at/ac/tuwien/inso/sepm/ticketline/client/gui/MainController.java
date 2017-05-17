@@ -4,7 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.TransactionController;
