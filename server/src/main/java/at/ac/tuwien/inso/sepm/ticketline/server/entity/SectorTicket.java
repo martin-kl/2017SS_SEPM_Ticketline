@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="sector")
+@EqualsAndHashCode(callSuper = true)
 public class SectorTicket extends Ticket {
 
     // TODO

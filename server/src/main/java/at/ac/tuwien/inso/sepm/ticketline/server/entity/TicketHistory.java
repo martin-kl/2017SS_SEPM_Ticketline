@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @Entity
+@EqualsAndHashCode(exclude = {"ticketTransaction", "ticket"}, callSuper = false)
 public class TicketHistory extends Audited {
 
     @Getter

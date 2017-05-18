@@ -60,7 +60,7 @@ public class PerformanceServiceTest {
                 .getId()
         );
 
-        Performance performance = testDataGenerator.getPerformances().get(0);
+        //Performance performance = testDataGenerator.getPerformances().get(0);
         List<Ticket> expectedTickets = new LinkedList<>(testDataGenerator.getTicketsToPerf0());
         Assert.assertTrue(tickets.containsAll(expectedTickets) && expectedTickets.containsAll(tickets));
 
@@ -72,7 +72,7 @@ public class PerformanceServiceTest {
                 .get(1)
                 .getId()
         );
-        Performance performance1 = testDataGenerator.getPerformances().get(1);
+        //Performance performance1 = testDataGenerator.getPerformances().get(1);
         List<Ticket> expectedTickets1 = new LinkedList<>(testDataGenerator.getTicketsToPerf1());
         Assert.assertTrue(tickets1.containsAll(expectedTickets1) && expectedTickets1.containsAll(tickets1));
     }

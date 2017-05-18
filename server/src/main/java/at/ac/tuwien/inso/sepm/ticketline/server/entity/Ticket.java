@@ -18,6 +18,7 @@ import java.util.UUID;
 @ToString(exclude = {"ticketHistories"})
 @Entity
 @DiscriminatorColumn(columnDefinition = "varchar default 'sector'")
+@EqualsAndHashCode(callSuper = false)
 public abstract class Ticket extends Audited {
 
     @Getter
