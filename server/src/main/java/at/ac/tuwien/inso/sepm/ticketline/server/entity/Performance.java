@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @ToString(exclude = {"tickets"})
 @Entity
+@EqualsAndHashCode(exclude = {"tickets", "event", "location"}, callSuper = false)
 public class Performance extends Audited {
 
     @Getter

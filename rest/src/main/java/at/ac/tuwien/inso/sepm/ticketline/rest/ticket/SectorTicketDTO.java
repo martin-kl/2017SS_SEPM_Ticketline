@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ApiModel(value = "SectorTicketDTO", description = "sector DTO for Ticket Entity")
+@EqualsAndHashCode(callSuper = true)
 public class SectorTicketDTO extends TicketDTO {
     @ApiModelProperty(name = "Sector to the ticket")
     private SectorDTO sector;
