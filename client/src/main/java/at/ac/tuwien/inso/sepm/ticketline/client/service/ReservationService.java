@@ -36,4 +36,10 @@ public interface ReservationService {
     List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
         String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog;
+
+
+    DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog;
+
+
+
 }

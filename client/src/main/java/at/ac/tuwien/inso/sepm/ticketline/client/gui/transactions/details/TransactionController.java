@@ -1,9 +1,12 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import sun.security.krb5.internal.Ticket;
 
 @Slf4j
 @Component
@@ -51,12 +55,15 @@ public class TransactionController {
     private boolean ticketsSelectable = false;
 
     private final SpringFxmlLoader springFxmlLoader;
+    private final ReservationService reservationService;
     private DetailedPerformanceDTO detailedPerformanceDTO;
     //private PerformanceDetailController performanceDetailController;
     private List<TicketDTO> selectedTickets = new ArrayList<>();
+    private CustomerDTO selectedCustomer;
 
-    public TransactionController(SpringFxmlLoader springFxmlLoader) {
+    public TransactionController(SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
         this.springFxmlLoader = springFxmlLoader;
+        this.reservationService = reservationService;
     }
 
 
@@ -65,13 +72,12 @@ public class TransactionController {
             .loadAndWrap("/fxml/transactions/details/transactionDetails.fxml");
         TransactionDetailsController tdvc = (TransactionDetailsController) wrapper2
             .getController();
-        if (selectedCustomer == null) {
-            //TODO no customer was selected - pass null to server
-        }
+        this.selectedCustomer = selectedCustomer;
 
         //selected tickets can be passed here
 
         tdvc.initController(selectedCustomer, detailedPerformanceDTO, ticketDTOList);
+        tdvc.setTransactionController(this);
 
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
@@ -83,12 +89,11 @@ public class TransactionController {
     }
 
     //this is the "normal" method that is called after the hallplan
-    public void initData(List<? extends TicketDTO> ticketDTOList,
-        DetailedPerformanceDTO detailedPerformanceDTO,
-        PerformanceDetailController performanceDetailController) {
+    public void initData(List<? extends TicketDTO> ticketDTOList, DetailedPerformanceDTO detailedPerformanceDTO, PerformanceDetailController performanceDetailController) {
         this.detailedPerformanceDTO = detailedPerformanceDTO;
         //this.performanceDetailController = performanceDetailController;
 
+        this.selectedCustomer = null;
         ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
         this.ticketDTOList = ticketDTOList;
@@ -108,6 +113,7 @@ public class TransactionController {
         this.detailedPerformanceDTO = null;
         //this.performanceDetailController = null;
         ticketsSelectable = false;
+        this.selectedCustomer = null;
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
@@ -116,6 +122,7 @@ public class TransactionController {
         TransactionDetailsController tdvc = (TransactionDetailsController) wrapper
             .getController();
         tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
+        tdvc.setTransactionController(this);
 
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
@@ -171,5 +178,15 @@ public class TransactionController {
                 vbTicketBoxChildren.add(separator);
             }
         }
+    }
+
+    public void updateTransaction(TicketStatus status) {
+        DetailedTicketTransactionDTO dts = new DetailedTicketTransactionDTO(null, status, selectedCustomer, selectedTickets, "");
+        try {
+            reservationService.update(dts);
+        } catch (ExceptionWithDialog exceptionWithDialog) {
+            exceptionWithDialog.showDialog();
+        }
+
     }
 }

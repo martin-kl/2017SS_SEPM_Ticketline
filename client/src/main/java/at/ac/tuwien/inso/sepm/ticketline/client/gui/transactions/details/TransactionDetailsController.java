@@ -62,6 +62,12 @@ public class TransactionDetailsController {
             "€" + Helper.getTotalPrice(ticketDTOList).toString());
     }
 
+    TransactionController transactionController;
+    public void setTransactionController(TransactionController transactionController) {
+        this.transactionController = transactionController;
+
+    }
+
     private void loadButtonsAccordingToStatus(TicketStatus status, boolean newEntry) {
         ObservableList<Node> buttons = btnBar.getButtons();
         buttons.clear();
@@ -70,13 +76,14 @@ public class TransactionDetailsController {
              //we are coming from the saalplan - status is not yet set
             btnReserve = new Button(BundleManager.getBundle().getString("transaction.detail.reserve"));
             btnReserve.setOnAction(event -> {
-                //TODO reserve tickets
                 System.out.println("reserve ticket button has been clicked");
+                transactionController.updateTransaction(TicketStatus.RESERVED);
+
             });
             btnBuy = new Button(BundleManager.getBundle().getString("transaction.detail.buy"));
             btnBuy.setOnAction(event -> {
-                //TODO buy selected tickets
                 System.out.println("buy tickets button has been clicked");
+                transactionController.updateTransaction(TicketStatus.BOUGHT);
             });
 
             buttons.add(btnReserve);
@@ -85,19 +92,18 @@ public class TransactionDetailsController {
         }
 
         if (status == TicketStatus.RESERVED) {
-            //TODO add buttons
             lbTransactionID.setText(
                 BundleManager.getBundle().getString("transaction.detail.reservationNumber"));
 
             btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
             btnCancelReservation.setOnAction(event -> {
-                //TODO cancel reservation
                 System.out.println("cancel reservation button has been clicked");
+                transactionController.updateTransaction(TicketStatus.STORNO);
             });
             btnBuy = new Button(BundleManager.getBundle().getString("transaction.detail.buy"));
             btnBuy.setOnAction(event -> {
-                //TODO buy selected tickets
                 System.out.println("buy tickets button has been clicked");
+                transactionController.updateTransaction(TicketStatus.BOUGHT);
             });
 
             buttons.add(btnCancelReservation);
@@ -110,20 +116,19 @@ public class TransactionDetailsController {
             btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
             btnPrintPDF.setOnAction(event -> {
-                //TODO cancel reservation
+                //TODO PRINT PDF
                 System.out
                     .println("print pdf button in already bought transaction has been clicked");
             });
 
             buttons.add(btnPrintPDF);
         } else if(status == TicketStatus.STORNO) {
-            //TODO add buttons
             lbTransactionID
                 .setText(BundleManager.getBundle().getString("transaction.detail.stornoNumber"));
              btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
             btnPrintPDF.setOnAction(event -> {
-                //TODO cancel reservation
+                //TODO PRINT PDF
                 System.out
                     .println("print pdf button in cancelled transaction has been clicked");
             });

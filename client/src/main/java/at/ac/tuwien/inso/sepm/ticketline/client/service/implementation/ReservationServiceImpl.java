@@ -38,4 +38,9 @@ public class ReservationServiceImpl implements ReservationService {
                 performanceName, page);
     }
 
+    @Override
+    public DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog {
+        return ticketTransactionRestClient.update(dto);
+    }
+
 }
