@@ -34,6 +34,15 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
         TicketStatus status2, Pageable pageable);
 
     /**
+     * Returns all ticket transactions with status either status1 oder status2
+     *
+     * @param pageable The requested page
+     * @return All ticket transactions with status either status1 oder status2
+     */
+    @Query("SELECT tt FROM TicketTransaction tt WHERE tt.outdated = FALSE OR status = 'STORNO' ORDER BY tt.lastModifiedAt DESC")
+    List<TicketTransaction> findAllValidTransactions(Pageable pageable);
+
+    /**
      * Returns the Transaction with the id of the parameter
      *
      * @param id The id of the transaction
@@ -67,13 +76,13 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
         Pageable pageable);
 
     /**
-     * //TODO bitte schreiben
+     * Returns a list (should be always of size 0 or 1) for the tickettransaction of a ticket
      *
      * @param ticketId
-     * @return
+     * @return list of ticket transactions
      */
     @Query("SELECT tt FROM TicketTransaction tt JOIN tt.ticketHistories th" +
-        " WHERE th.ticket.id = ?1 ORDER BY th.lastModifiedAt")
-    Optional<TicketTransaction> findTransactionForTicket(UUID ticketId);
+        " WHERE th.ticket.id = ?1 AND tt.outdated = FALSE ORDER BY th.lastModifiedAt DESC")
+    List<TicketTransaction> findTransactionForTicket(UUID ticketId);
 
 }

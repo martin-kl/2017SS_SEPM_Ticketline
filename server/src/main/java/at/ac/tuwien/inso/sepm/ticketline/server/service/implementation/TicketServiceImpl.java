@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Customer;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
@@ -14,15 +15,15 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketHistoryReposito
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus.STORNO;
@@ -58,9 +59,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketTransaction> getAllBoughtReservedTransactions(Pageable pageable) {
-        return ticketTransactionRepository
-            .findByStatusOrStatusOrderByLastModifiedAtDesc(TicketStatus.BOUGHT, TicketStatus.RESERVED, pageable);
-        //return ticketTransactionRepository.findByStatus(ticketStatus);
+        return ticketTransactionRepository.findAllValidTransactions(pageable);
     }
 
     @Override
@@ -117,7 +116,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public TicketTransaction setTransactionStatus(DetailedTicketTransactionDTO ticketTransaction) {
+
+        // remove duplicates
+        List<TicketDTO> ticketDTOS = new ArrayList<>();
+        for (TicketDTO ticketDTO : ticketTransaction.getTickets()) {
+            if (!ticketDTOS.contains(ticketDTO)) {
+                ticketDTOS.add(ticketDTO);
+            }
+        }
+        ticketTransaction.setTickets(ticketDTOS);
 
         // collect all tickets that should be in the transaction
         List<Ticket> ticketList = ticketTransaction
@@ -130,8 +139,8 @@ public class TicketServiceImpl implements TicketService {
         // throw a conflict exception
         // also if the change from status is bad
         for (Ticket t : ticketList) {
-            Optional<TicketTransaction> tto = ticketTransactionRepository.findTransactionForTicket(t.getId());
-            if (!isInTransaction(tto, ticketTransaction.getId())) {
+            List<TicketTransaction> ttList = ticketTransactionRepository.findTransactionForTicket(t.getId());
+            if (ttList.size() > 0 && !isValidTransaction(ttList.get(0), ticketTransaction.getId())) {
                 throw new ConflictException();
             }
         }
@@ -159,8 +168,11 @@ public class TicketServiceImpl implements TicketService {
             // update the transaction
             tt = ticketTransactionRepository.findOne(ticketTransaction.getId());
 
+            tt.setOutdated(true);
+            tt = ticketTransactionRepository.save(tt);
+
             // check if the ticket count is valid
-            if (tt.getTicketHistories().size() != ticketTransaction.getTickets().size()) {
+            if (tt.getTicketHistories().size() < ticketTransaction.getTickets().size()) {
                 throw new BadRequestException();
             }
 
@@ -170,14 +182,16 @@ public class TicketServiceImpl implements TicketService {
             }
 
             // transition RESERVED to STORNO removes the transaction
-            if (tt.getStatus() == TicketStatus.BOUGHT && ticketTransaction.getStatus() == TicketStatus.RESERVED) {
+            if (tt.getStatus() == TicketStatus.RESERVED && ticketTransaction.getStatus() == TicketStatus.STORNO) {
                 ticketTransactionRepository.delete(tt);
                 tt.setStatus(TicketStatus.STORNO);
                 return tt;
             }
 
-            tt.setStatus(ticketTransaction.getStatus());
-            tt.setCustomer(customer);
+            tt = TicketTransaction.builder()
+                .customer(customer)
+                .status(ticketTransaction.getStatus())
+                .build();
 
             tt = ticketTransactionRepository.save(tt);
         }
@@ -188,33 +202,31 @@ public class TicketServiceImpl implements TicketService {
             throw new RuntimeException();
         }
 
+        Set<TicketHistory> histories = new HashSet<>();
+
         for (Ticket t : ticketList) {
             TicketHistory th = TicketHistory.builder()
                 .ticket(t)
                 .ticketTransaction(tt)
                 .build();
-            ticketHistoryRepository.save(th);
+            histories.add(ticketHistoryRepository.save(th));
         }
-
-        return ticketTransactionRepository.findOne(tt.getId());
+        tt.setTicketHistories(histories);
+        return tt;
     }
 
     /**
      * checks if a given transaction is comparable and assignable to the given transaction
      *
-     * @param toCheck Optional transaction
+     * @param toCheck transaction
      * @param compareTransactionId id of the transaction to check
      * @return returns true if the transaction is allowed
      */
-    private boolean isInTransaction(Optional<TicketTransaction> toCheck, UUID compareTransactionId) {
+    private boolean isValidTransaction(TicketTransaction toCheck, UUID compareTransactionId) {
         if (compareTransactionId == null) {
-            return !toCheck.isPresent() || toCheck.get().getStatus() == STORNO;
+            return toCheck.getStatus() == STORNO;
         } else {
-            if (!toCheck.isPresent()) {
-                return false;
-            }
-            TicketTransaction tt = toCheck.get();
-            return tt.getId() == compareTransactionId && tt.getStatus() != TicketStatus.BOUGHT;
+            return toCheck.getId().equals(compareTransactionId);
         }
     }
 }

@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 
@@ -31,7 +30,7 @@ public class TicketHistory extends Audited {
     private Ticket ticket;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_tickettransaction_tickethistory")
     )

@@ -129,7 +129,8 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketStatus.BOUGHT
+                    TicketStatus.BOUGHT,
+                    true
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -155,7 +156,8 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketStatus.STORNO
+                    TicketStatus.STORNO,
+                    true
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -188,7 +190,8 @@ public class TicketHistoryDataGenerator {
                 createTicketTransaction(
                     tmpTicketList,
                     customers.get(randomCustomerIndex),
-                    TicketStatus.RESERVED
+                    TicketStatus.RESERVED,
+                    true
                 );
 
                 randomTicketCount = (int) (Math.random() * 5 + 1);
@@ -198,9 +201,14 @@ public class TicketHistoryDataGenerator {
     }
 
     private void createTicketTransaction(List<Ticket> ticketList, Customer customer, TicketStatus status) {
+        createTicketTransaction(ticketList, customer, status, false);
+    }
+
+    private void createTicketTransaction(List<Ticket> ticketList, Customer customer, TicketStatus status, boolean setOutdate) {
         TicketTransaction ticketTransaction = TicketTransaction.builder()
             .customer(customer)
             .status(status)
+            .outdated(!setOutdate)
             .build();
         ticketTransactionRepository.save(ticketTransaction);
         for (Ticket ticket : ticketList) {

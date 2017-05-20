@@ -61,6 +61,8 @@ public class TransactionController {
     private List<TicketDTO> selectedTickets = new ArrayList<>();
     private CustomerDTO selectedCustomer;
 
+    private DetailedTicketTransactionDTO oldTicketTransaction = null;
+
     public TransactionController(SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
         this.springFxmlLoader = springFxmlLoader;
         this.reservationService = reservationService;
@@ -111,9 +113,10 @@ public class TransactionController {
     //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         this.detailedPerformanceDTO = null;
+        this.oldTicketTransaction = detailedTicketTransactionDTO;
         //this.performanceDetailController = null;
         ticketsSelectable = false;
-        this.selectedCustomer = null;
+        this.selectedCustomer = detailedTicketTransactionDTO.getCustomer();
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
@@ -181,7 +184,12 @@ public class TransactionController {
     }
 
     public void updateTransaction(TicketStatus status) {
-        DetailedTicketTransactionDTO dts = new DetailedTicketTransactionDTO(null, status, selectedCustomer, selectedTickets, "");
+        DetailedTicketTransactionDTO dts = new DetailedTicketTransactionDTO(
+            oldTicketTransaction != null ? oldTicketTransaction.getId() : null,
+            status,
+            selectedCustomer,
+            selectedTickets,
+            "");
         try {
             reservationService.update(dts);
         } catch (ExceptionWithDialog exceptionWithDialog) {
