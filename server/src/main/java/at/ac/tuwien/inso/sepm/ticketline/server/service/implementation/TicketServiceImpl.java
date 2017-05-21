@@ -159,7 +159,7 @@ public class TicketServiceImpl implements TicketService {
                 .customer(customer)
                 .build();
 
-            return ticketTransactionRepository.save(tt);
+            tt = ticketTransactionRepository.save(tt);
         } else {
             // update the transaction
             tt = ticketTransactionRepository.findOne(ticketTransaction.getId());
@@ -196,6 +196,7 @@ public class TicketServiceImpl implements TicketService {
                     .customer(customer)
                     .status(tt.getStatus())
                     .build();
+                keepTT = ticketTransactionRepository.save(keepTT);
                 for (TicketHistory oldTh : keepHistories) {
                     TicketHistory th = TicketHistory.builder()
                         .ticket(oldTh.getTicket())

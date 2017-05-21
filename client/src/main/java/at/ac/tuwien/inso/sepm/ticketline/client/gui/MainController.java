@@ -211,7 +211,8 @@ public class MainController {
     }
 
     public void showTransactionDetailWindow(
-        DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
+        DetailedTicketTransactionDTO detailedTicketTransactionDTO,
+        TransactionListController transactionListController) {
         Stage dialog = initStage();
         dialog.setResizable(true);
         //wrapper contains controller and loaded object
@@ -221,7 +222,7 @@ public class MainController {
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        controller.initData(detailedTicketTransactionDTO);
+        controller.initData(detailedTicketTransactionDTO, transactionListController);
         //showTransactionDetailStage(dialog);
         dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
