@@ -1,8 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,9 +13,6 @@ import org.springframework.stereotype.Component;
 public class PerformanceTicketElementController {
     @FXML
     private Label lblPlace;
-
-    @FXML
-    private Label lblPrice;
 
     public void initializeData(TicketDTO ticketDTO) {
         lblPlace.setText(Helper.getFormattedTicketPlace(ticketDTO));

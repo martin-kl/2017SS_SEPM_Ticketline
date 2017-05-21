@@ -1,17 +1,10 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketWrapperDTO;
-import java.awt.Color;
 import javafx.scene.control.Button;
-import javafx.scene.image.ImageView;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
 
 @Slf4j
 public class SeatButton extends Button {

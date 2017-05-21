@@ -11,9 +11,6 @@ import java.util.Map;
 import javafx.scene.layout.GridPane;
 import org.controlsfx.glyphfont.FontAwesome;
 
-/**
- * Created by Alex on 09.05.2017.
- */
 public interface HallplanService {
     /**
      * Extract the list of Sectors from the detailed performance entry

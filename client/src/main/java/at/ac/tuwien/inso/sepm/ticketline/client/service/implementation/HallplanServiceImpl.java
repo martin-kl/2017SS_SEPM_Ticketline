@@ -1,10 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service.implementation;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.SeatButton;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.HallplanService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
-import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
@@ -19,11 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import lombok.extern.slf4j.Slf4j;
-import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -40,7 +33,6 @@ public class HallplanServiceImpl implements HallplanService {
                     sectorList.add(currSector);
             }
         }
-        log.debug("Sectors available: " + sectorList.toString());
         return sectorList;
     }
 
@@ -55,7 +47,6 @@ public class HallplanServiceImpl implements HallplanService {
                     seatList.add(currSeat);
             }
         }
-        log.debug("Sectors available: " + seatList.toString());
         return seatList;
     }
 
@@ -64,7 +55,6 @@ public class HallplanServiceImpl implements HallplanService {
         Map<Integer,Integer> columnCounts = new HashMap<>();
 
         List<TicketWrapperDTO> ticketList = detailedPerformanceDTO.getTicketWrapperList();
-        // TODO: get max rows and max columns
         for (TicketWrapperDTO ticketWrapper : ticketList) {
             SeatTicketDTO seatTicket = (SeatTicketDTO) ticketWrapper.getTicket();
             SeatDTO seat = seatTicket.getSeat();
@@ -101,13 +91,11 @@ public class HallplanServiceImpl implements HallplanService {
                             continue;
 
                         // this one is free
-                        //log.debug("Found a free ticket in wrapper: " + ticketWrapper);
                         return (SectorTicketDTO) ticketWrapper.getTicket();
                     }
                 }
             }
         }
-        //log.debug("No free ticket found, returning null");
         return null;
     }
 }

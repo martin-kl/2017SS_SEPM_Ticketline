@@ -2,9 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.HallplanService;
-import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
@@ -23,7 +21,6 @@ import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -32,11 +29,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +42,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PerformanceDetailController {
 
-    private final PerformanceService performanceService;
     private final SpringFxmlLoader springFxmlLoader;
     private final MainController mainController;
     private final HallplanService hallplanService;
@@ -86,11 +80,10 @@ public class PerformanceDetailController {
     private List<TicketDTO> chosenTickets = new ArrayList<>();
     private FontAwesome fontAwesome;
 
-    public PerformanceDetailController(MainController mainController, SpringFxmlLoader springFxmlLoader, PerformanceService performanceService, HallplanService hallplanService, FontAwesome fontAwesome) {
+    public PerformanceDetailController(MainController mainController, SpringFxmlLoader springFxmlLoader, HallplanService hallplanService, FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
-        this.performanceService = performanceService;
         this.hallplanService = hallplanService;
     }
 
