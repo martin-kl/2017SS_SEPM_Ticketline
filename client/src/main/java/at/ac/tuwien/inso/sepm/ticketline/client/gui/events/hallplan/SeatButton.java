@@ -52,19 +52,33 @@ public class SeatButton extends Button {
         if(ticketWrapper.getStatus() == TicketStatus.STORNO) {
             //super.setStyle("");
             super.setGraphic(null);
-            super.setStyle("-fx-background-color: rgba(106,139,188,0.72);");
+            super.setStyle("-fx-background-color: rgba(205,255,215,0.72); "
+                + "-fx-border-color: #495c50;"
+                + "-fx-border-style: solid;"
+                + "-fx-border-radius: 4;"
+                + "-fx-border-width: 2;");
         }
         /* not free */
         else if (ticketWrapper.getStatus() == TicketStatus.RESERVED || ticketWrapper.getStatus() == TicketStatus.BOUGHT) {
             //super.setStyle("");
             super.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
-            super.setStyle("-fx-background-color: rgba(106,139,188,0.72);");
+            super.setStyle("-fx-background-color: rgba(211,224,255,0.72);"
+                + "-fx-border-color: #414a5c;"
+                + "-fx-border-style: solid;"
+                + "-fx-border-radius: 4;"
+                + "-fx-border-width: 2;");
         }
         /* selected by the current user */
         else if (ticketWrapper.getStatus() == TicketStatus.SELECTED) {
             //super.setStyle("");
             super.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
-            super.setStyle("-fx-background-color: rgb(188,0,0);");
+            super.setStyle("-fx-background-color: rgba(188,0,0,0.97);"
+                + "-fx-border-color: #520000;"
+                + "-fx-border-style: solid;"
+                + "-fx-border-radius: 4;"
+                + "-fx-background-radius: 3;"
+                + "-fx-background-insets: 2;"
+                + "-fx-border-width: 2;");
         }
         // TODO: load image
 

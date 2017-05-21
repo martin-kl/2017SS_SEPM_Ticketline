@@ -127,10 +127,10 @@ public class PerformanceDetailController {
             pHallplan.getChildren().clear();
             pHallplan.getRowConstraints().clear();
             pHallplan.getColumnConstraints().clear();
-            pHallplan.setGridLinesVisible(true);
+            //pHallplan.setGridLinesVisible(true);
             pHallplan.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             pHallplan.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-            pHallplan.setPadding(new Insets(5));
+            //pHallplan.setPadding(new Insets(5));
             List<TicketWrapperDTO> ticketList = detailedPerformance.getTicketWrapperList();
             // TODO: get max rows and max columns
             for (TicketWrapperDTO ticketWrapper : ticketList) {
@@ -138,12 +138,12 @@ public class PerformanceDetailController {
                 SeatDTO seat = seatTicket.getSeat();
 
                 SeatButton seatButton = new SeatButton(fontAwesome, ticketWrapper);
-                seatButton.setMinSize(30,30);
+                seatButton.setMinSize(25,25);
                 seatButton.setOnMouseClicked(e -> {
                     handleClick(ticketWrapper, seatButton);
                 });
                 pHallplan.add(seatButton, seat.getColumn(), seat.getRow());
-                GridPane.setMargin(seatButton, new Insets(2));
+                GridPane.setMargin(seatButton, new Insets(1));
             }
         }
     }

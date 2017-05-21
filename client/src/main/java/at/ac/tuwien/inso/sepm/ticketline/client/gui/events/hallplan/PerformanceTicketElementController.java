@@ -21,16 +21,5 @@ public class PerformanceTicketElementController {
 
     public void initializeData(TicketDTO ticketDTO) {
         lblPlace.setText(Helper.getFormattedTicketPlace(ticketDTO));
-        /*if(ticketDTO instanceof SeatTicketDTO){
-            SeatTicketDTO seatTicket = (SeatTicketDTO) ticketDTO;
-            lblPlace.setText(seatTicket.getSeat().getRow() + ", " + seatTicket.getSeat().getColumn());
-            lblPrice.setText("" + seatTicket.getPrice());
-        }
-        else {
-            SectorTicketDTO sectorTicket = (SectorTicketDTO) ticketDTO;
-            lblPlace.setText(sectorTicket.getSector().getName());
-            lblPrice.setText("" + sectorTicket.getPrice());
-        }*/
-
     }
 }
