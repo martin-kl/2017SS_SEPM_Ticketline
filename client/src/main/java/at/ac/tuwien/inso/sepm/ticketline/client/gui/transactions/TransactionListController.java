@@ -253,7 +253,7 @@ public class TransactionListController {
             return;
         }
         log.debug("Loading Details of transaction with id: " + selectedTransaction.getId());
-        mainController.showTransactionDetailWindow(selectedTransaction);
+        mainController.showTransactionDetailWindow(selectedTransaction, this);
     }
 
     public void handleReset(ActionEvent actionEvent) {

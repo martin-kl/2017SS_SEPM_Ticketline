@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
@@ -56,6 +57,8 @@ public class TransactionController {
     private List<TicketDTO> selectedTickets = new ArrayList<>();
     private CustomerDTO selectedCustomer;
 
+    private TransactionListController tlController = null;
+
     private DetailedTicketTransactionDTO oldTicketTransaction = null;
 
     public TransactionController(SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
@@ -94,6 +97,7 @@ public class TransactionController {
         ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
         this.ticketDTOList = ticketDTOList;
+        selectedTickets.clear();
         selectedTickets.addAll(ticketDTOList); //all selected form the start
         setTickets(ticketDTOList);
 
@@ -106,12 +110,13 @@ public class TransactionController {
     }
 
     //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
-    public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
+    public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO, TransactionListController transactionListController) {
         this.detailedPerformanceDTO = null;
         this.oldTicketTransaction = detailedTicketTransactionDTO;
         //this.performanceDetailController = null;
         ticketsSelectable = false;
         this.selectedCustomer = detailedTicketTransactionDTO.getCustomer();
+        this.tlController = transactionListController;
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
@@ -134,6 +139,7 @@ public class TransactionController {
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
         HBox.setHgrow((VBox) wrapper.getLoadedObject(), Priority.ALWAYS);
         ticketDTOList = detailedTicketTransactionDTO.getTickets();
+        selectedTickets.clear();
         selectedTickets.addAll(ticketDTOList); //all selected form the start
         setTickets(ticketDTOList);
     }
@@ -193,7 +199,10 @@ public class TransactionController {
             alert.setHeaderText(BundleManager.getBundle().getString("transaction.saved.header"));
             alert.showAndWait();
 
-            initData(dttdto);
+            initData(dttdto, tlController);
+            if (tlController != null) {
+                tlController.initTransactions();
+            }
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }
