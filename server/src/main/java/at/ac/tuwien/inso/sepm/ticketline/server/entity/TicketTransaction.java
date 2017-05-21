@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Builder
 @ToString(exclude = {"ticketHistories"})
 @Entity
+@EqualsAndHashCode(exclude={"ticketHistories", "customer"}, callSuper = false)
 public class TicketTransaction extends Audited {
 
     @Getter
@@ -30,7 +32,7 @@ public class TicketTransaction extends Audited {
     private TicketStatus status = TicketStatus.RESERVED;
 
     @Getter
-    @OneToMany(mappedBy = "ticketTransaction", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "ticketTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TicketHistory> ticketHistories;
 
     @NotNull
@@ -39,5 +41,8 @@ public class TicketTransaction extends Audited {
         foreignKey = @ForeignKey(name = "fk_tickethistory_customer")
     )
     private Customer customer;
+
+    @Column
+    private boolean outdated = false;
 
 }

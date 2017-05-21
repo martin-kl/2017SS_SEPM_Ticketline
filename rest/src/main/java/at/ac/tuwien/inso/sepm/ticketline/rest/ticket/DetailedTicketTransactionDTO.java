@@ -28,7 +28,7 @@ public class DetailedTicketTransactionDTO {
     @ApiModelProperty(readOnly = true, name = "Customer of the transaction")
     private CustomerDTO customer;
 
-    @ApiModelProperty(readOnly = true, name = "Reserved Tickets")
+    @ApiModelProperty(readOnly = true, name = "Tickets for this transaction")
     private List<? extends TicketDTO> tickets;
 
     @ApiModelProperty(readOnly = true, name = "Performance Name")

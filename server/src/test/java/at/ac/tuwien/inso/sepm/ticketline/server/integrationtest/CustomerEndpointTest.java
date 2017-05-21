@@ -212,6 +212,4 @@ public class CustomerEndpointTest extends BaseIntegrationTest {
             .when().get(CUSTOMER_ENDPOINT + "?size=10000")
             .then().extract().response();
     }
-
-
 }

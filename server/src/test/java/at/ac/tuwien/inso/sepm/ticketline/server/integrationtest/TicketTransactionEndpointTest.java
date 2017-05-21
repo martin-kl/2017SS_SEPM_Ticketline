@@ -139,31 +139,4 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));
     }
 
-    @Test
-    public void findAllBoughtReservedAuthorized() {
-        List<TicketTransaction> ttList = new ArrayList<>(2);
-        for(int i = 0; i < 5; i++) {
-            Set<TicketHistory> ttSet = new HashSet<>(1);
-            ttSet.add(TEST_TICKET_HISTORY);
-            TicketTransaction tt = new TicketTransaction(UUID.randomUUID(), TicketStatus.BOUGHT, ttSet, TEST_CUSTOMER);
-            ttList.add(tt);
-        }
-        BDDMockito
-            .given(ticketTransactionRepository.findByStatusOrStatusOrderByLastModifiedAtDesc(
-                eq(TicketStatus.BOUGHT), eq(TicketStatus.RESERVED), any(Pageable.class)))
-            .willReturn(ttList);
-
-        Response response = RestAssured
-            .given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .when().get(TRANSACTION_ENDPOINT + "?page=0&size=10")
-            .then().extract().response();
-
-        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
-        //System.out.println(response.getBody());
-        List<DetailedTicketTransactionDTO> responseList = Arrays.asList(response.as(DetailedTicketTransactionDTO[].class));
-        Assert.assertEquals(5, responseList.size());
-    }
-
 }

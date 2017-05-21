@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
 
@@ -15,6 +14,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @Entity
+@EqualsAndHashCode(exclude = {"ticketTransaction", "ticket"}, callSuper = false)
 public class TicketHistory extends Audited {
 
     @Getter

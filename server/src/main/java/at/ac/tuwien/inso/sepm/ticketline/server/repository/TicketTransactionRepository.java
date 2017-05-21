@@ -1,15 +1,11 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QueryDslPredicateExecutor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,6 +34,15 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
         TicketStatus status2, Pageable pageable);
 
     /**
+     * Returns all ticket transactions with status either status1 oder status2
+     *
+     * @param pageable The requested page
+     * @return All ticket transactions with status either status1 oder status2
+     */
+    @Query("SELECT tt FROM TicketTransaction tt WHERE tt.outdated = FALSE OR status = 'STORNO' ORDER BY tt.lastModifiedAt DESC")
+    List<TicketTransaction> findAllValidTransactions(Pageable pageable);
+
+    /**
      * Returns the Transaction with the id of the parameter
      *
      * @param id The id of the transaction
@@ -46,10 +51,11 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
     Optional<TicketTransaction> findOneById(UUID id);
 
     /**
-     * Returns the
+     * Returns the transaction with a (at least partial) match in the id column.
      *
-     * @param id the id to search for
-     * @param pageable The requested page
+     * @param id The id to search for
+     * @param leftLimit The left limit (lower limit) for the result
+     * @param rightLimit The right limit (upper limit) for the result
      * @return A list of transactions with the id (or parts of it)
      */
     @Query(value = "SELECT * from ticket_transaction tt WHERE tt.id like ?1 order by tt.id LIMIT ?2,?3", nativeQuery = true)
@@ -69,8 +75,14 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
         String customerLastName, String performance,
         Pageable pageable);
 
+    /**
+     * Returns a list (should be always of size 0 or 1) for the tickettransaction of a ticket
+     *
+     * @param ticketId
+     * @return list of ticket transactions
+     */
     @Query("SELECT tt FROM TicketTransaction tt JOIN tt.ticketHistories th" +
-        " WHERE th.ticket.id = ?1 ORDER BY th.lastModifiedAt")
-    Optional<TicketTransaction> findTransactionForTicket(UUID ticketId);
+        " WHERE th.ticket.id = ?1 AND tt.outdated = FALSE ORDER BY th.lastModifiedAt DESC")
+    List<TicketTransaction> findTransactionForTicket(UUID ticketId);
 
 }

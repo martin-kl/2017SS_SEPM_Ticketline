@@ -5,13 +5,11 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 
-import java.net.MalformedURLException;
-import java.util.UUID;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.*;
+
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
@@ -122,5 +120,34 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog {
+
+            try {
+                log.debug("Updating detailed ticket transaction dto",
+                    restClient.getServiceURI(TRANSACTION_URL));
+
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                HttpEntity<DetailedTicketTransactionDTO> entity = new HttpEntity<>(dto, headers);
+                ResponseEntity<DetailedTicketTransactionDTO> response =
+                    restClient.exchange(
+                        UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL))
+                            .build().toUri(),
+                        HttpMethod.PATCH,
+                        entity,
+                        new ParameterizedTypeReference<DetailedTicketTransactionDTO>() {
+                        });
+                log.debug("Result status was {} with content {}", response.getStatusCode(),
+                    response.getBody());
+                return response.getBody();
+            } catch (HttpStatusCodeException e) {
+                throw new DataAccessException("Failed to update detailed ticket transaction dto " + dto);
+            } catch (RestClientException e) {
+                throw new DataAccessException(e.getMessage(), e);
+            }
     }
 }

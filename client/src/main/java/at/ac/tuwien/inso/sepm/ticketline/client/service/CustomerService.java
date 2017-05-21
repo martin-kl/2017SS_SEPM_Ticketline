@@ -10,15 +10,15 @@ public interface CustomerService {
 
     /**
      * fuzzy searches for customers
-     * @param query the serach query
+     *
+     * @param query the search query
      * @param page the page number to request
      * @return list of customers
      */
     List<CustomerDTO> search(String query, int page) throws ExceptionWithDialog;
 
-
     /**
-     * Find a single news entry by id.
+     * Find a single customer entry by id.
      *
      * @param id the is of the customer entry
      * @return the customer entry
@@ -27,6 +27,7 @@ public interface CustomerService {
 
     /**
      * saves a new or edit a customer
+     *
      * @param customer The customer object to save or edit
      * @return the same customer passed into the method with fields updated
      */

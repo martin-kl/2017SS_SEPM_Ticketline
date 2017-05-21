@@ -1,32 +1,31 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.service.ReservationService;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
-import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-
-import java.util.ArrayList;
-
-import java.util.Iterator;
-import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
-import at.ac.tuwien.inso.springfx.SpringFxmlLoader.LoadWrapper;
-
-import java.util.List;
+import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -51,12 +50,17 @@ public class TransactionController {
     private boolean ticketsSelectable = false;
 
     private final SpringFxmlLoader springFxmlLoader;
+    private final ReservationService reservationService;
     private DetailedPerformanceDTO detailedPerformanceDTO;
     //private PerformanceDetailController performanceDetailController;
     private List<TicketDTO> selectedTickets = new ArrayList<>();
+    private CustomerDTO selectedCustomer;
 
-    public TransactionController(SpringFxmlLoader springFxmlLoader) {
+    private DetailedTicketTransactionDTO oldTicketTransaction = null;
+
+    public TransactionController(SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
         this.springFxmlLoader = springFxmlLoader;
+        this.reservationService = reservationService;
     }
 
 
@@ -65,13 +69,12 @@ public class TransactionController {
             .loadAndWrap("/fxml/transactions/details/transactionDetails.fxml");
         TransactionDetailsController tdvc = (TransactionDetailsController) wrapper2
             .getController();
-        if (selectedCustomer == null) {
-            //TODO no customer was selected - take a "guest" user or insert null? currently null is passed
-        }
+        this.selectedCustomer = selectedCustomer;
 
         //selected tickets can be passed here
 
         tdvc.initController(selectedCustomer, detailedPerformanceDTO, ticketDTOList);
+        tdvc.setTransactionController(this);
 
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
@@ -83,12 +86,11 @@ public class TransactionController {
     }
 
     //this is the "normal" method that is called after the hallplan
-    public void initData(List<? extends TicketDTO> ticketDTOList,
-        DetailedPerformanceDTO detailedPerformanceDTO,
-        PerformanceDetailController performanceDetailController) {
+    public void initData(List<? extends TicketDTO> ticketDTOList, DetailedPerformanceDTO detailedPerformanceDTO, PerformanceDetailController performanceDetailController) {
         this.detailedPerformanceDTO = detailedPerformanceDTO;
         //this.performanceDetailController = performanceDetailController;
 
+        this.selectedCustomer = null;
         ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
         this.ticketDTOList = ticketDTOList;
@@ -106,8 +108,10 @@ public class TransactionController {
     //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
         this.detailedPerformanceDTO = null;
+        this.oldTicketTransaction = detailedTicketTransactionDTO;
         //this.performanceDetailController = null;
         ticketsSelectable = false;
+        this.selectedCustomer = detailedTicketTransactionDTO.getCustomer();
 
         setHeader(detailedTicketTransactionDTO.getPerformanceName());
 
@@ -116,6 +120,7 @@ public class TransactionController {
         TransactionDetailsController tdvc = (TransactionDetailsController) wrapper
             .getController();
         tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
+        tdvc.setTransactionController(this);
 
         //clear list and add relevant items again
         ObservableList<Node> children = hbMain.getChildren();
@@ -146,7 +151,7 @@ public class TransactionController {
         Iterator<? extends TicketDTO> iterator = ticketDTOList.iterator();
         while (iterator.hasNext()) {
             TicketDTO ticket = iterator.next();
-            LoadWrapper wrapper = springFxmlLoader
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
                 .loadAndWrap("/fxml/transactions/details/ticketElement.fxml");
 
             ((TicketElementController) wrapper.getController()).initializeData(ticket);
@@ -171,5 +176,27 @@ public class TransactionController {
                 vbTicketBoxChildren.add(separator);
             }
         }
+    }
+
+    public void updateTransaction(TicketStatus status) {
+        DetailedTicketTransactionDTO dts = new DetailedTicketTransactionDTO(
+            oldTicketTransaction != null ? oldTicketTransaction.getId() : null,
+            status,
+            selectedCustomer,
+            selectedTickets,
+            "");
+        try {
+            DetailedTicketTransactionDTO dttdto = reservationService.update(dts);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(BundleManager.getBundle().getString("transaction.saved.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("transaction.saved.header"));
+            alert.showAndWait();
+
+            initData(dttdto);
+        } catch (ExceptionWithDialog exceptionWithDialog) {
+            exceptionWithDialog.showDialog();
+        }
+
     }
 }
