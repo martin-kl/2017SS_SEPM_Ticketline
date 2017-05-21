@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
+
+import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Length;
 
 @Setter
@@ -18,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @ToString(exclude = {"tickets"})
 @Entity
+@EqualsAndHashCode(exclude = {"tickets", "event", "location"}, callSuper = false)
 public class Performance extends Audited {
 
     @Getter

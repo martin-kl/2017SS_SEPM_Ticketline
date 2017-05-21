@@ -1,6 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;

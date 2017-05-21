@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @ToString
 @Component
+@EqualsAndHashCode
 public class TicketWrapper {
     private Ticket ticket;
     private TicketStatus status;

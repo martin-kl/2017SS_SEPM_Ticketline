@@ -10,14 +10,18 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketWrapperDTO;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class HallplanServiceImpl implements HallplanService {
-
     @Override
     public List<SectorDTO> getSectorsOfPerformance(DetailedPerformanceDTO detailedPerformanceDTO) {
         List<SectorDTO> sectorList = new ArrayList<>();
@@ -29,7 +33,6 @@ public class HallplanServiceImpl implements HallplanService {
                     sectorList.add(currSector);
             }
         }
-        log.debug("Sectors available: " + sectorList.toString());
         return sectorList;
     }
 
@@ -44,14 +47,41 @@ public class HallplanServiceImpl implements HallplanService {
                     seatList.add(currSeat);
             }
         }
-        log.debug("Sectors available: " + seatList.toString());
         return seatList;
+    }
+
+    @Override
+    public Map<Integer, Integer> getColumCounts(DetailedPerformanceDTO detailedPerformanceDTO){
+        Map<Integer,Integer> columnCounts = new HashMap<>();
+
+        List<TicketWrapperDTO> ticketList = detailedPerformanceDTO.getTicketWrapperList();
+        for (TicketWrapperDTO ticketWrapper : ticketList) {
+            SeatTicketDTO seatTicket = (SeatTicketDTO) ticketWrapper.getTicket();
+            SeatDTO seat = seatTicket.getSeat();
+
+            if(columnCounts.containsKey(seat.getRow())){
+                // this row is already in columnCounts, check the value and update if this seat has higher column
+                if(columnCounts.get(seat.getRow()) < seat.getColumn()){
+                    columnCounts.put(seat.getRow(), seat.getColumn());
+                }
+            }
+            else
+                columnCounts.put(seat.getRow(), seat.getColumn());
+        }
+        return columnCounts;
+    }
+
+    @Override
+    public Integer getLargestRowColumnCount(DetailedPerformanceDTO detailedPerformanceDTO) {
+        Map<Integer, Integer> columCounts = getColumCounts(detailedPerformanceDTO);
+
+        int biggestRow = Collections.max(columCounts.entrySet(), Comparator.comparingInt(Entry::getValue)).getKey();
+        return columCounts.get(biggestRow);
     }
 
     @Override
     public SectorTicketDTO getRandomFreeSectorTicket(DetailedPerformanceDTO detailedPerformanceDTO, SectorDTO sectorDTO, List<TicketDTO> chosenTickets) {
         for(TicketWrapperDTO ticketWrapper : detailedPerformanceDTO.getTicketWrapperList()){
-            //log.debug("in ticketwrapper : " + ticketWrapper);
             // each TicketWrapper contains (TicketDTO + TicketStatus)
             if(ticketWrapper.getTicket() instanceof SectorTicketDTO) {
                 if(((SectorTicketDTO) ticketWrapper.getTicket()).getSector().equals(sectorDTO)){
@@ -61,13 +91,11 @@ public class HallplanServiceImpl implements HallplanService {
                             continue;
 
                         // this one is free
-                        log.debug("Found a free ticket in wrapper: " + ticketWrapper);
                         return (SectorTicketDTO) ticketWrapper.getTicket();
                     }
                 }
             }
         }
-        log.debug("No free ticket found, returning null");
         return null;
     }
 }
