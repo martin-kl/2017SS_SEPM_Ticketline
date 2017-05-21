@@ -18,6 +18,7 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -66,6 +67,8 @@ public class PerformanceDetailController {
     @FXML
     private VBox vbSelectedTickets;
 
+    private List<Button> selectionButtonList = new ArrayList<>();
+
     private DetailedPerformanceDTO detailedPerformance;
 
     private List<TicketDTO> chosenTickets = new ArrayList<>();
@@ -104,22 +107,21 @@ public class PerformanceDetailController {
     }
 
     private void constructHallPlan(){
+        selectionButtonList.clear();
         if(detailedPerformance.getLocation() instanceof SectorLocationDTO) {
             // WORKING WITH SECTORS
             // building a list of sectors
             List<SectorDTO> sectorList = hallplanService.getSectorsOfPerformance(detailedPerformance);
             for(int i = 0, column = 0, row = 0; i < sectorList.size(); i++, column = (i % 4 == 0 ? 0 : column + 1), row += (i % 4 == 0 ? 1 : 0)){
                 final SectorDTO sector = sectorList.get(i);
-                final Button btnSector = new Button(sector.getName());
-                btnSector.alignmentProperty().setValue(Pos.CENTER);
-                btnSector.setTextAlignment(TextAlignment.CENTER);
-                btnSector.wrapTextProperty().setValue(true);
-                btnSector.setPrefSize(200,200);
-                GridPane.setMargin(btnSector, new Insets(5));
-                btnSector.setOnMouseClicked(e -> {
-                    handleClick(sector, btnSector);
+                final SectorButton sectorButton = new SectorButton(fontAwesome, sector, detailedPerformance, chosenTickets, hallplanService);
+
+                GridPane.setMargin(sectorButton, new Insets(5));
+                sectorButton.setOnMouseClicked(e -> {
+                    handleClick(sector, sectorButton);
                 });
-                pHallplan.add(btnSector, column, row);
+                selectionButtonList.add(sectorButton);
+                pHallplan.add(sectorButton, column, row);
             }
         } else {
             // WORKING WITH SEATS
@@ -132,34 +134,45 @@ public class PerformanceDetailController {
             pHallplan.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             //pHallplan.setPadding(new Insets(5));
             List<TicketWrapperDTO> ticketList = detailedPerformance.getTicketWrapperList();
-            // TODO: get max rows and max columns
-            for (TicketWrapperDTO ticketWrapper : ticketList) {
+
+            log.debug("MAP: " + hallplanService.getColumCounts(detailedPerformance).toString());
+            log.debug("Biggest Row: " + hallplanService.getLargestRowColumnCount(detailedPerformance));
+
+            Map<Integer, Integer> rowSizes = hallplanService.getColumCounts(detailedPerformance);
+            int maxColumnSize = hallplanService.getLargestRowColumnCount(detailedPerformance);
+            for (TicketWrapperDTO ticketWrapper : ticketList)
+            {
                 SeatTicketDTO seatTicket = (SeatTicketDTO) ticketWrapper.getTicket();
                 SeatDTO seat = seatTicket.getSeat();
 
                 SeatButton seatButton = new SeatButton(fontAwesome, ticketWrapper);
-                seatButton.setMinSize(25,25);
                 seatButton.setOnMouseClicked(e -> {
                     handleClick(ticketWrapper, seatButton);
                 });
-                pHallplan.add(seatButton, seat.getColumn(), seat.getRow());
+
+                /* calculate a offset to align the hallplan to the center */
+                int offset = ((maxColumnSize) - (rowSizes.get(seat.getRow())))/2;
+                selectionButtonList.add(seatButton);
+                pHallplan.add(seatButton, seat.getColumn() + offset, seat.getRow());
                 GridPane.setMargin(seatButton, new Insets(1));
             }
         }
     }
 
-    private void handleClick(SectorDTO clickedSector, Button btnSector){
+    private void handleClick(SectorDTO clickedSector, SectorButton btnSector){
+
         SectorTicketDTO chosenSectorTicket = hallplanService.getRandomFreeSectorTicket(detailedPerformance, clickedSector, chosenTickets);
-        if(chosenSectorTicket != null){
+        if(chosenSectorTicket != null) {
             chosenTickets.add(chosenSectorTicket);
+            btnSector.setSectorStatus(detailedPerformance, chosenTickets, hallplanService);
             loadTicketTable();
-        } else {
+        }
+        else {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle(BundleManager.getBundle().getString("performance.dialog.no.ticket.title"));
             alert.setHeaderText(null);
             alert.setContentText(BundleManager.getBundle().getString("performance.dialog.no.ticket.body"));
             alert.showAndWait();
-            btnSector.setDisable(true);
         }
     }
 
@@ -174,6 +187,14 @@ public class PerformanceDetailController {
         }
         loadTicketTable();
         // TODO: implement
+    }
+
+    private void reloadHallplan(){
+        for(int i = 0; i < selectionButtonList.size(); i++){
+            SectorButton currButton = (SectorButton) selectionButtonList.get(i);
+            currButton.setSectorStatus(detailedPerformance, chosenTickets, hallplanService);
+        }
+        loadTicketTable();
     }
 
     private void loadTicketTable(){
@@ -198,7 +219,7 @@ public class PerformanceDetailController {
                 /* removing tickets in the list when in sector locations */
                 if(detailedPerformance.getLocation() instanceof SectorLocationDTO){
                     chosenTickets.remove(ticket);
-                    loadTicketTable();
+                    reloadHallplan();
                 }
             });
             vbTicketBoxChildren.add(ticketBox);

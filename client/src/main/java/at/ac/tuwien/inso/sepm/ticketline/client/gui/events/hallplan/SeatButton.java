@@ -19,6 +19,7 @@ public class SeatButton extends Button {
     private FontAwesome fontAwesome;
 
     public SeatButton(FontAwesome fontAwesome, TicketWrapperDTO ticketWrapper){
+        super.setMinSize(25,25);
         this.fontAwesome = fontAwesome;
         this.ticketWrapper = ticketWrapper;
         setGraphic();
@@ -43,7 +44,6 @@ public class SeatButton extends Button {
             setGraphic();
             return false;
         }
-
         return false;
     }
 
