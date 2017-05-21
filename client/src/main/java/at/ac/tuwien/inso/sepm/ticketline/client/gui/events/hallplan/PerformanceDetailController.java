@@ -32,6 +32,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -66,6 +67,17 @@ public class PerformanceDetailController {
     private GridPane pHallplan;
     @FXML
     private VBox vbSelectedTickets;
+    /* legend */
+    @FXML
+    private GridPane gpLegend;
+    @FXML
+    private Label lblLegend;
+    @FXML
+    private Label lblFreeSeat;
+    @FXML
+    private Label lblSelectedSeat;
+    @FXML
+    private Label lblOccupiedSeat;
 
     private List<Button> selectionButtonList = new ArrayList<>();
 
@@ -104,11 +116,17 @@ public class PerformanceDetailController {
         } else {
             lblHallplanHeader.setText(lblHallplanHeader.getText() + BundleManager.getBundle().getString("performance.type.sector"));
         }
-    }
 
+        lblLegend.setText(BundleManager.getBundle().getString("performance.label.legend.title"));
+        lblFreeSeat.setText(BundleManager.getBundle().getString("performance.label.legend.free"));
+        lblSelectedSeat.setText(BundleManager.getBundle().getString("performance.label.legend.selected"));
+        lblOccupiedSeat.setText(BundleManager.getBundle().getString("performance.label.legend.occupied"));
+    }
     private void constructHallPlan(){
         selectionButtonList.clear();
         if(detailedPerformance.getLocation() instanceof SectorLocationDTO) {
+            /* remove legend */
+            setEnabledLegend(false);
             // WORKING WITH SECTORS
             // building a list of sectors
             List<SectorDTO> sectorList = hallplanService.getSectorsOfPerformance(detailedPerformance);
@@ -124,20 +142,16 @@ public class PerformanceDetailController {
                 pHallplan.add(sectorButton, column, row);
             }
         } else {
+            /* enable legend */
+            setEnabledLegend(true);
             // WORKING WITH SEATS
             // building a list of seats
             pHallplan.getChildren().clear();
             pHallplan.getRowConstraints().clear();
             pHallplan.getColumnConstraints().clear();
-            //pHallplan.setGridLinesVisible(true);
             pHallplan.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             pHallplan.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
-            //pHallplan.setPadding(new Insets(5));
             List<TicketWrapperDTO> ticketList = detailedPerformance.getTicketWrapperList();
-
-            log.debug("MAP: " + hallplanService.getColumCounts(detailedPerformance).toString());
-            log.debug("Biggest Row: " + hallplanService.getLargestRowColumnCount(detailedPerformance));
-
             Map<Integer, Integer> rowSizes = hallplanService.getColumCounts(detailedPerformance);
             int maxColumnSize = hallplanService.getLargestRowColumnCount(detailedPerformance);
             for (TicketWrapperDTO ticketWrapper : ticketList)
@@ -278,6 +292,52 @@ public class PerformanceDetailController {
         if(closeStage) {
             Stage stage = (Stage) btnCancel.getScene().getWindow();
             stage.close();
+        }
+    }
+
+    private void setEnabledLegend(boolean isEnabled){
+        gpLegend.setManaged(isEnabled);
+        lblLegend.setManaged(isEnabled);
+        lblOccupiedSeat.setManaged(isEnabled);
+        lblFreeSeat.setManaged(isEnabled);
+        lblSelectedSeat.setManaged(isEnabled);
+
+        if(isEnabled){
+            // add buttons
+            Button free = new Button();
+            free.setMinSize(30,30);
+            free.setGraphic(null);
+            free.setStyle("-fx-background-color: rgba(205,255,215,0.72); "
+                + "-fx-border-color: #495c50;"
+                + "-fx-border-style: solid;"
+                + "-fx-border-radius: 4;"
+                + "-fx-border-width: 2;");
+            gpLegend.add(free, 0, 0);
+            GridPane.setMargin(free, new Insets(2));
+
+            Button selected = new Button();
+            selected.setMinSize(30,30);
+            selected.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
+            selected.setStyle("-fx-background-color: rgba(211,224,255,0.72);"
+                + "-fx-border-color: #414a5c;"
+                + "-fx-border-style: solid;"
+                + "-fx-border-radius: 4;"
+                + "-fx-border-width: 2;");
+            gpLegend.add(selected, 0, 1);
+            GridPane.setMargin(selected, new Insets(2));
+
+            Button occupied = new Button();
+            occupied.setMinSize(30,30);
+            occupied.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
+            occupied.setStyle("-fx-background-color: rgba(188,0,0,0.97);"
+                + "-fx-border-color: #520000;"
+                + "-fx-border-style: solid;"
+                + "-fx-border-radius: 4;"
+                + "-fx-background-radius: 3;"
+                + "-fx-background-insets: 2;"
+                + "-fx-border-width: 2;");
+            gpLegend.add(occupied, 0, 2);
+            GridPane.setMargin(occupied, new Insets(2));
         }
     }
 }

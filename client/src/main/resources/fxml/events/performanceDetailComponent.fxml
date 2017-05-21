@@ -61,46 +61,97 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <BorderPane prefHeight="648.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <bottom>
-                        <BorderPane BorderPane.alignment="CENTER">
+                  <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <BorderPane prefHeight="648.0" prefWidth="296.0">
+                           <bottom>
+                              <BorderPane BorderPane.alignment="CENTER">
+                                 <center>
+                                    <ButtonBar prefHeight="41.0" prefWidth="284.0">
+                                      <buttons>
+                                        <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="156.0" text="Cancel" />
+                                          <Button fx:id="btnContinue" layoutX="219.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
+                                      </buttons>
+                                       <padding>
+                                          <Insets bottom="10.0" right="15.0" top="10.0" />
+                                       </padding>
+                                    </ButtonBar>
+                                 </center>
+                                 <top>
+                                    <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                 </top>
+                              </BorderPane>
+                           </bottom>
                            <center>
-                              <ButtonBar prefHeight="41.0" prefWidth="284.0">
-                                <buttons>
-                                  <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="156.0" text="Cancel" />
-                                    <Button fx:id="btnContinue" layoutX="219.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
-                                </buttons>
-                                 <padding>
-                                    <Insets bottom="10.0" right="15.0" top="10.0" />
-                                 </padding>
-                              </ButtonBar>
+                              <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <VBox fx:id="vbSelectedTickets" maxHeight="474.0" prefHeight="474.0" prefWidth="295.0" />
+                                 </content>
+                              </ScrollPane>
                            </center>
                            <top>
-                              <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+                              <BorderPane BorderPane.alignment="CENTER">
+                                 <center>
+                                    <Label fx:id="lblTicketsHeader" alignment="CENTER" minHeight="42.0" prefHeight="42.0" prefWidth="295.0" text="&lt;Currently selected Tickets:&gt;">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </Label>
+                                 </center>
+                                 <bottom>
+                                    <Separator BorderPane.alignment="CENTER" />
+                                 </bottom>
+                              </BorderPane>
                            </top>
                         </BorderPane>
-                     </bottom>
-                     <center>
-                        <ScrollPane hbarPolicy="NEVER" BorderPane.alignment="CENTER">
-                           <content>
-                              <VBox fx:id="vbSelectedTickets" maxHeight="474.0" prefHeight="474.0" prefWidth="295.0" />
-                           </content>
-                        </ScrollPane>
                      </center>
                      <top>
                         <BorderPane BorderPane.alignment="CENTER">
                            <center>
-                              <Label fx:id="lblTicketsHeader" alignment="CENTER" minHeight="42.0" prefHeight="42.0" prefWidth="295.0" text="&lt;Currently selected Tickets:&gt;">
+                              <GridPane fx:id="gpLegend" alignment="CENTER" BorderPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.0" minWidth="10.0" prefWidth="70.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="226.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label fx:id="lblFreeSeat" text="&lt;Free Seat&gt;" GridPane.columnIndex="1">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblSelectedSeat" text="&lt;Selected Seat&gt;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblOccupiedSeat" text="&lt;Occupied Seat &gt;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </center>
+                           <top>
+                              <Label fx:id="lblLegend" text="&lt;Legend&gt;" BorderPane.alignment="CENTER">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
                               </Label>
-                           </center>
+                           </top>
                            <bottom>
-                              <Separator BorderPane.alignment="CENTER" />
+                              <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
                            </bottom>
                         </BorderPane>
                      </top>
