@@ -12,17 +12,13 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-
 import java.util.ArrayList;
-import java.util.Optional;
-
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;

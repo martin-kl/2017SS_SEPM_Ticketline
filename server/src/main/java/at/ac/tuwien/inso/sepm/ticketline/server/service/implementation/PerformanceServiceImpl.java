@@ -13,6 +13,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TicketWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@Transactional
 public class PerformanceServiceImpl implements PerformanceService {
     private final PerformanceRepository performanceRepository;
     private final TicketRepository ticketRepository;
@@ -41,9 +43,7 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     public List<Ticket> findAllTicketsToPerformanceID(UUID performanceID) {
-        List<Ticket> ticketsToPerformance = ticketRepository.findAll();
-        ticketsToPerformance.removeIf(t -> !t.getPerformance().getId().equals(performanceID));
-        return ticketsToPerformance;
+        return ticketRepository.findByPerformanceId(performanceID);
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @ToString
 @Entity
+@EqualsAndHashCode
 public class Seat extends Audited {
 
     @Getter

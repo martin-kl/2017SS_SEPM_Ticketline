@@ -1,8 +1,11 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,7 +13,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"seats"})
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue(value="seat")

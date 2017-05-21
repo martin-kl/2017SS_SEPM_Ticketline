@@ -2,9 +2,11 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.awt.datatransfer.FlavorEvent;
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @ToString(exclude = {"ticketHistories"})
 @Entity
 @DiscriminatorColumn(columnDefinition = "varchar default 'sector'")
+@EqualsAndHashCode(callSuper = false)
 public abstract class Ticket extends Audited {
 
     @Getter
@@ -35,7 +38,7 @@ public abstract class Ticket extends Audited {
     private Performance performance;
 
     @Getter
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<TicketHistory> ticketHistories;
 
 }
