@@ -80,14 +80,13 @@ public class SeatButton extends Button {
                 + "-fx-background-insets: 2;"
                 + "-fx-border-width: 2;");
         }
-        // TODO: load image
-
-        //super.setGraphic();
+    }
+    public TicketWrapperDTO getTicketWrapper() {
+        return ticketWrapper;
     }
 
-    public String getSeatInfo(){
-        SeatDTO seat = ((SeatTicketDTO) ticketWrapper.getTicket()).getSeat();
-
-        return "Seat at: row: " + seat.getRow() + ", column: " + seat.getColumn();
+    public void setTicketWrapper(
+        TicketWrapperDTO ticketWrapper) {
+        this.ticketWrapper = ticketWrapper;
     }
 }

@@ -186,13 +186,14 @@ public class PerformanceDetailController {
             }
         }
         loadTicketTable();
-        // TODO: implement
     }
 
     private void reloadHallplan(){
-        for(int i = 0; i < selectionButtonList.size(); i++){
-            SectorButton currButton = (SectorButton) selectionButtonList.get(i);
-            currButton.setSectorStatus(detailedPerformance, chosenTickets, hallplanService);
+        if(detailedPerformance.getLocation() instanceof SectorLocationDTO){
+            for(int i = 0; i < selectionButtonList.size(); i++){
+                SectorButton currButton = (SectorButton) selectionButtonList.get(i);
+                currButton.setSectorStatus(detailedPerformance, chosenTickets, hallplanService);
+            }
         }
         loadTicketTable();
     }
@@ -220,6 +221,13 @@ public class PerformanceDetailController {
                 if(detailedPerformance.getLocation() instanceof SectorLocationDTO){
                     chosenTickets.remove(ticket);
                     reloadHallplan();
+                } else {
+                    /* force a click to change the graphic (this basicly means unselecting a seat)*/
+                    SeatButton correspondingSeat = getSeatButtonByTicket((SeatTicketDTO) ticket);
+                    if(correspondingSeat != null)
+                        correspondingSeat.onClick();
+                    chosenTickets.remove(ticket);
+                    reloadHallplan();
                 }
             });
             vbTicketBoxChildren.add(ticketBox);
@@ -228,6 +236,17 @@ public class PerformanceDetailController {
                 vbTicketBoxChildren.add(separator);
             }
         }
+    }
+
+    private SeatButton getSeatButtonByTicket(SeatTicketDTO seatTicketDTO){
+        for(int i = 0; i < selectionButtonList.size(); i++){
+            SeatButton currButton = (SeatButton) selectionButtonList.get(i);
+            if(currButton.getTicketWrapper().getTicket().equals(seatTicketDTO)){
+                // this button needs to update
+                return currButton;
+            }
+        }
+        return null;
     }
 
     public boolean handleCancel(){
