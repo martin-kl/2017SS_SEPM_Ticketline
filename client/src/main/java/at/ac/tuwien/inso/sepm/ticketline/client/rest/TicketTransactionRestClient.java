@@ -34,4 +34,6 @@ public interface TicketTransactionRestClient {
     List<DetailedTicketTransactionDTO> findTransactionsByCustomerAndPerformance(
         String customerFirstName, String customerLastName, String performanceName, int page)
         throws ExceptionWithDialog;
+
+    DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog;
 }

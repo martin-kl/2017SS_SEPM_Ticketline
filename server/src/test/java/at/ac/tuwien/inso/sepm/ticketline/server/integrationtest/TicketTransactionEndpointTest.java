@@ -145,7 +145,7 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
         for(int i = 0; i < 5; i++) {
             Set<TicketHistory> ttSet = new HashSet<>(1);
             ttSet.add(TEST_TICKET_HISTORY);
-            TicketTransaction tt = new TicketTransaction(UUID.randomUUID(), TicketStatus.BOUGHT, ttSet, TEST_CUSTOMER);
+            TicketTransaction tt = new TicketTransaction(UUID.randomUUID(), TicketStatus.BOUGHT, ttSet, TEST_CUSTOMER, false);
             ttList.add(tt);
         }
         BDDMockito
