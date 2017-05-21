@@ -12,6 +12,8 @@ import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import java.util.ArrayList;
 
 import java.util.Iterator;
+
+import javafx.scene.control.Alert;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
@@ -191,7 +193,14 @@ public class TransactionController {
             selectedTickets,
             "");
         try {
-            reservationService.update(dts);
+            DetailedTicketTransactionDTO dttdto = reservationService.update(dts);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(BundleManager.getBundle().getString("transaction.saved.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("transaction.saved.header"));
+            alert.showAndWait();
+
+            initData(dttdto);
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }

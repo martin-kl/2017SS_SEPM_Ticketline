@@ -120,13 +120,9 @@ public class TicketServiceImpl implements TicketService {
     public TicketTransaction setTransactionStatus(DetailedTicketTransactionDTO ticketTransaction) {
 
         // remove duplicates
-        List<TicketDTO> ticketDTOS = new ArrayList<>();
-        for (TicketDTO ticketDTO : ticketTransaction.getTickets()) {
-            if (!ticketDTOS.contains(ticketDTO)) {
-                ticketDTOS.add(ticketDTO);
-            }
-        }
-        ticketTransaction.setTickets(ticketDTOS);
+        HashSet<TicketDTO> hs = new HashSet<>();
+        hs.addAll(ticketTransaction.getTickets());
+        ticketTransaction.setTickets(new ArrayList<>(hs));
 
         // collect all tickets that should be in the transaction
         List<Ticket> ticketList = ticketTransaction
@@ -179,6 +175,34 @@ public class TicketServiceImpl implements TicketService {
             // transition BOUGHT to RESERVED not allowed
             if (tt.getStatus() == TicketStatus.BOUGHT && ticketTransaction.getStatus() == TicketStatus.RESERVED) {
                 throw new BadRequestException();
+            }
+
+            // check for old tickets and keep them in the old status
+            List<TicketHistory> keepHistories = new ArrayList<>();
+            for (TicketHistory th : tt.getTicketHistories()) {
+                boolean found = false;
+                for (Ticket ticket : ticketList) {
+                    if (th.getTicket().getId().equals(ticket.getId())) {
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    keepHistories.add(th);
+                }
+            }
+            // there are some old histories, so lets save as a new transaction
+            if (!keepHistories.isEmpty()) {
+                TicketTransaction keepTT = TicketTransaction.builder()
+                    .customer(customer)
+                    .status(tt.getStatus())
+                    .build();
+                for (TicketHistory oldTh : keepHistories) {
+                    TicketHistory th = TicketHistory.builder()
+                        .ticket(oldTh.getTicket())
+                        .ticketTransaction(keepTT)
+                        .build();
+                    ticketHistoryRepository.save(th);
+                }
             }
 
             // transition RESERVED to STORNO removes the transaction
