@@ -24,18 +24,47 @@ public class SeatButton extends Button {
         setGraphic();
     }
 
-    private void setGraphic(){
-        /* free */
+    /**
+     * @return true if a free seatbutton was clicked, false otherwise
+     */
+    public boolean onClick(){
+         /* free */
         if(ticketWrapper.getStatus() == TicketStatus.STORNO) {
-            super.setGraphic(fontAwesome.create(FontAwesome.Glyph.CIRCLE_THIN));
+            ticketWrapper.setStatus(TicketStatus.SELECTED);
+            setGraphic();
+            return true;
         }
         /* not free */
         else if (ticketWrapper.getStatus() == TicketStatus.RESERVED || ticketWrapper.getStatus() == TicketStatus.BOUGHT) {
-            super.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
         }
         /* selected by the current user */
         else if (ticketWrapper.getStatus() == TicketStatus.SELECTED) {
-            super.setGraphic(fontAwesome.create(FontAwesome.Glyph.CIRCLE));
+            ticketWrapper.setStatus(TicketStatus.STORNO);
+            setGraphic();
+            return false;
+        }
+
+        return false;
+    }
+
+    private void setGraphic(){
+        /* free */
+        if(ticketWrapper.getStatus() == TicketStatus.STORNO) {
+            //super.setStyle("");
+            super.setGraphic(null);
+            super.setStyle("-fx-background-color: rgba(106,139,188,0.72);");
+        }
+        /* not free */
+        else if (ticketWrapper.getStatus() == TicketStatus.RESERVED || ticketWrapper.getStatus() == TicketStatus.BOUGHT) {
+            //super.setStyle("");
+            super.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
+            super.setStyle("-fx-background-color: rgba(106,139,188,0.72);");
+        }
+        /* selected by the current user */
+        else if (ticketWrapper.getStatus() == TicketStatus.SELECTED) {
+            //super.setStyle("");
+            super.setGraphic(fontAwesome.create(FontAwesome.Glyph.USER));
+            super.setStyle("-fx-background-color: rgb(188,0,0);");
         }
         // TODO: load image
 

@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
@@ -19,7 +20,8 @@ public class PerformanceTicketElementController {
     private Label lblPrice;
 
     public void initializeData(TicketDTO ticketDTO) {
-        if(ticketDTO instanceof SeatTicketDTO){
+        lblPlace.setText(Helper.getFormattedTicketPlace(ticketDTO));
+        /*if(ticketDTO instanceof SeatTicketDTO){
             SeatTicketDTO seatTicket = (SeatTicketDTO) ticketDTO;
             lblPlace.setText(seatTicket.getSeat().getRow() + ", " + seatTicket.getSeat().getColumn());
             lblPrice.setText("" + seatTicket.getPrice());
@@ -28,7 +30,7 @@ public class PerformanceTicketElementController {
             SectorTicketDTO sectorTicket = (SectorTicketDTO) ticketDTO;
             lblPlace.setText(sectorTicket.getSector().getName());
             lblPrice.setText("" + sectorTicket.getPrice());
-        }
+        }*/
 
     }
 }

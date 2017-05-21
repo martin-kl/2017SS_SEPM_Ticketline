@@ -124,16 +124,13 @@ public class PerformanceDetailController {
         } else {
             // WORKING WITH SEATS
             // building a list of seats
-            /*
-            pHallplan = hallplanService.constructHallplan(detailedPerformance, pHallplan, fontAwesome);
-            */
-
             pHallplan.getChildren().clear();
             pHallplan.getRowConstraints().clear();
             pHallplan.getColumnConstraints().clear();
             pHallplan.setGridLinesVisible(true);
             pHallplan.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
             pHallplan.setMaxSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+            pHallplan.setPadding(new Insets(5));
             List<TicketWrapperDTO> ticketList = detailedPerformance.getTicketWrapperList();
             // TODO: get max rows and max columns
             for (TicketWrapperDTO ticketWrapper : ticketList) {
@@ -141,11 +138,12 @@ public class PerformanceDetailController {
                 SeatDTO seat = seatTicket.getSeat();
 
                 SeatButton seatButton = new SeatButton(fontAwesome, ticketWrapper);
+                seatButton.setMinSize(30,30);
                 seatButton.setOnMouseClicked(e -> {
-                    handleClick(seat);
+                    handleClick(ticketWrapper, seatButton);
                 });
-                log.debug("seat at: " + seat.getRow() + ", " + seat.getColumn());
                 pHallplan.add(seatButton, seat.getColumn(), seat.getRow());
+                GridPane.setMargin(seatButton, new Insets(2));
             }
         }
     }
@@ -163,10 +161,18 @@ public class PerformanceDetailController {
             alert.showAndWait();
             btnSector.setDisable(true);
         }
-
     }
 
-    private void handleClick(SeatDTO clickedSeat){
+    private void handleClick(TicketWrapperDTO ticketWrapper, SeatButton seatButton){
+        if(seatButton.onClick()){
+            chosenTickets.add(ticketWrapper.getTicket());
+        }
+        else {
+            if(chosenTickets.contains(ticketWrapper.getTicket())){
+                chosenTickets.remove(ticketWrapper.getTicket());
+            }
+        }
+        loadTicketTable();
         // TODO: implement
     }
 
@@ -189,7 +195,11 @@ public class PerformanceDetailController {
             ((PerformanceTicketElementController) wrapper.getController()).initializeData(ticket);
             HBox ticketBox = (HBox) wrapper.getLoadedObject();
             ticketBox.setOnMouseClicked((e) -> {
-                // TODO: implement (removing or something)
+                /* removing tickets in the list when in sector locations */
+                if(detailedPerformance.getLocation() instanceof SectorLocationDTO){
+                    chosenTickets.remove(ticket);
+                    loadTicketTable();
+                }
             });
             vbTicketBoxChildren.add(ticketBox);
             if (iterator.hasNext()) {
