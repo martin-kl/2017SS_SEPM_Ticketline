@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.performance;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.TestDataGenerator;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.Performance;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
@@ -22,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.Is.is;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)

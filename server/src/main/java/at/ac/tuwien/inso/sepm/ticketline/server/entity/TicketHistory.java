@@ -31,7 +31,7 @@ public class TicketHistory extends Audited {
     private Ticket ticket;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_tickettransaction_tickethistory")
     )

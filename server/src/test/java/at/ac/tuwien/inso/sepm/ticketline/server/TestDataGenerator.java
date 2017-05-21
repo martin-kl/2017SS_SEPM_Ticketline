@@ -279,7 +279,8 @@ public class TestDataGenerator {
             null,
             TicketStatus.STORNO,
             null,
-            this.customers.get(0)
+            this.customers.get(0),
+            false
         );
         ticketTransactionRepository.save(ticketTransaction0);
 
@@ -287,7 +288,8 @@ public class TestDataGenerator {
             null,
             TicketStatus.RESERVED,
             null,
-            this.customers.get(0)
+            this.customers.get(0),
+            false
         );
         ticketTransactionRepository.save(ticketTransaction1);
 
@@ -295,7 +297,8 @@ public class TestDataGenerator {
             null,
             TicketStatus.BOUGHT,
             null,
-            this.customers.get(0)
+            this.customers.get(0),
+            false
         );
         ticketTransactionRepository.save(ticketTransaction2);
 
@@ -303,7 +306,8 @@ public class TestDataGenerator {
             null,
             TicketStatus.STORNO,
             null,
-            this.customers.get(0)
+            this.customers.get(0),
+            false
         );
         ticketTransactionRepository.save(ticketTransaction3);
 
