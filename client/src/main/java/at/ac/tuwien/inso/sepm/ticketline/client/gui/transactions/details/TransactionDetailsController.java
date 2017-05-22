@@ -111,7 +111,11 @@ public class TransactionDetailsController {
         } else if (status == TicketStatus.BOUGHT) {
             lbTransactionID
                 .setText(BundleManager.getBundle().getString("transaction.detail.billNumber"));
-            //TODO add buttons to cancel the payment and possible others
+            btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
+            btnCancelReservation.setOnAction(event -> {
+                System.out.println("cancel reservation button has been clicked");
+                transactionController.updateTransaction(TicketStatus.STORNO);
+            });
 
             btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
@@ -121,6 +125,7 @@ public class TransactionDetailsController {
                     .println("print pdf button in already bought transaction has been clicked");
             });
 
+            buttons.add(btnCancelReservation);
             buttons.add(btnPrintPDF);
         } else if(status == TicketStatus.STORNO) {
             lbTransactionID
