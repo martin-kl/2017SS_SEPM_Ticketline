@@ -134,7 +134,7 @@ public class TransactionController {
         children.add(vbTicketsInclLabel);
         children.add(spSeparator);
 
-        if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT) {
+        if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT && detailedTicketTransactionDTO.getStatus() != TicketStatus.STORNO) {
             ticketsSelectable = true;
         }
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
@@ -186,6 +186,13 @@ public class TransactionController {
     }
 
     public void updateTransaction(TicketStatus status) {
+        if (selectedTickets.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(BundleManager.getBundle().getString("transaction.notickets"));
+            alert.setHeaderText(BundleManager.getBundle().getString("transaction.notickets.header"));
+            alert.showAndWait();
+            return;
+        }
         DetailedTicketTransactionDTO dts = new DetailedTicketTransactionDTO(
             oldTicketTransaction != null ? oldTicketTransaction.getId() : null,
             status,
