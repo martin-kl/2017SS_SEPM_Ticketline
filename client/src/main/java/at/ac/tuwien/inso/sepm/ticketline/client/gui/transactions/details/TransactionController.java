@@ -93,6 +93,7 @@ public class TransactionController {
         this.detailedPerformanceDTO = detailedPerformanceDTO;
         //this.performanceDetailController = performanceDetailController;
 
+        this.oldTicketTransaction = null;
         this.selectedCustomer = null;
         ticketsSelectable = true;
         setHeader(detailedPerformanceDTO.getName());
