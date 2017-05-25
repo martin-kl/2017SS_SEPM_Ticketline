@@ -64,9 +64,10 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
                 restClient.getServiceURI(
                     TRANSACTION_URL), id);
 
-                ResponseEntity<List<DetailedTicketTransactionDTO>> reservation =
+            ResponseEntity<List<DetailedTicketTransactionDTO>> reservation =
                 restClient.exchange(
-                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL + "/find"))
+                    UriComponentsBuilder
+                        .fromUri(restClient.getServiceURI(TRANSACTION_URL + "/find"))
                         .queryParam("id", id)
                         .queryParam("page", page)
                         .queryParam("size", 20)
@@ -99,7 +100,8 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
 
             ResponseEntity<List<DetailedTicketTransactionDTO>> reservations =
                 restClient.exchange(
-                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL + "/filter"))
+                    UriComponentsBuilder
+                        .fromUri(restClient.getServiceURI(TRANSACTION_URL + "/filter"))
                         .queryParam("firstname", customerFirstName)
                         .queryParam("lastname", customerLastName)
                         .queryParam("performance", performanceName)
@@ -123,31 +125,30 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     }
 
     @Override
-    public DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog {
+    public DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto)
+        throws ExceptionWithDialog {
+        try {
+            log.debug("Updating detailed ticket transaction dto = {}", dto);
 
-            try {
-                log.debug("Updating detailed ticket transaction dto",
-                    restClient.getServiceURI(TRANSACTION_URL));
-
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                HttpEntity<DetailedTicketTransactionDTO> entity = new HttpEntity<>(dto, headers);
-                ResponseEntity<DetailedTicketTransactionDTO> response =
-                    restClient.exchange(
-                        UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL))
-                            .build().toUri(),
-                        HttpMethod.PATCH,
-                        entity,
-                        new ParameterizedTypeReference<DetailedTicketTransactionDTO>() {
-                        });
-                log.debug("Result status was {} with content {}", response.getStatusCode(),
-                    response.getBody());
-                return response.getBody();
-            } catch (HttpStatusCodeException e) {
-                throw new DataAccessException("Failed to update detailed ticket transaction dto " + dto);
-            } catch (RestClientException e) {
-                throw new DataAccessException(e.getMessage(), e);
-            }
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<DetailedTicketTransactionDTO> entity = new HttpEntity<>(dto, headers);
+            ResponseEntity<DetailedTicketTransactionDTO> response =
+                restClient.exchange(
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TRANSACTION_URL))
+                        .build().toUri(),
+                    HttpMethod.PATCH,
+                    entity,
+                    new ParameterizedTypeReference<DetailedTicketTransactionDTO>() {
+                    });
+            log.debug("Result status was {} with content {}", response.getStatusCode(),
+                response.getBody());
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            throw new DataAccessException(
+                "Failed to update detailed ticket transaction dto " + dto);
+        } catch (RestClientException e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
     }
 }
