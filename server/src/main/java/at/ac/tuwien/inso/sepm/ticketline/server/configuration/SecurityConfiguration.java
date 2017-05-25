@@ -109,8 +109,7 @@ public class SecurityConfiguration {
             }
             http
                 .authorizeRequests()
-                .anyRequest().permitAll()
-                //.anyRequest().fullyAuthenticated()
+                .anyRequest().fullyAuthenticated()
                 .and()
                 .addFilterBefore(new HeaderTokenAuthenticationFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
         }
