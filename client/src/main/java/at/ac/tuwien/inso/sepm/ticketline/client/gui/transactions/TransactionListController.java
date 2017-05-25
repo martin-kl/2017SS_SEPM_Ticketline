@@ -76,7 +76,7 @@ public class TransactionListController {
         this.reservationService = reservationService;
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("transaction.title"));
 
         tfTransactionNumber
@@ -98,7 +98,9 @@ public class TransactionListController {
 
         selectedTransaction = null;
         previousSelectedBox = null;
-        initTransactions();
+        if(alreadyLoggedIn) {
+            initTransactions();
+        }
     }
 
     public void setFont(FontAwesome fontAwesome) {

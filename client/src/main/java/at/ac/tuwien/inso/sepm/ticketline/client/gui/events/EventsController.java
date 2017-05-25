@@ -91,9 +91,11 @@ public class EventsController {
         vbEventsElements.getChildren().clear();
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("events.title"));
-        init();
+        if(alreadyLoggedIn) {
+            init();
+        }
     }
 
     public void setFont(FontAwesome fontAwesome) {

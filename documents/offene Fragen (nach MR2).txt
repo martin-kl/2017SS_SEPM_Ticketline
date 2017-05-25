@@ -31,7 +31,3 @@ Sektor wieder weg geben
 Benoterin achtet auf: Usability, ordentliche Testdaten (als in der datenbank schöne sätze), GUI mit Icons aufhübschen, am vortag schaut sie sich am master den code an
 User Stories mit roten Faden Features Präsentieren
 Projektpräsentation für MR2: zeigt Projektverlauf, retroperspektive, wie ist das projekt aus management sicht gelaufen, liste von features die es schon gibt
-
-
-
-

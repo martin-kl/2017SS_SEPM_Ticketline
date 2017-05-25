@@ -62,7 +62,7 @@ public class CustomersController {
         lblHeaderTitle.setText(title);
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("customers.title"));
         searchField.setPromptText(BundleManager.getBundle().getString("search"));
         btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
