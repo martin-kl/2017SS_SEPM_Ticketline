@@ -72,7 +72,7 @@ public class CustomerSelection {
             CustomerDTO customer = (CustomerDTO) c; HBox customerBox = (HBox) cB;
             if (customer.equals(lastSelectedCustomer)) {
                 previousSelectedBox = customerBox;
-                customerBox.setStyle("-fx-background-color: #2196F3");
+                customerBox.setStyle("-fx-background-color: #00afff");
             }
         });
 
@@ -84,7 +84,7 @@ public class CustomerSelection {
                     previousSelectedBox.setStyle("-fx-background-color: inherit");
                 }
                 lastSelectedCustomer = customer;
-                customerBox.setStyle("-fx-background-color: #2196F3");
+                customerBox.setStyle("-fx-background-color: #00afff");
                 previousSelectedBox = customerBox;
             } else {
                 //deselection:

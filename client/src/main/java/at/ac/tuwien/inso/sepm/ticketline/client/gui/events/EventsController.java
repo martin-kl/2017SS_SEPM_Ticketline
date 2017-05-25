@@ -121,7 +121,7 @@ public class EventsController {
             previousSelectedBox.setStyle("-fx-background-color: #f4f4f4");
         }
         previousSelectedBox = performanceBox;
-        performanceBox.setStyle("-fx-background-color: #2196F3");
+        performanceBox.setStyle("-fx-background-color: #00afff");
 
         this.selectedPerformance = selectedPerformance;
     }
