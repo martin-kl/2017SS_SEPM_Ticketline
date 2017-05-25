@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerList;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Debouncer;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -108,8 +109,9 @@ public class CustomerSelection {
         transactionController.onContinue(lastSelectedCustomer);
     }
 
+    Debouncer<Integer> d = new Debouncer<>(o -> customerList.reload(customerSearchField.getText()), 250);
     public void onSearchChange(KeyEvent keyEvent) {
-        customerList.reload(customerSearchField.getText());
+        d.call(1);
     }
 
     public void handleNewCustomer(ActionEvent actionEvent) {
