@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,7 +95,8 @@ public class TicketTransactionEndpoint {
     @ApiOperation(value = "Downloads a PDF a transaction")
     public void downloadPdf(
         @PathVariable(name = "transactionid") UUID transactionId,
-        HttpServletResponse response
+        HttpServletResponse response,
+        HttpServletRequest request
     ) throws IOException, DocumentException, URISyntaxException {
         TicketTransaction ticketTransaction = ticketService.findTransactionsByID(transactionId);
         if (ticketTransaction == null) {
@@ -106,7 +108,7 @@ public class TicketTransactionEndpoint {
         String headerValue = String.format("attachment; filename=\"%s\"", pdfFileName);
         response.setHeader(headerKey, headerValue);
 
-        pdfService.download(response.getOutputStream(), ticketTransaction);
+        pdfService.download(response.getOutputStream(), ticketTransaction, request.getLocale() != null ? request.getLocale().getCountry() : null);
     }
 
 }

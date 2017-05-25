@@ -6,37 +6,49 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PdfService;
 import com.lowagie.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class PdfServiceImpl implements PdfService {
 
-    public void download(OutputStream outputStream, TicketTransaction ticketTransaction) throws IOException, DocumentException, URISyntaxException {
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    public void download(OutputStream outputStream, TicketTransaction ticketTransaction, String language) throws IOException, DocumentException, URISyntaxException {
+        if (language == null) {
+            language = "de";
+        }
+        language = language.toLowerCase();
         if (ticketTransaction.getStatus() == TicketStatus.STORNO) {
-            String content = new String(
-                Files.readAllBytes(
-                    Paths.get(getClass().getClassLoader().getResource("./templates/storno-pdf.html").toURI())
-                )
-            );
-            toPdf(outputStream, content);
+            Context context = new Context();
+            context.setVariable("customer", ticketTransaction.getCustomer());
+            context.setVariable("transaction", ticketTransaction);
+            context.setVariable("ticketNumber", ticketTransaction.getTicketHistories().size());
+            toPdf(outputStream, templateEngine.process("storno-pdf-" + language, context));
             outputStream.close();
         } else if (ticketTransaction.getStatus() == TicketStatus.BOUGHT) {
-            String content = new String(
-                Files.readAllBytes(
-                    Paths.get(getClass().getClassLoader().getResource("./templates/storno-pdf.html").toURI())
-                )
+            Context context = new Context();
+            context.setVariable("customer", ticketTransaction.getCustomer());
+            context.setVariable("transaction", ticketTransaction);
+            context.setVariable("tickets", ticketTransaction
+                .getTicketHistories()
+                .stream()
+                .map(th -> th.getTicket())
+                .collect(Collectors.toList())
             );
-            toPdf(outputStream, content);
+            toPdf(outputStream, templateEngine.process("bill-pdf-" + language, context));
             outputStream.close();
         } else {
             throw new BadRequestException();

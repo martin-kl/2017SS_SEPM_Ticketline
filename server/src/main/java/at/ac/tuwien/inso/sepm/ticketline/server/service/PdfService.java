@@ -15,6 +15,6 @@ public interface PdfService {
      * @param outputStream write object, where pdf will be written
      * @param ticketTransaction ticket transaction object
      */
-    void download(OutputStream outputStream, TicketTransaction ticketTransaction) throws IOException, DocumentException, URISyntaxException;
+    void download(OutputStream outputStream, TicketTransaction ticketTransaction, String language) throws IOException, DocumentException, URISyntaxException;
 
 }
