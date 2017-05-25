@@ -1,0 +1,37 @@
+Designdokument,
+	dort sind •	Modellierung der Kernstrukturen der Applikation:
+Modellieren Sie wichtige wiederkehrende Strukturen der Applikation in Form eines Klassendiagramms.
+Wenn Sie ein Framework einsetzen, dokumentieren Sie das Zusammenspiel und die Integration des Frameworks in die Applikation.
+gefragt - was heißt das genau, also was sollen wir da machen??!?!??
+
+
+noch weitere Fragen (nach MR1)
+•	Eingesetzte Patterns - was noch außer:
+	Dependency Injection durch Spring Boot. Es ist aufgebaut als 3 Schichten Architektur.
+
+•	Die NFAs sollten später schon in einem Dokument festgehalten werden, aber abgeklärt werden diese beim MR1. - in welchem Dokument?
+
+
+
+
+	noch zu erledigen (zumindest teilweise)
+
+verzögerung beim tastendruck beim Suchen
+Zahlen nicht im Namen speichern (beim Kunden)
+
+Panel von oben anstelle des alerts (wenn wir noch wollen)
+
+Voll blau in liste - bei Ticketauswahl nach Saalplan
+
+Für MR2/MR3 schöne anzeige daten mit sinnvolen event namen oeticket etc.
+
+Sektor wieder weg geben
+
+
+Benoterin achtet auf: Usability, ordentliche Testdaten (als in der datenbank schöne sätze), GUI mit Icons aufhübschen, am vortag schaut sie sich am master den code an
+User Stories mit roten Faden Features Präsentieren
+Projektpräsentation für MR2: zeigt Projektverlauf, retroperspektive, wie ist das projekt aus management sicht gelaufen, liste von features die es schon gibt
+
+
+
+
