@@ -15,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
+
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -61,6 +63,6 @@ public class NewsDetailController {
     }
 
     public void handleReturnButton(ActionEvent actionEvent) {
-        //TODO close window (reference to main necessary?? )
+        ((Stage)ivImage.getScene().getWindow()).close();
     }
 }
