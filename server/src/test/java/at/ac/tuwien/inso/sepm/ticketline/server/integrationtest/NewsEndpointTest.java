@@ -88,7 +88,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED.value()));
     }
 
-    @Test
+    /*@Test
     public void findSpecificNewsAsUser() {
         BDDMockito.
             given(newsRepository.findOneById(TEST_NEWS_ID)).
@@ -111,7 +111,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
             .text(TEST_NEWS_TEXT)
             .publishedAt(TEST_NEWS_PUBLISHED_AT)
             .build()));
-    }
+    }*/
 
     @Test
     public void findSpecificNonExistingNewsNotFoundAsUser() {
