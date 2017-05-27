@@ -32,7 +32,8 @@ public class NewsDataGenerator {
             log.info("generating {} news entries", NUMBER_OF_NEWS_TO_GENERATE);
             for (int i = 0; i < NUMBER_OF_NEWS_TO_GENERATE; i++) {
                 News news = News.builder()
-                    .title(faker.lorem().characters(25, 100))
+                    .summary(faker.lorem().characters(25, 100))
+                    .title(faker.lorem().characters(250, 1000))
                     .text(faker.lorem().paragraph(faker.number().numberBetween(5, 10)))
                     .publishedAt(
                         LocalDateTime.ofInstant(

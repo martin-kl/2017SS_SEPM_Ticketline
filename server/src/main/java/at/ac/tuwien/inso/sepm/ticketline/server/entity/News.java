@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,6 +32,13 @@ public class News extends Audited {
     @Column(nullable = false)
     @Size(max = 100)
     private String title;
+
+    @Column
+    private String summary;
+
+    @Column
+    private Blob image;
+
 
     @Column(nullable = false, length = 10_000)
     private String text;

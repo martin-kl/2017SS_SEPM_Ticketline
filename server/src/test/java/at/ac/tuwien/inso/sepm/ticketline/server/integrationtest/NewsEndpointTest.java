@@ -38,6 +38,8 @@ public class NewsEndpointTest extends BaseIntegrationTest {
     @MockBean
     private NewsRepository newsRepository;
 
+
+
     @Test
     public void findAllNewsUnauthorizedAsAnonymous() {
         Response response = RestAssured
@@ -186,4 +188,6 @@ public class NewsEndpointTest extends BaseIntegrationTest {
             .publishedAt(TEST_NEWS_PUBLISHED_AT)
             .build()));
     }
+
+
 }

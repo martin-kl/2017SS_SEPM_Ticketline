@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,4 +32,19 @@ public interface NewsService {
      */
     News publishNews(News news);
 
+
+    /**
+     * reports news as seen
+     * @param newsId
+     * @param principal
+     * @return the news
+     */
+    News reportSeen(UUID newsId, Principal principal);
+
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    List<News> findAllNotSeenByUser(UUID userId);
 }
