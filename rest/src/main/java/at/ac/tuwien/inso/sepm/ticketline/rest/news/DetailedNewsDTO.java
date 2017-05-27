@@ -34,7 +34,7 @@ public class DetailedNewsDTO {
     private String summary;
 
     @ApiModelProperty(required = true, name = "The news image")
-    private Blob image;
+    private byte[] image;
 
 
 }

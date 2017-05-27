@@ -36,12 +36,9 @@ public class NewsDetailController {
     private Label lbTextText;
 
     public void init(DetailedNewsDTO news) {
-        Blob blob = null;
-        try {
-            Image image = convertToJavaFXImage(blob.getBytes(1, (int) blob.length()), (int) ivImage.getFitWidth(), (int) ivImage.getFitHeight());
+        if (news.getImage() != null) {
+            Image image = convertToJavaFXImage(news.getImage(), (int) ivImage.getFitWidth(), (int) ivImage.getFitHeight());
             ivImage.setImage(image);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         lbPublishDate.setText(news.getPublishedAt().toString());
         lbTitle.setText(news.getTitle());
