@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import org.springframework.stereotype.Component;
@@ -27,18 +26,14 @@ public class AddNewsController {
 
     @FXML
     private Button uploadButton;
-
     @FXML
     private TextField title;
-
     @FXML
     private TextArea summary;
-
     @FXML
     private TextArea text;
 
     private byte[] image;
-
     @FXML
     private ImageView imageView;
 
@@ -98,7 +93,7 @@ public class AddNewsController {
             image = Files.readAllBytes(Paths.get(imageFile.getAbsolutePath()));
             //TODO:
             //KEIN AHNUNG
-            //System.out.println(imageFile.getAbsolutePath());
+            System.out.println(imageFile.getAbsolutePath());
             //imageView.setImage(Paths.get(imageFile.getAbsolutePath()).getFileName());
         } catch (IOException e) {
             (new DataAccessException(e.getMessage(), "upload.failed", e)).showDialog();
