@@ -113,7 +113,7 @@ public class NewsController {
         loadNext();
     }
 
-    public void loadNext() {
+    private void loadNext() {
         Task<List<SimpleNewsDTO>> task = new Task<List<SimpleNewsDTO>>() {
             @Override
             protected List<SimpleNewsDTO> call() throws DataAccessException {
@@ -149,7 +149,7 @@ public class NewsController {
         new Thread(task).start();
     }
 
-    public void appendElements(List<SimpleNewsDTO> simpleNewsDTOList) {
+    private void appendElements(List<SimpleNewsDTO> simpleNewsDTOList) {
         for (Iterator<SimpleNewsDTO> iterator = simpleNewsDTOList.iterator(); iterator.hasNext(); ) {
             SimpleNewsDTO news = iterator.next();
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/news/newsElement.fxml");

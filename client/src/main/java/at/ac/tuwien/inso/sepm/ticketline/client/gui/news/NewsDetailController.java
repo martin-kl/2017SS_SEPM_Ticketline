@@ -8,6 +8,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.text.Text;
 import javax.imageio.ImageIO;
 
 import javafx.stage.Stage;
@@ -37,11 +39,13 @@ public class NewsDetailController {
     @FXML
     private Label lbSummaryHeader;
     @FXML
-    private Label lbSummaryText;
+    private Text txSummary;
     @FXML
     private Label lbTextHeader;
     @FXML
-    private Label lbTextText;
+    private Text txText;
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private NewsService newsService;
@@ -55,12 +59,15 @@ public class NewsDetailController {
                     (int) ivImage.getFitHeight());
                 ivImage.setImage(image);
             }
-            lbPublishDate.setText(detailedNewsDTO.getPublishedAt().toString());
+
+            txText.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
+            txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
+            lbPublishDate.setText(detailedNewsDTO.getPublishedAt().format(formatter));
             lbTitle.setText(detailedNewsDTO.getTitle());
             lbSummaryHeader.setText(BundleManager.getBundle().getString("news.summary.header"));
-            lbSummaryText.setText(detailedNewsDTO.getSummary());
+            txSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
-            lbTextText.setText(detailedNewsDTO.getText());
+            txText.setText(detailedNewsDTO.getText());
         } catch (DataAccessException e) {
             log.error("error retrieving the detailed news entry for id {}, localized message: {}",
                 simpleNewsDTO.getId(), e.getLocalizedMessage());
