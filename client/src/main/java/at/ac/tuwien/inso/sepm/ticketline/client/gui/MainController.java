@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditCon
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.AddNewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
@@ -395,6 +396,19 @@ public class MainController {
         reloadLanguage();
     }
 
+    public void showAddNewsWindow() {
+        Stage dialog = initStage();
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+         .loadAndWrap("/fxml/news/addNews.fxml");
+        AddNewsController addNewsController = (AddNewsController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+        addNewsController.setOnClose((i) -> {
+            dialog.close();
+            newsController.reload();
+        });
+        dialog.showAndWait();
+    }
+
     private void reloadLanguage() {
         ResourceBundle bundle = BundleManager.getBundle();
         ObservableList<Menu> menuList = mbMain.getMenus();
@@ -429,4 +443,5 @@ public class MainController {
             eventsController.setFont(fontAwesome);
         }
     }
+
 }

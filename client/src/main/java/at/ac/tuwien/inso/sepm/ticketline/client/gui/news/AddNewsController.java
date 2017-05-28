@@ -3,7 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -11,8 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
+@Component
 public class AddNewsController {
 
     @FXML
@@ -57,13 +65,13 @@ public class AddNewsController {
             @Override
             protected void succeeded() {
                 super.succeeded();
+                onClose.call(null);
             }
 
             @Override
             protected void failed() {
                 super.failed();
-                JavaFXUtils.createExceptionDialog(getException(),
-                    summary.getScene().getWindow()).showAndWait();
+                ((DataAccessException) getException()).showDialog();
             }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->
@@ -75,6 +83,21 @@ public class AddNewsController {
 
     @FXML
     public void onUpload() {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilterjpg = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter extFilterpng = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilterjpg);
+        fileChooser.getExtensionFilters().add(extFilterpng);
+        File imageFile = fileChooser.showOpenDialog(null);
+        try {
+            image = Files.readAllBytes(Paths.get(imageFile.getPath()));
+        } catch (IOException e) {
+            (new DataAccessException(e.getMessage(), "upload.failed", e)).showDialog();
+        }
+    }
 
+    Callable onClose = (o) -> {};
+    public void setOnClose(Callable callable) {
+        this.onClose = callable;
     }
 }

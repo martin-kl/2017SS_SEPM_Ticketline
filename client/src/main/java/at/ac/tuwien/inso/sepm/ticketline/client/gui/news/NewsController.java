@@ -66,7 +66,6 @@ public class NewsController {
     }
 
     public void init() {
-        prepareForNewList();
         reload();
     }
 
@@ -104,7 +103,7 @@ public class NewsController {
 
 
     public void addNewsClicked(ActionEvent actionEvent) {
-        //TODO
+        mainController.showAddNewsWindow();
     }
 
     public void showSeenClicked(ActionEvent actionEvent) {
