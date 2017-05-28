@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -37,7 +38,16 @@
                   <TextArea fx:id="summary" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="%news.image" GridPane.rowIndex="3" />
-                  <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#onUpload" text="%upload" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#onUpload" text="%upload" />
+                        <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
                </children>
             </GridPane>
          </center>
