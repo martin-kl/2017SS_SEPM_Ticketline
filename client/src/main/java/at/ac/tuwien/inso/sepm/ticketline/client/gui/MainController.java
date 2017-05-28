@@ -6,12 +6,14 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersControlle
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.TransactionController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
@@ -135,22 +137,28 @@ public class MainController {
 
     @FXML
     private void aboutApplication(ActionEvent actionEvent) {
+        /*
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+        */
+        Stage dialog = initStage();
         dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/aboutDialog.fxml")));
         dialog.setTitle(BundleManager.getBundle().getString("dialog.about.title"));
         dialog.showAndWait();
     }
 
     public void showPerformanceDetailWindow(DetailedPerformanceDTO performance) {
+        /*
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+        */
+        Stage dialog = initStage();
 
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -188,11 +196,14 @@ public class MainController {
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
+        /*
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+        */
+        Stage dialog = initStage();
 
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -253,6 +264,20 @@ public class MainController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         return dialog;
+    }
+
+    public void showNewsDetailWindow(SimpleNewsDTO news) {
+        Stage dialog = initStage();
+        dialog.setResizable(true);
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/news/newsDetail.fxml");
+        NewsDetailController controller = (NewsDetailController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.init(news);
+        dialog.setTitle(BundleManager.getBundle().getString("news.details"));
+        dialog.showAndWait();
+
     }
 
     private void initNewsTabPane() {

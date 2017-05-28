@@ -5,6 +5,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.rest.NewsRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,12 @@ public class SimpleNewsService implements NewsService {
 
     @Override
     public List<SimpleNewsDTO> findAll(int page) throws DataAccessException {
-        return newsRestClient.findAll();
+        return newsRestClient.findAll(page);
     }
 
     @Override
     public List<SimpleNewsDTO> findAllUnseen(int page) throws DataAccessException {
-        return newsRestClient.findAllUnseen();
+        return newsRestClient.findAllUnseen(page);
     }
 
     @Override
@@ -37,4 +38,7 @@ public class SimpleNewsService implements NewsService {
         return newsRestClient.publish(news);
     }
 
+    public DetailedNewsDTO findDetailedNews(UUID id) throws DataAccessException {
+        return newsRestClient.findDetailedNews(id);
+    }
 }
