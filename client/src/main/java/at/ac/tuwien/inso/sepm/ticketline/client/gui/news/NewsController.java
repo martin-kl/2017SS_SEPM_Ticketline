@@ -7,7 +7,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,13 +32,10 @@ public class NewsController {
 
     @FXML
     private VBox vbNewsElements;
-
     @FXML
     private Button addNews;
-
     @FXML
     private CheckBox showSeen;
-
     @FXML
     private ScrollPane scrollPane;
 
@@ -51,7 +47,6 @@ public class NewsController {
     private int loadedUntilPage = -1;
     private boolean currentlyLoading = false;
     private boolean shouldShowSeen = false;
-
 
     public void reload() {
         prepareForNewList();
@@ -89,6 +84,7 @@ public class NewsController {
 
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("news.title"));
+        addNews.setText(BundleManager.getBundle().getString("news.add"));
     }
 
     public void setFont(FontAwesome fontAwesome){
@@ -116,8 +112,6 @@ public class NewsController {
         prepareForNewList();
         loadNext();
     }
-
-
 
     public void loadNext() {
         Task<List<SimpleNewsDTO>> task = new Task<List<SimpleNewsDTO>>() {
@@ -162,9 +156,7 @@ public class NewsController {
             ((NewsElementController) wrapper.getController()).initializeData(news);
             Node newsElement = (Node) wrapper.getLoadedObject();
             newsElement.setOnMouseClicked((e) -> {
-                //TODO
-                //open News detail ->  news
-                //news is in variable "news"
+                mainController.showNewsDetailWindow(news);
             });
             vbNewsElements.getChildren().add(newsElement);
             if (iterator.hasNext()) {
@@ -173,5 +165,4 @@ public class NewsController {
             }
         }
     }
-
 }
