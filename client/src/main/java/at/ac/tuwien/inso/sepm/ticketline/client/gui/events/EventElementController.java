@@ -33,6 +33,22 @@ public class EventElementController {
     @FXML
     private VBox vbPerformanceElements;
 
+    @FXML
+    private Label labelPerformancenameLabelling;
+
+    @FXML
+    private Label labelBegintimeLabelling;
+
+    @FXML
+    private Label labelEndtimeLabelling;
+
+    @FXML
+    private Label labelLocationLabelling;
+
+    @FXML
+    private Label labelTypeLabelling;
+
+
     private EventsController eventsController;
 
     private final SpringFxmlLoader springFxmlLoader;
@@ -53,6 +69,12 @@ public class EventElementController {
 
     private void reloadLanguage(){
         labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category"));
+
+        labelPerformancenameLabelling.setText(BundleManager.getBundle().getString("events.performance.name"));
+        labelBegintimeLabelling.setText(BundleManager.getBundle().getString("events.begin"));
+        labelEndtimeLabelling.setText(BundleManager.getBundle().getString("events.end"));
+        labelLocationLabelling.setText(BundleManager.getBundle().getString("events.location"));
+        labelTypeLabelling.setText(BundleManager.getBundle().getString("events.type"));
     }
 
     private void showPerformances(EventDTO eventDTO){
