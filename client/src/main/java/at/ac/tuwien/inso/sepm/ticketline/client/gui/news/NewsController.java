@@ -70,8 +70,7 @@ public class NewsController {
         });
     }
 
-    @FXML
-    public void initialize() {
+    public void init() {
         prepareForNewList();
         reload();
     }

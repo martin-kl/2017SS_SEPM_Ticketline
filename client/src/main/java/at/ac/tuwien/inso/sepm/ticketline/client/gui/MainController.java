@@ -332,7 +332,7 @@ public class MainController {
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
-            newsController.initialize();
+            newsController.init();
         } else {
             if (!spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().add(login);
@@ -349,7 +349,7 @@ public class MainController {
     }
 
     public void reloadNewsList() {
-        newsController.initialize();
+        newsController.init();
     }
 
     public void reloadEventList() {
