@@ -4,14 +4,23 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Helper {
 
     public static BigDecimal getTotalPrice(List<? extends TicketDTO> tickets) {
@@ -50,5 +59,18 @@ public class Helper {
             }
         });
         return dialog;
+    }
+
+    public static Image convertToJavaFXImage(byte[] raw, final int width, final int height) {
+        WritableImage image = new WritableImage(width, height);
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(raw);
+            BufferedImage read = ImageIO.read(bis);
+            image = SwingFXUtils.toFXImage(read, null);
+        } catch (IOException ex) {
+            log.error("error while converting blob to javafx.scene.image, message=" + ex
+                .getLocalizedMessage());
+        }
+        return image;
     }
 }

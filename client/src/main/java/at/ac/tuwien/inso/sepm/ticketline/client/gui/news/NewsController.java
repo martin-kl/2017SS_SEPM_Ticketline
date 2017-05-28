@@ -33,9 +33,9 @@ public class NewsController {
     @FXML
     private VBox vbNewsElements;
     @FXML
-    private Button addNews;
+    private Button btnAddNews;
     @FXML
-    private CheckBox showSeen;
+    private CheckBox cbShowSeen;
     @FXML
     private ScrollPane scrollPane;
 
@@ -83,7 +83,8 @@ public class NewsController {
 
     public void reloadLanguage() {
         setTitle(BundleManager.getBundle().getString("news.title"));
-        addNews.setText(BundleManager.getBundle().getString("news.add"));
+        cbShowSeen.setText(BundleManager.getBundle().getString("show.read"));
+        btnAddNews.setText(BundleManager.getBundle().getString("news.add"));
     }
 
     public void setFont(FontAwesome fontAwesome){
@@ -107,7 +108,7 @@ public class NewsController {
     }
 
     public void showSeenClicked(ActionEvent actionEvent) {
-        shouldShowSeen = showSeen.isSelected();
+        shouldShowSeen = cbShowSeen.isSelected();
         prepareForNewList();
         loadNext();
     }

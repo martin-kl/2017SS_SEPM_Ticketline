@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import java.awt.image.BufferedImage;
@@ -52,9 +53,10 @@ public class NewsDetailController {
 
     public void init(SimpleNewsDTO simpleNewsDTO) {
         try {
+            ivImage.setFitWidth(lbSummaryHeader.getScene().getWindow().widthProperty().doubleValue());
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
-                Image image = convertToJavaFXImage(detailedNewsDTO.getImage(),
+                Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
                 ivImage.setImage(image);
@@ -79,6 +81,7 @@ public class NewsDetailController {
         }
     }
 
+    /* is now in HELPER.java
     private static Image convertToJavaFXImage(byte[] raw, final int width, final int height) {
         WritableImage image = new WritableImage(width, height);
         try {
@@ -91,6 +94,7 @@ public class NewsDetailController {
         }
         return image;
     }
+    */
 
     public void handleReturnButton(ActionEvent actionEvent) {
         ((Stage) ivImage.getScene().getWindow()).close();
