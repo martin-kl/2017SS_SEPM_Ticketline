@@ -1,14 +1,20 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.util;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Window;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -22,6 +28,16 @@ public class JavaFXUtils {
      */
     private JavaFXUtils() {
 
+
+    }
+
+    public static Image convertToJavaFXImage(byte[] raw) {
+        try {
+            return SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(raw)), null);
+        } catch (IOException e) {
+            (new DataAccessException(e.getMessage(), "upload.failed", e)).showDialog();
+        }
+        return null;
     }
 
     /**

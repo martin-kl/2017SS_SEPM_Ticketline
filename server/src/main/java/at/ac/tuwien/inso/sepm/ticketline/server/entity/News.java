@@ -35,7 +35,7 @@ public class News extends Audited {
     @Column(nullable = false)
     private String summary;
 
-    @Column
+    @Column(length = 5_000_000)
     private byte[] image;
 
 

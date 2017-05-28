@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import java.awt.image.BufferedImage;
@@ -54,10 +55,14 @@ public class NewsDetailController {
         try {
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
-                Image image = convertToJavaFXImage(detailedNewsDTO.getImage(),
-                    (int) ivImage.getFitWidth(),
-                    (int) ivImage.getFitHeight());
-                ivImage.setImage(image);
+                //Image image = convertToJavaFXImage(detailedNewsDTO.getImage(),
+                    //(int) ivImage.getFitWidth(),
+                    //(int) ivImage.getFitHeight());
+                //ivImage.setImage(image);
+                System.out.println("1234: Setting image");
+                ivImage.setImage(JavaFXUtils.convertToJavaFXImage(detailedNewsDTO.getImage()));
+            } else {
+                System.out.println("1234: is null");
             }
 
             txText.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
