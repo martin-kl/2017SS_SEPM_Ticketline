@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
+import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
@@ -65,19 +66,32 @@ public class NewsController {
         });
     }
 
+
     public void init() {
         reload();
+        List<String> roles = authenticationInformationService.getCurrentAuthenticationTokenInfo().get().getRoles();
+        if (!roles.contains("ADMIN")) {
+            btnAddNews.setVisible(false);
+            btnAddNews.setManaged(false); //removed from layout calculations
+        } else {
+            btnAddNews.setVisible(true);
+            btnAddNews.setManaged(true);
+        }
     }
 
     private boolean deleteEverythingBeforeNextRedraw = false;
+
     private void prepareForNewList() {
         loadedUntilPage = -1;
         deleteEverythingBeforeNextRedraw = true;
     }
 
-    public NewsController(MainController mainController, SpringFxmlLoader springFxmlLoader, NewsService newsService) {
+    private final AuthenticationInformationService authenticationInformationService;
+
+    public NewsController(MainController mainController, SpringFxmlLoader springFxmlLoader, NewsService newsService, AuthenticationInformationService authenticationInformationService) {
         this.mainController = mainController;
         this.springFxmlLoader = springFxmlLoader;
+        this.authenticationInformationService = authenticationInformationService;
         this.newsService = newsService;
     }
 
@@ -87,17 +101,19 @@ public class NewsController {
         btnAddNews.setText(BundleManager.getBundle().getString("news.add"));
     }
 
-    public void setFont(FontAwesome fontAwesome){
+    public void setFont(FontAwesome fontAwesome) {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.NEWSPAPER_ALT);
         setTitle(BundleManager.getBundle().getString("news.title"));
     }
+
     private void setIcon(FontAwesome.Glyph glyph) {
         lblHeaderIcon.setGraphic(
             fontAwesome
                 .create(glyph)
                 .size(HEADER_ICON_SIZE));
     }
+
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
@@ -127,7 +143,7 @@ public class NewsController {
             @Override
             protected void succeeded() {
                 super.succeeded();
-                if(deleteEverythingBeforeNextRedraw){
+                if (deleteEverythingBeforeNextRedraw) {
                     vbNewsElements.getChildren().clear();
                     deleteEverythingBeforeNextRedraw = false;
                 }
