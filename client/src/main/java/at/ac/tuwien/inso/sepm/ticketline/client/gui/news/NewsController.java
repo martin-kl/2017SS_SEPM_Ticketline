@@ -157,6 +157,9 @@ public class NewsController {
             Node newsElement = (Node) wrapper.getLoadedObject();
             newsElement.setOnMouseClicked((e) -> {
                 mainController.showNewsDetailWindow(news);
+                if (!shouldShowSeen) {
+                    vbNewsElements.getChildren().remove(newsElement);
+                }
             });
             vbNewsElements.getChildren().add(newsElement);
             if (iterator.hasNext()) {
