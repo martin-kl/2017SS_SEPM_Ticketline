@@ -48,7 +48,9 @@ public class NewsDetailController {
 
     public void init(SimpleNewsDTO simpleNewsDTO) {
         try {
-            ivImage.setFitWidth(lbSummaryHeader.getScene().getWindow().widthProperty().doubleValue());
+
+            //geht nix:
+            //ivImage.setFitWidth(lbSummaryHeader.getScene().getWindow().widthProperty().doubleValue());
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
                 System.out.println("1234: " + detailedNewsDTO.getImage().length);
