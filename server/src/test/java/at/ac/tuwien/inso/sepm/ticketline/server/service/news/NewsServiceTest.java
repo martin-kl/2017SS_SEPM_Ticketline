@@ -12,9 +12,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -40,6 +44,8 @@ public class NewsServiceTest {
 
     private Principal admin;
     private Principal user;
+
+    private static Pageable pageable = new PageRequest(0, 10000);
 
     @Before
     public void setUpCustomer() {
@@ -79,9 +85,9 @@ public class NewsServiceTest {
     @Test
     public void canPublishNews() {
         News news = getUnsavedNews();
-        assertFalse(newsService.findAll().contains(news));
+        assertFalse(newsService.findAll(pageable).contains(news));
         News saved = newsService.publishNews(news);
-        assertTrue(newsService.findAll().contains(saved));
+        assertTrue(newsService.findAll(pageable).contains(saved));
     }
 
     @Test
@@ -90,13 +96,55 @@ public class NewsServiceTest {
         News news2 = getUnsavedNews();
         News saved1 = newsService.publishNews(news1);
         News saved2 = newsService.publishNews(news2);
-        List<News> unread = newsService.findAllNotSeenByUser(user.getId());
+        List<News> unread = newsService.findAllNotSeenByUser(user.getId(),pageable);
         assertTrue(unread.contains(saved1));
         assertTrue(unread.contains(saved2));
         News news = newsService.reportSeen(saved1.getId(), user);
-        unread = newsService.findAllNotSeenByUser(user.getId());
+        unread = newsService.findAllNotSeenByUser(user.getId(), pageable);
         assertFalse(unread.contains(saved1));
         assertFalse(unread.contains(news));
+        assertTrue(unread.contains(saved2));
+    }
+
+    @Test
+    public void canPageFindUnseen() {
+        News news1 = getUnsavedNews();
+        News news2 = getUnsavedNews();
+        News saved1 = newsService.publishNews(news1);
+        News saved2 = newsService.publishNews(news2);
+        Pageable page = new PageRequest(0, 1);
+        List<News> unread = newsService.findAllNotSeenByUser(user.getId(), page);
+        assertTrue(unread.size() == 1);
+        assertTrue(unread.contains(saved2));
+        page = new PageRequest(1, 1);
+        unread = newsService.findAllNotSeenByUser(user.getId(), page);
+        assertTrue(unread.size() == 1);
+        assertTrue(unread.contains(saved1));
+        page = new PageRequest(0, 2);
+        unread = newsService.findAllNotSeenByUser(user.getId(), page);
+        assertTrue(unread.size() == 2);
+        assertTrue(unread.contains(saved1));
+        assertTrue(unread.contains(saved2));
+    }
+
+    @Test
+    public void canPageFindAll() {
+        News news1 = getUnsavedNews();
+        News news2 = getUnsavedNews();
+        News saved1 = newsService.publishNews(news1);
+        News saved2 = newsService.publishNews(news2);
+        Pageable page = new PageRequest(0, 1);
+        List<News> unread = newsService.findAll(page);
+        assertTrue(unread.size() == 1);
+        assertTrue(unread.contains(saved2));
+        page = new PageRequest(1, 1);
+        unread = newsService.findAll(page);
+        assertTrue(unread.size() == 1);
+        assertTrue(unread.contains(saved1));
+        page = new PageRequest(0, 2);
+        unread = newsService.findAll(page);
+        assertTrue(unread.size() == 2);
+        assertTrue(unread.contains(saved1));
         assertTrue(unread.contains(saved2));
     }
 }

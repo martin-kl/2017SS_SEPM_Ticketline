@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,7 @@ public interface NewsService {
      *
      * @return ordered list of al news entries
      */
-    List<News> findAll();
+    List<News> findAll(Pageable page);
 
 
     /**
@@ -46,5 +47,5 @@ public interface NewsService {
      * @param userId
      * @return
      */
-    List<News> findAllNotSeenByUser(UUID userId);
+    List<News> findAllNotSeenByUser(UUID userId, Pageable page);
 }

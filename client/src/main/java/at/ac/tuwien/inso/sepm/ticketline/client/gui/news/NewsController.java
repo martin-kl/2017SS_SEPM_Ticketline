@@ -124,9 +124,9 @@ public class NewsController {
             @Override
             protected List<SimpleNewsDTO> call() throws DataAccessException {
                 if (shouldShowSeen) {
-                    return newsService.findAll();
+                    return newsService.findAll(++loadedUntilPage);
                 } else {
-                    return newsService.findAllUnseen();
+                    return newsService.findAllUnseen(++loadedUntilPage);
                 }
             }
 

@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.BDDMockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
@@ -54,7 +55,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
     @Test
     public void findAllNewsAsUser() {
         BDDMockito.
-            given(newsRepository.findAllByOrderByPublishedAtDesc()).
+            given(newsRepository.findAllByOrderByPublishedAtDesc(any(Pageable.class))).
             willReturn(Collections.singletonList(
                 News.builder()
                     .id(TEST_NEWS_ID)

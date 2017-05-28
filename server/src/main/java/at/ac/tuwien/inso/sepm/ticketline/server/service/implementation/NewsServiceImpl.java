@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.NewsRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalNewsRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.NewsService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,8 +26,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> findAll() {
-        return newsRepository.findAllByOrderByPublishedAtDesc();
+    public List<News> findAll(Pageable page) {
+        return newsRepository.findAllByOrderByPublishedAtDesc(page);
     }
 
     @Override
@@ -55,8 +56,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> findAllNotSeenByUser(UUID userId) {
-        return newsRepository.findAllNotSeenByUserWithId(userId);
+    public List<News> findAllNotSeenByUser(UUID userId, Pageable page) {
+        return newsRepository.findAllNotSeenByUserWithId(userId, page);
     }
 
 }
