@@ -54,6 +54,9 @@ public class AddNewsController {
         news.setSummary(summary.getText());
         news.setText(text.getText());
         news.setImage(imageByteArray);
+        if (imageByteArray != null) {
+            System.out.println("1234: " + imageByteArray.length);
+        }
         save(news);
     }
 

@@ -50,11 +50,15 @@ public class NewsDetailController {
             ivImage.setFitWidth(lbSummaryHeader.getScene().getWindow().widthProperty().doubleValue());
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
+                System.out.println("1234: " + detailedNewsDTO.getImage().length);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
                 ivImage.setImage(image);
+            } else  {
+                System.out.println("1234 ist nill");
             }
+
 
             txText.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
             txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
