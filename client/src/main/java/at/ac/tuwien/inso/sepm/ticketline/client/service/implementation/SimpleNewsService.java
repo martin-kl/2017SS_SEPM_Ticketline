@@ -26,4 +26,9 @@ public class SimpleNewsService implements NewsService {
         return newsRestClient.findAll();
     }
 
+    @Override
+    public List<SimpleNewsDTO> findAllUnseen() throws DataAccessException {
+        return newsRestClient.findAllUnseen();
+    }
+
 }

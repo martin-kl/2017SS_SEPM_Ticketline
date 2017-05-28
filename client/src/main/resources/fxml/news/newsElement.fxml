@@ -7,7 +7,7 @@
 <VBox xmlns="http://javafx.com/javafx/8.0.92"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsElementController"
-      spacing="5.0">
+      spacing="5.0" styleClass="newsElement">
     <stylesheets>
         <URL value="@/css/newsElement.css"/>
     </stylesheets>

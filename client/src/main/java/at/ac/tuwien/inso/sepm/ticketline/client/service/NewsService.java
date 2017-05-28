@@ -15,4 +15,11 @@ public interface NewsService {
      */
     List<SimpleNewsDTO> findAll() throws DataAccessException;
 
+    /**
+     *
+     * @return
+     * @throws DataAccessException
+     */
+    List<SimpleNewsDTO> findAllUnseen() throws DataAccessException;
+
 }

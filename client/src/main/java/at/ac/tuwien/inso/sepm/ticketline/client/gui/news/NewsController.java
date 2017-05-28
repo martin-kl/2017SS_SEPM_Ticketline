@@ -9,11 +9,10 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Separator;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -35,9 +34,53 @@ public class NewsController {
     @FXML
     private VBox vbNewsElements;
 
+    @FXML
+    private Button addNews;
+
+    @FXML
+    private CheckBox showSeen;
+
+    @FXML
+    private ScrollPane scrollPane;
+
+
     private final MainController mainController;
     private final SpringFxmlLoader springFxmlLoader;
     private final NewsService newsService;
+
+    private int loadedUntilPage = -1;
+    private boolean currentlyLoading = false;
+    private boolean shouldShowSeen = false;
+
+
+    public void reload() {
+        prepareForNewList();
+        loadNext();
+        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
+            if (vbNewsElements.getChildren().size() == 0) {
+                return;
+            }
+            if (currentlyLoading) {
+                return;
+            }
+            if (new_val.floatValue() > 0.9) {
+                currentlyLoading = true;
+                loadNext();
+            }
+        });
+    }
+
+    @FXML
+    public void initialize() {
+        prepareForNewList();
+        reload();
+    }
+
+    private boolean deleteEverythingBeforeNextRedraw = false;
+    private void prepareForNewList() {
+        loadedUntilPage = -1;
+        deleteEverythingBeforeNextRedraw = true;
+    }
 
     public NewsController(MainController mainController, SpringFxmlLoader springFxmlLoader, NewsService newsService) {
         this.mainController = mainController;
@@ -64,28 +107,39 @@ public class NewsController {
         lblHeaderTitle.setText(title);
     }
 
-    public void loadNews() {
-        ObservableList<Node> vbNewsBoxChildren = vbNewsElements.getChildren();
-        vbNewsBoxChildren.clear();
+
+    public void addNewsClicked(ActionEvent actionEvent) {
+        //TODO
+    }
+
+    public void showSeenClicked(ActionEvent actionEvent) {
+        shouldShowSeen = showSeen.isSelected();
+        prepareForNewList();
+        loadNext();
+    }
+
+
+
+    public void loadNext() {
         Task<List<SimpleNewsDTO>> task = new Task<List<SimpleNewsDTO>>() {
             @Override
             protected List<SimpleNewsDTO> call() throws DataAccessException {
-                return newsService.findAll();
+                if (shouldShowSeen) {
+                    return newsService.findAll();
+                } else {
+                    return newsService.findAllUnseen();
+                }
             }
 
             @Override
             protected void succeeded() {
                 super.succeeded();
-                for (Iterator<SimpleNewsDTO> iterator = getValue().iterator(); iterator.hasNext(); ) {
-                    SimpleNewsDTO news = iterator.next();
-                    SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/news/newsElement.fxml");
-                    ((NewsElementController) wrapper.getController()).initializeData(news);
-                    vbNewsBoxChildren.add((Node) wrapper.getLoadedObject());
-                    if (iterator.hasNext()) {
-                        Separator separator = new Separator();
-                        vbNewsBoxChildren.add(separator);
-                    }
+                if(deleteEverythingBeforeNextRedraw){
+                    vbNewsElements.getChildren().clear();
+                    deleteEverythingBeforeNextRedraw = false;
                 }
+                appendElements(getValue());
+                currentlyLoading = false;
             }
 
             @Override
@@ -100,6 +154,25 @@ public class NewsController {
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
+    }
+
+    public void appendElements(List<SimpleNewsDTO> simpleNewsDTOList) {
+        for (Iterator<SimpleNewsDTO> iterator = simpleNewsDTOList.iterator(); iterator.hasNext(); ) {
+            SimpleNewsDTO news = iterator.next();
+            SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/news/newsElement.fxml");
+            ((NewsElementController) wrapper.getController()).initializeData(news);
+            Node newsElement = (Node) wrapper.getLoadedObject();
+            newsElement.setOnMouseClicked((e) -> {
+                //TODO
+                //open News detail ->  news
+                //news is in variable "news"
+            });
+            vbNewsElements.getChildren().add(newsElement);
+            if (iterator.hasNext()) {
+                Separator separator = new Separator();
+                vbNewsElements.getChildren().add(separator);
+            }
+        }
     }
 
 }

@@ -45,8 +45,6 @@ public class NewsEndpoint {
         return newsMapper.newsToSimpleNewsDTO(newsService.findAllNotSeenByUser(getCurrentUser().getId()));
     }
 
-
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get detailed information about a specific news entry")
     public DetailedNewsDTO find(@PathVariable UUID id) {

@@ -28,11 +28,12 @@ public interface NewsRepository extends JpaRepository<News, UUID> {
     List<News> findAllByOrderByPublishedAtDesc();
 
 
-    //@Query("SELECT n FROM News n WHERE n.principalNews = FALSE OR status = 'STORNO' ORDER BY tt.lastModifiedAt DESC")
-    //@Query("SELECT n FROM News");
-
-    //@Query(value = "SELECT n from news n WHERE NOT EXISTS (SELECT pn FROM principal_news pn WHERE pn.news_id = n.id AND pn.user_id = ?1 AND pn.seen = true)", nativeQuery = true)
-    @Query("SELECT n FROM News n WHERE NOT EXISTS (SELECT pn FROM PrincipalNews pn WHERE pn.news = n AND pn.principal.id = ?1 AND pn.seen = true)")
+    /**
+     * fins all news the user with uuid has not seen
+     * @param uuid
+     * @return
+     */
+    @Query("SELECT n FROM News n WHERE NOT EXISTS (SELECT pn FROM PrincipalNews pn WHERE pn.news = n AND pn.principal.id = ?1 AND pn.seen = true) ORDER BY n.publishedAt DESC")
     List<News> findAllNotSeenByUserWithId(UUID uuid);
 
 

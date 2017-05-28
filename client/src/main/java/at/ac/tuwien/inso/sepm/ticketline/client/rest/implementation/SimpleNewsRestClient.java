@@ -21,6 +21,8 @@ public class SimpleNewsRestClient implements NewsRestClient {
 
     private static final String NEWS_URL = "/news";
 
+    private static final String NOT_SEEN_NEWS_URL = "/news/notseen";
+
     private final RestClient restClient;
 
     public SimpleNewsRestClient(RestClient restClient) {
@@ -29,11 +31,20 @@ public class SimpleNewsRestClient implements NewsRestClient {
 
     @Override
     public List<SimpleNewsDTO> findAll() throws DataAccessException {
+        return get(NEWS_URL);
+    }
+
+    @Override
+    public List<SimpleNewsDTO> findAllUnseen() throws DataAccessException {
+        return get(NOT_SEEN_NEWS_URL);
+    }
+
+    private List<SimpleNewsDTO> get(String url) throws DataAccessException {
         try {
-            log.debug("Retrieving all news from {}", restClient.getServiceURI(NEWS_URL));
+            log.debug("Retrieving all news from {}", restClient.getServiceURI(url));
             ResponseEntity<List<SimpleNewsDTO>> news =
                 restClient.exchange(
-                    restClient.getServiceURI(NEWS_URL),
+                    restClient.getServiceURI(url),
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<SimpleNewsDTO>>() {
@@ -45,6 +56,7 @@ public class SimpleNewsRestClient implements NewsRestClient {
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
+
     }
 
 }
