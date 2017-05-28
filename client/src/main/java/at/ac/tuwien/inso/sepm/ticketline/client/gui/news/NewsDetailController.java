@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import java.time.format.DateTimeFormatter;
@@ -51,9 +52,12 @@ public class NewsDetailController {
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
                 System.out.println("1234: " + detailedNewsDTO.getImage().length);
+                ivImage.setFitWidth(500);
+                ivImage.setFitHeight(500);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
+                //Image image = JavaFXUtils.convertToJavaFXImage(detailedNewsDTO.getImage());
                 ivImage.setImage(image);
             } else  {
                 System.out.println("1234 ist nill");
