@@ -3,14 +3,10 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -18,9 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.text.Text;
-import javax.imageio.ImageIO;
 
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -53,16 +47,13 @@ public class NewsDetailController {
 
     public void init(SimpleNewsDTO simpleNewsDTO) {
         try {
+            ivImage.setFitWidth(lbSummaryHeader.getScene().getWindow().widthProperty().doubleValue());
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
-                //Image image = convertToJavaFXImage(detailedNewsDTO.getImage(),
-                    //(int) ivImage.getFitWidth(),
-                    //(int) ivImage.getFitHeight());
-                //ivImage.setImage(image);
-                System.out.println("1234: Setting image");
-                ivImage.setImage(JavaFXUtils.convertToJavaFXImage(detailedNewsDTO.getImage()));
-            } else {
-                System.out.println("1234: is null");
+                Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
+                    (int) ivImage.getFitWidth(),
+                    (int) ivImage.getFitHeight());
+                ivImage.setImage(image);
             }
 
             txText.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
@@ -82,19 +73,6 @@ public class NewsDetailController {
             alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
             alert.setContentText(BundleManager.getExceptionBundle().getString("default.error.content"));
         }
-    }
-
-    private static Image convertToJavaFXImage(byte[] raw, final int width, final int height) {
-        WritableImage image = new WritableImage(width, height);
-        try {
-            ByteArrayInputStream bis = new ByteArrayInputStream(raw);
-            BufferedImage read = ImageIO.read(bis);
-            image = SwingFXUtils.toFXImage(read, null);
-        } catch (IOException ex) {
-            log.error("error while converting blob to javafx.scene.image, message=" + ex
-                .getLocalizedMessage());
-        }
-        return image;
     }
 
     public void handleReturnButton(ActionEvent actionEvent) {
