@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.News;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.PrincipalNews;
-import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.NewsRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalNewsRepository;
@@ -41,6 +40,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News publishNews(News news) {
+        //commented cause hibernate checks this for us
+        /*
         if (news.getText().length() == 0) {
             log.error(
                 "error during save process of new news entry with title = \"{}\", text of news entry is 0 characters long or null",
@@ -65,6 +66,7 @@ public class NewsServiceImpl implements NewsService {
                 news.getTitle());
             throw new BadRequestException("Image is larger than 5mb - this is not possible");
         }
+        */
         news.setPublishedAt(LocalDateTime.now());
         return newsRepository.save(news);
     }
