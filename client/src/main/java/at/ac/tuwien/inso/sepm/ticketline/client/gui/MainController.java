@@ -427,21 +427,14 @@ public class MainController {
         menuList.get(2).getItems().get(0).setText(bundle.getString("menu.language.german"));
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
 
-        //TODO implement all these methods and update them if something is changing (new button or something like this)
-        if (alreadyLoggedIn) {
-            newsController.reloadLanguage();
-            customersController.reloadLanguage();
-            eventsController.reloadLanguage();
-            accountsController.reloadLanguage();
-            transactionListController.reloadLanguage();
-        } else {
+        if(! alreadyLoggedIn) {
             authenticationController.reloadLanguage();
-            newsController.setFont(fontAwesome);
-            accountsController.setFont(fontAwesome);
-            customersController.setFont(fontAwesome);
-            transactionListController.setFont(fontAwesome);
-            eventsController.setFont(fontAwesome);
         }
+        newsController.reloadLanguage(alreadyLoggedIn);
+        customersController.reloadLanguage(alreadyLoggedIn);
+        eventsController.reloadLanguage(alreadyLoggedIn);
+        accountsController.reloadLanguage(alreadyLoggedIn);
+        transactionListController.reloadLanguage(alreadyLoggedIn);
     }
 
 }
