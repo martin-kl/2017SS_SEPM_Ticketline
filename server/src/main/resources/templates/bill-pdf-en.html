@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<h1>Bill</h1>
+<hr />
+<p>
+    <span>Bill Number: <span th:text="${transaction.id}"></span></span>
+</p>
+<table th:if="${customer}">
+    <tr>
+        <td>Name:</td>
+        <td><b th:text="${customer.firstName + ' ' + customer.lastName}"></b></td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td><b th:text="${customer.email}"></b></td>
+    </tr>
+    <tr>
+        <td>Birthday:</td>
+        <td><b th:text="${customer.birthday}"></b></td>
+    </tr>
+    <tr>
+        <td>Address:</td>
+        <td><b th:text="${customer.address}"></b></td>
+    </tr>
+</table>
+<hr />
+<h2>Positions</h2>
+<table>
+    <tr th:each="ticket : ${tickets}">
+        <td>Ticket</td>
+        <td>€ <span th:text="${ticket.price}"></span></td>
+    </tr>
+</table>
+
+</body>
+</html>

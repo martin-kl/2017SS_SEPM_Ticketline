@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+    <h1>Stornobeleg</h1>
+    <hr />
+    <p>
+        <span>ID: <span th:text="${transaction.id}"></span></span>
+    </p>
+    <table th:if="${customer}">
+        <tr>
+            <td>Name:</td>
+            <td><b th:text="${customer.firstName + ' ' + customer.lastName}"></b></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><b th:text="${customer.email}"></b></td>
+        </tr>
+        <tr>
+            <td>Geburtstag:</td>
+            <td><b th:text="${customer.birthday}"></b></td>
+        </tr>
+        <tr>
+            <td>Adresse:</td>
+            <td><b th:text="${customer.address}"></b></td>
+        </tr>
+    </table>
+    <p th:unless="${customer}">
+        Diese Transaktion wurde für als Gast durchgeführt.
+    </p>
+    <hr />
+    <h2>Tickets</h2>
+    <table>
+        <tr>
+            <td>Anzahl stornierter Tickets</td>
+            <td th:text="${ticketNumber}"></td>
+        </tr>
+    </table>
+
+</body>
+</html>
