@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.NewsRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
@@ -34,7 +35,28 @@ public class SimpleNewsService implements NewsService {
     }
 
     @Override
-    public DetailedNewsDTO publish(DetailedNewsDTO news) throws DataAccessException {
+    public DetailedNewsDTO publish(DetailedNewsDTO news) throws DataAccessException, ValidationException {
+        if (news.getText().length() == 0) {
+            throw new ValidationException("news.no.text");
+        }
+        if (news.getText().length() > 10_000) {
+            throw new ValidationException("news.long.text");
+        }
+        if (news.getSummary().length() == 0) {
+            throw new ValidationException("news.no.summary");
+        }
+        if (news.getSummary().length() > 10_000) {
+            throw new ValidationException("news.long.summary");
+        }
+        if (news.getTitle().length() == 0) {
+            throw new ValidationException("news.no.title");
+        }
+        if (news.getTitle().length() > 100) {
+            throw new ValidationException("news.long.title");
+        }
+        if (news.getImage() != null && news.getImage().length > 5_000_000) {
+            throw new ValidationException("news.large.image");
+        }
         return newsRestClient.publish(news);
     }
 

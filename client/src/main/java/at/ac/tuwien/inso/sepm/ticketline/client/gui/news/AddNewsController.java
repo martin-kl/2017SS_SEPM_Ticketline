@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.news;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
@@ -63,7 +65,7 @@ public class AddNewsController {
     private void save(DetailedNewsDTO news) {
         Task<DetailedNewsDTO> task = new Task<DetailedNewsDTO>() {
             @Override
-            protected DetailedNewsDTO call() throws DataAccessException {
+            protected DetailedNewsDTO call() throws ExceptionWithDialog {
                 return newsService.publish(news);
             }
 
@@ -76,7 +78,7 @@ public class AddNewsController {
             @Override
             protected void failed() {
                 super.failed();
-                ((DataAccessException) getException()).showDialog();
+                ((ExceptionWithDialog) getException()).showDialog();
             }
         };
         task.runningProperty().addListener((observable, oldValue, running) ->

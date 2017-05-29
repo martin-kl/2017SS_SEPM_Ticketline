@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 
@@ -31,7 +32,7 @@ public interface NewsService {
      * @return
      * @throws DataAccessException
      */
-    DetailedNewsDTO publish(DetailedNewsDTO news) throws DataAccessException;
+    DetailedNewsDTO publish(DetailedNewsDTO news) throws DataAccessException, ValidationException;
 
     /**
      * Returns the detailed news entry with the given news id.
