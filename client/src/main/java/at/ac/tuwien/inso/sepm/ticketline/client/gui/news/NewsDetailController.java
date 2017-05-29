@@ -8,11 +8,13 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import java.time.format.DateTimeFormatter;
+import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -27,6 +29,8 @@ import org.springframework.stereotype.Component;
 public class NewsDetailController {
 
     @FXML
+    private ScrollPane spScrollPane;
+    @FXML
     private ImageView ivImage;
     @FXML
     private Label lbPublishDate;
@@ -35,11 +39,11 @@ public class NewsDetailController {
     @FXML
     private Label lbSummaryHeader;
     @FXML
-    private Text txSummary;
+    private Label lbSummary;
     @FXML
     private Label lbTextHeader;
     @FXML
-    private Text txText;
+    private Label lbText;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -53,22 +57,23 @@ public class NewsDetailController {
             if (detailedNewsDTO.getImage() != null) {
                 System.out.println("1234: " + detailedNewsDTO.getImage().length);
                 ivImage.setFitWidth(500);
-                ivImage.setFitHeight(400);
+                ivImage.setFitHeight(300);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
-                //Image image = JavaFXUtils.convertToJavaFXImage(detailedNewsDTO.getImage());
                 ivImage.setImage(image);
             }
 
-            txText.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
-            txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
+            lbText.setWrapText(true);
+            lbSummary.setWrapText(true);
+            //txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
+
             lbPublishDate.setText(detailedNewsDTO.getPublishedAt().format(formatter));
             lbTitle.setText(detailedNewsDTO.getTitle());
             lbSummaryHeader.setText(BundleManager.getBundle().getString("news.summary.header"));
-            txSummary.setText(detailedNewsDTO.getSummary());
+            lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
-            txText.setText(detailedNewsDTO.getText());
+            lbText.setText(detailedNewsDTO.getText());
         } catch (DataAccessException e) {
             log.error("error retrieving the detailed news entry for id {}, localized message: {}",
                 simpleNewsDTO.getId(), e.getLocalizedMessage());
