@@ -43,19 +43,19 @@ public class NewsServiceImpl implements NewsService {
     public News publishNews(News news) {
         if (news.getText().length() == 0) {
             log.error(
-                "error during save process of new news entry with title = \"{}\", text of news entry is 0 characters long",
+                "error during save process of new news entry with title = \"{}\", text of news entry is 0 characters long or null",
                 news.getTitle());
             throw new BadRequestException("Text of news entry is 0 characters long");
         }
-        if (news.getSummary().length() == 0) {
+        if (news.getSummary() == null || news.getSummary().length() == 0) {
             log.error(
-                "error during save process of new news entry with title = \"{}\", summary of news entry is 0 characters long",
+                "error during save process of new news entry with title = \"{}\", summary of news entry is 0 characters long or null",
                 news.getTitle());
             throw new BadRequestException("News Summary is 0 characters long");
         }
-        if (news.getTitle().length() == 0) {
+        if (news.getTitle() == null || news.getTitle().length() == 0) {
             log.error(
-                "error during save process of new news entry with summary = \"{}\", title of news entry is 0 characters long",
+                "error during save process of new news entry with summary = \"{}\", title of news entry is 0 characters long or null",
                 news.getTitle());
             throw new BadRequestException("News Title is 0 characters long");
         }
