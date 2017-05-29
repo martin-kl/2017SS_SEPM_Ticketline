@@ -21,7 +21,7 @@
           <Separator />
           <HBox fx:id="hbMain">
               <children>
-            <VBox fx:id="vbTicketsInclLabel" alignment="TOP_CENTER" minWidth="250.0">
+            <VBox fx:id="vbTicketsInclLabel" alignment="TOP_CENTER">
                <children>
                   <Label alignment="TOP_LEFT" text="%transaction.detail.tickets">
                      <VBox.margin>
