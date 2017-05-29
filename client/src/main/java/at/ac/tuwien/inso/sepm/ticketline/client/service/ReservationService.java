@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ReservationService {
 
@@ -40,6 +41,10 @@ public interface ReservationService {
 
     DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog;
 
-
-
+    /**
+     * Opens a the receipt pdf of the giving uuid
+     * @param id transaction id
+     * @throws ExceptionWithDialog
+     */
+    void downloadFile(UUID id) throws ExceptionWithDialog;
 }

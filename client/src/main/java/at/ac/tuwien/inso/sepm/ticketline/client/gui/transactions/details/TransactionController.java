@@ -216,4 +216,15 @@ public class TransactionController {
         }
 
     }
+
+    public void openPDF() {
+        try {
+            if (oldTicketTransaction == null) {
+                throw new Error("not possible to print a not existing transaction");
+            }
+            reservationService.downloadFile(oldTicketTransaction.getId());
+        } catch (ExceptionWithDialog exceptionWithDialog) {
+            exceptionWithDialog.showDialog();
+        }
+    }
 }

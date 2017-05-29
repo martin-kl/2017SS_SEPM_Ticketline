@@ -7,15 +7,18 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
-import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Slf4j
 @Component
 public class TransactionDetailsController {
 
@@ -76,13 +79,13 @@ public class TransactionDetailsController {
              //we are coming from the saalplan - status is not yet set
             btnReserve = new Button(BundleManager.getBundle().getString("transaction.detail.reserve"));
             btnReserve.setOnAction(event -> {
-                System.out.println("reserve ticket button has been clicked");
+                log.info("reserve ticket button has been clicked");
                 transactionController.updateTransaction(TicketStatus.RESERVED);
 
             });
             btnBuy = new Button(BundleManager.getBundle().getString("transaction.detail.buy"));
             btnBuy.setOnAction(event -> {
-                System.out.println("buy tickets button has been clicked");
+                log.info("buy tickets button has been clicked");
                 transactionController.updateTransaction(TicketStatus.BOUGHT);
             });
 
@@ -97,12 +100,12 @@ public class TransactionDetailsController {
 
             btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
             btnCancelReservation.setOnAction(event -> {
-                System.out.println("cancel reservation button has been clicked");
+                log.info("cancel reservation button has been clicked");
                 transactionController.updateTransaction(TicketStatus.STORNO);
             });
             btnBuy = new Button(BundleManager.getBundle().getString("transaction.detail.buy"));
             btnBuy.setOnAction(event -> {
-                System.out.println("buy tickets button has been clicked");
+                log.info("buy tickets button has been clicked");
                 transactionController.updateTransaction(TicketStatus.BOUGHT);
             });
 
@@ -113,16 +116,15 @@ public class TransactionDetailsController {
                 .setText(BundleManager.getBundle().getString("transaction.detail.billNumber"));
             btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
             btnCancelReservation.setOnAction(event -> {
-                System.out.println("cancel reservation button has been clicked");
+                log.info("cancel reservation button has been clicked");
                 transactionController.updateTransaction(TicketStatus.STORNO);
             });
 
             btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
             btnPrintPDF.setOnAction(event -> {
-                //TODO PRINT PDF
-                System.out
-                    .println("print pdf button in already bought transaction has been clicked");
+                log.info("print pdf button in already bought transaction has been clicked");
+                transactionController.openPDF();
             });
 
             buttons.add(btnCancelReservation);
@@ -133,9 +135,8 @@ public class TransactionDetailsController {
              btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
             btnPrintPDF.setOnAction(event -> {
-                //TODO PRINT PDF
-                System.out
-                    .println("print pdf button in cancelled transaction has been clicked");
+                log.info("print pdf button in cancelled transaction has been clicked");
+                transactionController.openPDF();
             });
 
             buttons.add(btnPrintPDF);

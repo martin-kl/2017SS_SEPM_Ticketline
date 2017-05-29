@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.rest;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import java.util.List;
+import java.util.UUID;
 
 public interface TicketTransactionRestClient {
 
@@ -36,4 +37,12 @@ public interface TicketTransactionRestClient {
         throws ExceptionWithDialog;
 
     DetailedTicketTransactionDTO update(DetailedTicketTransactionDTO dto) throws ExceptionWithDialog;
+
+
+    /**
+     * Opens a the receipt pdf of the giving uuid
+     * @param id transaction id
+     * @throws ExceptionWithDialog
+     */
+    void downloadFile(UUID id) throws ExceptionWithDialog;
 }

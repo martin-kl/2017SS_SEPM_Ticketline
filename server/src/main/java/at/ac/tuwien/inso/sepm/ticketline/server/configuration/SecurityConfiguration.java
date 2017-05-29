@@ -95,6 +95,7 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(HttpMethod.POST, "/authentication").permitAll()
+                .antMatchers(HttpMethod.GET, "/tickettransaction/**/download").permitAll()
                 .antMatchers(HttpMethod.GET,
                     "/v2/api-docs",
                     "/swagger-resources/**",
