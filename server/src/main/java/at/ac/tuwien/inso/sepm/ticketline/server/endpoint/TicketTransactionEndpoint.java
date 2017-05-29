@@ -3,15 +3,23 @@ package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.PdfService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
+import com.lowagie.text.DocumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +34,9 @@ public class TicketTransactionEndpoint {
 
     @Autowired
     private TicketTransactionMapper ticketTransactionMapper;
+
+    @Autowired
+    private PdfService pdfService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of bought and reserved Ticket Reservations")
@@ -78,6 +89,26 @@ public class TicketTransactionEndpoint {
     ) {
         TicketTransaction tt = ticketService.setTransactionStatus(dto);
         return ticketTransactionMapper.fromEntity(tt);
+    }
+
+    @RequestMapping(value = "{transactionid}/download", method = RequestMethod.GET)
+    @ApiOperation(value = "Downloads a PDF a transaction")
+    public void downloadPdf(
+        @PathVariable(name = "transactionid") UUID transactionId,
+        HttpServletResponse response,
+        HttpServletRequest request
+    ) throws IOException, DocumentException, URISyntaxException {
+        TicketTransaction ticketTransaction = ticketService.findTransactionsByID(transactionId);
+        if (ticketTransaction == null) {
+            throw new NotFoundException();
+        }
+        String pdfFileName = ticketTransaction.getId() + ticketTransaction.getStatus().name() + ".pdf";
+        response.setContentType("application/pdf");
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"", pdfFileName);
+        response.setHeader(headerKey, headerValue);
+
+        pdfService.download(response.getOutputStream(), ticketTransaction, request.getLocale() != null ? request.getLocale().getCountry() : null);
     }
 
 }
