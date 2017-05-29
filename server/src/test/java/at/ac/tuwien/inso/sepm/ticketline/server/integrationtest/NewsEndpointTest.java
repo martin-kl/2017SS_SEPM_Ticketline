@@ -31,6 +31,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
     private static final String SPECIFIC_NEWS_PATH = "/{newsId}";
 
     private static final String TEST_NEWS_TEXT = "TestNewsText";
+    private static final String TEST_NEWS_SUMMARY = "TestNewsSummary";
     private static final String TEST_NEWS_TITLE = "title";
     private static final LocalDateTime TEST_NEWS_PUBLISHED_AT =
         LocalDateTime.of(2016, 11, 13, 12, 15, 0, 0);
@@ -61,6 +62,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
                     .id(TEST_NEWS_ID)
                     .title(TEST_NEWS_TITLE)
                     .text(TEST_NEWS_TEXT)
+                    .summary(TEST_NEWS_SUMMARY)
                     .publishedAt(TEST_NEWS_PUBLISHED_AT)
                     .build()));
         Response response = RestAssured
@@ -74,7 +76,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
             SimpleNewsDTO.builder()
                 .id(TEST_NEWS_ID)
                 .title(TEST_NEWS_TITLE)
-                .summary(TEST_NEWS_TEXT)
+                .summary(TEST_NEWS_SUMMARY)
                 .publishedAt(TEST_NEWS_PUBLISHED_AT)
                 .build())));
     }
@@ -88,31 +90,6 @@ public class NewsEndpointTest extends BaseIntegrationTest {
             .then().extract().response();
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED.value()));
     }
-
-    /*@Test
-    public void findSpecificNewsAsUser() {
-        BDDMockito.
-            given(newsRepository.findOneById(TEST_NEWS_ID)).
-            willReturn(Optional.of(News.builder()
-                .id(TEST_NEWS_ID)
-                .title(TEST_NEWS_TITLE)
-                .text(TEST_NEWS_TEXT)
-                .publishedAt(TEST_NEWS_PUBLISHED_AT)
-                .build()));
-        Response response = RestAssured
-            .given()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .when().get(NEWS_ENDPOINT + SPECIFIC_NEWS_PATH, TEST_NEWS_ID)
-            .then().extract().response();
-        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK.value()));
-        Assert.assertThat(response.as(DetailedNewsDTO.class), is(DetailedNewsDTO.builder()
-            .id(TEST_NEWS_ID)
-            .title(TEST_NEWS_TITLE)
-            .text(TEST_NEWS_TEXT)
-            .publishedAt(TEST_NEWS_PUBLISHED_AT)
-            .build()));
-    }*/
 
     @Test
     public void findSpecificNonExistingNewsNotFoundAsUser() {

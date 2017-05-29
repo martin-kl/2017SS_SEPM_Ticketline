@@ -43,6 +43,7 @@ public class NewsMapperTest {
             .id(NEWS_ID)
             .publishedAt(NEWS_PUBLISHED_AT)
             .title(NEWS_TITLE)
+            .summary(NEWS_SUMMARY)
             .text(NEWS_TEXT)
             .build();
         SimpleNewsDTO simpleNewsDTO = newsMapper.newsToSimpleNewsDTO(news);
@@ -60,6 +61,7 @@ public class NewsMapperTest {
             .publishedAt(NEWS_PUBLISHED_AT)
             .title(NEWS_TITLE)
             .text(NEWS_SUMMARY)
+            .summary(NEWS_SUMMARY)
             .build();
         SimpleNewsDTO simpleNewsDTO = newsMapper.newsToSimpleNewsDTO(news);
         assertThat(simpleNewsDTO).isNotNull();
