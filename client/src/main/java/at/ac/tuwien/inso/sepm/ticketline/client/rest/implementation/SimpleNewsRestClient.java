@@ -54,8 +54,8 @@ public class SimpleNewsRestClient implements NewsRestClient {
                 new ParameterizedTypeReference<DetailedNewsDTO>() {
                 }
             );
-            log.debug("Result status was {} with content {}", customerReturn.getStatusCode(),
-                customerReturn.getBody());
+            log.debug("Result status was {} with news id {} and title {}", customerReturn.getStatusCode(),
+                customerReturn.getBody().getId(), customerReturn.getBody().getTitle());
             return customerReturn.getBody();
         } catch (HttpStatusCodeException e) {
             log.error("Failed to save news with status code " + e.getStatusCode().toString());
@@ -76,8 +76,8 @@ public class SimpleNewsRestClient implements NewsRestClient {
                     null,
                     new ParameterizedTypeReference<DetailedNewsDTO>() {
                     });
-            log.debug("Result status was {} with content {}", detailedNews.getStatusCode(),
-                detailedNews.getBody());
+            log.debug("Result status was {} with news id {} and title {}", detailedNews.getStatusCode(),
+                detailedNews.getBody().getId(), detailedNews.getBody().getTitle());
             return detailedNews.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
@@ -100,7 +100,8 @@ public class SimpleNewsRestClient implements NewsRestClient {
                     null,
                     new ParameterizedTypeReference<List<SimpleNewsDTO>>() {
                     });
-            log.debug("Result status was {} with content {}", news.getStatusCode(), news.getBody());
+
+            log.debug("Result status was {}", news.getStatusCode());
             return news.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(

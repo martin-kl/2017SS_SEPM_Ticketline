@@ -11,24 +11,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="spScrollPane" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController">
+<ScrollPane fx:id="spScrollPane" fitToWidth="true" maxHeight="600.0" minHeight="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController">
    <content>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0">
+      <VBox prefWidth="600.0">
           <children>
-              <ImageView fx:id="ivImage" fitHeight="175.0" fitWidth="200" pickOnBounds="true" preserveRatio="true" />
-              <Separator>
-                  <VBox.margin>
-                      <Insets bottom="5.0" top="5.0" />
-                  </VBox.margin>
-              </Separator>
               <HBox>
                   <children>
                       <Label fx:id="lbTitle" text="&lt;title&gt;">
                           <HBox.margin>
-                              <Insets left="20.0" />
+                              <Insets left="40.0" />
                           </HBox.margin>
                      <font>
-                        <Font size="14.0" />
+                        <Font size="24.0" />
                      </font>
                       </Label>
                       <Label fx:id="lbPublishDate" text="&lt;date&gt;">
@@ -36,11 +30,17 @@
                               <Insets left="20.0" />
                           </HBox.margin>
                      <font>
-                        <Font size="14.0" />
+                        <Font size="24.0" />
                      </font>
                       </Label>
                   </children>
               </HBox>
+              <Separator fx:id="separatorUnderTitle">
+                  <VBox.margin>
+                      <Insets bottom="5.0" top="5.0" />
+                  </VBox.margin>
+              </Separator>
+              <ImageView fx:id="ivImage" fitHeight="175.0" fitWidth="200" pickOnBounds="true" preserveRatio="true" />
               <Separator>
                   <VBox.margin>
                       <Insets bottom="5.0" top="5.0" />

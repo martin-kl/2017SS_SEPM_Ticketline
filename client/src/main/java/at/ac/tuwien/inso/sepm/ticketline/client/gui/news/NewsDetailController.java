@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -31,11 +32,13 @@ public class NewsDetailController {
     @FXML
     private ScrollPane spScrollPane;
     @FXML
-    private ImageView ivImage;
+    private Label lbTitle;
     @FXML
     private Label lbPublishDate;
     @FXML
-    private Label lbTitle;
+    private Separator separatorUnderTitle;
+    @FXML
+    private ImageView ivImage;
     @FXML
     private Label lbSummaryHeader;
     @FXML
@@ -45,7 +48,7 @@ public class NewsDetailController {
     @FXML
     private Label lbText;
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Autowired
     private NewsService newsService;
@@ -55,13 +58,21 @@ public class NewsDetailController {
 
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
-                System.out.println("1234: " + detailedNewsDTO.getImage().length);
+                ivImage.setVisible(true);
+                ivImage.setManaged(true);
+                separatorUnderTitle.setVisible(true);
+                separatorUnderTitle.setManaged(true);
                 ivImage.setFitWidth(500);
                 ivImage.setFitHeight(300);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
                 ivImage.setImage(image);
+            }else {
+                ivImage.setVisible(false);
+                ivImage.setManaged(false);
+                separatorUnderTitle.setVisible(false);
+                separatorUnderTitle.setManaged(false);
             }
 
             lbText.setWrapText(true);
@@ -74,6 +85,7 @@ public class NewsDetailController {
             lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
             lbText.setText(detailedNewsDTO.getText());
+            spScrollPane.setVvalue(0.0);
         } catch (DataAccessException e) {
             log.error("error retrieving the detailed news entry for id {}, localized message: {}",
                 simpleNewsDTO.getId(), e.getLocalizedMessage());
