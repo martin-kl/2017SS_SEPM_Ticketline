@@ -49,22 +49,17 @@ public class NewsDetailController {
     public void init(SimpleNewsDTO simpleNewsDTO) {
         try {
 
-            //geht nix:
-            //ivImage.setFitWidth(lbSummaryHeader.getScene().getWindow().widthProperty().doubleValue());
             DetailedNewsDTO detailedNewsDTO = newsService.findDetailedNews(simpleNewsDTO.getId());
             if (detailedNewsDTO.getImage() != null) {
                 System.out.println("1234: " + detailedNewsDTO.getImage().length);
                 ivImage.setFitWidth(500);
-                ivImage.setFitHeight(500);
+                ivImage.setFitHeight(400);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
                 //Image image = JavaFXUtils.convertToJavaFXImage(detailedNewsDTO.getImage());
                 ivImage.setImage(image);
-            } else  {
-                System.out.println("1234 ist nill");
             }
-
 
             txText.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
             txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
