@@ -76,7 +76,7 @@ public class TransactionListController {
         this.reservationService = reservationService;
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("transaction.title"));
 
         tfTransactionNumber
@@ -98,7 +98,9 @@ public class TransactionListController {
 
         selectedTransaction = null;
         previousSelectedBox = null;
-        initTransactions();
+        if(alreadyLoggedIn) {
+            initTransactions();
+        }
     }
 
     public void setFont(FontAwesome fontAwesome) {
@@ -229,7 +231,7 @@ public class TransactionListController {
                 }
                 log.debug("Selected a transaction with id: " + ticketTransaction.getId());
                 previousSelectedBox = reservationBox;
-                reservationBox.setStyle("-fx-background-color: #2196F3");
+                reservationBox.setStyle("-fx-background-color: #00afff");
                 selectedTransaction = ticketTransaction;
             });
 

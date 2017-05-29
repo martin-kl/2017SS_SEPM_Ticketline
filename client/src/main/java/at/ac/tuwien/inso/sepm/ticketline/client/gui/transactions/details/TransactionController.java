@@ -165,12 +165,12 @@ public class TransactionController {
             HBox ticketBox = (HBox) wrapper.getLoadedObject();
             if (ticketsSelectable) {
                 if (selectedTickets.contains(ticket)) {
-                    ticketBox.setStyle("-fx-background-color: #2196F3");
+                    ticketBox.setStyle("-fx-background-color: #00afff");
                 }
                 ticketBox.setOnMouseClicked((e) -> {
                     if (!selectedTickets.contains(ticket)) {
                         selectedTickets.add(ticket);
-                        ticketBox.setStyle("-fx-background-color: #2196F3");
+                        ticketBox.setStyle("-fx-background-color: #00afff");
                     } else {
                         selectedTickets.remove(ticket);
                         ticketBox.setStyle("-fx-background-color: inherit");

@@ -45,7 +45,7 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("news.title"));
     }
 

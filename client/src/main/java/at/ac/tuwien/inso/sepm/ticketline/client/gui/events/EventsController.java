@@ -91,9 +91,11 @@ public class EventsController {
         vbEventsElements.getChildren().clear();
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("events.title"));
-        init();
+        if(alreadyLoggedIn) {
+            init();
+        }
     }
 
     public void setFont(FontAwesome fontAwesome) {
@@ -119,7 +121,7 @@ public class EventsController {
             previousSelectedBox.setStyle("-fx-background-color: #f4f4f4");
         }
         previousSelectedBox = performanceBox;
-        performanceBox.setStyle("-fx-background-color: #2196F3");
+        performanceBox.setStyle("-fx-background-color: #00afff");
 
         this.selectedPerformance = selectedPerformance;
     }
