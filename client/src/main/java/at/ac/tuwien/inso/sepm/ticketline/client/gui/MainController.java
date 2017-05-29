@@ -401,6 +401,7 @@ public class MainController {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
          .loadAndWrap("/fxml/news/addNews.fxml");
         AddNewsController addNewsController = (AddNewsController) wrapper.getController();
+        addNewsController.init();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
         addNewsController.setOnClose((i) -> {
             dialog.close();

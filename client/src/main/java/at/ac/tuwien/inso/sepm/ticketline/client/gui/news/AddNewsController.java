@@ -62,6 +62,10 @@ public class AddNewsController {
         save(news);
     }
 
+    public void init() {
+        imageByteArray = null;
+    }
+
     private void save(DetailedNewsDTO news) {
         Task<DetailedNewsDTO> task = new Task<DetailedNewsDTO>() {
             @Override
@@ -117,7 +121,6 @@ public class AddNewsController {
     public void setOnClose(Callable callable) {
         this.onClose = callable;
     }
-
 }
 
 
