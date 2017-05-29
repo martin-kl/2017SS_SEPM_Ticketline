@@ -2,6 +2,8 @@ package at.ac.tuwien.inso.sepm.ticketline.client.gui.customers;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Callable;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Debouncer;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
@@ -13,6 +15,8 @@ import javafx.scene.layout.*;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -62,7 +66,7 @@ public class CustomersController {
         lblHeaderTitle.setText(title);
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("customers.title"));
         searchField.setPromptText(BundleManager.getBundle().getString("search"));
         btnAddCustomer.setText(BundleManager.getBundle().getString("customer.add"));
@@ -82,8 +86,9 @@ public class CustomersController {
         customerList.reload(searchField.getText().trim());
     }
 
+    Debouncer<Integer> d = new Debouncer<>(o -> customerList.reload(searchField.getText()), 250);
     public void onSearchChange(KeyEvent keyEvent) {
-        customerList.reload(searchField.getText());
+        d.call(1);
     }
 
     public void handleCustomerAdd(ActionEvent actionEvent) {

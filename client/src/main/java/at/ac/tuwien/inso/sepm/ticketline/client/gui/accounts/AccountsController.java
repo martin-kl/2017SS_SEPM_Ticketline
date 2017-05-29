@@ -54,7 +54,7 @@ public class AccountsController {
         // TODO: load Accounts (see NewsController for example */
     }
 
-    public void reloadLanguage() {
+    public void reloadLanguage(boolean alreadyLoggedIn) {
         setTitle(BundleManager.getBundle().getString("accounts.title"));
     }
 }
