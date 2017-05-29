@@ -26,10 +26,11 @@ public interface NewsRestClient {
     List<SimpleNewsDTO> findAllUnseen(int page) throws DataAccessException;
 
     /**
-     * publish news
-     * @param news
-     * @return
-     * @throws DataAccessException
+     * Published a new news entry.
+     *
+     * @param news the detailed news dto which contains the new news entry
+     * @return the saved news entry
+     * @throws DataAccessException in case something went wrong with the access to the data
      */
     DetailedNewsDTO publish(DetailedNewsDTO news) throws DataAccessException;
 

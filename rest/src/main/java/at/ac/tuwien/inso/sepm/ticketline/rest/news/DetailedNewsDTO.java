@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"image"})
 @Builder
 @EqualsAndHashCode
 @NoArgsConstructor

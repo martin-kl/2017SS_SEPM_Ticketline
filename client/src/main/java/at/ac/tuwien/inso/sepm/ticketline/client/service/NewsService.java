@@ -22,15 +22,17 @@ public interface NewsService {
      * Find all unseen news for the current user.
      *
      * @return list of all unseen news for this user
-     * @throws DataAccessException in case something went with the access to the data
+     * @throws DataAccessException in case something went wrong with the access to the data
      */
     List<SimpleNewsDTO> findAllUnseen(int page) throws DataAccessException;
 
     /**
-     * publish news
-     * @param news
-     * @return
-     * @throws DataAccessException
+     * Published a new news entry.
+     *
+     * @param news the detailed news dto which contains the new news entry
+     * @return the saved news entry
+     * @throws DataAccessException in case something went wrong with the access to the data
+     * @throws ValidationException in case some field of param news is not valid
      */
     DetailedNewsDTO publish(DetailedNewsDTO news) throws DataAccessException, ValidationException;
 
@@ -39,7 +41,7 @@ public interface NewsService {
      *
      * @param id The news id to search for.
      * @return The DetailedNewsDTO entry with the given news id.
-     * @throws DataAccessException in case something went with the access to the data
+     * @throws DataAccessException in case something went wrong with the access to the data
      */
     DetailedNewsDTO findDetailedNews(UUID id) throws DataAccessException;
 }
