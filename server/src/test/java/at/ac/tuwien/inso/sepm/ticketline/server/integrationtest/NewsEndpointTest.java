@@ -146,6 +146,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
                 .id(TEST_NEWS_ID)
                 .title(TEST_NEWS_TITLE)
                 .text(TEST_NEWS_TEXT)
+                .summary(TEST_NEWS_SUMMARY)
                 .publishedAt(TEST_NEWS_PUBLISHED_AT)
                 .build());
         Response response = RestAssured
@@ -163,6 +164,7 @@ public class NewsEndpointTest extends BaseIntegrationTest {
             .id(TEST_NEWS_ID)
             .title(TEST_NEWS_TITLE)
             .text(TEST_NEWS_TEXT)
+            .summary(TEST_NEWS_SUMMARY)
             .publishedAt(TEST_NEWS_PUBLISHED_AT)
             .build()));
     }
