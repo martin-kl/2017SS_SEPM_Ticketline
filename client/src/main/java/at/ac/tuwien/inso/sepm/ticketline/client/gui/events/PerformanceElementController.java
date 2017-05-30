@@ -27,13 +27,8 @@ public class PerformanceElementController {
     private Label labelEndTime;
 
     @FXML
-    private Label labelLocationLabelling;
-
-    @FXML
     private Label labelLocationName;
 
-    @FXML
-    private Label labelTypeLabelling;
     @FXML
     private Label labelType;
 
@@ -51,7 +46,5 @@ public class PerformanceElementController {
         else if(performanceDTO.getLocation() instanceof SectorLocationDTO){
             labelType.setText(BundleManager.getBundle().getString("performance.type.sector"));
         }
-        labelLocationLabelling.setText(BundleManager.getBundle().getString("events.location") + ":");
-        labelTypeLabelling.setText(BundleManager.getBundle().getString("events.type") + ":");
     }
 }
