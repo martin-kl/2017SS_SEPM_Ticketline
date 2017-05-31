@@ -64,3 +64,15 @@ You can login to the client using one of the following credentials:
 
 For a smooth programming feeling you should install the following plugin:
 https://github.com/mplushnikov/lombok-intellij-plugin
+
+## Versioning
+
+use the following command to create versions:
+
+    mvn versions:set -DnewVersion=1.0
+    git add .
+    git commit -m "bump to version 1.0"
+    git tag v1.0
+    git push origin dev --tags
+    
+
