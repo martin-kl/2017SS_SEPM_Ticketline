@@ -5,13 +5,16 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditCon
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.hallplan.PerformanceDetailController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.AddNewsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.TransactionController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformationService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
@@ -135,22 +138,28 @@ public class MainController {
 
     @FXML
     private void aboutApplication(ActionEvent actionEvent) {
+        /*
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+        */
+        Stage dialog = initStage();
         dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/aboutDialog.fxml")));
         dialog.setTitle(BundleManager.getBundle().getString("dialog.about.title"));
         dialog.showAndWait();
     }
 
     public void showPerformanceDetailWindow(DetailedPerformanceDTO performance) {
+        /*
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+        */
+        Stage dialog = initStage();
 
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -188,11 +197,14 @@ public class MainController {
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
+        /*
         Stage stage = (Stage) spMainContent.getScene().getWindow();
         Stage dialog = new Stage();
         dialog.setResizable(false);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
+        */
+        Stage dialog = initStage();
 
         //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -253,6 +265,20 @@ public class MainController {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         return dialog;
+    }
+
+    public void showNewsDetailWindow(SimpleNewsDTO news) {
+        Stage dialog = initStage();
+        dialog.setResizable(true);
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/news/newsDetail.fxml");
+        NewsDetailController controller = (NewsDetailController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.init(news);
+        dialog.setTitle(BundleManager.getBundle().getString("news.details"));
+        dialog.showAndWait();
+
     }
 
     private void initNewsTabPane() {
@@ -332,7 +358,7 @@ public class MainController {
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
-            newsController.loadNews();
+            newsController.init();
         } else {
             if (!spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().add(login);
@@ -349,7 +375,7 @@ public class MainController {
     }
 
     public void reloadNewsList() {
-        newsController.loadNews();
+        newsController.init();
     }
 
     public void reloadEventList() {
@@ -368,6 +394,20 @@ public class MainController {
     public void changeToEnglish(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("en"));
         reloadLanguage();
+    }
+
+    public void showAddNewsWindow() {
+        Stage dialog = initStage();
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+         .loadAndWrap("/fxml/news/addNews.fxml");
+        AddNewsController addNewsController = (AddNewsController) wrapper.getController();
+        addNewsController.init();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+        addNewsController.setOnClose((i) -> {
+            dialog.close();
+            newsController.reload();
+        });
+        dialog.showAndWait();
     }
 
     private void reloadLanguage() {
@@ -397,4 +437,5 @@ public class MainController {
         accountsController.reloadLanguage(alreadyLoggedIn);
         transactionListController.reloadLanguage(alreadyLoggedIn);
     }
+
 }

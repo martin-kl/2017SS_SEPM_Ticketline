@@ -28,11 +28,20 @@ public class News extends Audited {
     @Column(nullable = false, name = "published_at")
     private LocalDateTime publishedAt;
 
-    @Column(nullable = false)
-    @Size(max = 100)
+    @Column(nullable = false, length = 100)
+    @Size(max = 100, min=1)
     private String title;
 
     @Column(nullable = false, length = 10_000)
+    @Size(min=1, max=10_000)
+    private String summary;
+
+    @Column(length = 5_000_000)
+    private byte[] image;
+
+
+    @Column(nullable = false, length = 10_000)
+    @Size(min=1, max=10_000)
     private String text;
 
     @Getter

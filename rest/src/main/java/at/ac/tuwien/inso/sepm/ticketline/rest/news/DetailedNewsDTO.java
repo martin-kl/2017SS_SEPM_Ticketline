@@ -4,12 +4,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"image"})
 @Builder
 @EqualsAndHashCode
 @NoArgsConstructor
@@ -28,5 +29,12 @@ public class DetailedNewsDTO {
 
     @ApiModelProperty(required = true, name = "The text content of the news")
     private String text;
+
+    @ApiModelProperty(required = true, name = "The text content of the news")
+    private String summary;
+
+    @ApiModelProperty(required = true, name = "The news image")
+    private byte[] image;
+
 
 }

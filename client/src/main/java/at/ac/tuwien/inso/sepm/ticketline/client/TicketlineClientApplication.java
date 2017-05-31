@@ -27,6 +27,8 @@ public class TicketlineClientApplication extends SpringFxApplication {
 
     @Override
     public void start(Stage stage) {
+        System.setProperty("javafx.macosx.embedded", "true");
+        java.awt.Toolkit.getDefaultToolkit();
         stage.setTitle(javaFxConfigurationProperties.getTitle());
         stage.setScene(new Scene(
             loadParent("/fxml/mainWindow.fxml"),

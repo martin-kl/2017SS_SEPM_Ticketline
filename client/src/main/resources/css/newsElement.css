@@ -11,3 +11,8 @@
 .newsText {
     -fx-font-size: 12px;
 }
+
+.newsElement:hover {
+    -fx-background-color: lightblue;
+    -fx-cursor: hand;
+}
