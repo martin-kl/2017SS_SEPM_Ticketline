@@ -31,10 +31,17 @@
 <hr />
 <h2>Tickets</h2>
 <table>
-    <tr>
-        <td>Number cancelled tickets</td>
-        <td th:text="${ticketNumber}"></td>
-    </tr>
+    <table style="width: 100%">
+        <tr th:each="ticket : ${tickets}">
+            <td style="width: 70%" th:text="${ticket.class.name == 'at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatTicket' ? 'Seat place in row ' + ticket.seat.row + '/ column ' + ticket.seat.column : 'standing place in sector ' + ticket.sector.name}"></td>
+            <td style="width: 30%">€ <span th:text="${ticket.price}"></span></td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td style="width: 70%">Total Price:</td>
+            <td style="width: 30%">€ <span th:text="${#aggregates.sum(tickets.![price])}"></span></td>
+        </tr>
+    </table>
 </table>
 
 </body>

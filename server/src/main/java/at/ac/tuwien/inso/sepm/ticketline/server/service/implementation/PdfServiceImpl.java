@@ -35,7 +35,12 @@ public class PdfServiceImpl implements PdfService {
             Context context = new Context();
             context.setVariable("customer", ticketTransaction.getCustomer());
             context.setVariable("transaction", ticketTransaction);
-            context.setVariable("ticketNumber", ticketTransaction.getTicketHistories().size());
+            context.setVariable("tickets", ticketTransaction
+                .getTicketHistories()
+                .stream()
+                .map(th -> th.getTicket())
+                .collect(Collectors.toList())
+            );
             toPdf(outputStream, templateEngine.process("storno-pdf-" + language, context));
             outputStream.close();
         } else if (ticketTransaction.getStatus() == TicketStatus.BOUGHT) {
