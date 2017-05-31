@@ -45,7 +45,7 @@ public class SimpleNewsService implements NewsService {
         if (news.getSummary().length() == 0) {
             throw new ValidationException("news.no.summary");
         }
-        if (news.getSummary().length() > 10_000) {
+        if (news.getSummary().length() > 1_000) {
             throw new ValidationException("news.long.summary");
         }
         if (news.getTitle().length() == 0) {

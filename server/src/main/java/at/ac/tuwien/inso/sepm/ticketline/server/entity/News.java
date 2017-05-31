@@ -33,10 +33,10 @@ public class News extends Audited {
     private String title;
 
     @Column(nullable = false, length = 10_000)
-    @Size(min=1, max=10_000)
+    @Size(min=1, max=1_000)
     private String summary;
 
-    @Column(length = 5_000_000)
+    @Column(length = 500_0000)
     private byte[] image;
 
 
