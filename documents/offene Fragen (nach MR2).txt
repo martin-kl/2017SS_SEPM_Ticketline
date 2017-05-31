@@ -16,12 +16,7 @@ noch weitere Fragen (nach MR1)
 
 	noch zu erledigen (zumindest teilweise)
 
-verzögerung beim tastendruck beim Suchen
-Zahlen nicht im Namen speichern (beim Kunden)
-
 Panel von oben anstelle des alerts (wenn wir noch wollen)
-
-Voll blau in liste - bei Ticketauswahl nach Saalplan
 
 Für MR2/MR3 schöne anzeige daten mit sinnvolen event namen oeticket etc.
 
