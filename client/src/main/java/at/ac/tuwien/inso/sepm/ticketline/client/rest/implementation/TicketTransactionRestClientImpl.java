@@ -3,14 +3,25 @@ package at.ac.tuwien.inso.sepm.ticketline.client.rest.implementation;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.TicketTransactionRestClient;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.DesktopApi;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -149,6 +160,20 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
                 "Failed to update detailed ticket transaction dto " + dto);
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void downloadFile(UUID id) throws ExceptionWithDialog {
+        try {
+            String language = BundleManager.getBundle().getLocale().getLanguage();
+            URI uri = restClient.getServiceURI(TRANSACTION_URL + "/" + id + "/download?lang=" + language);
+            File destination = new File("files/" + id.toString() + ".pdf");
+            FileUtils.copyURLToFile(uri.toURL(), destination);
+            DesktopApi.open(destination);
+        } catch (Exception e) {
+            throw new DataAccessException(
+                "Failed to download transaction receipt with id " + id);
         }
     }
 }

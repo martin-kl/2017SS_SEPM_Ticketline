@@ -43,4 +43,9 @@ public class ReservationServiceImpl implements ReservationService {
         return ticketTransactionRestClient.update(dto);
     }
 
+    @Override
+    public void downloadFile(UUID id) throws ExceptionWithDialog {
+        ticketTransactionRestClient.downloadFile(id);
+    }
+
 }

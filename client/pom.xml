@@ -26,6 +26,8 @@
         <org.projectlombok.version>1.16.16</org.projectlombok.version>
         <!-- plugins -->
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+
+        <commons-io.version>2.4</commons-io.version>
     </properties>
 
     <dependencies>
@@ -87,6 +89,12 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
     </dependencies>
 

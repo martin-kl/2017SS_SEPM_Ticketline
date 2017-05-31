@@ -3,24 +3,23 @@ package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PdfService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import com.lowagie.text.DocumentException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -95,8 +94,8 @@ public class TicketTransactionEndpoint {
     @ApiOperation(value = "Downloads a PDF a transaction")
     public void downloadPdf(
         @PathVariable(name = "transactionid") UUID transactionId,
-        HttpServletResponse response,
-        HttpServletRequest request
+        @RequestParam(value = "lang", required = false) String language,
+        HttpServletResponse response
     ) throws IOException, DocumentException, URISyntaxException {
         TicketTransaction ticketTransaction = ticketService.findTransactionsByID(transactionId);
         if (ticketTransaction == null) {
@@ -108,7 +107,11 @@ public class TicketTransactionEndpoint {
         String headerValue = String.format("attachment; filename=\"%s\"", pdfFileName);
         response.setHeader(headerKey, headerValue);
 
-        pdfService.download(response.getOutputStream(), ticketTransaction, request.getLocale() != null ? request.getLocale().getCountry() : null);
+        if (language != null && !language.equals("de") && !language.equals("en")) {
+            throw new BadRequestException("invalid language");
+        }
+
+        pdfService.download(response.getOutputStream(), ticketTransaction, language);
     }
 
 }
