@@ -81,7 +81,7 @@
                   <Insets />
                </VBox.margin>
             </AnchorPane>
-            <Separator disable="true" />
+            <Separator />
 
               <!--
             <AnchorPane layoutX="20.0" layoutY="54.0" prefHeight="111.0" prefWidth="955.0">
