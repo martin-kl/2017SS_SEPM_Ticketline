@@ -18,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
@@ -40,8 +41,59 @@ public class EventsController {
     @FXML
     private Button btnManageTickets;
 
-    private FontAwesome fontAwesome;
+    /* search function buttons */
+    @FXML
+    private Button btnAsList;
+    @FXML
+    private Button btnAsGraph;
+    @FXML
+    private TextField tfGeneralSearch;
+    @FXML
+    private Button btnGeneralSearch;
 
+    /**
+     * extended search elements
+     **/
+    // General elements to Toggle the extended search elements
+    @FXML
+    private AnchorPane apExtendedFilters;
+    @FXML
+    private Button btnExtendedSearch;
+    private boolean isExtendedSearch = false;
+
+    // Event-Filter elements
+    @FXML
+    private TextField tfEventSearch;
+    @FXML
+    private SplitMenuButton smbEventAttribute;
+    @FXML
+    private TextField tfArtistName;
+    @FXML
+    private SplitMenuButton smbArtistMatches;
+
+    // Performance-Filter elements
+    @FXML
+    private DatePicker dpDate;
+    @FXML
+    private DatePicker dpStartTime;
+    @FXML
+    private DatePicker dpEndTime;
+    @FXML
+    private TextField tfPrice;
+    @FXML
+    private SplitMenuButton smbRoomMatches; // do we actually have this functionality?
+    @FXML
+    private TextField tfLocationSearch;
+    @FXML
+    private SplitMenuButton smbLocationAttribute;
+    @FXML
+    private SplitMenuButton smbLocationMatches;
+    @FXML
+    private SplitMenuButton smbPerformanceType;
+
+
+
+    private FontAwesome fontAwesome;
     @FXML
     private ScrollPane scrollPane;
 
@@ -70,6 +122,9 @@ public class EventsController {
     }
 
     public void init() {
+        // Set the extended search elements to invisible
+        apExtendedFilters.setManaged(false);
+        apExtendedFilters.setVisible(false);
         //this is the place to reset state
         ObservableList<Node> vbEventsBoxChildren = vbEventsElements.getChildren();
         vbEventsBoxChildren.clear();
@@ -219,5 +274,30 @@ public class EventsController {
     }
 
 
+    @FXML
+    public void handleGeneralSearchClick(){
 
+    }
+
+    @FXML
+    public void handleExtendedSearchClick(){
+        if(apExtendedFilters.isManaged()){
+            apExtendedFilters.setManaged(false);
+            apExtendedFilters.setVisible(false);
+        }
+        else {
+            apExtendedFilters.setManaged(true);
+            apExtendedFilters.setVisible(true);
+        }
+    }
+
+
+    @FXML
+    public void handleAsListClick(){
+
+    }
+    @FXML
+    public void handleAsGraphClick(){
+
+    }
 }
