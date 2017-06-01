@@ -12,15 +12,24 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+
+import java.awt.*;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
@@ -40,8 +49,63 @@ public class EventsController {
     @FXML
     private Button btnManageTickets;
 
-    private FontAwesome fontAwesome;
+    /* search function buttons */
+    @FXML
+    private Button btnAsList;
+    @FXML
+    private Button btnAsGraph;
+    @FXML
+    private TextField tfGeneralSearch;
+    @FXML
+    private Button btnGeneralSearch;
 
+    /**
+     * extended search elements
+     **/
+    // General elements to Toggle the extended search elements
+    @FXML
+    private AnchorPane apExtendedFilters;
+    @FXML
+    private Button btnExtendedSearch;
+    private boolean isExtendedSearch = false;
+
+    // Event-Filter elements
+    @FXML
+    private Label lblEventFilter;
+    @FXML
+    private TextField tfEventSearch;
+    @FXML
+    private ComboBox<String> cbEventAttribute;
+    @FXML
+    private TextField tfArtistName;
+    @FXML
+    private SplitMenuButton smbArtistMatches;
+
+    // Performance-Filter elements
+    @FXML
+    private Label lblPerformanceFilter;
+    @FXML
+    private DatePicker dpDate;
+    @FXML
+    private DatePicker dpStartTime;
+    @FXML
+    private DatePicker dpEndTime;
+    @FXML
+    private TextField tfPrice;
+    @FXML
+    private SplitMenuButton smbRoomMatches; // do we actually have this functionality?
+    @FXML
+    private TextField tfLocationSearch;
+    @FXML
+    private ComboBox<String> cbLocationAttribute;
+    @FXML
+    private SplitMenuButton smbLocationMatches;
+    @FXML
+    private ComboBox<String> cbPerformanceType;
+
+
+
+    private FontAwesome fontAwesome;
     @FXML
     private ScrollPane scrollPane;
 
@@ -84,6 +148,45 @@ public class EventsController {
         });
         loadNext();
     }
+    private void initializeExtendedSearchLayout(){
+        lblEventFilter.setText(BundleManager.getBundle().getString("events.filter"));
+        lblPerformanceFilter.setText(BundleManager.getBundle().getString("performances.filter"));
+
+        btnExtendedSearch.setText(BundleManager.getBundle().getString("events.extended.search"));
+        btnManageTickets.setText(BundleManager.getBundle().getString("events.manage.tickets"));
+
+        btnAsList.setGraphic(fontAwesome.create(FontAwesome.Glyph.LIST).size(25));
+        btnAsGraph.setGraphic(fontAwesome.create(FontAwesome.Glyph.BAR_CHART).size(25));
+
+        btnGeneralSearch.setText(BundleManager.getBundle().getString("search"));
+        tfGeneralSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
+        tfEventSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
+        tfLocationSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
+        tfArtistName.setPromptText(BundleManager.getBundle().getString("artist.name") + " ..");
+        tfPrice.setPromptText(BundleManager.getBundle().getString("performance.price") + " ..");
+        // Set the extended search elements to invisible
+        apExtendedFilters.setManaged(false);
+        apExtendedFilters.setVisible(false);
+
+        dpDate.setPromptText(BundleManager.getBundle().getString("events.date") + " ..");
+        dpEndTime.setPromptText(BundleManager.getBundle().getString("events.end") + " ..");
+        dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
+
+        // Set the Attributes to search for
+        if(cbEventAttribute.getItems().isEmpty())
+            cbEventAttribute.getItems().addAll("Name", BundleManager.getBundle().getString("events.category"), BundleManager.getBundle().getString("events.description"));
+        cbEventAttribute.getSelectionModel().select("Name");
+
+        if(cbLocationAttribute.getItems().isEmpty())
+            cbLocationAttribute.getItems().addAll("Name", BundleManager.getBundle().getString("location.street"),
+                BundleManager.getBundle().getString("location.city"), BundleManager.getBundle().getString("location.country"), BundleManager.getBundle().getString("location.zip"));
+        cbLocationAttribute.getSelectionModel().select("Name");
+
+        if(cbPerformanceType.getItems().isEmpty())
+            cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), BundleManager.getBundle().getString("events.type"));
+        cbPerformanceType.getSelectionModel().select(BundleManager.getBundle().getString("events.type"));
+
+    }
 
     private void prepareForNewList() {
         previousSelectedBox = null;
@@ -92,6 +195,7 @@ public class EventsController {
     }
 
     public void reloadLanguage(boolean alreadyLoggedIn) {
+        initializeExtendedSearchLayout();
         setTitle(BundleManager.getBundle().getString("events.title"));
         if(alreadyLoggedIn) {
             init();
@@ -102,6 +206,7 @@ public class EventsController {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.CALENDAR);
         setTitle(BundleManager.getBundle().getString("events.title"));
+        initializeExtendedSearchLayout();
     }
 
     private void setIcon(FontAwesome.Glyph glyph) {
@@ -219,5 +324,31 @@ public class EventsController {
     }
 
 
+    @FXML
+    public void handleGeneralSearchClick(){
+        // read all the textfields, generate query
+        // TODO: implement
+    }
 
+    @FXML
+    public void handleExtendedSearchClick(){
+        if(apExtendedFilters.isManaged()){
+            apExtendedFilters.setManaged(false);
+            apExtendedFilters.setVisible(false);
+        }
+        else {
+            apExtendedFilters.setManaged(true);
+            apExtendedFilters.setVisible(true);
+        }
+    }
+
+
+    @FXML
+    public void handleAsListClick(){
+
+    }
+    @FXML
+    public void handleAsGraphClick(){
+
+    }
 }
