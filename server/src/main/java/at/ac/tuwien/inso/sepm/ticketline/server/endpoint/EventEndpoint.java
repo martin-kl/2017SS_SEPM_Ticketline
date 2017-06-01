@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.event.EventMapper;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.event.EventSearchMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.EventService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +30,9 @@ public class EventEndpoint {
     @Autowired
     private EventMapper eventMapper;
 
+    @Autowired
+    private EventSearchMapper eventSearchMapper;
+
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of all Events")
     public List<EventDTO> findAll(Pageable pageable) {
@@ -41,13 +45,15 @@ public class EventEndpoint {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ApiOperation(value = "Search for events, which match the given search criteria")
-    public List<EventDTO> search(@RequestBody EventSearchDTO eventSearchDTO, Pageable pageable){
-        /*return eventService
-            .findAll(pageable)
+    public List<EventDTO> search(@RequestBody EventSearchDTO eventSearchDTO){
+
+        /* TODO pagination is ignored by now */
+
+        return eventService
+            .search(eventSearchMapper.fromDTO(eventSearchDTO))
             .stream()
             .map(eventMapper::fromEntity)
-            .collect(Collectors.toList());*/
-        return null;
+            .collect(Collectors.toList());
     }
 
 }

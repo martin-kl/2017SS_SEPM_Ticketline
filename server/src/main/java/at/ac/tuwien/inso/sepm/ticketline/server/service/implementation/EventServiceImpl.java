@@ -36,6 +36,6 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> search(EventSearch eventSearch){
-        return null;
+        return eventRepository.findAll();
     }
 }
