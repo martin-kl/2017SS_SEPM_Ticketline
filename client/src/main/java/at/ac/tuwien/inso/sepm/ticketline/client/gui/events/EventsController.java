@@ -326,7 +326,8 @@ public class EventsController {
 
     @FXML
     public void handleGeneralSearchClick(){
-
+        // read all the textfields, generate query
+        // TODO: implement
     }
 
     @FXML
