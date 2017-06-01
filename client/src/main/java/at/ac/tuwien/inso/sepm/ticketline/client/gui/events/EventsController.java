@@ -12,16 +12,24 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+
+import java.awt.*;
 import java.util.ArrayList;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
@@ -63,15 +71,19 @@ public class EventsController {
 
     // Event-Filter elements
     @FXML
+    private Label lblEventFilter;
+    @FXML
     private TextField tfEventSearch;
     @FXML
-    private SplitMenuButton smbEventAttribute;
+    private ComboBox<String> cbEventAttribute;
     @FXML
     private TextField tfArtistName;
     @FXML
     private SplitMenuButton smbArtistMatches;
 
     // Performance-Filter elements
+    @FXML
+    private Label lblPerformanceFilter;
     @FXML
     private DatePicker dpDate;
     @FXML
@@ -85,11 +97,11 @@ public class EventsController {
     @FXML
     private TextField tfLocationSearch;
     @FXML
-    private SplitMenuButton smbLocationAttribute;
+    private ComboBox<String> cbLocationAttribute;
     @FXML
     private SplitMenuButton smbLocationMatches;
     @FXML
-    private SplitMenuButton smbPerformanceType;
+    private ComboBox<String> cbPerformanceType;
 
 
 
@@ -122,9 +134,6 @@ public class EventsController {
     }
 
     public void init() {
-        // Set the extended search elements to invisible
-        apExtendedFilters.setManaged(false);
-        apExtendedFilters.setVisible(false);
         //this is the place to reset state
         ObservableList<Node> vbEventsBoxChildren = vbEventsElements.getChildren();
         vbEventsBoxChildren.clear();
@@ -139,6 +148,45 @@ public class EventsController {
         });
         loadNext();
     }
+    private void initializeExtendedSearchLayout(){
+        lblEventFilter.setText(BundleManager.getBundle().getString("events.filter"));
+        lblPerformanceFilter.setText(BundleManager.getBundle().getString("performances.filter"));
+
+        btnExtendedSearch.setText(BundleManager.getBundle().getString("events.extended.search"));
+        btnManageTickets.setText(BundleManager.getBundle().getString("events.manage.tickets"));
+
+        btnAsList.setGraphic(fontAwesome.create(FontAwesome.Glyph.LIST).size(25));
+        btnAsGraph.setGraphic(fontAwesome.create(FontAwesome.Glyph.BAR_CHART).size(25));
+
+        btnGeneralSearch.setText(BundleManager.getBundle().getString("search"));
+        tfGeneralSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
+        tfEventSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
+        tfLocationSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
+        tfArtistName.setPromptText(BundleManager.getBundle().getString("artist.name") + " ..");
+        tfPrice.setPromptText(BundleManager.getBundle().getString("performance.price") + " ..");
+        // Set the extended search elements to invisible
+        apExtendedFilters.setManaged(false);
+        apExtendedFilters.setVisible(false);
+
+        dpDate.setPromptText(BundleManager.getBundle().getString("events.date") + " ..");
+        dpEndTime.setPromptText(BundleManager.getBundle().getString("events.end") + " ..");
+        dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
+
+        // Set the Attributes to search for
+        if(cbEventAttribute.getItems().isEmpty())
+            cbEventAttribute.getItems().addAll("Name", BundleManager.getBundle().getString("events.category"), BundleManager.getBundle().getString("events.description"));
+        cbEventAttribute.getSelectionModel().select("Name");
+
+        if(cbLocationAttribute.getItems().isEmpty())
+            cbLocationAttribute.getItems().addAll("Name", BundleManager.getBundle().getString("location.street"),
+                BundleManager.getBundle().getString("location.city"), BundleManager.getBundle().getString("location.country"), BundleManager.getBundle().getString("location.zip"));
+        cbLocationAttribute.getSelectionModel().select("Name");
+
+        if(cbPerformanceType.getItems().isEmpty())
+            cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), BundleManager.getBundle().getString("events.type"));
+        cbPerformanceType.getSelectionModel().select(BundleManager.getBundle().getString("events.type"));
+
+    }
 
     private void prepareForNewList() {
         previousSelectedBox = null;
@@ -147,6 +195,7 @@ public class EventsController {
     }
 
     public void reloadLanguage(boolean alreadyLoggedIn) {
+        initializeExtendedSearchLayout();
         setTitle(BundleManager.getBundle().getString("events.title"));
         if(alreadyLoggedIn) {
             init();
@@ -157,6 +206,7 @@ public class EventsController {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.CALENDAR);
         setTitle(BundleManager.getBundle().getString("events.title"));
+        initializeExtendedSearchLayout();
     }
 
     private void setIcon(FontAwesome.Glyph glyph) {
