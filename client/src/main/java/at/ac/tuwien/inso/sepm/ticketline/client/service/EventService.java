@@ -24,5 +24,5 @@ public interface EventService {
      * @param page the page number to request
      * @return list of customers
      */
-    List<EventDTO> search(String query, int page) throws ExceptionWithDialog;
+    //List<EventDTO> search(String query, int page) throws ExceptionWithDialog;
 }
