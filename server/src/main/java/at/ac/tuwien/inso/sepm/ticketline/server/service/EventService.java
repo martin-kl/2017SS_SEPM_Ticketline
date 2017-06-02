@@ -32,7 +32,8 @@ public interface EventService {
      * Find events which match the attributes specified in eventSearch
      *
      * @param eventSearch contains the attributes
+     * @param pageable paging object
      * @return list of events including the performances
      * */
-    List<Event> search(EventSearch eventSearch);
+    List<Event> search(EventSearch eventSearch, Pageable pageable);
 }

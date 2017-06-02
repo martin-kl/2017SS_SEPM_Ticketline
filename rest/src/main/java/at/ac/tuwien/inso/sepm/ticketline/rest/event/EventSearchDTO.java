@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.event;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,7 @@ public class EventSearchDTO {
     private String description;
 
     @ApiModelProperty(readOnly = true, name = "performanceType")
-    private String performanceType;
+    private PerformanceType performanceType;
 
     @ApiModelProperty(readOnly = true, name = "performanceDuration")
     private Duration performanceDuration;
@@ -40,8 +41,8 @@ public class EventSearchDTO {
     @ApiModelProperty(readOnly = true, name = "performanceTicketPrice")
     private BigDecimal performanceTicketPrice;
 
-    @ApiModelProperty(readOnly = true, name = "locationUUID")
-    private UUID locationUUID;
+    @ApiModelProperty(readOnly = true, name = "performanceLocationUUID")
+    private UUID performanceLocationUUID;
 
     @ApiModelProperty(readOnly = true, name = "artistUUID")
     private UUID artistUUID;

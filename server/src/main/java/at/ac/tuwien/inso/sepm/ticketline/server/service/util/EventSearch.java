@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.util;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +20,11 @@ import java.util.UUID;
 public class EventSearch {
     private String eventName;
     private String description;
-    private String performanceType;
+    private PerformanceType performanceType;
     private Duration performanceDuration;
     private LocalDate performanceDate;
     private LocalDateTime performanceDateTime;
     private BigDecimal performanceTicketPrice;
-    private UUID locationUUID;
+    private UUID performanceLocationUUID;
     private UUID artistUUID;
 }

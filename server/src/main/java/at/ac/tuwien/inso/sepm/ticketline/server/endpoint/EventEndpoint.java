@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RestController
 @RequestMapping(value = "/event")
 @Api(value = "event")
@@ -45,12 +44,10 @@ public class EventEndpoint {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ApiOperation(value = "Search for events, which match the given search criteria")
-    public List<EventDTO> search(@RequestBody EventSearchDTO eventSearchDTO){
-
-        /* TODO pagination is ignored by now */
+    public List<EventDTO> search(@RequestBody EventSearchDTO eventSearchDTO, Pageable pageable){
 
         return eventService
-            .search(eventSearchMapper.fromDTO(eventSearchDTO))
+            .search(eventSearchMapper.fromDTO(eventSearchDTO), pageable)
             .stream()
             .map(eventMapper::fromEntity)
             .collect(Collectors.toList());
