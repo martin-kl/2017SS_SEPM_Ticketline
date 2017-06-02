@@ -8,17 +8,21 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,9 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 import org.springframework.stereotype.Component;
-
-import java.util.Iterator;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -103,6 +104,26 @@ public class EventsController {
     @FXML
     private ComboBox<String> cbPerformanceType;
 
+    /**
+     * swapping between graphic and list
+     */
+    @FXML
+    private AnchorPane apListFilters;
+    @FXML
+    private AnchorPane apGraphFilters;
+
+    // Graph (Top-Ten) elements
+    @FXML
+    private Button btnGraphSearch;
+    @FXML
+    private ComboBox<String> cbEventCategory;
+    @FXML
+    private ComboBox<String> cbMonth;
+    @FXML
+    private BarChart<Integer, Integer> barChartTopTen;
+    @FXML
+    private VBox vbPerformanceParent;
+
 
 
     private FontAwesome fontAwesome;
@@ -164,9 +185,6 @@ public class EventsController {
         tfLocationSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
         tfArtistName.setPromptText(BundleManager.getBundle().getString("artist.name") + " ..");
         tfPrice.setPromptText(BundleManager.getBundle().getString("performance.price") + " ..");
-        // Set the extended search elements to invisible
-        apExtendedFilters.setManaged(false);
-        apExtendedFilters.setVisible(false);
 
         dpDate.setPromptText(BundleManager.getBundle().getString("events.date") + " ..");
         dpEndTime.setPromptText(BundleManager.getBundle().getString("events.end") + " ..");
@@ -186,15 +204,43 @@ public class EventsController {
             cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), BundleManager.getBundle().getString("events.type"));
         cbPerformanceType.getSelectionModel().select(BundleManager.getBundle().getString("events.type"));
 
+        initializeGraphLayout();
+    }
+    private void initializeGraphLayout() {
+
+        Calendar c = Calendar.getInstance();
+        Map<String, Integer> months = c.getDisplayNames(Calendar.MONTH, Calendar.LONG, BundleManager.getBundle().getLocale());
+
+        // Month combobox
+        if(cbMonth.getItems().isEmpty()){
+            cbMonth.getItems().add(BundleManager.getBundle().getString("performances.month"));
+            cbMonth.getItems().addAll(months.keySet());
+        }
+        cbMonth.getSelectionModel().select(BundleManager.getBundle().getString("performances.month"));
+
+        // Category combobox
+        if(cbEventCategory.getItems().isEmpty()){
+            cbEventCategory.getItems().addAll(String.valueOf(EventCategory.values()));
+        }
+        btnGraphSearch.setText(BundleManager.getBundle().getString("search"));
     }
 
-    private void prepareForNewList() {
+
+        private void prepareForNewList() {
         previousSelectedBox = null;
         loadedUntilPage = -1;
         vbEventsElements.getChildren().clear();
     }
 
     public void reloadLanguage(boolean alreadyLoggedIn) {
+        cbEventCategory.getItems().clear();
+        cbMonth.getItems().clear();
+        cbEventAttribute.getItems().clear();
+        cbLocationAttribute.getItems().clear();
+        cbPerformanceType.getItems().clear();
+        smbArtistMatches.getItems().clear();
+        smbLocationMatches.getItems().clear();
+
         initializeExtendedSearchLayout();
         setTitle(BundleManager.getBundle().getString("events.title"));
         if(alreadyLoggedIn) {
@@ -206,7 +252,13 @@ public class EventsController {
         this.fontAwesome = fontAwesome;
         setIcon(FontAwesome.Glyph.CALENDAR);
         setTitle(BundleManager.getBundle().getString("events.title"));
+        // Set the extended search elements to invisible
+        apExtendedFilters.setManaged(false);
+        apExtendedFilters.setVisible(false);
+
         initializeExtendedSearchLayout();
+        apGraphFilters.setManaged(false);
+        apGraphFilters.setVisible(false);
     }
 
     private void setIcon(FontAwesome.Glyph glyph) {
@@ -341,14 +393,30 @@ public class EventsController {
             apExtendedFilters.setVisible(true);
         }
     }
+    @FXML
+    public void handleGraphSearchClick(){
 
+    }
 
     @FXML
     public void handleAsListClick(){
+        apGraphFilters.setManaged(false);
+        apGraphFilters.setVisible(false);
 
+        apListFilters.setManaged(true);
+        apListFilters.setVisible(true);
+        scrollPane.setManaged(true);
+        scrollPane.setVisible(true);
     }
+
     @FXML
     public void handleAsGraphClick(){
+        apGraphFilters.setManaged(true);
+        apGraphFilters.setVisible(true);
 
+        apListFilters.setManaged(false);
+        apListFilters.setVisible(false);
+        scrollPane.setManaged(false);
+        scrollPane.setVisible(false);
     }
 }
