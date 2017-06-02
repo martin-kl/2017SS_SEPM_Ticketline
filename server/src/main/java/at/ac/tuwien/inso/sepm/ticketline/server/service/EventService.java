@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.domain.Pageable;
@@ -26,4 +27,12 @@ public interface EventService {
      * @throws at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException
      */
     Event findOne(UUID id);
+
+    /**
+     * Find events which match the attributes specified in eventSearch
+     *
+     * @param eventSearch contains the attributes
+     * @return list of events including the performances
+     * */
+    List<Event> search(EventSearch eventSearch);
 }
