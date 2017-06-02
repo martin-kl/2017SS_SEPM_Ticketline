@@ -32,11 +32,11 @@ public class EventSearchDTO {
     @ApiModelProperty(readOnly = true, name = "performanceDuration")
     private Duration performanceDuration;
 
-    @ApiModelProperty(readOnly = true, name = "performanceDate")
-    private LocalDate performanceDate;
+    @ApiModelProperty(readOnly = true, name = "performanceStartDate")
+    private LocalDate performanceStartDate;
 
-    @ApiModelProperty(readOnly = true, name = "performanceDateTime")
-    private LocalDateTime performanceDateTime;
+    @ApiModelProperty(readOnly = true, name = "performanceEndDate")
+    private LocalDate performanceEndDate;
 
     @ApiModelProperty(readOnly = true, name = "performanceTicketPrice")
     private BigDecimal performanceTicketPrice;
