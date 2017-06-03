@@ -85,7 +85,6 @@ public class NewsDetailController {
             lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
             lbText.setText(detailedNewsDTO.getText());
-            spScrollPane.setVvalue(0.0);
         } catch (DataAccessException e) {
             log.error("error retrieving the detailed news entry for id {}, localized message: {}",
                 simpleNewsDTO.getId(), e.getLocalizedMessage());
