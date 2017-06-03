@@ -17,7 +17,7 @@ public interface EventService {
      * @return list of events
      * @throws DataAccessException in case something went wrong
      */
-    List<EventDTO> findAll(int page) throws DataAccessException;
+    List<EventDTO> findAll(int page) throws ExceptionWithDialog;
 
 
     /**

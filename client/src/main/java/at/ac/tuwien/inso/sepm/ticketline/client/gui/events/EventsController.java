@@ -11,6 +11,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
@@ -38,6 +39,7 @@ import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
+import org.springframework.context.event.GenericApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -149,7 +151,9 @@ public class EventsController {
     private static SeatLocationDTO LOCATION_STANDARD = new SeatLocationDTO();
     private static String TYPE_STANDARD = "";
     private enum SearchState {
-        NOTHING
+        NOTHING,
+        EXTENDED,
+        GRAPH
     }
 
 
@@ -170,10 +174,10 @@ public class EventsController {
             if (vbEventsElements.getChildren().size() == 0) return;
             if (currentlyLoading) return;
             if (new_val.floatValue() > 0.9) {
-                loadNext();
+                loadNext(null);
             }
         });
-        loadNext();
+        loadNext(null);
     }
     private void initializeExtendedSearchLayout(){
 
@@ -277,9 +281,10 @@ public class EventsController {
     }
 
 
-        private void prepareForNewList() {
+    private void prepareForNewList() {
         previousSelectedBox = null;
         loadedUntilPage = -1;
+        vbPerformanceParent.getChildren().clear();
         vbEventsElements.getChildren().clear();
     }
 
@@ -380,15 +385,28 @@ public class EventsController {
     }
 
 
-    private void loadNext() {
+    private void loadNext(EventSearchDTO searchParams) {
+        if(searchParams == null)
+            searchState = SearchState.NOTHING;
+        else
+            searchState = SearchState.EXTENDED;
+
         currentlyLoading = true;
         Task<List<EventDTO>> task = new Task<List<EventDTO>>() {
             @Override
             protected List<EventDTO> call() throws DataAccessException {
-                switch (searchState) {
-                    case NOTHING:
-                        return eventService.findAll(++loadedUntilPage);
+                try {
+                    switch (searchState) {
+                        case NOTHING:
+                            return eventService.findAll(++loadedUntilPage);
+                        case EXTENDED:
+                            return eventService.search(searchParams, 0);
+                    }
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.printStackTrace();
+                    exceptionWithDialog.showDialog();
                 }
+
                 return new ArrayList<>();
             }
 
@@ -430,6 +448,26 @@ public class EventsController {
     @FXML
     public void handleGeneralSearchClick(){
         // read all the textfields, generate query
+        if(apExtendedFilters.isManaged()){
+            // Read all fields
+            if(true){
+
+            }
+            EventSearchDTO searchDTO = new EventSearchDTO();
+        } else {
+            // Read only the general text field
+            if(tfGeneralSearch.getText().isEmpty()){
+
+                prepareForNewList();
+                loadNext(null);
+            } else {
+                EventSearchDTO searchDTO = new EventSearchDTO();
+                searchDTO.setEventName(tfGeneralSearch.getText());
+
+                prepareForNewList();
+                loadNext(searchDTO);
+            }
+        }
         // TODO: implement
     }
 
