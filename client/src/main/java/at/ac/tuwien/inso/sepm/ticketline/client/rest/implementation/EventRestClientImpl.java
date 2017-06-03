@@ -21,6 +21,7 @@ import java.util.List;
 @Component
 public class EventRestClientImpl implements EventRestClient {
     private static final String EVENT_URL = "/event";
+    private static final String EVENT_SEARCH_URL = "/event/search";
     private static final String ARTIST_URL = "/artist";
     private static final String LOCATION_URL = "/location";
 
@@ -62,10 +63,10 @@ public class EventRestClientImpl implements EventRestClient {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<EventSearchDTO> entity = new HttpEntity<>(searchParams, headers);
-
+            log.debug("Entity: ", entity.toString());
             ResponseEntity<List<EventDTO>> response =
                 restClient.exchange(
-                    UriComponentsBuilder.fromUri(restClient.getServiceURI(EVENT_URL))
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(EVENT_SEARCH_URL))
                         .build().toUri(),
                     HttpMethod.POST,
                     entity,
@@ -76,7 +77,7 @@ public class EventRestClientImpl implements EventRestClient {
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed to search for customers with status code " + e.getStatusCode().toString());
+                "Failed to search for events with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
