@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.EventRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
 import com.querydsl.core.BooleanBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,15 +15,13 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType.SEAT;
 import static at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType.SECTOR;
 
+@Slf4j
 @Service
 public class EventServiceImpl implements EventService {
     private final int durationToleranceInMinutes = 30;
@@ -64,7 +63,7 @@ public class EventServiceImpl implements EventService {
 
         if(eventSearch.getArtistUUID() != null){
             builder.and(
-                //TODO das is blödsinn - da muss noch das event berücksichtigt werden
+                //TODO könnte sogar stimmen
                 event.eventArtists.any().artist.id.eq(eventSearch.getArtistUUID())
             );
         }
@@ -79,11 +78,17 @@ public class EventServiceImpl implements EventService {
         * this can be done at the service layer, because events usually
         * contain a small number of performances
         */
-        for(Event e : page){
+        List<Event> eventsWithPerformances = new LinkedList<>();
+        for(Event e : page.getContent()){
             filterPerformances(e, eventSearch);
+            if(e.getPerformances().size() > 0){
+                eventsWithPerformances.add(e);
+            } else {
+                log.info("Removed event " + e.getName() + ", because it has no performances");
+            }
         }
 
-        return page.getContent();
+        return eventsWithPerformances;
     }
 
     private void filterPerformances(Event event, EventSearch eventSearch){
@@ -92,11 +97,11 @@ public class EventServiceImpl implements EventService {
         //TODO is this really null?
         if(eventSearch.getPerformanceType() != null){
             if(eventSearch.getPerformanceType() == SEAT){
-                performances = performances.stream().filter(p -> !(p.getLocation() instanceof SeatLocation))
+                performances = performances.stream().filter(p -> p.getLocation() instanceof SeatLocation)
                     .collect(Collectors.toSet());
             }
             if(eventSearch.getPerformanceType() == SECTOR){
-                performances = performances.stream().filter(p -> !(p.getLocation() instanceof SectorLocation))
+                performances = performances.stream().filter(p -> p.getLocation() instanceof SectorLocation)
                     .collect(Collectors.toSet());
             }
         }
@@ -122,7 +127,7 @@ public class EventServiceImpl implements EventService {
 
         if(eventSearch.getPerformanceLocationUUID() != null){
             performances = performances.stream().filter(p->
-                !p.getLocation().getId().equals(eventSearch.getPerformanceLocationUUID()))
+                p.getLocation().getId().equals(eventSearch.getPerformanceLocationUUID()))
                 .collect(Collectors.toSet());
         }
 
