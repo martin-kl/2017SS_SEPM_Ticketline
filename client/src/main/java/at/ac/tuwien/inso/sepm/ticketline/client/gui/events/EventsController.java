@@ -8,8 +8,11 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -31,6 +34,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -80,7 +84,7 @@ public class EventsController {
     @FXML
     private TextField tfArtistName;
     @FXML
-    private SplitMenuButton smbArtistMatches;
+    private ComboBox<EventArtistDTO> cbArtistMatches;
 
     // Performance-Filter elements
     @FXML
@@ -100,7 +104,7 @@ public class EventsController {
     @FXML
     private ComboBox<String> cbLocationAttribute;
     @FXML
-    private SplitMenuButton smbLocationMatches;
+    private ComboBox<LocationDTO> cbLocationMatches;
     @FXML
     private ComboBox<String> cbPerformanceType;
 
@@ -134,14 +138,16 @@ public class EventsController {
     private final SpringFxmlLoader springFxmlLoader;
     private final EventService eventService;
     private PerformanceDTO selectedPerformance = null;
-    private VBox previousSelectedBox = null;
     private boolean currentlyLoading = false;
+    private VBox previousSelectedBox = null;
 
     private int loadedUntilPage = -1;
 
     private SearchState searchState = SearchState.NOTHING;
 
-
+    // DATA
+    private static SeatLocationDTO LOCATION_STANDARD = new SeatLocationDTO();
+    private static String TYPE_STANDARD = "";
     private enum SearchState {
         NOTHING
     }
@@ -170,6 +176,7 @@ public class EventsController {
         loadNext();
     }
     private void initializeExtendedSearchLayout(){
+
         lblEventFilter.setText(BundleManager.getBundle().getString("events.filter"));
         lblPerformanceFilter.setText(BundleManager.getBundle().getString("performances.filter"));
 
@@ -190,6 +197,48 @@ public class EventsController {
         dpEndTime.setPromptText(BundleManager.getBundle().getString("events.end") + " ..");
         dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
 
+        LOCATION_STANDARD.setName(BundleManager.getBundle().getString("events.location"));
+
+        /* TODO: add for artists
+        if(cbArtistMatches.getItems().isEmpty())
+            cbArtistMatches.getItems().add(new EventArtistDTO.EventArtistDTOBuilder().build().nam);
+        cbArtistMatches.getSelectionModel().select("Name");*/
+
+        if(cbLocationMatches.getItems().isEmpty()){
+            cbLocationMatches.getItems().add(LOCATION_STANDARD);
+        }
+        cbLocationMatches.getSelectionModel().select(LOCATION_STANDARD);
+        cbLocationMatches.setCellFactory(
+            new Callback<ListView<LocationDTO>, ListCell<LocationDTO>>() {
+                @Override
+                public ListCell<LocationDTO> call(ListView<LocationDTO> p) {
+                    ListCell cell = new ListCell<LocationDTO>() {
+                        @Override
+                        protected void updateItem(LocationDTO item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setText("");
+                            } else {
+                                setText(item.getName());
+                            }
+                        }
+                    };
+                    return cell;
+                }
+            });
+        cbLocationMatches.setButtonCell(
+            new ListCell<LocationDTO>() {
+                @Override
+                protected void updateItem(LocationDTO t, boolean bln) {
+                    super.updateItem(t, bln);
+                    if (bln) {
+                        setText("");
+                    } else {
+                        setText(t.getName());
+                    }
+                }
+        });
+
         // Set the Attributes to search for
         if(cbEventAttribute.getItems().isEmpty())
             cbEventAttribute.getItems().addAll("Name", BundleManager.getBundle().getString("events.category"), BundleManager.getBundle().getString("events.description"));
@@ -200,9 +249,11 @@ public class EventsController {
                 BundleManager.getBundle().getString("location.city"), BundleManager.getBundle().getString("location.country"), BundleManager.getBundle().getString("location.zip"));
         cbLocationAttribute.getSelectionModel().select("Name");
 
+        TYPE_STANDARD = BundleManager.getBundle().getString("events.type");
+
         if(cbPerformanceType.getItems().isEmpty())
-            cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), BundleManager.getBundle().getString("events.type"));
-        cbPerformanceType.getSelectionModel().select(BundleManager.getBundle().getString("events.type"));
+            cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), TYPE_STANDARD);
+        cbPerformanceType.getSelectionModel().select(TYPE_STANDARD);
 
         initializeGraphLayout();
     }
@@ -238,8 +289,8 @@ public class EventsController {
         cbEventAttribute.getItems().clear();
         cbLocationAttribute.getItems().clear();
         cbPerformanceType.getItems().clear();
-        smbArtistMatches.getItems().clear();
-        smbLocationMatches.getItems().clear();
+        cbArtistMatches.getItems().clear();
+        cbLocationMatches.getItems().clear();
 
         initializeExtendedSearchLayout();
         setTitle(BundleManager.getBundle().getString("events.title"));
@@ -383,20 +434,23 @@ public class EventsController {
     }
 
     @FXML
-    public void handleExtendedSearchClick(){
-        if(apExtendedFilters.isManaged()){
-            apExtendedFilters.setManaged(false);
-            apExtendedFilters.setVisible(false);
-        }
-        else {
-            apExtendedFilters.setManaged(true);
-            apExtendedFilters.setVisible(true);
+    public void handleArtistSearchClick(){
+
+        if(!tfArtistName.getText().equals("")){
+            // TODO: search and fill the smb with elements
         }
     }
+    @FXML
+    public void handleLocationSearchClick(){
+
+    }
+
     @FXML
     public void handleGraphSearchClick(){
 
     }
+
+
 
     @FXML
     public void handleAsListClick(){
@@ -408,7 +462,17 @@ public class EventsController {
         scrollPane.setManaged(true);
         scrollPane.setVisible(true);
     }
-
+    @FXML
+    public void handleExtendedSearchClick(){
+        if(apExtendedFilters.isManaged()){
+            apExtendedFilters.setManaged(false);
+            apExtendedFilters.setVisible(false);
+        }
+        else {
+            apExtendedFilters.setManaged(true);
+            apExtendedFilters.setVisible(true);
+        }
+    }
     @FXML
     public void handleAsGraphClick(){
         apGraphFilters.setManaged(true);
