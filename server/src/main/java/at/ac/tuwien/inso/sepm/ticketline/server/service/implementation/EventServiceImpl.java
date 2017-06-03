@@ -52,13 +52,13 @@ public class EventServiceImpl implements EventService {
 
         if(eventSearch.getEventName() != null){
             builder.and(
-                event.name.eq(eventSearch.getEventName())
+                event.name.containsIgnoreCase(eventSearch.getEventName())
             );
         }
 
         if(eventSearch.getDescription() != null){
             builder.and(
-                event.description.eq(eventSearch.getDescription())
+                event.description.containsIgnoreCase(eventSearch.getDescription())
             );
         }
 
