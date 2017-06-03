@@ -64,7 +64,6 @@ public class EventServiceImpl implements EventService {
 
         if(eventSearch.getArtistUUID() != null){
             builder.and(
-                //TODO könnte sogar stimmen
                 event.eventArtists.any().artist.id.eq(eventSearch.getArtistUUID())
             );
         }
@@ -96,7 +95,6 @@ public class EventServiceImpl implements EventService {
     private void filterPerformances(Event event, EventSearch eventSearch){
         Set<Performance> performances = event.getPerformances();
 
-        //TODO is this really null?
         if(eventSearch.getPerformanceType() != null){
             if(eventSearch.getPerformanceType() == SEAT){
                 performances = performances.stream().filter(p -> p.getLocation() instanceof SeatLocation)
@@ -149,8 +147,6 @@ public class EventServiceImpl implements EventService {
         return b1 && b2;
     }
 
-    //smaller than the given duration + 30 min
-    //greater than the given duration - 30 min
     private boolean performanceMatchesDuration(Performance performance, Duration duration){
         boolean b1 = Duration.between(performance.getStartTime(),performance.getEndTime()).abs()
             .compareTo(duration.plusMinutes(durationToleranceInMinutes)) < 0;
