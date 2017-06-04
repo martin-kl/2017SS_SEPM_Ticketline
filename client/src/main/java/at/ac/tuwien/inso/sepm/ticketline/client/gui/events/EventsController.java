@@ -185,6 +185,10 @@ public class EventsController {
             }
         });
         loadNext(null);
+
+        // load all artists and locations
+        handleArtistEnter();
+        handleLocationEnter();
     }
     private void initializeExtendedSearchLayout(){
 
@@ -209,15 +213,12 @@ public class EventsController {
         dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
 
         loadComboboxes();
-        // load all artists and locations
-        handleArtistEnter();
-        handleLocationEnter();
         initializeGraphLayout();
     }
 
     private void loadComboboxes(){
-        LOCATION_STANDARD.setName(BundleManager.getBundle().getString("events.location"));
-        ARTIST_STANDARD.setFirstname(BundleManager.getBundle().getString("artist"));
+        LOCATION_STANDARD.setName(BundleManager.getBundle().getString("events.location") + "-Match");
+        ARTIST_STANDARD.setFirstname(BundleManager.getBundle().getString("artist") + "-Match");
         TYPE_STANDARD = BundleManager.getBundle().getString("events.type");
 
         if(cbArtistMatches.getItems().isEmpty())
@@ -550,7 +551,8 @@ public class EventsController {
         cbArtistMatches.getItems().add(ARTIST_STANDARD);
         cbArtistMatches.getItems().addAll(elements);
         cbArtistMatches.getSelectionModel().select(ARTIST_STANDARD);
-        cbArtistMatches.show();
+        if(apExtendedFilters.isManaged())
+            cbArtistMatches.show();
     }
 
     private void appendLocationElements(List<LocationDTO> elements){
@@ -558,7 +560,8 @@ public class EventsController {
         cbLocationMatches.getItems().add(LOCATION_STANDARD);
         cbLocationMatches.getItems().addAll(elements);
         cbLocationMatches.getSelectionModel().select(LOCATION_STANDARD);
-        cbLocationMatches.show();
+        if(apExtendedFilters.isManaged())
+            cbLocationMatches.show();
     }
 
     private void appendElements(List<EventDTO> elements) {
@@ -589,7 +592,7 @@ public class EventsController {
                 if (cbEventAttribute.getSelectionModel().getSelectedItem().equals("Name"))
                     searchDTO.setEventName(tfEventSearch.getText());
                 else if (cbEventAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("events.category")))
-                    ;
+                    searchDTO.setEventCategory(null);
                     //TODO category set (nachdem benni sein pfusch fixt)
                 else if (cbEventAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("events.description")))
                     searchDTO.setDescription(tfEventSearch.getText());
@@ -641,11 +644,22 @@ public class EventsController {
                     searchDTO.setPerformanceType(PerformanceType.SEAT);
                 }
             }
+
+            // check artist/location matches
+            if(!cbArtistMatches.getSelectionModel().getSelectedItem().equals(ARTIST_STANDARD)){
+                if(searchDTO == null)
+                    searchDTO = new EventSearchDTO();
+                searchDTO.setArtistUUID(cbArtistMatches.getSelectionModel().getSelectedItem().getId());
+            }
+            if(!cbLocationMatches.getSelectionModel().getSelectedItem().equals(LOCATION_STANDARD)){
+                if(searchDTO == null)
+                    searchDTO = new EventSearchDTO();
+                searchDTO.setPerformanceLocationUUID(cbLocationMatches.getSelectionModel().getSelectedItem().getId());
+            }
+
             // start the search
             prepareForNewList();
             loadNext(searchDTO);
-
-
         } else {
             // Read only the general text field
             if(tfGeneralSearch.getText().isEmpty()){
