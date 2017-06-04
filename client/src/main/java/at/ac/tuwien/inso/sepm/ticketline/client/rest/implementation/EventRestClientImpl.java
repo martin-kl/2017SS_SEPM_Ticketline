@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.rest.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.EventRestClient;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
@@ -84,21 +85,21 @@ public class EventRestClientImpl implements EventRestClient {
     }
 
     @Override
-    public List<EventArtistDTO> searchArtists(String query, int page) throws DataAccessException {
+    public List<ArtistDTO> searchArtists(String query, int page) throws DataAccessException {
         try {
             log.debug("Searching artists with query {} using url {}", query,
                 restClient.getServiceURI(ARTIST_URL) + "?search=" + query);
-            ResponseEntity<List<EventArtistDTO>> artists =
+            ResponseEntity<List<ArtistDTO>> artists =
                 restClient.exchange(
                     UriComponentsBuilder.fromUri(
                         URI.create(restClient.getServiceURI(ARTIST_URL) + "/search"))
-                        .queryParam("query", query)
+                        .queryParam("fuzzyArtistName", query)
                         .queryParam("page", page)
                         .queryParam("size", 20)
                         .build().toUri(),
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<List<EventArtistDTO>>() {
+                    new ParameterizedTypeReference<List<ArtistDTO>>() {
                     });
             log.debug("Result status was {} with content {}", artists.getStatusCode(),
                 artists.getBody());

@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.rest;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
@@ -34,7 +35,7 @@ public interface EventRestClient {
      * @param page the page number to request
      * @return list of artists matching the search parameters
      */
-    List<EventArtistDTO> searchArtists(String query, int page) throws DataAccessException;
+    List<ArtistDTO> searchArtists(String query, int page) throws DataAccessException;
 
     /**
      * fuzzy searches for locations

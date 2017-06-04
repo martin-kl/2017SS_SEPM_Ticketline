@@ -8,6 +8,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
@@ -91,7 +92,7 @@ public class EventsController {
     @FXML
     private TextField tfArtistName;
     @FXML
-    private ComboBox<EventArtistDTO> cbArtistMatches;
+    private ComboBox<ArtistDTO> cbArtistMatches;
 
     // Performance-Filter elements
     @FXML
@@ -154,6 +155,7 @@ public class EventsController {
 
     // DATA
     private static SeatLocationDTO LOCATION_STANDARD = new SeatLocationDTO();
+    private static ArtistDTO ARTIST_STANDARD = new ArtistDTO();
     private static String TYPE_STANDARD = "";
     private enum SearchState {
         NOTHING,
@@ -206,12 +208,56 @@ public class EventsController {
         dpEndTime.setPromptText(BundleManager.getBundle().getString("events.end") + " ..");
         dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
 
-        LOCATION_STANDARD.setName(BundleManager.getBundle().getString("events.location"));
+        loadComboboxes();
+        initializeGraphLayout();
+    }
 
-        /* TODO: add for artists
+    private void loadComboboxes(){
+        LOCATION_STANDARD.setName(BundleManager.getBundle().getString("events.location"));
+        ARTIST_STANDARD.setFirstname(BundleManager.getBundle().getString("artist"));
+        TYPE_STANDARD = BundleManager.getBundle().getString("events.type");
+
         if(cbArtistMatches.getItems().isEmpty())
-            cbArtistMatches.getItems().add(new EventArtistDTO.EventArtistDTOBuilder().build().nam);
-        cbArtistMatches.getSelectionModel().select("Name");*/
+            cbArtistMatches.getItems().add(ARTIST_STANDARD);
+        cbArtistMatches.getSelectionModel().select(ARTIST_STANDARD);
+        cbArtistMatches.setCellFactory(
+            new Callback<ListView<ArtistDTO>, ListCell<ArtistDTO>>() {
+                @Override
+                public ListCell<ArtistDTO> call(ListView<ArtistDTO> p) {
+                    ListCell cell = new ListCell<ArtistDTO>() {
+                        @Override
+                        protected void updateItem(ArtistDTO item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setText("");
+                            } else {
+                                if(item.equals(ARTIST_STANDARD))
+                                    setText(item.getFirstname());
+                                else
+                                    setText(item.getFirstname() + " " + item.getLastname());
+                            }
+                        }
+                    };
+                    return cell;
+                }
+            });
+        cbArtistMatches.setButtonCell(
+            new ListCell<ArtistDTO>() {
+                @Override
+                protected void updateItem(ArtistDTO t, boolean bln) {
+                    super.updateItem(t, bln);
+                    if (bln) {
+                        setText("");
+                    } else {
+                        if(t.equals(ARTIST_STANDARD))
+                            setText(t.getFirstname());
+                        else
+                            setText(t.getFirstname() + " " + t.getLastname());
+                    }
+                }
+            });
+
+
 
         if(cbLocationMatches.getItems().isEmpty()){
             cbLocationMatches.getItems().add(LOCATION_STANDARD);
@@ -246,7 +292,7 @@ public class EventsController {
                         setText(t.getName());
                     }
                 }
-        });
+            });
 
         // Set the Attributes to search for
         if(cbEventAttribute.getItems().isEmpty())
@@ -258,14 +304,12 @@ public class EventsController {
                 BundleManager.getBundle().getString("location.city"), BundleManager.getBundle().getString("location.country"), BundleManager.getBundle().getString("location.zip"));
         cbLocationAttribute.getSelectionModel().select("Name");
 
-        TYPE_STANDARD = BundleManager.getBundle().getString("events.type");
 
         if(cbPerformanceType.getItems().isEmpty())
             cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), TYPE_STANDARD);
         cbPerformanceType.getSelectionModel().select(TYPE_STANDARD);
-
-        initializeGraphLayout();
     }
+
     private void initializeGraphLayout() {
 
         Calendar c = Calendar.getInstance();
@@ -435,6 +479,46 @@ public class EventsController {
         new Thread(task).start();
     }
 
+    private void loadArtists(String searchParams) {
+        Task<List<ArtistDTO>> task = new Task<List<ArtistDTO>>() {
+            @Override
+            protected List<ArtistDTO> call() throws DataAccessException {
+                try {
+                    return eventService.searchArtists(searchParams, 0);
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.printStackTrace();
+                    exceptionWithDialog.showDialog();
+                }
+
+                return new ArrayList<>();
+            }
+
+            @Override
+            protected void succeeded() {appendArtistElements(getValue());
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                JavaFXUtils.createExceptionDialog(getException(),
+                    vbEventsElements.getScene().getWindow()).showAndWait();
+            }
+        };
+
+        task.runningProperty().addListener((observable, oldValue, running) ->
+            mainController.setProgressbarProgress(
+                running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
+        );
+        new Thread(task).start();
+    }
+
+    private void appendArtistElements(List<ArtistDTO> elements){
+        cbArtistMatches.getItems().clear();
+        cbArtistMatches.getItems().add(ARTIST_STANDARD);
+        cbArtistMatches.getItems().addAll(elements);
+        cbArtistMatches.show();
+    }
+
     private void appendElements(List<EventDTO> elements) {
         for (Iterator<EventDTO> iterator = elements.iterator(); iterator.hasNext(); ) {
             EventDTO event = iterator.next();
@@ -537,15 +621,20 @@ public class EventsController {
         // TODO: implement
     }
 
+    /**
+     * search for artists matching the search param
+     */
     @FXML
-    public void handleArtistSearchClick(){
-
+    public void handleArtistEnter(){
         if(!tfArtistName.getText().equals("")){
-            // TODO: search and fill the smb with elements
+            loadArtists(tfArtistName.getText());
         }
     }
+    /**
+     * search for locations matching the search param
+     */
     @FXML
-    public void handleLocationSearchClick(){
+    public void handleLocationEnter(){
 
     }
 

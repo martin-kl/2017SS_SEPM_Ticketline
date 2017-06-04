@@ -11,7 +11,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -132,13 +131,13 @@
                                                                         <Insets />
                                                                      </GridPane.margin>
                                                                   </TextField>
-                                                                  <TextField fx:id="tfArtistName" maxWidth="1.7976931348623157E308" promptText="&lt;Artist name ..&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                                                  <TextField fx:id="tfArtistName" maxWidth="1.7976931348623157E308" onAction="#handleArtistEnter" promptText="&lt;Artist name ..&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                                                      <opaqueInsets>
                                                                         <Insets />
                                                                      </opaqueInsets>
                                                                   </TextField>
                                                                   <ComboBox fx:id="cbEventAttribute" maxWidth="1.7976931348623157E308" prefWidth="120.0" promptText="&lt;Eventname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                                                  <ComboBox fx:id="cbArtistMatches" maxWidth="1.7976931348623157E308" onAction="#handleArtistSearchClick" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                                                  <ComboBox fx:id="cbArtistMatches" maxWidth="1.7976931348623157E308" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                                </children>
                                                                <opaqueInsets>
                                                                   <Insets />
@@ -223,13 +222,13 @@
                                                                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                            </rowConstraints>
                                                                            <children>
-                                                                              <TextField fx:id="tfLocationSearch" maxWidth="1.7976931348623157E308" prefWidth="0.0" promptText="&lt;Search for ..&gt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                                              <TextField fx:id="tfLocationSearch" maxWidth="1.7976931348623157E308" onAction="#handleLocationEnter" prefWidth="0.0" promptText="&lt;Search for ..&gt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                                                                  <opaqueInsets>
                                                                                     <Insets />
                                                                                  </opaqueInsets>
                                                                               </TextField>
-                                                                              <ComboBox fx:id="cbLocationAttribute" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Locationname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                                                              <ComboBox fx:id="cbLocationMatches" maxWidth="1.7976931348623157E308" onAction="#handleLocationSearchClick" prefWidth="160.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                                                              <ComboBox fx:id="cbLocationAttribute" maxWidth="1.7976931348623157E308" onAction="#handleLocationEnter" prefWidth="135.0" promptText="&lt;Locationname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                                              <ComboBox fx:id="cbLocationMatches" maxWidth="1.7976931348623157E308" prefWidth="160.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                                               <ComboBox fx:id="cbPerformanceType" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Type&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                                            </children>
                                                                            <padding>

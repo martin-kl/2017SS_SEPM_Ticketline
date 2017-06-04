@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.EventRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
@@ -35,7 +36,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventArtistDTO> searchArtists(String query, int page) throws ExceptionWithDialog {
+    public List<ArtistDTO> searchArtists(String query, int page) throws ExceptionWithDialog {
         if (query == null || query.equals("")) { return null; }
         return eventRestClient.searchArtists(query, page);
     }

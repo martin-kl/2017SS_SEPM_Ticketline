@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.client.service;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
+import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
@@ -37,7 +38,7 @@ public interface EventService {
      * @param page the page number to request
      * @return list of artists matching the search parameters
      */
-    List<EventArtistDTO> searchArtists(String query, int page) throws ExceptionWithDialog;
+    List<ArtistDTO> searchArtists(String query, int page) throws ExceptionWithDialog;
 
     /**
      * fuzzy searches for locations
