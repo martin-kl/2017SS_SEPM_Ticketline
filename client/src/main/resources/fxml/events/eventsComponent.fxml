@@ -113,7 +113,7 @@
                                                    <center>
                                                       <BorderPane BorderPane.alignment="CENTER">
                                                          <center>
-                                                            <GridPane alignment="CENTER" hgap="5.0" BorderPane.alignment="CENTER">
+                                                            <GridPane alignment="CENTER" hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
                                                                <columnConstraints>
                                                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -177,34 +177,74 @@
                                                             <Separator prefHeight="3.0" prefWidth="666.0" BorderPane.alignment="CENTER" />
                                                          </top>
                                                          <center>
-                                                            <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" style="-fx-box-border: transparent;" BorderPane.alignment="CENTER">
+                                                            <SplitPane dividerPositions="0.5455950540958269" prefHeight="160.0" prefWidth="200.0" style="-fx-box-border: transparent;" BorderPane.alignment="CENTER">
                                                               <items>
                                                                 <AnchorPane>
                                                                      <children>
                                                                         <AnchorPane prefHeight="74.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                            <children>
-                                                                              <GridPane alignment="CENTER" hgap="5.0" layoutX="14.0" layoutY="2.0" prefHeight="66.0" prefWidth="321.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                                 <columnConstraints>
-                                                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                                 </columnConstraints>
-                                                                                 <rowConstraints>
-                                                                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                                                 </rowConstraints>
+                                                                              <GridPane prefHeight="66.0" prefWidth="350.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                                <columnConstraints>
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
                                                                                  <children>
-                                                                                    <DatePicker fx:id="dpDate" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;Date ..&gt;" GridPane.halignment="CENTER" />
-                                                                                    <TextField fx:id="tfPrice" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="&lt;Price ..&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                                                                       <opaqueInsets>
-                                                                                          <Insets />
-                                                                                       </opaqueInsets>
-                                                                                    </TextField>
-                                                                                    <DatePicker fx:id="dpStartTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;Start ..&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                                                                    <DatePicker fx:id="dpEndTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;End ..&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                                                                    <GridPane hgap="5.0">
+                                                                                      <columnConstraints>
+                                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                      </columnConstraints>
+                                                                                      <rowConstraints>
+                                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                      </rowConstraints>
+                                                                                       <children>
+                                                                                          <TextField fx:id="tfPrice" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="&lt;Price ..&gt;" GridPane.halignment="CENTER">
+                                                                                             <opaqueInsets>
+                                                                                                <Insets />
+                                                                                             </opaqueInsets>
+                                                                                          </TextField>
+                                                                                          <DatePicker fx:id="dpStartTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;Start ..&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                                                          <DatePicker fx:id="dpEndTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;End ..&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                                                                                       </children>
+                                                                                       <padding>
+                                                                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                                       </padding>
+                                                                                    </GridPane>
+                                                                                    <GridPane alignment="CENTER" hgap="5.0" prefHeight="66.0" prefWidth="321.0" GridPane.rowIndex="1">
+                                                                                       <columnConstraints>
+                                                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" percentWidth="25.0" prefWidth="98.0" />
+                                                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" percentWidth="25.0" prefWidth="104.0" />
+                                                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" percentWidth="25.0" prefWidth="99.0" />
+                                                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                                                                                       </columnConstraints>
+                                                                                       <rowConstraints>
+                                                                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                                       </rowConstraints>
+                                                                                       <children>
+                                                                                          <Label fx:id="lblDuration" text="&lt;Duration:&gt;">
+                                                                                             <GridPane.margin>
+                                                                                                <Insets />
+                                                                                             </GridPane.margin>
+                                                                                             <padding>
+                                                                                                <Insets left="4.0" />
+                                                                                             </padding>
+                                                                                             <font>
+                                                                                                <Font size="13.0" />
+                                                                                             </font>
+                                                                                          </Label>
+                                                                                          <TextField fx:id="tfDurationDays" promptText="&lt;Days&gt;" GridPane.columnIndex="1" />
+                                                                                          <TextField fx:id="tfDurationHours" promptText="&lt;Hours&gt;" GridPane.columnIndex="2" />
+                                                                                          <TextField fx:id="tfDurationMinutes" promptText="&lt;Minutes&gt;" GridPane.columnIndex="3" />
+                                                                                       </children>
+                                                                                       <padding>
+                                                                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                                       </padding>
+                                                                                    </GridPane>
                                                                                  </children>
-                                                                                 <padding>
-                                                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                                                 </padding>
                                                                               </GridPane>
                                                                            </children>
                                                                         </AnchorPane>
@@ -212,10 +252,10 @@
                                                                   </AnchorPane>
                                                                 <AnchorPane>
                                                                      <children>
-                                                                        <GridPane alignment="CENTER" hgap="5.0" prefHeight="74.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                        <GridPane alignment="CENTER" hgap="5.0" prefHeight="74.0" prefWidth="320.0" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                            <columnConstraints>
-                                                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="140.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" prefWidth="136.0" />
                                                                            </columnConstraints>
                                                                            <rowConstraints>
                                                                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />

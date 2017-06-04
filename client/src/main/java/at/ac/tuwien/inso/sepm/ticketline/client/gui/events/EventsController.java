@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.time.Duration;
 import java.util.*;
 import java.util.List;
 
@@ -80,7 +81,6 @@ public class EventsController {
     private AnchorPane apExtendedFilters;
     @FXML
     private Button btnExtendedSearch;
-    private boolean isExtendedSearch = false;
 
     // Event-Filter elements
     @FXML
@@ -98,15 +98,19 @@ public class EventsController {
     @FXML
     private Label lblPerformanceFilter;
     @FXML
-    private DatePicker dpDate;
+    private Label lblDuration;
+    @FXML
+    private TextField tfDurationHours;
+    @FXML
+    private TextField tfDurationDays;
+    @FXML
+    private TextField tfDurationMinutes;
     @FXML
     private DatePicker dpStartTime;
     @FXML
     private DatePicker dpEndTime;
     @FXML
     private TextField tfPrice;
-    @FXML
-    private SplitMenuButton smbRoomMatches; // do we actually have this functionality?
     @FXML
     private TextField tfLocationSearch;
     @FXML
@@ -208,10 +212,13 @@ public class EventsController {
         tfArtistName.setPromptText(BundleManager.getBundle().getString("artist.name") + " ..");
         tfPrice.setPromptText(BundleManager.getBundle().getString("performance.price") + " ..");
 
-        dpDate.setPromptText(BundleManager.getBundle().getString("events.date") + " ..");
         dpEndTime.setPromptText(BundleManager.getBundle().getString("events.end") + " ..");
         dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
 
+        lblDuration.setText(BundleManager.getBundle().getString("duration") + ":");
+        tfDurationDays.setPromptText(BundleManager.getBundle().getString("duration.days") + " ..");
+        tfDurationHours.setPromptText(BundleManager.getBundle().getString("duration.hours") + " ..");
+        tfDurationMinutes.setPromptText(BundleManager.getBundle().getString("duration.minutes") + " ..");
         loadComboboxes();
         initializeGraphLayout();
     }
@@ -609,6 +616,13 @@ public class EventsController {
 
                 BigDecimal bd = (BigDecimal) nf.parse(priceInput, new ParsePosition(0));
 
+                // force a parse to see if the input is valid (this prevents inputs like '12daet' which would correspond to a BigDecimal of '12'
+                try {
+                    double number = Double.parseDouble(priceInput);
+                } catch (NumberFormatException ex){
+                    bd = null;
+                }
+
                 if(bd == null) {
                     // an error occured (input is invalid)
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -620,8 +634,10 @@ public class EventsController {
                     //clear invalid price input
                     tfPrice.setText("");
                 }
-                else
+                else {
+                    tfPrice.setText(bd.toPlainString());
                     searchDTO.setPerformanceTicketPrice(bd);
+                }
             }
 
             // Start and Endtime
@@ -656,6 +672,57 @@ public class EventsController {
                     searchDTO = new EventSearchDTO();
                 searchDTO.setPerformanceLocationUUID(cbLocationMatches.getSelectionModel().getSelectedItem().getId());
             }
+
+            if(!tfDurationDays.getText().isEmpty() || !tfDurationHours.getText().isEmpty() || !tfDurationMinutes.getText().isEmpty()){
+                if(searchDTO == null)
+                    searchDTO = new EventSearchDTO();
+                Duration duration = Duration.ZERO;
+
+                if(!tfDurationDays.getText().isEmpty()){
+                    int days = 0;
+                    try {
+                        days = Integer.parseInt(tfDurationDays.getText());
+                        duration.plusDays(days);
+                    } catch (Exception e){
+                        // an error occured (input is invalid)
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
+                        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
+                        alert.setContentText(BundleManager.getExceptionBundle().getString("event.error.days"));
+                        alert.showAndWait();
+                    }
+                }
+                if(!tfDurationHours.getText().isEmpty()){
+                    int hours = 0;
+                    try {
+                        hours = Integer.parseInt(tfDurationHours.getText());
+                        duration.plusHours(hours);
+                    } catch (Exception e){
+                        // an error occured (input is invalid)
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
+                        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
+                        alert.setContentText(BundleManager.getExceptionBundle().getString("event.error.hours"));
+                        alert.showAndWait();
+                    }
+                }
+                if(!tfDurationMinutes.getText().isEmpty()){
+                    int minutes = 0;
+                    try {
+                        minutes = Integer.parseInt(tfDurationMinutes.getText());
+                        duration.plusMinutes(minutes);
+                    } catch (Exception e){
+                        // an error occured (input is invalid)
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
+                        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
+                        alert.setContentText(BundleManager.getExceptionBundle().getString("event.error.minutes"));
+                        alert.showAndWait();
+                    }
+                }
+                searchDTO.setPerformanceDuration(duration);
+            }
+
 
             // start the search
             prepareForNewList();
