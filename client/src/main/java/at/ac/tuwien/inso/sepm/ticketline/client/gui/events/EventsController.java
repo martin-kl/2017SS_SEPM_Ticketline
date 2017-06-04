@@ -209,6 +209,9 @@ public class EventsController {
         dpStartTime.setPromptText(BundleManager.getBundle().getString("events.begin") + " ..");
 
         loadComboboxes();
+        // load all artists and locations
+        handleArtistEnter();
+        handleLocationEnter();
         initializeGraphLayout();
     }
 
@@ -256,9 +259,6 @@ public class EventsController {
                     }
                 }
             });
-
-
-
         if(cbLocationMatches.getItems().isEmpty()){
             cbLocationMatches.getItems().add(LOCATION_STANDARD);
         }
@@ -512,11 +512,53 @@ public class EventsController {
         new Thread(task).start();
     }
 
+    private void loadLocations(LocationDTO searchParams) {
+        Task<List<LocationDTO>> task = new Task<List<LocationDTO>>() {
+            @Override
+            protected List<LocationDTO> call() throws DataAccessException {
+                try {
+                    return eventService.searchLocations(searchParams, 0);
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.printStackTrace();
+                    exceptionWithDialog.showDialog();
+                }
+
+                return new ArrayList<>();
+            }
+
+            @Override
+            protected void succeeded() {appendLocationElements(getValue());
+            }
+
+            @Override
+            protected void failed() {
+                super.failed();
+                JavaFXUtils.createExceptionDialog(getException(),
+                    vbEventsElements.getScene().getWindow()).showAndWait();
+            }
+        };
+
+        task.runningProperty().addListener((observable, oldValue, running) ->
+            mainController.setProgressbarProgress(
+                running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
+        );
+        new Thread(task).start();
+    }
+
     private void appendArtistElements(List<ArtistDTO> elements){
         cbArtistMatches.getItems().clear();
         cbArtistMatches.getItems().add(ARTIST_STANDARD);
         cbArtistMatches.getItems().addAll(elements);
+        cbArtistMatches.getSelectionModel().select(ARTIST_STANDARD);
         cbArtistMatches.show();
+    }
+
+    private void appendLocationElements(List<LocationDTO> elements){
+        cbLocationMatches.getItems().clear();
+        cbLocationMatches.getItems().add(LOCATION_STANDARD);
+        cbLocationMatches.getItems().addAll(elements);
+        cbLocationMatches.getSelectionModel().select(LOCATION_STANDARD);
+        cbLocationMatches.show();
     }
 
     private void appendElements(List<EventDTO> elements) {
@@ -629,13 +671,35 @@ public class EventsController {
         if(!tfArtistName.getText().equals("")){
             loadArtists(tfArtistName.getText());
         }
+        else {
+            // load all artists
+            loadArtists("");
+        }
     }
     /**
      * search for locations matching the search param
      */
     @FXML
     public void handleLocationEnter(){
-
+        if(!tfLocationSearch.getText().equals("")){
+            LocationDTO locationDTO = new SeatLocationDTO();
+            // read input and set value
+            if(cbLocationAttribute.getSelectionModel().getSelectedItem().equals("Name")){
+                locationDTO.setName(tfLocationSearch.getText());
+            } else if (cbLocationAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("location.street"))){
+                locationDTO.setStreet(tfLocationSearch.getText());
+            } else if (cbLocationAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("location.city"))){
+                locationDTO.setCity(tfLocationSearch.getText());
+            } else if (cbLocationAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("location.country"))){
+                locationDTO.setCountry(tfLocationSearch.getText());
+            } else if (cbLocationAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("location.zip"))){
+                locationDTO.setZipCode(tfLocationSearch.getText());
+            }
+            loadLocations(locationDTO);
+        } else {
+            // load all locations
+            loadLocations(new SeatLocationDTO());
+        }
     }
 
     @FXML

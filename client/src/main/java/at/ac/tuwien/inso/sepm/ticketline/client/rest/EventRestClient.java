@@ -40,9 +40,9 @@ public interface EventRestClient {
     /**
      * fuzzy searches for locations
      *
-     * @param query the search params
+     * @param searchParams the search params
      * @param page the page number to request
      * @return list of locations matching the search parameters
      */
-    List<LocationDTO> searchLocations(String query, int page) throws DataAccessException;
+    List<LocationDTO> searchLocations(LocationDTO searchParams, int page) throws DataAccessException;
 }

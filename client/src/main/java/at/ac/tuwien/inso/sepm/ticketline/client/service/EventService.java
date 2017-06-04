@@ -43,9 +43,9 @@ public interface EventService {
     /**
      * fuzzy searches for locations
      *
-     * @param query the search params
+     * @param searchParams the search params
      * @param page the page number to request
      * @return list of locations matching the search parameters
      */
-    List<LocationDTO> searchLocations(String query, int page) throws ExceptionWithDialog;
+    List<LocationDTO> searchLocations(LocationDTO searchParams, int page) throws ExceptionWithDialog;
 }

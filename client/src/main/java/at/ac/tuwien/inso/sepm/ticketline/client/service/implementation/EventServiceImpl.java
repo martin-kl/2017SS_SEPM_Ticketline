@@ -37,13 +37,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<ArtistDTO> searchArtists(String query, int page) throws ExceptionWithDialog {
-        if (query == null || query.equals("")) { return null; }
+        if (query == null || query.equals("")) { return eventRestClient.searchArtists(null, page); }
         return eventRestClient.searchArtists(query, page);
     }
 
     @Override
-    public List<LocationDTO> searchLocations(String query, int page) throws ExceptionWithDialog {
-        if (query == null || query.equals("")) { return null; }
-        return eventRestClient.searchLocations(query, page);
+    public List<LocationDTO> searchLocations(LocationDTO searchParams, int page) throws ExceptionWithDialog {
+        return eventRestClient.searchLocations(searchParams, page);
     }
 }

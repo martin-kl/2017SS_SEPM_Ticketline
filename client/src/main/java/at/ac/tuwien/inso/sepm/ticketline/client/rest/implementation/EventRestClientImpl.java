@@ -24,7 +24,7 @@ public class EventRestClientImpl implements EventRestClient {
     private static final String EVENT_URL = "/event";
     private static final String EVENT_SEARCH_URL = "/event/search";
     private static final String ARTIST_URL = "/artist";
-    private static final String LOCATION_URL = "/location";
+    private static final String LOCATION_URL = "/location/search";
 
     private final RestClient restClient;
 
@@ -58,7 +58,6 @@ public class EventRestClientImpl implements EventRestClient {
     @Override
     public List<EventDTO> search(EventSearchDTO searchParams, int page) throws DataAccessException {
         try {
-            // TODO: paging?
             log.debug("Searching events with event search dto = {}", searchParams);
 
             HttpHeaders headers = new HttpHeaders();
@@ -113,25 +112,25 @@ public class EventRestClientImpl implements EventRestClient {
     }
 
     @Override
-    public List<LocationDTO> searchLocations(String query, int page) throws DataAccessException {
+    public List<LocationDTO> searchLocations(LocationDTO searchParams, int page) throws DataAccessException {
         try {
-            log.debug("Searching locations with query {} using url {}", query,
-                restClient.getServiceURI(LOCATION_URL) + "?search=" + query);
-            ResponseEntity<List<LocationDTO>> customer =
+            log.debug("Searching locations with location search dto = {}", searchParams);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<LocationDTO> entity = new HttpEntity<>(searchParams, headers);
+            log.debug("Entity: ", entity.toString());
+            ResponseEntity<List<LocationDTO>> response =
                 restClient.exchange(
-                    UriComponentsBuilder.fromUri(
-                        URI.create(restClient.getServiceURI(LOCATION_URL) + "/search"))
-                        .queryParam("query", query)
-                        .queryParam("page", page)
-                        .queryParam("size", 20)
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(LOCATION_URL))
                         .build().toUri(),
-                    HttpMethod.GET,
-                    null,
+                    HttpMethod.POST,
+                    entity,
                     new ParameterizedTypeReference<List<LocationDTO>>() {
                     });
-            log.debug("Result status was {} with content {}", customer.getStatusCode(),
-                customer.getBody());
-            return customer.getBody();
+            log.debug("Result status was {} with content {}", response.getStatusCode(),
+                response.getBody());
+            return response.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
                 "Failed to search for locations with status code " + e.getStatusCode().toString());
