@@ -599,8 +599,7 @@ public class EventsController {
                 if (cbEventAttribute.getSelectionModel().getSelectedItem().equals("Name"))
                     searchDTO.setEventName(tfEventSearch.getText());
                 else if (cbEventAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("events.category")))
-                    searchDTO.setEventCategory(null);
-                    //TODO category set (nachdem benni sein pfusch fixt)
+                    searchDTO.setEventCategory(tfEventSearch.getText());
                 else if (cbEventAttribute.getSelectionModel().getSelectedItem().equals(BundleManager.getBundle().getString("events.description")))
                     searchDTO.setDescription(tfEventSearch.getText());
             }
@@ -682,42 +681,39 @@ public class EventsController {
                     int days = 0;
                     try {
                         days = Integer.parseInt(tfDurationDays.getText());
-                        duration.plusDays(days);
+                        if(days >= 0)
+                            duration = duration.plusDays(days);
+                        else
+                            showInvalidInputErrorDialog(BundleManager.getExceptionBundle().getString("event.error.days"));
                     } catch (Exception e){
                         // an error occured (input is invalid)
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
-                        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
-                        alert.setContentText(BundleManager.getExceptionBundle().getString("event.error.days"));
-                        alert.showAndWait();
+                        showInvalidInputErrorDialog(BundleManager.getExceptionBundle().getString("event.error.days"));
                     }
                 }
                 if(!tfDurationHours.getText().isEmpty()){
                     int hours = 0;
                     try {
                         hours = Integer.parseInt(tfDurationHours.getText());
-                        duration.plusHours(hours);
+                        if(hours >= 0)
+                            duration = duration.plusHours(hours);
+                        else
+                            showInvalidInputErrorDialog(BundleManager.getExceptionBundle().getString("event.error.days"));
                     } catch (Exception e){
                         // an error occured (input is invalid)
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
-                        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
-                        alert.setContentText(BundleManager.getExceptionBundle().getString("event.error.hours"));
-                        alert.showAndWait();
+                        showInvalidInputErrorDialog(BundleManager.getExceptionBundle().getString("event.error.hours"));
                     }
                 }
                 if(!tfDurationMinutes.getText().isEmpty()){
                     int minutes = 0;
                     try {
                         minutes = Integer.parseInt(tfDurationMinutes.getText());
-                        duration.plusMinutes(minutes);
+                        if(minutes >= 0)
+                            duration = duration.plusMinutes(minutes);
+                        else
+                            showInvalidInputErrorDialog(BundleManager.getExceptionBundle().getString("event.error.days"));
                     } catch (Exception e){
                         // an error occured (input is invalid)
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
-                        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
-                        alert.setContentText(BundleManager.getExceptionBundle().getString("event.error.minutes"));
-                        alert.showAndWait();
+                        showInvalidInputErrorDialog(BundleManager.getExceptionBundle().getString("event.error.minutes"));
                     }
                 }
                 searchDTO.setPerformanceDuration(duration);
@@ -744,6 +740,13 @@ public class EventsController {
         // TODO: implement
     }
 
+    private void showInvalidInputErrorDialog(String contentText){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
+        alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
     /**
      * search for artists matching the search param
      */

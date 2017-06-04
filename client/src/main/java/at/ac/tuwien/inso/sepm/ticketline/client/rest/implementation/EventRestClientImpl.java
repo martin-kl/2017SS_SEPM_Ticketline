@@ -63,7 +63,6 @@ public class EventRestClientImpl implements EventRestClient {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<EventSearchDTO> entity = new HttpEntity<>(searchParams, headers);
-            log.debug("Entity: ", entity.toString());
             ResponseEntity<List<EventDTO>> response =
                 restClient.exchange(
                     UriComponentsBuilder.fromUri(restClient.getServiceURI(EVENT_SEARCH_URL))
@@ -119,7 +118,6 @@ public class EventRestClientImpl implements EventRestClient {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<LocationDTO> entity = new HttpEntity<>(searchParams, headers);
-            log.debug("Entity: ", entity.toString());
             ResponseEntity<List<LocationDTO>> response =
                 restClient.exchange(
                     UriComponentsBuilder.fromUri(restClient.getServiceURI(LOCATION_URL))
