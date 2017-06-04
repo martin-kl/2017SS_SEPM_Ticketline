@@ -64,7 +64,7 @@ public class EventServiceImpl implements EventService {
 
         if(eventSearch.getEventCategory() != null){
             builder.and(
-                event.category.eq(eventSearch.getEventCategory())
+                event.category.stringValue().containsIgnoreCase(eventSearch.getEventCategory())
             );
         }
 

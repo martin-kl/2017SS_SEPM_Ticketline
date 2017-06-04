@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.event;
 
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,7 +11,6 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -28,7 +26,7 @@ public class EventSearchDTO {
     private String description;
 
     @ApiModelProperty(readOnly = true, name = "eventCategory")
-    private EventCategory eventCategory;
+    private String eventCategory;
 
     @ApiModelProperty(readOnly = true, name = "performanceType")
     private PerformanceType performanceType;
