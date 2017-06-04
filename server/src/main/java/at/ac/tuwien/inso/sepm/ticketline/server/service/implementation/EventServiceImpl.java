@@ -62,6 +62,12 @@ public class EventServiceImpl implements EventService {
             );
         }
 
+        if(eventSearch.getEventCategory() != null){
+            builder.and(
+                event.category.eq(eventSearch.getEventCategory())
+            );
+        }
+
         if(eventSearch.getArtistUUID() != null){
             builder.and(
                 event.eventArtists.any().artist.id.eq(eventSearch.getArtistUUID())
