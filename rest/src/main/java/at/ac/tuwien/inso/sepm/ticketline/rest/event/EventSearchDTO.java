@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.rest.event;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,6 +26,9 @@ public class EventSearchDTO {
 
     @ApiModelProperty(readOnly = true, name = "description")
     private String description;
+
+    @ApiModelProperty(readOnly = true, name = "eventCategory")
+    private EventCategory eventCategory;
 
     @ApiModelProperty(readOnly = true, name = "performanceType")
     private PerformanceType performanceType;
