@@ -9,7 +9,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
@@ -20,7 +19,6 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -29,6 +27,7 @@ import java.time.Duration;
 import java.util.*;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -37,7 +36,6 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -45,8 +43,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
-import org.springframework.context.event.GenericApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -167,6 +163,16 @@ public class EventsController {
         GRAPH
     }
 
+    private ChangeListener<? super Number> listenerGeneral = ((ov, old_val, new_val) -> {
+        if (vbEventsElements.getChildren().size() == 0) return;
+        if (currentlyLoading) return;
+        if (new_val.floatValue() > 0.9) {
+            log.debug("called general listener...");
+            loadNext(null);
+        }
+    });
+
+    EventSearchDTO searchDTO;
 
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService, PerformanceService performanceService) {
         this.mainController = mainController;
@@ -181,13 +187,7 @@ public class EventsController {
         vbEventsBoxChildren.clear();
         searchState = SearchState.NOTHING;
         prepareForNewList();
-        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
-            if (vbEventsElements.getChildren().size() == 0) return;
-            if (currentlyLoading) return;
-            if (new_val.floatValue() > 0.9) {
-                loadNext(null);
-            }
-        });
+        scrollPane.vvalueProperty().addListener(listenerGeneral);
         loadNext(null);
 
         // load all artists and locations
@@ -403,8 +403,7 @@ public class EventsController {
             btnManageTickets.setDisable(true);
             loadDetailedPerformance(selectedPerformance);
         } else {
-            ValidationException e = new ValidationException("event.error.dialog.noselection.header");
-            e.showDialog();
+            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
         }
 
     }
@@ -577,10 +576,8 @@ public class EventsController {
             SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/eventElement.fxml");
             ((EventElementController) wrapper.getController()).initializeData(event);
             vbEventsElements.getChildren().add((Node) wrapper.getLoadedObject());
-            if (iterator.hasNext()) {
-                Separator separator = new Separator();
-                vbEventsElements.getChildren().add(separator);
-            }
+            Separator separator = new Separator();
+            vbEventsElements.getChildren().add(separator);
         }
         currentlyLoading = false;
     }
@@ -588,10 +585,11 @@ public class EventsController {
 
     @FXML
     public void handleGeneralSearchClick(){
+        selectedPerformance = null;
         // read all the textfields, generate query
         if(apExtendedFilters.isManaged()){
             // Read all fields
-            EventSearchDTO searchDTO = null;
+            searchDTO = null;
 
             if(!tfEventSearch.getText().isEmpty()) {
                 if (searchDTO == null)
@@ -718,22 +716,21 @@ public class EventsController {
                 }
                 searchDTO.setPerformanceDuration(duration);
             }
-
-
             // start the search
             prepareForNewList();
+            scrollPane.vvalueProperty().removeListener(listenerGeneral);
             loadNext(searchDTO);
         } else {
             // Read only the general text field
             if(tfGeneralSearch.getText().isEmpty()){
-
                 prepareForNewList();
+                scrollPane.vvalueProperty().addListener(listenerGeneral);
                 loadNext(null);
             } else {
-                EventSearchDTO searchDTO = new EventSearchDTO();
+                searchDTO = new EventSearchDTO();
                 searchDTO.setEventName(tfGeneralSearch.getText());
-
                 prepareForNewList();
+                scrollPane.vvalueProperty().removeListener(listenerGeneral);
                 loadNext(searchDTO);
             }
         }
@@ -790,9 +787,6 @@ public class EventsController {
     public void handleGraphSearchClick(){
 
     }
-
-
-
     @FXML
     public void handleAsListClick(){
         apGraphFilters.setManaged(false);

@@ -177,7 +177,7 @@
                                                             <Separator prefHeight="3.0" prefWidth="666.0" BorderPane.alignment="CENTER" />
                                                          </top>
                                                          <center>
-                                                            <SplitPane dividerPositions="0.5455950540958269" prefHeight="160.0" prefWidth="200.0" style="-fx-box-border: transparent;" BorderPane.alignment="CENTER">
+                                                            <SplitPane dividerPositions="0.55" prefHeight="160.0" prefWidth="200.0" style="-fx-box-border: transparent;" BorderPane.alignment="CENTER">
                                                               <items>
                                                                 <AnchorPane>
                                                                      <children>
