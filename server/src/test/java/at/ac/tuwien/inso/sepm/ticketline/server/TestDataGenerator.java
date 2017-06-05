@@ -143,6 +143,7 @@ public class TestDataGenerator {
             "1 tolles Event",
             null,
             null,
+            0,
             0
         );
         eventRepository.save(event);

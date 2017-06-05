@@ -145,6 +145,7 @@ public class EventFilterTestDataGenerator {
             "1 tolles Event",
             null,
             null,
+            0,
             0
         );
         eventRepository.save(event1);
@@ -157,6 +158,7 @@ public class EventFilterTestDataGenerator {
             "2 tolles Event",
             null,
             null,
+            0,
             0
         );
         eventRepository.save(event2);

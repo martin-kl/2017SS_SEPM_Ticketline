@@ -179,6 +179,8 @@ public class EventServiceImpl implements EventService {
             searchStart = new Date(Long.MIN_VALUE);
         }
         List<Event> topTenEvents = eventRepository.getTopTen(category, searchStart);
+        System.out.println("1234");
+        System.out.println(topTenEvents);
         Map<Integer, Event> map = new HashMap<>();
         for (Event event : topTenEvents) {
             map.put(event.getSold_tickets_only_available_when_fetched_through_top_ten(), event);

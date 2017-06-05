@@ -49,5 +49,8 @@ public class Event extends Audited {
     @Formula("sold_tickets")
     @Transient
     private int sold_tickets_only_available_when_fetched_through_top_ten;
+
+    @Transient
+    private int sold_tickets;
 }
 
