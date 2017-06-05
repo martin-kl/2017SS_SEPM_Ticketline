@@ -7,6 +7,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.util.Set;
 import java.util.UUID;
 
@@ -46,6 +47,7 @@ public class Event extends Audited {
     private Set<Performance> performances;
 
     @Formula("sold_tickets")
+    @Transient
     private int sold_tickets_only_available_when_fetched_through_top_ten;
 }
 

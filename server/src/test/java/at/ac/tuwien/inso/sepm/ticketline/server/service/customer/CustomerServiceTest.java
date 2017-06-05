@@ -34,7 +34,8 @@ public class CustomerServiceTest {
     private static final String CUSTOMER_LAST_NAME = "Muster";
     private static final String CUSTOMER_NAME_INVALID = "";
 
-    private static final String CUSTOMER_EMAIL = "max.muster@muster.com"; private static final String CUSTOMER_EMAIL_INVALID = "max.mustermuster.com";
+    private static final String CUSTOMER_EMAIL = "max.muster@muster.com";
+    private static final String CUSTOMER_EMAIL_INVALID = "max.mustermuster.com";
     private static final String CUSTOMER_ADDRESS = "Musterstraße 14, 1010 Wien";
     private static final LocalDate CUSTOMER_BIRTHDAY = LocalDate.now();
     private Customer unsavedCustomer;
