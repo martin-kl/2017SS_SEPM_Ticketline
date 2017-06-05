@@ -16,6 +16,7 @@ import java.util.UUID;
 @ToString
 @Component
 @EqualsAndHashCode
+@Builder
 public class EventSearch {
     private String eventName;
     private String description;
