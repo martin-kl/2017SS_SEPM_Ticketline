@@ -44,9 +44,9 @@ public class EventTestDataGenerator {
     }
 
     public void emptyAllRepositories(){
+        eventArtistRepository.deleteAll();
         eventRepository.deleteAll();
         artistRepository.deleteAll();
-        eventArtistRepository.deleteAll();
         locationRepository.deleteAll();
         performanceRepository.deleteAll();
     }
