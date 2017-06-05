@@ -4,11 +4,16 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
+import javax.validation.constraints.AssertTrue;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,11 +26,12 @@ import java.util.List;
 @Getter
 @Component
 public class EventFilterTestDataGenerator {
+
     /**
      * IMPORTANT NOTE: If you want to use data of this object, you should extend
      * the class instead of editing this file.
      * The methods of this class manipulate the lists of the entities and the repositories.
-     * */
+     */
 
     @Autowired
     private PerformanceRepository performanceRepository;
@@ -56,20 +62,22 @@ public class EventFilterTestDataGenerator {
     private List<Performance> performances;
     private List<Ticket> ticketsToPerf0;
     private List<Ticket> ticketsToPerf1;
+    private List<Ticket> ticketsToPerf2;
     private List<Location> locations;
     private List<PriceCategory> priceCategories;
     private List<Customer> customers;
 
-    public void generateAllData(boolean deleteAllRepositories){
+    public void generateAllData(boolean deleteAllRepositories) {
         events = new ArrayList<>();
         performances = new ArrayList<>();
         ticketsToPerf0 = new ArrayList<>();
-        ticketsToPerf1= new ArrayList<>();
+        ticketsToPerf1 = new ArrayList<>();
+        ticketsToPerf2 = new ArrayList<>();
         locations = new ArrayList<>();
         priceCategories = new ArrayList<>();
         customers = new ArrayList<>();
 
-        if(deleteAllRepositories){
+        if (deleteAllRepositories) {
             emptyAllRepositories();
         }
 
@@ -87,7 +95,7 @@ public class EventFilterTestDataGenerator {
 
     }
 
-    private void emptyAllRepositories(){
+    private void emptyAllRepositories() {
         //pay attention to the order of the deleteAll calls (foreign keys)
         ticketHistoryRepository.deleteAll();
         ticketTransactionRepository.deleteAll();
@@ -102,37 +110,37 @@ public class EventFilterTestDataGenerator {
         priceCategoryRepository.deleteAll();
     }
 
-    private void reloadLocations(){
+    private void reloadLocations() {
         List<Location> temp = new LinkedList<>();
-        for(Location location : locations){
+        for (Location location : locations) {
             temp.add(locationRepository.findOne(location.getId()));
         }
         this.locations = temp;
     }
 
-    private void reloadPerformances(){
+    private void reloadPerformances() {
         List<Performance> temp = new LinkedList<>();
-        for (Performance performance : performances){
+        for (Performance performance : performances) {
             temp.add(performanceRepository.findOne(performance.getId()));
         }
         this.performances = temp;
     }
 
-    private void reloadTickets(){
+    private void reloadTickets() {
         List<Ticket> temp0 = new LinkedList<>();
-        for (Ticket ticket : ticketsToPerf0){
+        for (Ticket ticket : ticketsToPerf0) {
             temp0.add(ticketRepository.findOne(ticket.getId()));
         }
         this.ticketsToPerf0 = temp0;
 
         List<Ticket> temp1 = new LinkedList<>();
-        for (Ticket ticket : ticketsToPerf1){
+        for (Ticket ticket : ticketsToPerf1) {
             temp1.add(ticketRepository.findOne(ticket.getId()));
         }
         this.ticketsToPerf1 = temp1;
     }
 
-    private void generateEvents(){
+    private void generateEvents() {
         Event event1 = new Event(
             null,
             "Event 1 Name",
@@ -158,7 +166,8 @@ public class EventFilterTestDataGenerator {
         events.add(event2);
     }
 
-    private void generateLocation(){
+    //generates 1 location
+    private void generateLocation() {
         SeatLocation location = new SeatLocation(
             null,
             "LocationName 1 (this is the only location in this test)",
@@ -173,7 +182,7 @@ public class EventFilterTestDataGenerator {
         this.locations.add(location);
     }
 
-    private void generatePriceCategory(){
+    private void generatePriceCategory() {
         PriceCategory priceCategory = new PriceCategory(
             null,
             "this is the only price category in this test",
@@ -183,7 +192,8 @@ public class EventFilterTestDataGenerator {
         this.priceCategories.add(priceCategory);
     }
 
-    private void generateSeats(){
+    //adds 2 rows with 3 seats to the one location
+    private void generateSeats() {
         //2 rows with 3 seats each
         int rows = 2;
         int seats = 3;
@@ -200,12 +210,43 @@ public class EventFilterTestDataGenerator {
         }
     }
 
-    private void generatePerformances(){
+    //adds 2 performances for event1 and 1 performance for event2 - all on the same location
+    private void generatePerformances() {
+        LocalDateTime localDateTimeNow = LocalDateTime.now();
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(new java.util.Date(System.currentTimeMillis()));
+        cal.add(Calendar.DAY_OF_MONTH, -5); //remove 5 days from today
+        LocalDateTime performance1Start = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
+                15, 0);
+        LocalDateTime performance1End = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 20,
+                15, 0);
+
+        cal.setTime(new java.util.Date(System.currentTimeMillis()));
+        cal.add(Calendar.DAY_OF_MONTH, 10); //add 10 days to today
+        LocalDateTime performance2Start = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
+                10, 0);
+        LocalDateTime performance2End = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 20,
+                30, 0);
+
+        cal.setTime(new java.util.Date(System.currentTimeMillis()));
+        cal.add(Calendar.DAY_OF_MONTH, 201); //add 20 days to today
+        LocalDateTime performance3Start = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
+                15, 0);
+        LocalDateTime performance3End = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 20,
+                25, 0);
+
         Performance performance = new Performance(
             null,
-            "TestPerformance",
-            LocalDateTime.of(2017,5,25,18,15).toInstant(ZoneOffset.UTC),
-            LocalDateTime.of(2017,5,25,19,30).toInstant(ZoneOffset.UTC),
+            "TestPerformance1Event1",
+            performance1Start.toInstant(ZoneOffset.UTC),
+            performance1End.toInstant(ZoneOffset.UTC),
             new BigDecimal(123.5),
             this.events.get(0),
             this.locations.get(0),
@@ -214,12 +255,12 @@ public class EventFilterTestDataGenerator {
         performance = performanceRepository.save(performance);
         performances.add(performance);
 
-        //another performance, same location, same event
+        //another performance, same location, SAME event
         Performance performance2 = new Performance(
             null,
-            "TestPerformance",
-            LocalDateTime.of(2017,6,4,17,15).toInstant(ZoneOffset.UTC),
-            LocalDateTime.of(2017,6,5,19,30).toInstant(ZoneOffset.UTC),
+            "TestPerformance2Event1",
+            performance2Start.toInstant(ZoneOffset.UTC),
+            performance2End.toInstant(ZoneOffset.UTC),
             new BigDecimal(123.5),
             this.events.get(0),
             this.locations.get(0),
@@ -228,12 +269,12 @@ public class EventFilterTestDataGenerator {
         performance2 = performanceRepository.save(performance2);
         performances.add(performance2);
 
-        //another performance, same location, other event
+        //another performance, same location, OTHER event
         Performance performance3 = new Performance(
             null,
-            "TestPerformance",
-            LocalDateTime.of(2017,6,3,19,15).toInstant(ZoneOffset.UTC),
-            LocalDateTime.of(2017,6,4,20,30).toInstant(ZoneOffset.UTC),
+            "TestPerformance1Event2",
+            performance3Start.toInstant(ZoneOffset.UTC),
+            performance3End.toInstant(ZoneOffset.UTC),
             new BigDecimal(123.5),
             this.events.get(1),
             this.locations.get(0),
@@ -243,10 +284,10 @@ public class EventFilterTestDataGenerator {
         performances.add(performance3);
     }
 
-    private void generateTickets(){
+    private void generateTickets() {
         SeatLocation seatLocation = (SeatLocation) this.locations.get(0);
-        assert(seatLocation != null);
-        assert(seatLocation.getSeats() != null);
+        assert (seatLocation != null);
+        assert (seatLocation.getSeats() != null);
         for (Seat seat : seatLocation.getSeats()) {
             //generate tickets for performance 0
             SeatTicket seatTicket = SeatTicket.builder()
@@ -269,13 +310,14 @@ public class EventFilterTestDataGenerator {
                 .performance(this.performances.get(2))
                 .price(this.performances.get(2).getDefaultPrice())
                 .build();
-            ticketsToPerf1.add(seatTicket2);
+            ticketsToPerf2.add(seatTicket2);
         }
         ticketRepository.save(ticketsToPerf0);
         ticketRepository.save(ticketsToPerf1);
+        ticketRepository.save(ticketsToPerf2);
     }
 
-    private void generateCustomer(){
+    private void generateCustomer() {
         LocalDate birthday1 = LocalDate.of(1990, 5, 15);
         Customer c1 = new Customer(
             null,
@@ -303,119 +345,127 @@ public class EventFilterTestDataGenerator {
         customers.add(c2);
     }
 
-    private void generateTicketHistoryAndTransaction(){
+    private void generateTicketHistoryAndTransaction() {
+        LocalDateTime localDateTimeNow = LocalDateTime.now();
+
+
         //the order of saving the ticketTransactions is important
-        TicketTransaction ticketTransaction0 = new TicketTransaction(
+        TicketTransaction ticketTransactionStorno = new TicketTransaction(
             null,
             TicketStatus.STORNO,
             null,
             this.customers.get(0),
             false
         );
-        ticketTransactionRepository.save(ticketTransaction0);
+        ticketTransactionRepository.save(ticketTransactionStorno);
 
-        TicketTransaction ticketTransaction1 = new TicketTransaction(
+        TicketTransaction ticketTransactionReserved = new TicketTransaction(
             null,
             TicketStatus.RESERVED,
             null,
             this.customers.get(0),
             false
         );
-        ticketTransactionRepository.save(ticketTransaction1);
+        ticketTransactionRepository.save(ticketTransactionReserved);
 
-        TicketTransaction ticketTransaction2 = new TicketTransaction(
+        TicketTransaction ticketTransactionBought = new TicketTransaction(
             null,
             TicketStatus.BOUGHT,
             null,
             this.customers.get(0),
             false
         );
-        ticketTransactionRepository.save(ticketTransaction2);
-
-        TicketTransaction ticketTransaction3 = new TicketTransaction(
+        ticketTransactionRepository.save(ticketTransactionBought);
+/*
+        TicketTransaction ticketTransactionStorno2 = new TicketTransaction(
             null,
             TicketStatus.STORNO,
             null,
             this.customers.get(0),
             false
         );
-        ticketTransactionRepository.save(ticketTransaction3);
+        ticketTransactionRepository.save(ticketTransactionStorno2);
+*/
 
-        TicketHistory ticketHistory0 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(1),
-            ticketTransaction0
-        );
-        ticketHistoryRepository.save(ticketHistory0);
+        /**
+         * my plan is:
+         * - Performance 0:
+         *      date of this history = today (without modification of last modified)
+         *      ticket 3 is storno after it is bought, tickets 2 and 4 are bought
+         *
+         * - Performance 1:
+         *      date of this history = 20 days ago (with modification of last modified)
+         *      tickets 3-5 are bought
+         *
+         * - Performance 2:
+         *      date of this history = 5 days in future (with modification of last modified)
+         *      tickets 1 and 6 are bought
+         */
 
-        TicketHistory ticketHistory1 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(3),
-            ticketTransaction0
-        );
-        ticketHistoryRepository.save(ticketHistory1);
+        //perf 0 ticket 1 get storno
+        createTicketHistory(0, 1, ticketTransactionStorno, localDateTimeNow.toInstant(ZoneOffset.UTC));
 
-        TicketHistory ticketHistory2 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(0),
-            ticketTransaction1
-        );
-        ticketHistoryRepository.save(ticketHistory2);
+        //perf 0 tickets 0 - 2 get reserved
+        createTicketHistory(0, 0, ticketTransactionReserved, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 1, ticketTransactionReserved, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 2, ticketTransactionReserved, localDateTimeNow.toInstant(ZoneOffset.UTC));
 
-        TicketHistory ticketHistory3 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(1),
-            ticketTransaction1
-        );
-        ticketHistoryRepository.save(ticketHistory3);
+        //perf 0 tickets 2, 3 and 4 get bought
+        createTicketHistory(0, 2, ticketTransactionBought, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 3, ticketTransactionBought, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 4, ticketTransactionBought, localDateTimeNow.toInstant(ZoneOffset.UTC));
 
-        TicketHistory ticketHistory4 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(2),
-            ticketTransaction1
-        );
-        ticketHistoryRepository.save(ticketHistory4);
+        //ticket 3 is storno here, so TODO test if this one really does not show up in the top 10
+        createTicketHistory(0, 3, ticketTransactionStorno, localDateTimeNow.toInstant(ZoneOffset.UTC));
 
-        TicketHistory ticketHistory5 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(2),
-            ticketTransaction2
-        );
-        ticketHistoryRepository.save(ticketHistory5);
 
-        TicketHistory ticketHistory6 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(3),
-            ticketTransaction2
-        );
-        ticketHistoryRepository.save(ticketHistory6);
 
-        TicketHistory ticketHistory7 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(4),
-            ticketTransaction2
-        );
-        ticketHistoryRepository.save(ticketHistory7);
+        //inserting ticket history for performance 1
+        Calendar cal = Calendar.getInstance();
 
-        TicketHistory ticketHistory8 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(0),
-            ticketTransaction3
-        );
-        ticketHistoryRepository.save(ticketHistory8);
+        cal.setTime(new java.util.Date(System.currentTimeMillis()));
+        cal.add(Calendar.DAY_OF_MONTH, -20); //remove 20 days from today
+        LocalDateTime performance1 = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
+                15, 0);
 
-        TicketHistory ticketHistory9 = new TicketHistory(
-            null,
-            ticketsToPerf0.get(4),
-            ticketTransaction3
-        );
-        ticketHistoryRepository.save(ticketHistory9);
+        //performance 1 tickets 3, 4 and 5 get bought
+        createTicketHistory(1, 3, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
+        createTicketHistory(1, 4, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
+        createTicketHistory(1, 5, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
 
-        TicketHistory ticketHistory10 = new TicketHistory(
+
+        cal.setTime(new java.util.Date(System.currentTimeMillis()));
+        cal.add(Calendar.DAY_OF_MONTH, 5); //add 5 days to today
+        LocalDateTime performance2 = LocalDateTime
+            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
+                10, 0);
+
+        //performance 2 tickets 1 and 6 get bought
+        createTicketHistory(2, 1, ticketTransactionBought, performance2.toInstant(ZoneOffset.UTC));
+        createTicketHistory(2, 6, ticketTransactionBought, performance2.toInstant(ZoneOffset.UTC));
+    }
+
+    private void createTicketHistory(int performance, int ticket, TicketTransaction transaction, Instant lastModified) {
+        Ticket ticketObject = null;
+        switch (performance) {
+            case 0:
+                ticketObject = ticketsToPerf0.get(ticket);
+                break;
+            case 1:
+                ticketObject = ticketsToPerf1.get(ticket);
+                break;
+            case 2:
+                ticketObject = ticketsToPerf2.get(ticket);
+                break;
+        }
+        TicketHistory ticketHistory = new TicketHistory(
             null,
-            ticketsToPerf0.get(5),
-            ticketTransaction3
+            ticketObject,
+            transaction
         );
-        ticketHistoryRepository.save(ticketHistory10);
+        ticketHistory.setLastModifiedAt(lastModified);
+        ticketHistory = ticketHistoryRepository.save(ticketHistory);
+        Assert.assertEquals(ticketHistory.getLastModifiedAt(), lastModified);
     }
 }
