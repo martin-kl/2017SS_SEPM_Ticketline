@@ -80,14 +80,14 @@ public interface EventRepository extends JpaRepository<Event, UUID>, QueryDslPre
         "WHERE " +
         "t.performance_id = p.id AND " +
         "p.event_id = e.id AND " +
-        "(e.category = ?1 OR ?1 = '') " +
+        //"(e.category = ?1 OR ?1 = '') " +
         "AND EXISTS (SELECT * FROM " +
         "ticket_history th, ticket_transaction tt " +
         "WHERE " +
         "t.id = th.ticket_id AND " +
         "tt.id = th.ticket_transaction_id AND " +
-        "tt.status = 'bought' AND " +
-        "th.last_modified_at > ?2 " +
+        //"tt.status = 'bought' AND " +
+        //"th.last_modified_at > ?2 " +
         "ORDER BY th.last_modified_at DESC " +
         "LIMIT 1) " +
         "GROUP BY e.id " +
