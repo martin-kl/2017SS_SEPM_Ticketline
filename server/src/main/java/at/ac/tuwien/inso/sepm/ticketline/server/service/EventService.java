@@ -4,8 +4,8 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
 import org.springframework.data.domain.Pageable;
 
-import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public interface EventService {
@@ -36,4 +36,12 @@ public interface EventService {
      * @return list of events including the performances
      * */
     List<Event> search(EventSearch eventSearch, Pageable pageable);
+
+    /**
+     * gets top ten events since 'monthInPast'.
+     * @param category can be an empty string to mean all categories
+     * @param monthsInPast can be negative to mean entire timespan
+     * @return
+     */
+    Map<Integer, Event> getTopTen(String category, int monthsInPast);
 }

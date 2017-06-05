@@ -169,4 +169,21 @@ public class EventServiceImpl implements EventService {
 
         return b1 && b2;
     }
+
+    @Override
+    public Map<Integer, Event> getTopTen(String category, int monthsInPast) {
+        Date searchStart;
+        if (monthsInPast > 0) {
+             searchStart = new Date((new Date()).getTime() - monthsInPast + 30);
+        } else {
+            searchStart = new Date(Long.MIN_VALUE);
+        }
+        List<Event> topTenEvents = eventRepository.getTopTen(category, searchStart);
+        Map<Integer, Event> map = new HashMap<>();
+        for (Event event : topTenEvents) {
+            map.put(event.getSold_tickets_only_available_when_fetched_through_top_ten(), event);
+        }
+        return map;
+    }
+
 }
