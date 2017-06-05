@@ -422,6 +422,10 @@ public class EventFilterTestDataGenerator {
         createTicketHistory(0, 3, ticketTransactionStorno,
             localDateTimeNow.toInstant(ZoneOffset.UTC));
 
+
+
+
+
         //inserting ticket history for performance 1
         Calendar cal = Calendar.getInstance();
 
@@ -435,6 +439,11 @@ public class EventFilterTestDataGenerator {
         createTicketHistory(1, 3, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
         createTicketHistory(1, 4, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
         createTicketHistory(1, 5, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
+
+
+
+
+
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
         cal.add(Calendar.DAY_OF_MONTH, 5); //add 5 days to today
