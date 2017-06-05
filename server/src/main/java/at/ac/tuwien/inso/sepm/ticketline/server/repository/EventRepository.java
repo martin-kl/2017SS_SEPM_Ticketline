@@ -36,7 +36,7 @@ public interface EventRepository extends JpaRepository<Event, UUID>, QueryDslPre
     @Query(value=
     "SELECT new at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper(e, count(e.id)) " +
         "FROM Event e join e.performances p join p.tickets t join t.ticketHistories th join th.ticketTransaction tt "
-        + "WHERE tt.outdated = false AND (e.category = ?1 OR ?1 = '') "
+        + "WHERE tt.outdated = false AND (e.category = ?1 OR ?1 IS NULL)"
         + "AND th.lastModifiedAt > ?2 "
         + "AND tt.status = 'BOUGHT'"
         + "GROUP BY e.id "

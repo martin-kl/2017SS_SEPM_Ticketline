@@ -27,8 +27,7 @@ public class EventServiceTest {
     @Test
     public void canFindTopTenEvents() {
         eventFilterTestDataGenerator.generateAllData(true);
-        Map<Integer, Event> map = eventService.getTopTen(EventCategory.NO_CATEGORY, -1);
-
+        Map<Integer, Event> map = eventService.getTopTen(null, -1);
         Assert.assertTrue(map.containsKey(5));
         Assert.assertTrue(map.containsKey(2));
     }
