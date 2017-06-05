@@ -13,7 +13,7 @@
     <children>
       <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="%transaction.detail.customerSelection">
          <VBox.margin>
-            <Insets left="10.0" />
+            <Insets />
          </VBox.margin></Text>
         <Separator>
             <VBox.margin>
@@ -30,12 +30,12 @@
                 <Button fx:id="btnAddNewCustomer" mnemonicParsing="false" onAction="#handleNewCustomer" text="%customer.add.new" />
             </children>
          <VBox.margin>
-            <Insets left="10.0" />
+            <Insets />
          </VBox.margin>
         </HBox>
       <VBox fx:id="customerSelectionParent">
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" top="10.0" />
          </VBox.margin></VBox>
         <HBox>
             <children>
@@ -50,7 +50,7 @@
                 </Label>
             </children>
          <VBox.margin>
-            <Insets left="10.0" />
+            <Insets />
          </VBox.margin>
         </HBox>
         <HBox alignment="TOP_RIGHT">
@@ -67,8 +67,11 @@
                 </Button>
             </children>
          <VBox.margin>
-            <Insets right="10.0" />
+            <Insets />
          </VBox.margin>
         </HBox>
     </children>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
 </VBox>
