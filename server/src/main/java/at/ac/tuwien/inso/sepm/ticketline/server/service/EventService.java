@@ -18,13 +18,11 @@ public interface EventService {
      */
     List<Event> findAll(Pageable pageable);
 
-
     /**
      * Find a single event entry by id.
      *
      * @param id the ids of the event entry
      * @return the event entry
-     * @throws at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException
      */
     Event findOne(UUID id);
 
@@ -41,7 +39,7 @@ public interface EventService {
      * gets top ten events since 'monthInPast'.
      * @param category can be an empty string to mean all categories
      * @param monthsInPast can be negative to mean entire timespan
-     * @return
+     * @return A list of top ten events since 'monthInPast# for the given category
      */
     Map<Integer, Event> getTopTen(String category, int monthsInPast);
 }

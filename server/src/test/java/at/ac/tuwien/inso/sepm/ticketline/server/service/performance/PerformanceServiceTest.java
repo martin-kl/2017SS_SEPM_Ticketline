@@ -1,12 +1,9 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.performance;
 
-
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.TestDataGenerator;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PerformanceService;
-import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TicketWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Assert;
@@ -20,8 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
-import static org.hamcrest.core.Is.is;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)

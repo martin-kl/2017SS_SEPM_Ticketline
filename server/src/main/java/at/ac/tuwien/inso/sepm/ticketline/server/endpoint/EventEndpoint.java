@@ -44,7 +44,7 @@ public class EventEndpoint {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ApiOperation(value = "Search for events, which match the given search criteria")
-    public List<EventDTO> search(@RequestBody EventSearchDTO eventSearchDTO, Pageable pageable){
+    public List<EventDTO> search(@RequestBody EventSearchDTO eventSearchDTO, Pageable pageable) {
 
         return eventService
             .search(eventSearchMapper.fromDTO(eventSearchDTO), pageable)
@@ -53,16 +53,15 @@ public class EventEndpoint {
             .collect(Collectors.toList());
     }
 
-    @RequestMapping(value="topten", method = RequestMethod.GET)
+    @RequestMapping(value = "topten", method = RequestMethod.GET)
     @ApiOperation(value = "Get Top Ten Events")
-    public Map<Integer, EventDTO> topTen(@RequestParam(value = "category") String category, int monthsInPast) {
+    public Map<Integer, EventDTO> topTen(@RequestParam(value = "category") String category,
+        @RequestParam(value = "monthsInPast") int monthsInPast) {
         Map<Integer, EventDTO> dtos = new HashMap<>();
-        for (Map.Entry<Integer, Event> entry : eventService.getTopTen(category, monthsInPast).entrySet()) {
+        for (Map.Entry<Integer, Event> entry : eventService.getTopTen(category, monthsInPast)
+            .entrySet()) {
             dtos.put(entry.getKey(), eventMapper.fromEntity(entry.getValue()));
         }
         return dtos;
     }
-
-
-
 }
