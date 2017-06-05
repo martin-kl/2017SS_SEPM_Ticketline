@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.event;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PerformanceType;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Artist;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Location;
@@ -19,6 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -130,15 +134,18 @@ public class EventServiceTest {
 
     /* performance filters */
 
-    //@Test
-    /*public void filterPerformanceByLocation(){
+    @Test
+    public void filterPerformanceByLocation(){
         List<Location> allLocations = locationRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         Location location = allLocations.get(0);
 
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         List<Event> expectedEvents = new LinkedList<>();
-        expectedEvents.add(allEvents.get(1));
-        expectedEvents.add(allEvents.get(7));
+        expectedEvents.add(allEvents.get(0));
+        expectedEvents.add(allEvents.get(2));
+        expectedEvents.add(allEvents.get(4));
+        expectedEvents.add(allEvents.get(6));
+        expectedEvents.add(allEvents.get(8));
 
         EventSearch eventSearch = EventSearch.builder()
             .performanceLocationUUID(location.getId())
@@ -146,8 +153,80 @@ public class EventServiceTest {
 
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
 
-        Assert.assertThat(eventsSearchResult, is(expectedEvents));
-    }*/
+        for(Event e : eventsSearchResult){
+            Assert.assertThat(e.getPerformances().size(), is(1));
+        }
 
+        Assert.assertThat(eventsSearchResult, is(expectedEvents));
+    }
+
+    @Test
+    public void filterPerformancesByDuration(){
+        //Assert.assertThat(); duration
+        List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
+        List<Event> expectedEvents = new LinkedList<>(allEvents);
+
+        EventSearch eventSearch = EventSearch.builder()
+            .performanceDuration(Duration.ofHours(1))
+            .build();
+
+        List<Event> eventsSearchResult = eventService.search(eventSearch, null);
+        for(Event e : eventsSearchResult){
+            Assert.assertThat(e.getPerformances().size(), is(1));
+        }
+
+        Assert.assertThat(eventsSearchResult, is(expectedEvents));
+    }
+
+    @Test
+    public void filterPerformancesByType(){
+        List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
+        List<Event> expectedEvents = new LinkedList<>(allEvents);
+
+        EventSearch eventSearch = EventSearch.builder()
+            .performanceType(PerformanceType.SEAT)
+            .build();
+        List<Event> eventsSearchResult = eventService.search(eventSearch, null);
+
+        for(Event e : eventsSearchResult){
+            Assert.assertTrue(e.getPerformances().size() == 1 || e.getPerformances().size() == 2);
+        }
+
+        Assert.assertThat(eventsSearchResult, is(expectedEvents));
+    }
+
+    @Test
+    public void filterPerformancesByStartAndEndDate(){
+        List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
+        List<Event> expectedEvents = new LinkedList<>(allEvents);
+
+        EventSearch eventSearch = EventSearch.builder()
+            .performanceStartDate(LocalDate.of(2012,6,5))
+            .performanceEndDate(LocalDate.of(2012,6,5))
+            .build();
+        List<Event> eventsSearchResult = eventService.search(eventSearch, null);
+
+        for(Event e : eventsSearchResult){
+            Assert.assertTrue(e.getPerformances().size() == 1);
+        }
+
+        Assert.assertThat(eventsSearchResult, is(expectedEvents));
+    }
+
+    @Test
+    public void filterPerformancesByTicketPrice(){
+        List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
+        List<Event> expectedEvents = new LinkedList<>(allEvents);
+
+        EventSearch eventSearch = EventSearch.builder()
+            .performanceTicketPrice(new BigDecimal(109))
+            .build();
+
+        List<Event> eventsSearchResult = eventService.search(eventSearch, null);
+        for(Event e : eventsSearchResult){
+            Assert.assertTrue(e.getPerformances().size() == 1);
+        }
+        Assert.assertThat(eventsSearchResult, is(expectedEvents));
+    }
 
 }
