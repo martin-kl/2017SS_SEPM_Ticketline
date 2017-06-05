@@ -16,6 +16,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +26,7 @@ public class EventRestClientImpl implements EventRestClient {
     private static final String EVENT_SEARCH_URL = "/event/search";
     private static final String ARTIST_URL = "/artist";
     private static final String LOCATION_URL = "/location/search";
+    private static final String TOP_TEN_URL = "/topten";
 
     private final RestClient restClient;
 
@@ -79,6 +81,29 @@ public class EventRestClientImpl implements EventRestClient {
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
                 "Failed to search for events with status code " + e.getStatusCode().toString());
+        } catch (RestClientException e) {
+            throw new DataAccessException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public HashMap<Integer, EventDTO> searchTopTen(String category, Integer monthsInPast) throws DataAccessException {
+        try {
+            log.debug("Retrieving all top ten events from {}", restClient.getServiceURI(TOP_TEN_URL));
+            ResponseEntity<HashMap<Integer, EventDTO>> event =
+                restClient.exchange(
+                    UriComponentsBuilder.fromUri(restClient.getServiceURI(TOP_TEN_URL))
+                        .queryParam("category", category)
+                        .queryParam("monthsInPast", monthsInPast)
+                        .build().toUri(),
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<HashMap<Integer, EventDTO>>() {
+                    });
+            log.debug("Result status was {} with content {}", event.getStatusCode(), event.getBody());
+            return event.getBody();
+        } catch (HttpStatusCodeException e) {
+            throw new DataAccessException("Failed retrieve top ten events with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }

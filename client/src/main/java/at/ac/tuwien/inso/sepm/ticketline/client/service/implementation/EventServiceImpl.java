@@ -12,6 +12,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -33,6 +34,11 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> search(EventSearchDTO searchParams, int page) throws ExceptionWithDialog {
         if (searchParams == null) { return eventRestClient.findAll(page); }
         return eventRestClient.search(searchParams, page);
+    }
+
+    @Override
+    public HashMap<Integer, EventDTO> searchTopTen(String category, Integer monthsInPast) throws ExceptionWithDialog{
+        return eventRestClient.searchTopTen(category, monthsInPast);
     }
 
     @Override

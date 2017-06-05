@@ -8,6 +8,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface EventService {
@@ -30,6 +31,14 @@ public interface EventService {
      */
     List<EventDTO> search(EventSearchDTO searchParams, int page) throws ExceptionWithDialog;
 
+    /**
+     * searches for top ten events matching the search parameters
+     *
+     * @param category the category or "" if category doesn't matter
+     * @param monthsInPast the amount of months in the past to select events
+     * @return a hashmap containing the top ten events and the amount of sold tickets
+     */
+    HashMap<Integer, EventDTO> searchTopTen(String category, Integer monthsInPast) throws ExceptionWithDialog;
 
     /**
      * fuzzy searches for artists

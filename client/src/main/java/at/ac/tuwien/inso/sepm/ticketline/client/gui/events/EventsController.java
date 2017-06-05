@@ -34,6 +34,9 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -135,7 +138,7 @@ public class EventsController {
     @FXML
     private ComboBox<String> cbMonth;
     @FXML
-    private BarChart<Integer, Integer> barChartTopTen;
+    private BarChart<String, Number> barChartTopTen;
     @FXML
     private VBox vbPerformanceParent;
 
@@ -159,6 +162,15 @@ public class EventsController {
     private static SeatLocationDTO LOCATION_STANDARD = new SeatLocationDTO();
     private static ArtistDTO ARTIST_STANDARD = new ArtistDTO();
     private static String TYPE_STANDARD = "";
+    private static String CATEGORY_STANDARD = "";
+    private static String LAST_MONTH = "";
+    private static String LAST_2_MONTHS = "";
+    private static String LAST_4_MONTHS = "";
+    private static String LAST_6_MONTHS = "";
+    private static String LAST_YEAR = "";
+    private static String LAST_2_YEARS = "";
+    private static String LAST_5_YEARS = "";
+    private static String ALL_TIME =  "";
     private EventSearchDTO searchDTO = null;
 
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService, PerformanceService performanceService) {
@@ -313,20 +325,27 @@ public class EventsController {
     }
 
     private void initializeGraphLayout() {
-        Calendar c = Calendar.getInstance();
-        Map<String, Integer> months = c.getDisplayNames(Calendar.MONTH, Calendar.LONG, BundleManager.getBundle().getLocale());
-
+        LAST_MONTH = BundleManager.getBundle().getString("performance.month.last") + " " + BundleManager.getBundle().getString("performance.month");
+        LAST_2_MONTHS = BundleManager.getBundle().getString("performance.month.last") + " 2 " + BundleManager.getBundle().getString("performance.months");
+        LAST_4_MONTHS = BundleManager.getBundle().getString("performance.month.last") + " 4 " + BundleManager.getBundle().getString("performance.months");
+        LAST_6_MONTHS = BundleManager.getBundle().getString("performance.month.last") + " 6 " + BundleManager.getBundle().getString("performance.months");
+        LAST_YEAR =  BundleManager.getBundle().getString("performance.month.last") + " " + BundleManager.getBundle().getString("performance.year");
+        LAST_2_YEARS = BundleManager.getBundle().getString("performance.month.last") + " 2 " + BundleManager.getBundle().getString("performance.years");
+        LAST_5_YEARS = BundleManager.getBundle().getString("performance.month.last") + " 5 " + BundleManager.getBundle().getString("performance.years");
+        ALL_TIME =  BundleManager.getBundle().getString("performance.months.all");
+        CATEGORY_STANDARD = BundleManager.getBundle().getString("events.category");
         // Month combobox
         if(cbMonth.getItems().isEmpty()){
-            cbMonth.getItems().add(BundleManager.getBundle().getString("performances.month"));
-            cbMonth.getItems().addAll(months.keySet());
+            cbMonth.getItems().addAll(ALL_TIME, LAST_MONTH, LAST_2_MONTHS, LAST_4_MONTHS, LAST_6_MONTHS, LAST_6_MONTHS, LAST_YEAR, LAST_2_YEARS, LAST_5_YEARS);
         }
-        cbMonth.getSelectionModel().select(BundleManager.getBundle().getString("performances.month"));
+        cbMonth.getSelectionModel().select(ALL_TIME);
 
         // Category combobox
         if(cbEventCategory.getItems().isEmpty()){
+            cbEventCategory.getItems().add(CATEGORY_STANDARD);
             cbEventCategory.getItems().addAll(Stream.of(EventCategory.values()).map(EventCategory::name).toArray(String[]::new));
         }
+        cbEventCategory.getSelectionModel().select(CATEGORY_STANDARD);
         btnGraphSearch.setText(BundleManager.getBundle().getString("search"));
     }
 
@@ -376,7 +395,6 @@ public class EventsController {
     private void setTitle(String title) {
         lblHeaderTitle.setText(title);
     }
-
 
     public void setSelectedPerformance(PerformanceDTO selectedPerformance, VBox performanceBox) {
         if (previousSelectedBox != null) {
@@ -432,7 +450,7 @@ public class EventsController {
         new Thread(task).start();
     }
 
-
+    /* methods to load data for searches and for the top ten graph */
     private void loadNext(EventSearchDTO searchParams) {
         currentlyLoading = true;
         Task<List<EventDTO>> task = new Task<List<EventDTO>>() {
@@ -466,7 +484,61 @@ public class EventsController {
         );
         new Thread(task).start();
     }
+    private void loadTopTen(String category, Integer monthsInPast){
+        currentlyLoading = true;
+        Task<HashMap<Integer, EventDTO>> task = new Task<HashMap<Integer, EventDTO>>() {
+            @Override
+            protected HashMap<Integer, EventDTO>call() throws DataAccessException {
+                try {
+                    return eventService.searchTopTen(category, monthsInPast);
+                } catch (ExceptionWithDialog exceptionWithDialog) {
+                    exceptionWithDialog.printStackTrace();
+                    exceptionWithDialog.showDialog();
+                }
+                return new HashMap<>();
+            }
+            @Override
+            protected void succeeded() {
+                buildGraph(getValue());
+            }
+            @Override
+            protected void failed() {
+                super.failed();
+                JavaFXUtils.createExceptionDialog(getException(),
+                    vbEventsElements.getScene().getWindow()).showAndWait();
+            }
+        };
 
+        task.runningProperty().addListener((observable, oldValue, running) ->
+            mainController.setProgressbarProgress(
+                running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
+        );
+        new Thread(task).start();
+    }
+
+    private void buildGraph(HashMap<Integer, EventDTO> data) {
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+        barChartTopTen = new BarChart<String, Number>(xAxis, yAxis);
+        barChartTopTen.setTitle("Top Ten");
+        xAxis.setLabel(BundleManager.getBundle().getString("events.topten.label.x"));
+        yAxis.setLabel(BundleManager.getBundle().getString("events.topten.label.y"));
+
+        barChartTopTen.getData().clear();
+
+        Iterator it = data.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+
+            XYChart.Series seriesX = new XYChart.Series();
+            EventDTO currEvent = (EventDTO) pair.getValue();
+            Integer currSold = (Integer) pair.getKey();
+            seriesX.getData().add(new XYChart.Data(currEvent.getName(), currSold));
+            barChartTopTen.getData().add(seriesX);
+        }
+    }
+
+    /* methods to load data for comboboxes */
     private void loadArtists(String searchParams) {
         Task<List<ArtistDTO>> task = new Task<List<ArtistDTO>>() {
             @Override
@@ -499,7 +571,6 @@ public class EventsController {
         );
         new Thread(task).start();
     }
-
     private void loadLocations(LocationDTO searchParams) {
         Task<List<LocationDTO>> task = new Task<List<LocationDTO>>() {
             @Override
@@ -533,6 +604,8 @@ public class EventsController {
         new Thread(task).start();
     }
 
+
+    /* methods to append elements into a list or vbox */
     private void appendArtistElements(List<ArtistDTO> elements){
         cbArtistMatches.getItems().clear();
         cbArtistMatches.getItems().add(ARTIST_STANDARD);
@@ -541,7 +614,6 @@ public class EventsController {
         if(apExtendedFilters.isManaged())
             cbArtistMatches.show();
     }
-
     private void appendLocationElements(List<LocationDTO> elements){
         cbLocationMatches.getItems().clear();
         cbLocationMatches.getItems().add(LOCATION_STANDARD);
@@ -550,7 +622,6 @@ public class EventsController {
         if(apExtendedFilters.isManaged())
             cbLocationMatches.show();
     }
-
     private void appendElements(List<EventDTO> elements) {
         for (Iterator<EventDTO> iterator = elements.iterator(); iterator.hasNext(); ) {
             EventDTO event = iterator.next();
@@ -718,7 +789,6 @@ public class EventsController {
                 }
             }
         }
-        // TODO: implement
     }
 
     private void resetForms(){
@@ -788,7 +858,31 @@ public class EventsController {
 
     @FXML
     public void handleGraphSearchClick(){
-
+        // Validate input and send request
+        int monthsInPast = -1;
+        if(cbMonth.getSelectionModel().getSelectedItem().equals(ALL_TIME)){
+            monthsInPast = -1;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_MONTH)) {
+            monthsInPast = 1;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_2_MONTHS)) {
+            monthsInPast = 2;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_4_MONTHS)) {
+            monthsInPast = 4;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_6_MONTHS)) {
+            monthsInPast = 6;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_YEAR)) {
+            monthsInPast = 12;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_2_YEARS)) {
+            monthsInPast = 24;
+        } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_5_YEARS)) {
+            monthsInPast = 60;
+        }
+        String category = "";
+        if(!cbEventCategory.getSelectionModel().getSelectedItem().equals(CATEGORY_STANDARD)){
+            category = cbEventCategory.getSelectionModel().getSelectedItem();
+        }
+        loadTopTen(category, monthsInPast);
+        // TODO: test
     }
     @FXML
     public void handleAsListClick(){
