@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
 import org.springframework.data.domain.Pageable;
@@ -37,9 +38,9 @@ public interface EventService {
 
     /**
      * gets top ten events since 'monthInPast'.
-     * @param category can be an empty string to mean all categories
+     * @param category The category to search for the top ten
      * @param monthsInPast can be negative to mean entire timespan
      * @return A list of top ten events since 'monthInPast# for the given category
      */
-    Map<Integer, Event> getTopTen(String category, int monthsInPast);
+    Map<Integer, Event> getTopTen(EventCategory category, int monthsInPast);
 }

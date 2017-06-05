@@ -45,12 +45,13 @@ public class Event extends Audited {
     @Getter
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Performance> performances;
-
+/*
     @Formula("sold_tickets")
     @Transient
     private int sold_tickets_only_available_when_fetched_through_top_ten;
 
     @Transient
     private int sold_tickets;
+    */
 }
 

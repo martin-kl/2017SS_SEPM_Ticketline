@@ -1,14 +1,17 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.EventRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper;
 import com.querydsl.core.BooleanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -171,21 +174,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Map<Integer, Event> getTopTen(String category, int monthsInPast) {
+    public Map<Integer, Event> getTopTen(EventCategory category, int monthsInPast) {
         Date searchStart;
         if (monthsInPast > 0) {
              searchStart = new Date((new Date()).getTime() - monthsInPast + 30);
         } else {
             searchStart = new Date(Long.MIN_VALUE);
         }
-        List<Event> topTenEvents = eventRepository.getTopTen(category, searchStart);
-        System.out.println("1234");
-        System.out.println(topTenEvents);
+        List<TopTenEventWrapper> topTenEvents = eventRepository.getTopTen(category, searchStart.toInstant(), new PageRequest(0, 10));
         Map<Integer, Event> map = new HashMap<>();
-        for (Event event : topTenEvents) {
-            map.put(event.getSold_tickets_only_available_when_fetched_through_top_ten(), event);
+        for (TopTenEventWrapper eventWrapper : topTenEvents) {
+            map.put((int) eventWrapper.getSoldCount(), eventWrapper.getEvent());
         }
         return map;
     }
-
 }

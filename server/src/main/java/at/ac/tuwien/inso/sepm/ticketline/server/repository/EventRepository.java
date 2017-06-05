@@ -1,7 +1,10 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper;
+import java.time.Instant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
@@ -25,79 +28,18 @@ public interface EventRepository extends JpaRepository<Event, UUID>, QueryDslPre
     List<Event> findAllOrderByLastModifiedAt(Pageable pageable);
 
     /**
-     *
-     * @param category
-     * @param startSearchFrom
-     * @return
+     * gets top ten events since 'startingSearchFrom'.
+     * @param category The category to search for the top ten
+     * @param startingSearchFrom starting from this day the query gets the top ten events
+     * @return A list of top ten "TopTenEventWrapper" since 'startingSearchFrom' for the given category
      */
-
-    /*@Query(value = "SELECT e.name, COUNT(t.id) as sold_tickets " +
-            "FROM event e, ticket t, performance p " +
-            "WHERE " +
-            "t.performance_id = p.id AND " +
-            "p.event_id = e.id AND " +
-            "EXISTS (SELECT * FROM " +
-            "ticket_history th, ticket_transaction tt " +
-            "WHERE " +
-            "t.id = th.ticket_id AND " +
-            "tt.id = th.ticket_transaction_id AND " +
-            "tt.status = 'bought' " +
-            "ORDER BY th.last_modified_at DESC " +
-            "LIMIT 1) " +
-            "GROUP BY e.id " +
-        "ORDER BY sold_tickets DESC LIMIT 10", nativeQuery = true)*/
-
-    /*@Query(value = "SELECT new map(COUNT(t.id) as sold_tickets) " +
-    "FROM event e, ticket t, performance p " +
-        "WHERE " +
-    "t.performance_id = p.id AND " +
-    "p.event_id = e.id AND " +
-        "(e.category = ?1 OR ?1 = '') " +
-    "EXISTS (SELECT * FROM " +
-        "ticket_history th, ticket_transaction tt " +
-            "WHERE " +
-                "t.id = th.ticket_id AND " +
-                "tt.id = th.ticket_transaction_id AND " +
-                "tt.status = 'bought' AND " +
-                "last_modified_at > ?2 " +
-                "ORDER BY th.last_modified_at DESC " +
-                "LIMIT 1) " +
-    "GROUP BY e.id " +
-    "ORDER BY sold_tickets DESC " +
-    "LIMIT 10")*/
-
-    //@Query(value="SELECT new Map(count(t.id)) as sold_tickets, e) from Event e ")
-    //@Query(value="select new map( max(bodyWeight) as max, min(bodyWeight) as min, count(*) as n )")
-
-
-    //@Query(value = "SELECT e, COUNT(t.id) as sold_tickets " +
-            //"FROM Event JOIN Performance p JOIN Ticket t JOIN TicketHistory th JOIN TicketTransaction tt" +
-            //"WHERE ")
-
-
-    @Query(value = "SELECT e.*, COUNT(t.id) as sold_tickets " +
-        "FROM event e, ticket t, performance p " +
-        "WHERE " +
-        "t.performance_id = p.id AND " +
-        "p.event_id = e.id AND " +
-        "(e.category = ?1 OR ?1 = '') " +
-        "AND EXISTS (SELECT * FROM " +
-        "ticket_history th, ticket_transaction tt " +
-        "WHERE " +
-        "t.id = th.ticket_id AND " +
-        "tt.id = th.ticket_transaction_id AND " +
-        //"tt.status = 'bought' AND " +
-        "th.last_modified_at > ?2 " +
-        "ORDER BY th.last_modified_at DESC " +
-        "LIMIT 1) " +
-        "GROUP BY e.id " +
-        "ORDER BY sold_tickets DESC " +
-        "LIMIT 10; ", nativeQuery = true)
-    List<Event> getTopTen(String category, Date startSearchFrom);
-
     @Query(value=
-    "SELECT new map(count(e.id) as sold_tickets) " +
-    "from Event e WHERE ?1 = ?1 AND ?2 = ?2 GROUP BY event.id")
-    List<Map<Object, Object>> withjpa(String category, Date startSearchFrom);
-
+    "SELECT new at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper(e, count(e.id)) " +
+        "FROM Event e join e.performances p join p.tickets t join t.ticketHistories th join th.ticketTransaction tt "
+        + "WHERE tt.outdated = false AND (e.category = ?1 OR ?1 = '') "
+        + "AND th.lastModifiedAt > ?2 "
+        + "AND tt.status = 'BOUGHT'"
+        + "GROUP BY e.id "
+        + "ORDER BY count(e.id) DESC")
+    List<TopTenEventWrapper> getTopTen(EventCategory category, Instant startingSearchFrom, Pageable pageable);
 }

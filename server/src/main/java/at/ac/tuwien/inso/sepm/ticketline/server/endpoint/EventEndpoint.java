@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
@@ -55,7 +56,7 @@ public class EventEndpoint {
 
     @RequestMapping(value = "topten", method = RequestMethod.GET)
     @ApiOperation(value = "Get Top Ten Events")
-    public Map<Integer, EventDTO> topTen(@RequestParam(value = "category") String category,
+    public Map<Integer, EventDTO> topTen(@RequestParam(value = "category") EventCategory category,
         @RequestParam(value = "monthsInPast") int monthsInPast) {
         Map<Integer, EventDTO> dtos = new HashMap<>();
         for (Map.Entry<Integer, Event> entry : eventService.getTopTen(category, monthsInPast)

@@ -142,9 +142,7 @@ public class TestDataGenerator {
             EventCategory.NO_CATEGORY,
             "1 tolles Event",
             null,
-            null,
-            0,
-            0
+            null
         );
         eventRepository.save(event);
         events.add(event);

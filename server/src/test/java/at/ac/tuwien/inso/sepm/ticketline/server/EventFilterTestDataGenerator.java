@@ -144,9 +144,7 @@ public class EventFilterTestDataGenerator {
             EventCategory.NO_CATEGORY,
             "1 tolles Event",
             null,
-            null,
-            0,
-            0
+            null
         );
         eventRepository.save(event1);
         events.add(event1);
@@ -154,12 +152,10 @@ public class EventFilterTestDataGenerator {
         Event event2 = new Event(
             null,
             "Event 2 Name",
-            EventCategory.CATEGORY_ONE,
+            EventCategory.NO_CATEGORY,
             "2 tolles Event",
             null,
-            null,
-            0,
-            0
+            null
         );
         eventRepository.save(event2);
         events.add(event2);
@@ -374,6 +370,15 @@ public class EventFilterTestDataGenerator {
             false
         );
         ticketTransactionRepository.save(ticketTransactionBought);
+
+        TicketTransaction ticketTransactionBoughtAndLaterCancelled = new TicketTransaction(
+            null,
+            TicketStatus.BOUGHT,
+            null,
+            this.customers.get(0),
+            false
+        );
+        ticketTransactionRepository.save(ticketTransactionBoughtAndLaterCancelled);
 /*
         TicketTransaction ticketTransactionStorno2 = new TicketTransaction(
             null,
@@ -397,7 +402,7 @@ public class EventFilterTestDataGenerator {
          *
          * - Performance 2:
          *      date of this history = 5 days in future (with modification of last modified)
-         *      tickets 1 and 6 are bought
+         *      tickets 1 and 5 are bought
          */
 
         //perf 0 ticket 1 get storno
@@ -415,14 +420,17 @@ public class EventFilterTestDataGenerator {
         //perf 0 tickets 2, 3 and 4 get bought
         createTicketHistory(0, 2, ticketTransactionBought,
             localDateTimeNow.toInstant(ZoneOffset.UTC));
-        createTicketHistory(0, 3, ticketTransactionBought,
+        createTicketHistory(0, 3, ticketTransactionBoughtAndLaterCancelled,
             localDateTimeNow.toInstant(ZoneOffset.UTC));
         createTicketHistory(0, 4, ticketTransactionBought,
             localDateTimeNow.toInstant(ZoneOffset.UTC));
 
-        //ticket 3 is storno here, so TODO test if this one really does not show up in the top 10
+        //ticket 3 is storno here
         createTicketHistory(0, 3, ticketTransactionStorno,
             localDateTimeNow.toInstant(ZoneOffset.UTC));
+        TicketTransaction tt = ticketTransactionRepository.findOne(ticketTransactionBoughtAndLaterCancelled.getId());
+        tt.setOutdated(true);
+        ticketTransactionRepository.save(tt);
 
 
 
@@ -458,7 +466,7 @@ public class EventFilterTestDataGenerator {
         createTicketHistory(2, 5, ticketTransactionBought, performance2.toInstant(ZoneOffset.UTC));
     }
 
-    private void createTicketHistory(int performance, int ticket, TicketTransaction transaction,
+    private TicketHistory createTicketHistory(int performance, int ticket, TicketTransaction transaction,
         Instant lastModified) {
         Ticket ticketObject = null;
         switch (performance) {
@@ -479,8 +487,6 @@ public class EventFilterTestDataGenerator {
         );
         ticketHistory.setLastModifiedAt(lastModified);
         ticketHistory.setCreatedAt(lastModified);
-        ticketHistory = ticketHistoryRepository.save(ticketHistory);
-        //Assert.assertEquals(ticketHistory.getCreatedAt(), lastModified);
-        //Assert.assertEquals(ticketHistory.getLastModifiedAt(), lastModified);
+        return ticketHistoryRepository.save(ticketHistory);
     }
 }
