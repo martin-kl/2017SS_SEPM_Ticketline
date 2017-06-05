@@ -26,6 +26,7 @@ import java.text.ParsePosition;
 import java.time.Duration;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -77,6 +78,8 @@ public class EventsController {
     private AnchorPane apExtendedFilters;
     @FXML
     private Button btnExtendedSearch;
+    @FXML
+    private Button btnSearchExtended;
 
     // Event-Filter elements
     @FXML
@@ -151,28 +154,12 @@ public class EventsController {
 
     private int loadedUntilPage = -1;
 
-    private SearchState searchState = SearchState.NOTHING;
 
     // DATA
     private static SeatLocationDTO LOCATION_STANDARD = new SeatLocationDTO();
     private static ArtistDTO ARTIST_STANDARD = new ArtistDTO();
     private static String TYPE_STANDARD = "";
-    private enum SearchState {
-        NOTHING,
-        EXTENDED,
-        GRAPH
-    }
-
-    private ChangeListener<? super Number> listenerGeneral = ((ov, old_val, new_val) -> {
-        if (vbEventsElements.getChildren().size() == 0) return;
-        if (currentlyLoading) return;
-        if (new_val.floatValue() > 0.9) {
-            log.debug("called general listener...");
-            loadNext(null);
-        }
-    });
-
-    EventSearchDTO searchDTO;
+    private EventSearchDTO searchDTO = null;
 
     public EventsController(MainController mainController, SpringFxmlLoader springFxmlLoader, EventService eventService, PerformanceService performanceService) {
         this.mainController = mainController;
@@ -185,9 +172,17 @@ public class EventsController {
         //this is the place to reset state
         ObservableList<Node> vbEventsBoxChildren = vbEventsElements.getChildren();
         vbEventsBoxChildren.clear();
-        searchState = SearchState.NOTHING;
+        if(apExtendedFilters.isManaged())
+            closeExtendedSearch();
+        resetForms();
         prepareForNewList();
-        scrollPane.vvalueProperty().addListener(listenerGeneral);
+        scrollPane.vvalueProperty().addListener((ov, old_val, new_val) -> {
+            if (vbEventsElements.getChildren().size() == 0) return;
+            if (currentlyLoading) return;
+            if (new_val.floatValue() > 0.9) {
+                loadNext(searchDTO);
+            }
+        });
         loadNext(null);
 
         // load all artists and locations
@@ -195,7 +190,6 @@ public class EventsController {
         handleLocationEnter();
     }
     private void initializeExtendedSearchLayout(){
-
         lblEventFilter.setText(BundleManager.getBundle().getString("events.filter"));
         lblPerformanceFilter.setText(BundleManager.getBundle().getString("performances.filter"));
 
@@ -204,7 +198,7 @@ public class EventsController {
 
         btnAsList.setGraphic(fontAwesome.create(FontAwesome.Glyph.LIST).size(25));
         btnAsGraph.setGraphic(fontAwesome.create(FontAwesome.Glyph.BAR_CHART).size(25));
-
+        btnSearchExtended.setGraphic(fontAwesome.create(FontAwesome.Glyph.SEARCH).size(25));
         btnGeneralSearch.setText(BundleManager.getBundle().getString("search"));
         tfGeneralSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
         tfEventSearch.setPromptText(BundleManager.getBundle().getString("search") + " " + BundleManager.getBundle().getString("for") + " ..");
@@ -314,12 +308,11 @@ public class EventsController {
 
 
         if(cbPerformanceType.getItems().isEmpty())
-            cbPerformanceType.getItems().addAll(BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"), TYPE_STANDARD);
+            cbPerformanceType.getItems().addAll(TYPE_STANDARD, BundleManager.getBundle().getString("performance.type.seat"), BundleManager.getBundle().getString("performance.type.sector"));
         cbPerformanceType.getSelectionModel().select(TYPE_STANDARD);
     }
 
     private void initializeGraphLayout() {
-
         Calendar c = Calendar.getInstance();
         Map<String, Integer> months = c.getDisplayNames(Calendar.MONTH, Calendar.LONG, BundleManager.getBundle().getLocale());
 
@@ -332,11 +325,10 @@ public class EventsController {
 
         // Category combobox
         if(cbEventCategory.getItems().isEmpty()){
-            cbEventCategory.getItems().addAll(String.valueOf(EventCategory.values()));
+            cbEventCategory.getItems().addAll(Stream.of(EventCategory.values()).map(EventCategory::name).toArray(String[]::new));
         }
         btnGraphSearch.setText(BundleManager.getBundle().getString("search"));
     }
-
 
     private void prepareForNewList() {
         previousSelectedBox = null;
@@ -442,27 +434,16 @@ public class EventsController {
 
 
     private void loadNext(EventSearchDTO searchParams) {
-        if(searchParams == null)
-            searchState = SearchState.NOTHING;
-        else
-            searchState = SearchState.EXTENDED;
-
         currentlyLoading = true;
         Task<List<EventDTO>> task = new Task<List<EventDTO>>() {
             @Override
             protected List<EventDTO> call() throws DataAccessException {
                 try {
-                    switch (searchState) {
-                        case NOTHING:
-                            return eventService.findAll(++loadedUntilPage);
-                        case EXTENDED:
-                            return eventService.search(searchParams, 0);
-                    }
+                    return eventService.search(searchParams, ++loadedUntilPage);
                 } catch (ExceptionWithDialog exceptionWithDialog) {
                     exceptionWithDialog.printStackTrace();
                     exceptionWithDialog.showDialog();
                 }
-
                 return new ArrayList<>();
             }
 
@@ -717,24 +698,46 @@ public class EventsController {
                 searchDTO.setPerformanceDuration(duration);
             }
             // start the search
-            prepareForNewList();
-            scrollPane.vvalueProperty().removeListener(listenerGeneral);
-            loadNext(searchDTO);
+            if(!currentlyLoading){
+                prepareForNewList();
+                loadNext(searchDTO);
+            }
         } else {
             // Read only the general text field
             if(tfGeneralSearch.getText().isEmpty()){
-                prepareForNewList();
-                scrollPane.vvalueProperty().addListener(listenerGeneral);
-                loadNext(null);
+                if(!currentlyLoading) {
+                    prepareForNewList();
+                    loadNext(null);
+                }
             } else {
                 searchDTO = new EventSearchDTO();
                 searchDTO.setEventName(tfGeneralSearch.getText());
-                prepareForNewList();
-                scrollPane.vvalueProperty().removeListener(listenerGeneral);
-                loadNext(searchDTO);
+                if(!currentlyLoading) {
+                    prepareForNewList();
+                    loadNext(searchDTO);
+                }
             }
         }
         // TODO: implement
+    }
+
+    private void resetForms(){
+        tfDurationDays.clear();
+        tfLocationSearch.clear();
+        tfEventSearch.clear();
+        tfArtistName.clear();
+        tfGeneralSearch.clear();
+        tfDurationHours.clear();
+        tfDurationMinutes.clear();
+        tfPrice.clear();
+        dpStartTime.setValue(null);
+        dpEndTime.setValue(null);
+        cbLocationMatches.getSelectionModel().select(0);
+        cbArtistMatches.getSelectionModel().select(0);
+        cbLocationAttribute.getSelectionModel().select(0);
+        cbEventAttribute.getSelectionModel().select(0);
+        cbPerformanceType.getSelectionModel().select(0);
+        searchDTO = null;
     }
 
     private void showInvalidInputErrorDialog(String contentText){
@@ -800,14 +803,34 @@ public class EventsController {
     @FXML
     public void handleExtendedSearchClick(){
         if(apExtendedFilters.isManaged()){
-            apExtendedFilters.setManaged(false);
-            apExtendedFilters.setVisible(false);
+            closeExtendedSearch();
         }
         else {
-            apExtendedFilters.setManaged(true);
-            apExtendedFilters.setVisible(true);
+            openExtendedSearch();
         }
     }
+
+    private void closeExtendedSearch(){
+        resetForms();
+        tfGeneralSearch.setManaged(true);
+        tfGeneralSearch.setVisible(true);
+        btnGeneralSearch.setManaged(true);
+        btnGeneralSearch.setVisible(true);
+
+        apExtendedFilters.setManaged(false);
+        apExtendedFilters.setVisible(false);
+
+    }
+    private void openExtendedSearch(){
+        tfGeneralSearch.setManaged(false);
+        tfGeneralSearch.setVisible(false);
+        btnGeneralSearch.setManaged(false);
+        btnGeneralSearch.setVisible(false);
+
+        apExtendedFilters.setManaged(true);
+        apExtendedFilters.setVisible(true);
+    }
+
     @FXML
     public void handleAsGraphClick(){
         apGraphFilters.setManaged(true);

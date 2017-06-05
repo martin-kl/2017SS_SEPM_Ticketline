@@ -66,6 +66,8 @@ public class EventRestClientImpl implements EventRestClient {
             ResponseEntity<List<EventDTO>> response =
                 restClient.exchange(
                     UriComponentsBuilder.fromUri(restClient.getServiceURI(EVENT_SEARCH_URL))
+                        .queryParam("page", page)
+                        .queryParam("size", 20)
                         .build().toUri(),
                     HttpMethod.POST,
                     entity,
