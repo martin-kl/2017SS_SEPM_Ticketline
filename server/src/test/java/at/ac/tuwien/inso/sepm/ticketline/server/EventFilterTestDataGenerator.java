@@ -7,13 +7,11 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
-import javax.validation.constraints.AssertTrue;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -92,7 +90,6 @@ public class EventFilterTestDataGenerator {
         generateCustomer();
         generateTicketHistoryAndTransaction();
         reloadTickets();
-
     }
 
     private void emptyAllRepositories() {
@@ -348,7 +345,6 @@ public class EventFilterTestDataGenerator {
     private void generateTicketHistoryAndTransaction() {
         LocalDateTime localDateTimeNow = LocalDateTime.now();
 
-
         //the order of saving the ticketTransactions is important
         TicketTransaction ticketTransactionStorno = new TicketTransaction(
             null,
@@ -403,22 +399,28 @@ public class EventFilterTestDataGenerator {
          */
 
         //perf 0 ticket 1 get storno
-        createTicketHistory(0, 1, ticketTransactionStorno, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 1, ticketTransactionStorno,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
 
         //perf 0 tickets 0 - 2 get reserved
-        createTicketHistory(0, 0, ticketTransactionReserved, localDateTimeNow.toInstant(ZoneOffset.UTC));
-        createTicketHistory(0, 1, ticketTransactionReserved, localDateTimeNow.toInstant(ZoneOffset.UTC));
-        createTicketHistory(0, 2, ticketTransactionReserved, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 0, ticketTransactionReserved,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 1, ticketTransactionReserved,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 2, ticketTransactionReserved,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
 
         //perf 0 tickets 2, 3 and 4 get bought
-        createTicketHistory(0, 2, ticketTransactionBought, localDateTimeNow.toInstant(ZoneOffset.UTC));
-        createTicketHistory(0, 3, ticketTransactionBought, localDateTimeNow.toInstant(ZoneOffset.UTC));
-        createTicketHistory(0, 4, ticketTransactionBought, localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 2, ticketTransactionBought,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 3, ticketTransactionBought,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
+        createTicketHistory(0, 4, ticketTransactionBought,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
 
         //ticket 3 is storno here, so TODO test if this one really does not show up in the top 10
-        createTicketHistory(0, 3, ticketTransactionStorno, localDateTimeNow.toInstant(ZoneOffset.UTC));
-
-
+        createTicketHistory(0, 3, ticketTransactionStorno,
+            localDateTimeNow.toInstant(ZoneOffset.UTC));
 
         //inserting ticket history for performance 1
         Calendar cal = Calendar.getInstance();
@@ -434,7 +436,6 @@ public class EventFilterTestDataGenerator {
         createTicketHistory(1, 4, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
         createTicketHistory(1, 5, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
 
-
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
         cal.add(Calendar.DAY_OF_MONTH, 5); //add 5 days to today
         LocalDateTime performance2 = LocalDateTime
@@ -446,7 +447,8 @@ public class EventFilterTestDataGenerator {
         createTicketHistory(2, 6, ticketTransactionBought, performance2.toInstant(ZoneOffset.UTC));
     }
 
-    private void createTicketHistory(int performance, int ticket, TicketTransaction transaction, Instant lastModified) {
+    private void createTicketHistory(int performance, int ticket, TicketTransaction transaction,
+        Instant lastModified) {
         Ticket ticketObject = null;
         switch (performance) {
             case 0:
