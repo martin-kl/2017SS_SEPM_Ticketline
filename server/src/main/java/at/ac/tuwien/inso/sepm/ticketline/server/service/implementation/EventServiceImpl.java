@@ -178,6 +178,7 @@ public class EventServiceImpl implements EventService {
         Date searchStart;
         if (monthsInPast > 0) {
              searchStart = new Date((new Date()).getTime() - monthsInPast + 30);
+            //System.out.println("\n\n\n\t\tsearching start in : "+searchStart.toString() + "\n\n");
         } else {
             searchStart = new Date(Long.MIN_VALUE);
         }

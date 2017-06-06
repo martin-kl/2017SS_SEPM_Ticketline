@@ -25,10 +25,36 @@ public class EventServiceTest {
     private EventFilterTestDataGenerator eventFilterTestDataGenerator;
 
     @Test
-    public void canFindTopTenEvents() {
+    public void canFindTopTenEventsFromEveryCategory() {
         eventFilterTestDataGenerator.generateAllData(true);
         Map<Integer, Event> map = eventService.getTopTen(null, -1);
         Assert.assertTrue(map.containsKey(5));
         Assert.assertTrue(map.containsKey(2));
+    }
+
+    @Test
+    public void canFindTopTenEventsFromNoCategory() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(EventCategory.NO_CATEGORY, -1);
+        Assert.assertTrue(map.containsKey(2));
+    }
+
+
+    @Test
+    public void canFindTopTenEventsFromCategoryOne() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(EventCategory.CATEGORY_ONE, -1);
+        Assert.assertTrue(map.containsKey(5));
+    }
+
+
+    //test time constraints:
+    //TODO this test is not working - the time constraint calculation from Calvin Claus in the service is not working
+    @Test
+    public void canFindTopTenEventsFromAllCategoriesInLastMonth() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(null, 1);
+        //System.out.println("\n\n\t\tRESULT:\n" + map);
+        Assert.assertTrue(map.containsKey(5));
     }
 }

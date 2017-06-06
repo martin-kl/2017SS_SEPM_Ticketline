@@ -141,7 +141,7 @@ public class EventFilterTestDataGenerator {
         Event event1 = new Event(
             null,
             "Event 1 Name",
-            EventCategory.NO_CATEGORY,
+            EventCategory.CATEGORY_ONE,
             "1 tolles Event",
             null,
             null
@@ -207,7 +207,6 @@ public class EventFilterTestDataGenerator {
 
     //adds 2 performances for event1 and 1 performance for event2 - all on the same location
     private void generatePerformances() {
-        LocalDateTime localDateTimeNow = LocalDateTime.now();
         Calendar cal = Calendar.getInstance();
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));

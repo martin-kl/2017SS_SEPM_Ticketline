@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.repository;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
-import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Event;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper;
 import java.time.Instant;
@@ -9,10 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.stereotype.Repository;
-
 import org.springframework.data.domain.Pageable;
 
-import javax.persistence.*;
 import java.util.*;
 
 @Repository
@@ -31,6 +28,7 @@ public interface EventRepository extends JpaRepository<Event, UUID>, QueryDslPre
      * gets top ten events since 'startingSearchFrom'.
      * @param category The category to search for the top ten
      * @param startingSearchFrom starting from this day the query gets the top ten events
+     * @param pageable A pageable object to limit the result to the first 10 entries
      * @return A list of top ten "TopTenEventWrapper" since 'startingSearchFrom' for the given category
      */
     @Query(value=
