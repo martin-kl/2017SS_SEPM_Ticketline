@@ -210,7 +210,7 @@ public class EventFilterTestDataGenerator {
         Calendar cal = Calendar.getInstance();
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_MONTH, -4); //remove 5 days from today
+        cal.add(Calendar.DAY_OF_YEAR, -4); //remove 5 days from today
         LocalDateTime performance1Start = LocalDateTime
             .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
                 15, 0);
@@ -219,7 +219,7 @@ public class EventFilterTestDataGenerator {
                 15, 0);
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_MONTH, 10); //add 10 days to today
+        cal.add(Calendar.DAY_OF_YEAR, 10); //add 10 days to today
         LocalDateTime performance2Start = LocalDateTime
             .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
                 10, 0);
@@ -228,7 +228,7 @@ public class EventFilterTestDataGenerator {
                 30, 0);
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_MONTH, 201); //add 20 days to today
+        cal.add(Calendar.DAY_OF_YEAR, 201); //add 20 days to today
         LocalDateTime performance3Start = LocalDateTime
             .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
                 15, 0);
@@ -400,7 +400,7 @@ public class EventFilterTestDataGenerator {
          *      tickets 3-5 are bought
          *
          * - Performance 2:
-         *      date of this history = 5 days in future (with modification of last modified)
+         *      date of this history = 40 days ago (with modification of last modified)
          *      tickets 1 and 5 are bought
          */
 
@@ -439,7 +439,7 @@ public class EventFilterTestDataGenerator {
         Calendar cal = Calendar.getInstance();
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_MONTH, -20); //remove 20 days from today
+        cal.add(Calendar.DAY_OF_YEAR, -20); //remove 20 days from today
         LocalDateTime performance1 = LocalDateTime
             .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
                 15, 0);
@@ -455,7 +455,7 @@ public class EventFilterTestDataGenerator {
 
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_MONTH, 5); //add 5 days to today
+        cal.add(Calendar.DAY_OF_YEAR, -40); //remove 40 days from today
         LocalDateTime performance2 = LocalDateTime
             .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
                 10, 0);
@@ -465,7 +465,7 @@ public class EventFilterTestDataGenerator {
         createTicketHistory(2, 5, ticketTransactionBought, performance2.toInstant(ZoneOffset.UTC));
     }
 
-    private TicketHistory createTicketHistory(int performance, int ticket, TicketTransaction transaction,
+    private void createTicketHistory(int performance, int ticket, TicketTransaction transaction,
         Instant lastModified) {
         Ticket ticketObject = null;
         switch (performance) {
@@ -486,6 +486,6 @@ public class EventFilterTestDataGenerator {
         );
         ticketHistory.setLastModifiedAt(lastModified);
         ticketHistory.setCreatedAt(lastModified);
-        return ticketHistoryRepository.save(ticketHistory);
+        ticketHistoryRepository.save(ticketHistory);
     }
 }

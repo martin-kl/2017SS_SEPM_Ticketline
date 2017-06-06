@@ -8,6 +8,9 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper;
 import com.querydsl.core.BooleanBuilder;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -177,8 +180,9 @@ public class EventServiceImpl implements EventService {
     public Map<Integer, Event> getTopTen(EventCategory category, int monthsInPast) {
         Date searchStart;
         if (monthsInPast > 0) {
-             searchStart = new Date((new Date()).getTime() - monthsInPast + 30);
-            //System.out.println("\n\n\n\t\tsearching start in : "+searchStart.toString() + "\n\n");
+            LocalDate ld = LocalDate.now().minus(monthsInPast, ChronoUnit.MONTHS);
+            searchStart = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            System.out.println("\n\n\n\t\tsearching start in : "+searchStart.toString() + "\n\n");
         } else {
             searchStart = new Date(Long.MIN_VALUE);
         }
