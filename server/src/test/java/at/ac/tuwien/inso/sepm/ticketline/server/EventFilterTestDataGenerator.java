@@ -390,6 +390,9 @@ public class EventFilterTestDataGenerator {
 */
 
         /**
+         * ATTENTION: the manipulation of the dates is NOT WORKING
+         * SO we cannot test the date search correctly in the unit test
+         *
          * my plan is:
          * - Performance 0:
          *      date of this history = today (without modification of last modified)
