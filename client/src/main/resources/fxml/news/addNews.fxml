@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.AddNewsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.AddNewsController">
    <center>
       <VBox BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -50,7 +49,10 @@
                   <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#onUpload" text="%upload" BorderPane.alignment="CENTER" />
                </right>
                <center>
-                  <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                  <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="5.0" />
+                     </BorderPane.margin></ImageView>
                </center>
             </BorderPane>
          </children>

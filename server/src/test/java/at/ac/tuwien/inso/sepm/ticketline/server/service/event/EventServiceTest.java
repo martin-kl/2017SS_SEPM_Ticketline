@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
+import at.ac.tuwien.inso.sepm.ticketline.server.EventFilterTestDataGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -32,6 +35,9 @@ import static org.hamcrest.CoreMatchers.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EventServiceTest {
+    @Autowired
+    private EventFilterTestDataGenerator eventFilterTestDataGenerator;
+
     @Autowired
     private EventTestDataGenerator eventTestDataGenerator;
 
@@ -53,12 +59,12 @@ public class EventServiceTest {
     }
 
     @After
-    public void afterTest(){
+    public void afterTest() {
         eventTestDataGenerator.emptyAllRepositories();
     }
 
     @Test
-    public void emptyFilterShouldFindAll(){
+    public void emptyFilterShouldFindAll() {
         EventSearch eventSearch = new EventSearch();
 
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
@@ -68,7 +74,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterByEventName(){
+    public void filterByEventName() {
         EventSearch eventSearch = EventSearch.builder()
             .eventName("event 0")
             .build();
@@ -76,14 +82,14 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterByEventDescription(){
+    public void filterByEventDescription() {
         EventSearch eventSearch = EventSearch.builder()
             .description("description for event 3")
             .build();
         singleResultSearch(eventSearch, 3);
     }
 
-    private void singleResultSearch(EventSearch eventSearch, int expectedAtIndex){
+    private void singleResultSearch(EventSearch eventSearch, int expectedAtIndex) {
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         Event expectedEvent = allEvents.get(expectedAtIndex);
 
@@ -94,7 +100,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterByEventCategory(){
+    public void filterByEventCategory() {
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         List<Event> expectedEvents = new LinkedList<>();
         expectedEvents.add(allEvents.get(1));
@@ -110,7 +116,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filerEventsByArtistID(){
+    public void filerEventsByArtistID() {
         List<Artist> allArtists = artistRepository.findAll(new Sort(Sort.Direction.ASC, "firstname"));
         Artist artist = allArtists.get(0);
 
@@ -135,7 +141,7 @@ public class EventServiceTest {
     /* performance filters */
 
     @Test
-    public void filterPerformanceByLocation(){
+    public void filterPerformanceByLocation() {
         List<Location> allLocations = locationRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         Location location = allLocations.get(0);
 
@@ -153,7 +159,7 @@ public class EventServiceTest {
 
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
 
-        for(Event e : eventsSearchResult){
+        for (Event e : eventsSearchResult) {
             Assert.assertThat(e.getPerformances().size(), is(1));
         }
 
@@ -161,7 +167,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterPerformancesByDuration(){
+    public void filterPerformancesByDuration() {
         //Assert.assertThat(); duration
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         List<Event> expectedEvents = new LinkedList<>(allEvents);
@@ -171,7 +177,7 @@ public class EventServiceTest {
             .build();
 
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
-        for(Event e : eventsSearchResult){
+        for (Event e : eventsSearchResult) {
             Assert.assertThat(e.getPerformances().size(), is(1));
         }
 
@@ -179,7 +185,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterPerformancesByType(){
+    public void filterPerformancesByType() {
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         List<Event> expectedEvents = new LinkedList<>(allEvents);
 
@@ -188,7 +194,7 @@ public class EventServiceTest {
             .build();
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
 
-        for(Event e : eventsSearchResult){
+        for (Event e : eventsSearchResult) {
             Assert.assertTrue(e.getPerformances().size() == 1 || e.getPerformances().size() == 2);
         }
 
@@ -196,17 +202,17 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterPerformancesByStartAndEndDate(){
+    public void filterPerformancesByStartAndEndDate() {
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         List<Event> expectedEvents = new LinkedList<>(allEvents);
 
         EventSearch eventSearch = EventSearch.builder()
-            .performanceStartDate(LocalDate.of(2012,6,5))
-            .performanceEndDate(LocalDate.of(2012,6,5))
+            .performanceStartDate(LocalDate.of(2012, 6, 5))
+            .performanceEndDate(LocalDate.of(2012, 6, 5))
             .build();
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
 
-        for(Event e : eventsSearchResult){
+        for (Event e : eventsSearchResult) {
             Assert.assertTrue(e.getPerformances().size() == 1);
         }
 
@@ -214,7 +220,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void filterPerformancesByTicketPrice(){
+    public void filterPerformancesByTicketPrice() {
         List<Event> allEvents = eventRepository.findAll(new Sort(Sort.Direction.ASC, "name"));
         List<Event> expectedEvents = new LinkedList<>(allEvents);
 
@@ -223,10 +229,54 @@ public class EventServiceTest {
             .build();
 
         List<Event> eventsSearchResult = eventService.search(eventSearch, null);
-        for(Event e : eventsSearchResult){
+        for (Event e : eventsSearchResult) {
             Assert.assertTrue(e.getPerformances().size() == 1);
         }
         Assert.assertThat(eventsSearchResult, is(expectedEvents));
     }
 
+
+    @Test
+    public void canFindTopTenEventsFromEveryCategory() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(null, -1);
+        Assert.assertTrue(map.containsKey(5));
+        Assert.assertTrue(map.containsKey(2));
+        Assert.assertTrue(map.size() == 2);
+    }
+
+    @Test
+    public void canFindTopTenEventsFromNoCategory() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(EventCategory.NO_CATEGORY, -1);
+        Assert.assertTrue(map.containsKey(2));
+        Assert.assertTrue(map.size() == 1);
+    }
+
+
+    @Test
+    public void canFindTopTenEventsFromCategoryOne() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(EventCategory.CATEGORY_ONE, -1);
+        Assert.assertTrue(map.containsKey(5));
+        Assert.assertTrue(map.size() == 1);
+    }
+
+/*
+        //ATTENTION: this test should work but does not because the date manipulation for the test
+        data does not work
+
+    //test time constraint:
+
+    @Test
+    public void canFindTopTenEventsFromAllCategoriesInLastMonth() {
+        eventFilterTestDataGenerator.generateAllData(true);
+        Map<Integer, Event> map = eventService.getTopTen(null, 1);
+        System.out.println("\n\n\t\tRESULT:\n" + map);
+        Assert.assertTrue(map.containsKey(5));
+        //ATTENTION: this assert should work but does not because the date manipulation does not work
+        //Assert.assertTrue(map.size() == 1);
+    }
+    */
 }
+

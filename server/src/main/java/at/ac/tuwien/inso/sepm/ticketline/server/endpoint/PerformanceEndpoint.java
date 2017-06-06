@@ -32,4 +32,5 @@ public class PerformanceEndpoint {
     public PerformanceDTO findOne(@PathVariable UUID id){
         return detailedPerformanceMapper.fromEntity(performanceService.findOne(id));
     }
+
 }

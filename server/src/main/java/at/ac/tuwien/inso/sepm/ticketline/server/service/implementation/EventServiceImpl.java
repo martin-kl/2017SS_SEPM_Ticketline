@@ -1,14 +1,20 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.EventRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.EventSearch;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.util.TopTenEventWrapper;
 import com.querydsl.core.BooleanBuilder;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -168,5 +174,23 @@ public class EventServiceImpl implements EventService {
         }
 
         return b1 && b2;
+    }
+
+    @Override
+    public Map<Integer, Event> getTopTen(EventCategory category, int monthsInPast) {
+        Date searchStart;
+        if (monthsInPast > 0) {
+            LocalDate ld = LocalDate.now().minus(monthsInPast, ChronoUnit.MONTHS);
+            searchStart = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            //System.out.println("\n\n\n\t\tsearching start in : "+searchStart.toString() + "\n\n");
+        } else {
+            searchStart = new Date(Long.MIN_VALUE);
+        }
+        List<TopTenEventWrapper> topTenEvents = eventRepository.getTopTen(category, searchStart.toInstant(), new PageRequest(0, 10));
+        Map<Integer, Event> map = new HashMap<>();
+        for (TopTenEventWrapper eventWrapper : topTenEvents) {
+            map.put((int) eventWrapper.getSoldCount(), eventWrapper.getEvent());
+        }
+        return map;
     }
 }
