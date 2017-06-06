@@ -484,7 +484,7 @@ public class EventsController {
         );
         new Thread(task).start();
     }
-    private void loadTopTen(String category, Integer monthsInPast){
+    private void loadTopTen(EventCategory category, Integer monthsInPast){
         currentlyLoading = true;
         Task<HashMap<Integer, EventDTO>> task = new Task<HashMap<Integer, EventDTO>>() {
             @Override
@@ -877,11 +877,13 @@ public class EventsController {
         } else if (cbMonth.getSelectionModel().getSelectedItem().equals(LAST_5_YEARS)) {
             monthsInPast = 60;
         }
-        String category = "";
+        EventCategory category;
         if(!cbEventCategory.getSelectionModel().getSelectedItem().equals(CATEGORY_STANDARD)){
-            category = cbEventCategory.getSelectionModel().getSelectedItem();
+            category = EventCategory.valueOf(cbEventCategory.getSelectionModel().getSelectedItem());
+            loadTopTen(category, monthsInPast);
+        } else {
+            loadTopTen(null, monthsInPast);
         }
-        loadTopTen(category, monthsInPast);
         // TODO: test
     }
     @FXML

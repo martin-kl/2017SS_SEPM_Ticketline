@@ -6,6 +6,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.rest.EventRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
@@ -37,7 +38,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public HashMap<Integer, EventDTO> searchTopTen(String category, Integer monthsInPast) throws ExceptionWithDialog{
+    public HashMap<Integer, EventDTO> searchTopTen(EventCategory category, Integer monthsInPast) throws ExceptionWithDialog{
         return eventRestClient.searchTopTen(category, monthsInPast);
     }
 

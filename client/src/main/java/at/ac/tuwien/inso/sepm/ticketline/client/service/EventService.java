@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
@@ -34,11 +35,11 @@ public interface EventService {
     /**
      * searches for top ten events matching the search parameters
      *
-     * @param category the category or "" if category doesn't matter
+     * @param category the category or null if category doesn't matter
      * @param monthsInPast the amount of months in the past to select events
      * @return a hashmap containing the top ten events and the amount of sold tickets
      */
-    HashMap<Integer, EventDTO> searchTopTen(String category, Integer monthsInPast) throws ExceptionWithDialog;
+    HashMap<Integer, EventDTO> searchTopTen(EventCategory category, Integer monthsInPast) throws ExceptionWithDialog;
 
     /**
      * fuzzy searches for artists

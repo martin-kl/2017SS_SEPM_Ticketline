@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.rest.EventRestClient;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.ArtistDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.artist.EventArtistDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.event.EventSearchDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.LocationDTO;
@@ -87,7 +88,7 @@ public class EventRestClientImpl implements EventRestClient {
     }
 
     @Override
-    public HashMap<Integer, EventDTO> searchTopTen(String category, Integer monthsInPast) throws DataAccessException {
+    public HashMap<Integer, EventDTO> searchTopTen(EventCategory category, Integer monthsInPast) throws DataAccessException {
         try {
             log.debug("Retrieving all top ten events from {}", restClient.getServiceURI(TOP_TEN_URL));
             ResponseEntity<HashMap<Integer, EventDTO>> event =
