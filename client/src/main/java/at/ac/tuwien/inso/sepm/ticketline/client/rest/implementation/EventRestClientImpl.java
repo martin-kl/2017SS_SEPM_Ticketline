@@ -27,7 +27,7 @@ public class EventRestClientImpl implements EventRestClient {
     private static final String EVENT_SEARCH_URL = "/event/search";
     private static final String ARTIST_URL = "/artist";
     private static final String LOCATION_URL = "/location/search";
-    private static final String TOP_TEN_URL = "/topten";
+    private static final String TOP_TEN_URL = "/event/topten";
 
     private final RestClient restClient;
 

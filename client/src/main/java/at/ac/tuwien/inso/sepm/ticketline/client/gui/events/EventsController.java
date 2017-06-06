@@ -26,9 +26,11 @@ import java.text.ParsePosition;
 import java.time.Duration;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -138,7 +140,9 @@ public class EventsController {
     @FXML
     private ComboBox<String> cbMonth;
     @FXML
-    private BarChart<String, Number> barChartTopTen;
+    private BarChart<String, Integer> barChartTopTen;
+    @FXML
+    private CategoryAxis xAxis;
     @FXML
     private VBox vbPerformanceParent;
 
@@ -325,6 +329,12 @@ public class EventsController {
     }
 
     private void initializeGraphLayout() {
+        barChartTopTen.setAnimated(false);
+        barChartTopTen.setTitle("Top Ten");
+        barChartTopTen.setLegendVisible(false);
+        //xAxis.setLabel(BundleManager.getBundle().getString("events.topten.label.x"));
+        barChartTopTen.getYAxis().setLabel(BundleManager.getBundle().getString("events.topten.label.y"));
+
         LAST_MONTH = BundleManager.getBundle().getString("performance.month.last") + " " + BundleManager.getBundle().getString("performance.month");
         LAST_2_MONTHS = BundleManager.getBundle().getString("performance.month.last") + " 2 " + BundleManager.getBundle().getString("performance.months");
         LAST_4_MONTHS = BundleManager.getBundle().getString("performance.month.last") + " 4 " + BundleManager.getBundle().getString("performance.months");
@@ -336,7 +346,7 @@ public class EventsController {
         CATEGORY_STANDARD = BundleManager.getBundle().getString("events.category");
         // Month combobox
         if(cbMonth.getItems().isEmpty()){
-            cbMonth.getItems().addAll(ALL_TIME, LAST_MONTH, LAST_2_MONTHS, LAST_4_MONTHS, LAST_6_MONTHS, LAST_6_MONTHS, LAST_YEAR, LAST_2_YEARS, LAST_5_YEARS);
+            cbMonth.getItems().addAll(ALL_TIME, LAST_MONTH, LAST_2_MONTHS, LAST_4_MONTHS, LAST_6_MONTHS, LAST_YEAR, LAST_2_YEARS, LAST_5_YEARS);
         }
         cbMonth.getSelectionModel().select(ALL_TIME);
 
@@ -517,25 +527,24 @@ public class EventsController {
     }
 
     private void buildGraph(HashMap<Integer, EventDTO> data) {
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        barChartTopTen = new BarChart<String, Number>(xAxis, yAxis);
-        barChartTopTen.setTitle("Top Ten");
-        xAxis.setLabel(BundleManager.getBundle().getString("events.topten.label.x"));
-        yAxis.setLabel(BundleManager.getBundle().getString("events.topten.label.y"));
-
+        log.debug("buildGraph called");
         barChartTopTen.getData().clear();
+        // what the hell is happening
+        //xAxis.setCategories(FXCollections.observableList(data.values().stream().map(EventDTO::getName).collect(Collectors.toList())));
+
 
         Iterator it = data.entrySet().iterator();
+        XYChart.Series<String, Integer> seriesX = new XYChart.Series<>();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
 
-            XYChart.Series seriesX = new XYChart.Series();
             EventDTO currEvent = (EventDTO) pair.getValue();
             Integer currSold = (Integer) pair.getKey();
-            seriesX.getData().add(new XYChart.Data(currEvent.getName(), currSold));
-            barChartTopTen.getData().add(seriesX);
+
+            seriesX.getData().add(new XYChart.Data<>(currEvent.getName(), currSold));
+            //barChartTopTen.getData().add(seriesX);
         }
+        barChartTopTen.getData().add(seriesX);
     }
 
     /* methods to load data for comboboxes */

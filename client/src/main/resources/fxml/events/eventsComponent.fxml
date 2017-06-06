@@ -329,7 +329,7 @@
                                        <children>
                                           <BarChart fx:id="barChartTopTen" layoutX="-116.0" layoutY="-121.0" prefHeight="279.0" prefWidth="664.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <xAxis>
-                                                <CategoryAxis side="BOTTOM" />
+                                                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                              </xAxis>
                                              <yAxis>
                                                 <NumberAxis side="LEFT" />
