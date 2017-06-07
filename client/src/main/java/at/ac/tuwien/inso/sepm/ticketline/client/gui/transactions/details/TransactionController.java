@@ -213,7 +213,6 @@ public class TransactionController {
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }
-
     }
 
     public void openPDF() {

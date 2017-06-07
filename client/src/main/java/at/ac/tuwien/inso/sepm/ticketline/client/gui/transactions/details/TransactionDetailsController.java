@@ -141,6 +141,5 @@ public class TransactionDetailsController {
 
             buttons.add(btnPrintPDF);
         }
-
     }
 }
