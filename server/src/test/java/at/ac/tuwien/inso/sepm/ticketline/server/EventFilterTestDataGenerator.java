@@ -144,7 +144,7 @@ public class EventFilterTestDataGenerator {
         Event event1 = new Event(
             null,
             "Event 1 Name",
-            EventCategory.CATEGORY_ONE,
+            EventCategory.CONCERT,
             "1 tolles Event",
             null,
             null

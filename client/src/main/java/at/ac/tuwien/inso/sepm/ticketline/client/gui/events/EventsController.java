@@ -375,8 +375,8 @@ public class EventsController {
         cbArtistMatches.getItems().clear();
         cbLocationMatches.getItems().clear();
 
-        initializeExtendedSearchLayout();
         setTitle(BundleManager.getBundle().getString("events.title"));
+        initializeExtendedSearchLayout();
         if(alreadyLoggedIn) {
             init();
         }
@@ -580,6 +580,7 @@ public class EventsController {
         );
         new Thread(task).start();
     }
+
     private void loadLocations(LocationDTO searchParams) {
         Task<List<LocationDTO>> task = new Task<List<LocationDTO>>() {
             @Override
