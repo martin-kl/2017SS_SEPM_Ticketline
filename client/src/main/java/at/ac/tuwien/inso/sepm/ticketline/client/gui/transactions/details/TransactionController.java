@@ -110,7 +110,6 @@ public class TransactionController {
         customerSelection.initData();
     }
 
-    //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
     public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO, TransactionListController transactionListController) {
         this.detailedPerformanceDTO = null;
         this.oldTicketTransaction = detailedTicketTransactionDTO;

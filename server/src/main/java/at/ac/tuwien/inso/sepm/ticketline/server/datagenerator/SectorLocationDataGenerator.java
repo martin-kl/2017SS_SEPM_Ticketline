@@ -59,7 +59,8 @@ public class SectorLocationDataGenerator {
             for (int i = 0; i < NUMBER_OF_LOCATIONS_TO_GENERATE; i++) {
 
                 SectorLocation sectorLocation = SectorLocation.builder()
-                    .name("Halle " + faker.name().lastName())
+                    //.name("Halle " + faker.name().lastName())
+                    .name(faker.name().lastName())
                     .city(faker.address().city())
                     .country(faker.address().country())
                     .street(faker.address().streetAddress())
@@ -76,7 +77,8 @@ public class SectorLocationDataGenerator {
                         .location(sectorLocation)
                         .priceCategory(priceCategoryList.get(randomPriceCategoryId))
                         .size((int) (Math.random() * MAX_NUMBER_OF_SECTOR_PLACES + MIN_NUMBER_OF_SECTOR_PLACES))
-                        .name("Sector " + faker.name().firstName())
+                        //.name("Sector " + faker.name().firstName())
+                        .name(faker.name().firstName())
                         .build();
                     log.debug("saving sector {}", sector);
                     sectorRepository.save(sector);

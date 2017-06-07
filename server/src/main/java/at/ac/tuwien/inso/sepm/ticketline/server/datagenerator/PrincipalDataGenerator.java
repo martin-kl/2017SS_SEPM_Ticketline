@@ -37,7 +37,7 @@ public class PrincipalDataGenerator {
     private NewsDataGenerator newsDataGenerator;
 
     @PostConstruct
-    private void generatePriceCategories() {
+    private void generatePrincipals() {
         if (principalRepository.count() > 0) {
             log.info("principals already generated");
         } else {
@@ -83,6 +83,4 @@ public class PrincipalDataGenerator {
 
         }
     }
-
-
 }
