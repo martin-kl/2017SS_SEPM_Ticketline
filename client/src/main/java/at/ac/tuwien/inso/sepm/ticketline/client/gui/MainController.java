@@ -234,7 +234,7 @@ public class MainController {
             .getController();
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
-        controller.initData(detailedTicketTransactionDTO, transactionListController);
+        controller.initData(detailedTicketTransactionDTO, transactionListController, false);
         //showTransactionDetailStage(dialog);
         dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
