@@ -265,7 +265,7 @@
                                                                               <Insets />
                                                                            </opaqueInsets>
                                                                         </TextField>
-                                                                        <ComboBox fx:id="cbLocationAttribute" maxWidth="1.7976931348623157E308" onAction="#handleLocationEnter" prefWidth="135.0" promptText="&lt;Locationname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                                        <ComboBox fx:id="cbLocationAttribute" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Locationname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                                                         <ComboBox fx:id="cbLocationMatches" maxWidth="1.7976931348623157E308" prefWidth="160.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                                         <ComboBox fx:id="cbPerformanceType" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Type&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                                      </children>
