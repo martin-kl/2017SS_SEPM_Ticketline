@@ -7,75 +7,85 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="spScrollPane" fitToWidth="true" maxHeight="600.0" minHeight="300.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController">
-   <content>
-      <VBox prefWidth="600.0">
-          <children>
-              <HBox>
-                  <children>
-                      <Label fx:id="lbTitle" text="&lt;title&gt;">
-                          <HBox.margin>
-                              <Insets left="40.0" />
-                          </HBox.margin>
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                      </Label>
-                      <Label fx:id="lbPublishDate" text="&lt;date&gt;">
-                          <HBox.margin>
-                              <Insets left="20.0" />
-                          </HBox.margin>
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                      </Label>
-                  </children>
-              </HBox>
-              <Separator fx:id="separatorUnderTitle">
-                  <VBox.margin>
-                      <Insets bottom="5.0" top="5.0" />
-                  </VBox.margin>
-              </Separator>
-              <ImageView fx:id="ivImage" fitHeight="175.0" fitWidth="200" pickOnBounds="true" preserveRatio="true" />
-              <Separator>
-                  <VBox.margin>
-                      <Insets bottom="5.0" top="5.0" />
-                  </VBox.margin>
-              </Separator>
-              <Label fx:id="lbSummaryHeader" text="%news.summary.header">
-                  <VBox.margin>
-                      <Insets />
-                  </VBox.margin>
-                  <font>
-                      <Font name="System Bold" size="14.0" />
-                  </font>
-              </Label>
-            <Label fx:id="lbSummary" text="&lt;summary label&gt;" />
-              <Label fx:id="lbTextHeader" text="%news.text.header">
-                  <font>
-                      <Font name="System Bold" size="14.0" />
-                  </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-              </Label>
-            <Label fx:id="lbText" text="&lt;text label&gt;" />
-              <ButtonBar>
-                  <buttons>
-                      <Button mnemonicParsing="false" onAction="#handleReturnButton" text="%return" />
-                  </buttons>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-              </ButtonBar>
-          </children>
-          <padding>
-              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-          </padding>
-      </VBox>
-   </content>
-</ScrollPane>
+<BorderPane minHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController">
+   <center>
+      <ScrollPane fitToWidth="true" maxHeight="600.0">
+         <content>
+            <VBox>
+                <children>
+                    <ImageView fx:id="ivImage" fitHeight="175.0" fitWidth="200" pickOnBounds="true" preserveRatio="true" />
+                    <Separator fx:id="separatorAboveTitle">
+                        <VBox.margin>
+                            <Insets bottom="5.0" top="5.0" />
+                        </VBox.margin>
+                    </Separator>
+                    <HBox>
+                        <children>
+                            <Label fx:id="lbTitle" text="&lt;title&gt;">
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                            </Label>
+                            <Label fx:id="lbPublishDate" text="&lt;date&gt;">
+                                <HBox.margin>
+                                    <Insets left="20.0" />
+                                </HBox.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                            </Label>
+                        </children>
+                    </HBox>
+                    <Separator>
+                        <VBox.margin>
+                            <Insets bottom="5.0" top="5.0" />
+                        </VBox.margin>
+                    </Separator>
+                    <Label fx:id="lbSummaryHeader" text="%news.summary.header">
+                        <VBox.margin>
+                            <Insets />
+                        </VBox.margin>
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                    </Label>
+                  <Label fx:id="lbSummary" text="&lt;summary label&gt;" />
+                    <Label fx:id="lbTextHeader" text="%news.text.header">
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                    </Label>
+                  <Label fx:id="lbText" text="&lt;text label&gt;" />
+                </children>
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                </padding>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+   <bottom>
+        <ButtonBar BorderPane.alignment="CENTER">
+            <buttons>
+                <Button mnemonicParsing="false" onAction="#handleReturnButton" text="%return" />
+            </buttons>
+         <BorderPane.margin>
+            <Insets right="10.0" top="10.0" />
+         </BorderPane.margin>
+        </ButtonBar>
+   </bottom>
+   <padding>
+      <Insets bottom="10.0" />
+   </padding>
+</BorderPane>
