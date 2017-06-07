@@ -1,0 +1,32 @@
+IR2 ist ja in zwei Wochen 
+Davor sollten alle Features fertig sein.
+
+Designdokument
+Ein "generisches" Klassendiagramm dass den genauen ablauf einer CRUD methode mit der 3 Schichten archtiketur ansehnlich macht.
+
+Manuelle Testberichte schauen auch gut aus so wie sie sind. Es geht vor allem um Anhaltspunkte für die Chefin - damit sie sieht was wir so treiben.
+
+
+Dependency Ijection, Inversion of Control, Dynamisches Binden
+
+
+Dokument für NFAs anlegen.
+
+
+Zahlungsanbieter brauch kein User Interface. Es muss nicht verwendbar sein. Er fragt noch einmal.
+
+
+
+
+
+MR3 TESTDATEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+PROFESIONALLERE PRÄSENTATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+2 Teilige Präsentation zuerst mit "Scrum Master" dann mit "Kunde"
+
+Nebenläufigkeit!
+
+Validierung hauen überall hin. Geburtsdatum in der Zukunft...
+
+
+Wir müssen TOP 10 VERANSTALTUNGEN ZUWEISEN!
