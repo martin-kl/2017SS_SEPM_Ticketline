@@ -27,13 +27,11 @@ import org.springframework.stereotype.Component;
 public class NewsDetailController {
 
     @FXML
-    private Label lbTitle;
-    @FXML
-    private Label lbPublishDate;
+    private ImageView ivImage;
     @FXML
     private Separator separatorAboveTitle;
     @FXML
-    private ImageView ivImage;
+    private Label lbTitleAndDate;
     @FXML
     private Label lbSummaryHeader;
     @FXML
@@ -63,7 +61,7 @@ public class NewsDetailController {
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
                 ivImage.setImage(image);
-            }else {
+            } else {
                 ivImage.setVisible(false);
                 ivImage.setManaged(false);
                 separatorAboveTitle.setVisible(false);
@@ -72,10 +70,13 @@ public class NewsDetailController {
 
             lbText.setWrapText(true);
             lbSummary.setWrapText(true);
+            lbTitleAndDate.setWrapText(true);
             //txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
 
-            lbPublishDate.setText(detailedNewsDTO.getPublishedAt().format(formatter));
-            lbTitle.setText(detailedNewsDTO.getTitle());
+            lbTitleAndDate.setText(
+                detailedNewsDTO.getTitle() + " - " + detailedNewsDTO.getPublishedAt()
+                    .format(formatter));
+            //lbTitle.setText(detailedNewsDTO.getTitle());
             lbSummaryHeader.setText(BundleManager.getBundle().getString("news.summary.header"));
             lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
@@ -86,8 +87,10 @@ public class NewsDetailController {
 
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
-            alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
-            alert.setContentText(BundleManager.getExceptionBundle().getString("default.error.content"));
+            alert.setHeaderText(
+                BundleManager.getExceptionBundle().getString("default.error.header"));
+            alert.setContentText(
+                BundleManager.getExceptionBundle().getString("default.error.content"));
         }
     }
 

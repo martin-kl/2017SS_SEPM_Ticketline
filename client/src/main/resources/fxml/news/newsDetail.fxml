@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -24,26 +23,11 @@
                             <Insets bottom="5.0" top="5.0" />
                         </VBox.margin>
                     </Separator>
-                    <HBox>
-                        <children>
-                            <Label fx:id="lbTitle" text="&lt;title&gt;">
-                                <HBox.margin>
-                                    <Insets />
-                                </HBox.margin>
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                            </Label>
-                            <Label fx:id="lbPublishDate" text="&lt;date&gt;">
-                                <HBox.margin>
-                                    <Insets left="20.0" />
-                                </HBox.margin>
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                            </Label>
-                        </children>
-                    </HBox>
+                  <Label fx:id="lbTitleAndDate" text="&lt;Title and Date&gt;">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
                     <Separator>
                         <VBox.margin>
                             <Insets bottom="5.0" top="5.0" />
