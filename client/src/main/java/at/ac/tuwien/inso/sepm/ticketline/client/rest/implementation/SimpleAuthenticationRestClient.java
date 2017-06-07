@@ -28,9 +28,11 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
     }
 
     @Override
-    public AuthenticationToken authenticate(final AuthenticationRequest authenticationRequest) throws DataAccessException {
+    public AuthenticationToken authenticate(final AuthenticationRequest authenticationRequest)
+        throws DataAccessException {
         try {
-            log.info("Authenticate {} at {}", authenticationRequest.getUsername(), restClient.getServiceURI(AUTHENTICATION_URL));
+            log.info("Authenticate {} at {}", authenticationRequest.getUsername(),
+                restClient.getServiceURI(AUTHENTICATION_URL));
             ResponseEntity<AuthenticationToken> response =
                 restClient.exchange(
                     restClient.getServiceURI(AUTHENTICATION_URL),
@@ -38,10 +40,12 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
                     new HttpEntity<Object>(authenticationRequest),
                     new ParameterizedTypeReference<AuthenticationToken>() {
                     });
-            log.debug("Authenticate {} status {}", authenticationRequest.getUsername(), response.getStatusCode());
+            log.debug("Authenticate {} status {}", authenticationRequest.getUsername(),
+                response.getStatusCode());
             return response.getBody();
         } catch (HttpStatusCodeException e) {
-            throw new DataAccessException("Failed to login with status code " + e.getStatusCode().toString());
+            throw new DataAccessException(
+                "Failed to authenticate with status code " + e.getStatusCode().toString(), "exception.invalid.login");
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -61,7 +65,9 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
             log.debug("Get AuthenticationToken status {}", response.getStatusCode());
             return response.getBody();
         } catch (HttpStatusCodeException e) {
-            throw new DataAccessException("Failed to obtain authentication token with status code " + e.getStatusCode().toString());
+            throw new DataAccessException(
+                "Failed to obtain authentication token with status code " + e.getStatusCode()
+                    .toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -70,7 +76,8 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
     @Override
     public AuthenticationTokenInfo tokenInfoCurrent() throws DataAccessException {
         try {
-            log.info("Get AuthenticationTokenInfo at {}", restClient.getServiceURI(AUTHENTICATION_INFO_URL));
+            log.info("Get AuthenticationTokenInfo at {}",
+                restClient.getServiceURI(AUTHENTICATION_INFO_URL));
             ResponseEntity<AuthenticationTokenInfo> response =
                 restClient.exchange(
                     restClient.getServiceURI(AUTHENTICATION_INFO_URL),
@@ -81,7 +88,9 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
             log.debug("Get AuthenticationTokenInfo status {}", response.getStatusCode());
             return response.getBody();
         } catch (HttpStatusCodeException e) {
-            throw new DataAccessException("Failed to authentication token info with status code " + e.getStatusCode().toString());
+            throw new DataAccessException(
+                "Failed to authentication token info with status code " + e.getStatusCode()
+                    .toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
