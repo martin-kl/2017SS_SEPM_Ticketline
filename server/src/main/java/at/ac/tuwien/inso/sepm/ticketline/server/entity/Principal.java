@@ -4,6 +4,8 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import at.ac.tuwien.inso.sepm.ticketline.server.security.AuthorityService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,13 +37,19 @@ public class Principal extends Audited implements UserDetails {
     @Column(columnDefinition = "uuid", updatable = false)
     private UUID id;
 
-    @Column
+    @Column(nullable = false, length = 100, unique = true)
     @NotNull
+    @Length(min = 3)
     private String username;
 
     @Column
     @JsonIgnore
     private String password;
+
+    @Column(nullable = false, length = 10_000, unique = true)
+    @Email
+    @Length(min = 3)
+    private String email;
 
     @Column
     private int failedLoginCount = 0;

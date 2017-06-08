@@ -31,10 +31,12 @@ public class PrincipalServiceTest {
 
     private final String username1 = "testuser1";
     private final Principal.Role testRole1 = Role.ADMIN;
+    private final String email1 = "testuser@test.at";
     private Principal testUserOne;
 
     private final String username2 = "testuser_two";
     private final Principal.Role testRole2 = Role.SELLER;
+    private final String email2 = "test_second_mail@test.com";
     private Principal testUserTwo;
 
     @Before
@@ -45,6 +47,7 @@ public class PrincipalServiceTest {
             .username(username1)
             .password(passwordEncoder.encode("password"))
             .enabled(true)
+            .email(email1)
             .build();
         testUserOne = principalService.save(testUserOne);
 
@@ -53,6 +56,7 @@ public class PrincipalServiceTest {
             .username(username2)
             .password("passwordTwo")
             .enabled(false)
+            .email(email2)
             .build();
         testUserTwo = principalService.save(testUserTwo);
     }

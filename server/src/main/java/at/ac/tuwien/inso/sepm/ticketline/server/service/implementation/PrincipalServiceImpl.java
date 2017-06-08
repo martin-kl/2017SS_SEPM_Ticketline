@@ -63,6 +63,7 @@ class PrincipalServiceImpl implements PrincipalService {
         for (String token : query.split(" ")) {
             BooleanBuilder b = new BooleanBuilder();
             b.or(principal.username.containsIgnoreCase(token));
+            b.or(principal.email.containsIgnoreCase(token));
             builder.and(b.getValue());
         }
         if(locked != null) {
