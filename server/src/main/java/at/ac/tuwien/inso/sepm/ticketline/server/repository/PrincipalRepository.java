@@ -5,13 +5,15 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PrincipalRepository extends JpaRepository<Principal, UUID> {
+public interface PrincipalRepository extends JpaRepository<Principal, UUID>,
+    QueryDslPredicateExecutor<Principal> {
 
     /**
      * Finds a Principal by username
@@ -35,7 +37,7 @@ public interface PrincipalRepository extends JpaRepository<Principal, UUID> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE Principal p SET p.failedLoginCount = p.failedLoginCount + 1, p.enabled = ?2 WHERE p.id = ?1")
-    int incrementFailedLoginCount(UUID id, boolean enabled);
+    void incrementFailedLoginCount(UUID id, boolean enabled);
 
     /**
      * Resets the failedLoginCount for the principal with the given ID
@@ -47,4 +49,14 @@ public interface PrincipalRepository extends JpaRepository<Principal, UUID> {
     @Query(value = "UPDATE Principal p SET p.failedLoginCount = 0 WHERE p.id = ?1")
     void resetFailedLoginCount(UUID id);
 
+    /**
+     * Enable/Disable the principal with the given id and set failedLoginCount to 0
+     *
+     * @param id The principal ID to unlock
+     * @param enabled The enable status for the principal
+     */
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Principal p SET p.failedLoginCount = 0, p.enabled = ?2 WHERE p.id = ?1")
+    void updateEnabledFlag(UUID id, boolean enabled);
 }
