@@ -6,6 +6,13 @@ import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 
 public interface PrincipalService {
+    /**
+     * Find all principals
+     *
+     * @param pageable The next requested page
+     * @return list of principals (ordered by username)
+     */
+    List<Principal> findAll(Pageable pageable);
 
     /**
      * Find a principal entry by the username
