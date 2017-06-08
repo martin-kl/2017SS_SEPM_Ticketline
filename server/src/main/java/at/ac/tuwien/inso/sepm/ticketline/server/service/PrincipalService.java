@@ -31,10 +31,10 @@ public interface PrincipalService {
      * @param enabled The enable status for the principal
      * @return The updated principal entry
      */
-    Principal enablePrincipalByID(UUID id, boolean enabled);
+    Principal setEnabledForPrincipalWithId(UUID id, boolean enabled);
 
     /**
-     * saves a new principal
+     * save or edit a rincipal
      *
      * @param principal The principal object to save or edit
      * @return the same principal passed into the method with fields updated
@@ -47,5 +47,6 @@ public interface PrincipalService {
      * @param id The principal object to reset the password
      * @return The new principal entry with the updated (but encrypted password)
      */
-    Principal resetPassword(UUID id);
+    //will be done on the client side
+    //Principal resetPassword(UUID id);
 }
