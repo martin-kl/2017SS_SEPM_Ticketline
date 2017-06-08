@@ -43,8 +43,12 @@ public class TransactionDetailsController {
         loadButtonsAccordingToStatus(detailedTicketTransactionDTO.getStatus(), false);
 
         transactionNumber.setText(detailedTicketTransactionDTO.getId().toString());
-        customer.setText(detailedTicketTransactionDTO.getCustomer().getFirstName() + " "
-            + detailedTicketTransactionDTO.getCustomer().getLastName());
+        if (detailedTicketTransactionDTO.getCustomer() != null) {
+            customer.setText(detailedTicketTransactionDTO.getCustomer().getFirstName() + " "
+                + detailedTicketTransactionDTO.getCustomer().getLastName());
+        } else {
+            customer.setText(BundleManager.getBundle().getString("customer.guest"));
+        }
         totalPrice.setText(
             "€" + Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString());
     }
