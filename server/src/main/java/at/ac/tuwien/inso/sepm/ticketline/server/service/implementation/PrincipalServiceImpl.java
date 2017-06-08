@@ -97,6 +97,10 @@ class PrincipalServiceImpl implements PrincipalService {
 
     @Override
     public Principal save(Principal principal) {
+        if(principal.getId() == null) {
+            //we have a new principal not an edit, so set loginCount to zero
+            principal.setFailedLoginCount(0);
+        }
         try {
             return principalRepository.save(principal);
         } catch (TransactionSystemException e) {

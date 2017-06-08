@@ -29,34 +29,34 @@ public class PrincipalServiceTest {
 
     private static Pageable pageable = new PageRequest(0, 100);
 
-    private final String username1 = "testuser1";
-    private final Principal.Role testRole1 = Role.ADMIN;
-    private final String email1 = "testuser@test.at";
+    private final String USERNAME1 = "testuser1";
+    private final Principal.Role TESTROLE1 = Role.ADMIN;
+    private final String USERONEMAIL = "testuser@test.at";
     private Principal testUserOne;
 
-    private final String username2 = "testuser_two";
-    private final Principal.Role testRole2 = Role.SELLER;
-    private final String email2 = "test_second_mail@test.com";
+    private final String USERNAME2 = "testuser_two";
+    private final Principal.Role TESTROLE2 = Role.SELLER;
+    private final String USERTWOMAIL = "test_second_mail@test.com";
     private Principal testUserTwo;
 
     @Before
     public void setUp() {
         principalRepository.deleteAll();
         testUserOne = Principal.builder()
-            .role(testRole1)
-            .username(username1)
+            .role(TESTROLE1)
+            .username(USERNAME1)
             .password(passwordEncoder.encode("password"))
             .enabled(true)
-            .email(email1)
+            .email(USERONEMAIL)
             .build();
         testUserOne = principalService.save(testUserOne);
 
         testUserTwo = Principal.builder()
-            .role(testRole2)
-            .username(username2)
+            .role(TESTROLE2)
+            .username(USERNAME2)
             .password("passwordTwo")
             .enabled(false)
-            .email(email2)
+            .email(USERTWOMAIL)
             .build();
         testUserTwo = principalService.save(testUserTwo);
     }
@@ -85,8 +85,8 @@ public class PrincipalServiceTest {
 
     @Test
     public void canFindPrincipleByUsername() {
-        Principal result = principalService.findPrincipalByUsername(username1);
-        Assert.assertTrue(result.getUsername().equals(username1));
+        Principal result = principalService.findPrincipalByUsername(USERNAME1);
+        Assert.assertTrue(result.getUsername().equals(USERNAME1));
     }
 
     @Test
@@ -95,10 +95,10 @@ public class PrincipalServiceTest {
         Assert.assertTrue(result != null);
         Assert.assertTrue(result.size() == 2);
         Assert.assertTrue((
-            (result.get(0).getUsername().equals(username1)) ||
-                (result.get(0).getUsername().equals(username2))) &&
-            ((result.get(0).getUsername().equals(username1)) ||
-                (result.get(0).getUsername().equals(username2))));
+            (result.get(0).getUsername().equals(USERNAME1)) ||
+                (result.get(0).getUsername().equals(USERNAME2))) &&
+            ((result.get(0).getUsername().equals(USERNAME1)) ||
+                (result.get(0).getUsername().equals(USERNAME2))));
     }
 
     @Test
@@ -107,10 +107,10 @@ public class PrincipalServiceTest {
         Assert.assertTrue(result != null);
         Assert.assertTrue(result.size() == 2);
         Assert.assertTrue((
-            (result.get(0).getUsername().equals(username1)) ||
-                (result.get(0).getUsername().equals(username2))) &&
-            ((result.get(0).getUsername().equals(username1)) ||
-                (result.get(0).getUsername().equals(username2))));
+            (result.get(0).getUsername().equals(USERNAME1)) ||
+                (result.get(0).getUsername().equals(USERNAME2))) &&
+            ((result.get(0).getUsername().equals(USERNAME1)) ||
+                (result.get(0).getUsername().equals(USERNAME2))));
 
         String newUserName = "administrator";
         testUserOne.setUsername(newUserName);
@@ -126,7 +126,7 @@ public class PrincipalServiceTest {
         List<Principal> result = principalService.search("stus", true, pageable);
         Assert.assertTrue(result != null);
         Assert.assertTrue(result.size() == 1);
-        Assert.assertTrue(result.get(0).getUsername().equals(username2));
+        Assert.assertTrue(result.get(0).getUsername().equals(USERNAME2));
     }
 
     /*

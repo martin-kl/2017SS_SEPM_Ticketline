@@ -6,7 +6,6 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.PrincipalNews;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.NewsRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalNewsRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalRepository;
-import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -42,7 +41,6 @@ public class PrincipalDataGenerator {
         if (principalRepository.count() > 0) {
             log.info("principals already generated");
         } else {
-            Faker faker = new Faker();
 
             List<News> newsList = newsRepository.findAll();
 
@@ -51,7 +49,7 @@ public class PrincipalDataGenerator {
                 .username("admin")
                 .password(passwordEncoder.encode("password"))
                 .enabled(true)
-                .email(faker.internet().emailAddress())
+                .email("admin@ticketline.at")
                 .build();
 
             Principal user = Principal.builder()
@@ -59,7 +57,7 @@ public class PrincipalDataGenerator {
                 .username("user")
                 .password(passwordEncoder.encode("password"))
                 .enabled(true)
-                .email(faker.internet().emailAddress())
+                .email("user@ticketline.at")
                 .build();
 
             principalRepository.save(admin);
