@@ -92,6 +92,11 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password));
 
+            //here the login worked, reset the failedLoginCount if it was != 0
+            if(principal.getFailedLoginCount() != 0) {
+                principalRepository.resetFailedLoginCount(principal.getId());
+            }
+
             Instant now = Instant.now();
             String authorities = "";
             try {
@@ -130,10 +135,9 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 .futureToken(futureToken)
                 .build();
         } catch (AuthenticationException e) {
+            /*
             //we get in here if the credentials were wrong
             //and here we add our login counter if the login was not successful
-
-            /*
             //at first we have to check if there is even a user with the username:
 
             Principal principal;
@@ -151,7 +155,11 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 "AuthenticationException caught for an existing user"
                     + " -> increment FailedLoginCounter and throw a BadCredentialException");
             //now we have a user with the name, increment it`s failed login count
-            principalRepository.incrementFailedLoginCount(principal.getId());
+            if(principal.isEnabled() && principal.getFailedLoginCount() < 4) {
+                principalRepository.incrementFailedLoginCount(principal.getId(), true);
+            }else {
+                principalRepository.incrementFailedLoginCount(principal.getId(), false);
+            }
             //System.out.println("\t\treturn value of operation : " + returnValue + "\n\n");
             throw new BadCredentialsException(e.getMessage());
         }

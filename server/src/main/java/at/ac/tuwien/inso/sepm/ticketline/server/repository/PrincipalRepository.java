@@ -22,9 +22,10 @@ public interface PrincipalRepository extends JpaRepository<Principal, UUID> {
     Optional<Principal> findByUsername(String username);
 
     /**
-     * Increments the failedLoginCount for the principal with the given ID
+     * Increments the failedLoginCount and sets the enabled flag for the principal with the given ID
      *
      * @param id The principal ID to increment the failed login count
+     * @param enabled The new enabled status for this principal
      * @return The updated principal entry
      */
     //Modifying and Transactional are needed for spring to show it:
@@ -33,19 +34,17 @@ public interface PrincipalRepository extends JpaRepository<Principal, UUID> {
             // The database transaction happens inside the scope of a persistence context
     @Modifying
     @Transactional
-    @Query(value = "UPDATE Principal p SET p.failedLoginCount = p.failedLoginCount + 1 WHERE p.id = ?1")
-    int incrementFailedLoginCount(UUID id);
+    @Query(value = "UPDATE Principal p SET p.failedLoginCount = p.failedLoginCount + 1, p.enabled = ?2 WHERE p.id = ?1")
+    int incrementFailedLoginCount(UUID id, boolean enabled);
 
     /**
      * Resets the failedLoginCount for the principal with the given ID
      *
      * @param id The principal ID to reset the failed login count
-     * @return The updated principal entry
      */
     @Modifying
     @Transactional
     @Query(value = "UPDATE Principal p SET p.failedLoginCount = 0 WHERE p.id = ?1")
-    Principal resetFailedLoginCount(UUID id);
-
+    void resetFailedLoginCount(UUID id);
 
 }
