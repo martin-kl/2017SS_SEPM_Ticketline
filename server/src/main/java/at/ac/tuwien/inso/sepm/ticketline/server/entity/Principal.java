@@ -46,6 +46,7 @@ public class Principal extends Audited implements UserDetails {
     @Column
     private int failedLoginCount = 0;
 
+    //this column is taken to do the unlock/locked user differentiation
     @Column
     @NotNull
     private boolean enabled = true;
