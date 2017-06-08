@@ -26,10 +26,11 @@ public interface PrincipalService {
      * fuzzy searches (paged) for principals
      *
      * @param query the search query
+     * @param locked search in the locked status, if it is null, locked and unlocked principals are searched
      * @param pageable the next requested page
      * @return list of principals
      */
-    List<Principal> search(String query, Pageable pageable);
+    List<Principal> search(String query, Boolean locked, Pageable pageable);
 
     /**
      * Enable/Disable the principal with the given id

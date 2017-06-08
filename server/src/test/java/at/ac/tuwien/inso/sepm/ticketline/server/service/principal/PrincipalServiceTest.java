@@ -99,7 +99,7 @@ public class PrincipalServiceTest {
 
     @Test
     public void canFuzzySearchForUser() {
-        List<Principal> result = principalService.search("stus", pageable);
+        List<Principal> result = principalService.search("stus", null, pageable);
         Assert.assertTrue(result != null);
         Assert.assertTrue(result.size() == 2);
         Assert.assertTrue((
@@ -111,10 +111,18 @@ public class PrincipalServiceTest {
         String newUserName = "administrator";
         testUserOne.setUsername(newUserName);
         testUserOne = principalService.save(testUserOne);
-        List<Principal> result2 = principalService.search("trat", pageable);
+        List<Principal> result2 = principalService.search("trat", null, pageable);
         Assert.assertTrue(result2 != null);
         Assert.assertTrue(result2.size() == 1);
         Assert.assertTrue(result2.get(0).getUsername().equals(newUserName));
+    }
+
+    @Test
+    public void canFuzzySearchForUserWithStatus() {
+        List<Principal> result = principalService.search("stus", true, pageable);
+        Assert.assertTrue(result != null);
+        Assert.assertTrue(result.size() == 1);
+        Assert.assertTrue(result.get(0).getUsername().equals(username2));
     }
 
     /*

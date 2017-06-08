@@ -3,6 +3,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.QPrincipal;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.ConflictException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PrincipalService;
@@ -12,6 +13,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import javax.xml.bind.ValidationException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
@@ -28,6 +32,7 @@ class PrincipalServiceImpl implements PrincipalService {
 
     @Autowired
     private PrincipalRepository principalRepository;
+
     /*
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,12 +57,17 @@ class PrincipalServiceImpl implements PrincipalService {
     }
 
     @Override
-    public List<Principal> search(String query, Pageable pageable) {
+    public List<Principal> search(String query, Boolean locked, Pageable pageable) {
         QPrincipal principal = QPrincipal.principal;
         BooleanBuilder builder = new BooleanBuilder();
         for (String token : query.split(" ")) {
             BooleanBuilder b = new BooleanBuilder();
             b.or(principal.username.containsIgnoreCase(token));
+            builder.and(b.getValue());
+        }
+        if(locked != null) {
+            BooleanBuilder b = new BooleanBuilder();
+            b.or(principal.enabled.eq(! locked));
             builder.and(b.getValue());
         }
         Page<Principal> page = principalRepository.findAll(builder.getValue(), pageable);
@@ -69,6 +79,17 @@ class PrincipalServiceImpl implements PrincipalService {
 
     @Override
     public Principal setEnabledForPrincipalWithId(UUID id, boolean enabled) {
+        //if we wanna set it to disable, check if it is not the current user, because the current
+        //user should not be able to lock himself out
+        if (!enabled) {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+            Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
+            if (currentPrincipal.getId() == id) {
+                //this is not allowed
+                throw new ConflictException("Conflict: The user with name \""+currentPrincipal.getUsername()+"\"wanted to lock himself out which is not possible");
+            }
+        }
         principalRepository.updateEnabledFlag(id, enabled);
         return principalRepository.findOne(id);
     }
