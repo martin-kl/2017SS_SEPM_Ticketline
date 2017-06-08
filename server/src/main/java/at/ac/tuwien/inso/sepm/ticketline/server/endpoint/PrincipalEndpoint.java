@@ -7,6 +7,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.PrincipalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +45,14 @@ public class PrincipalEndpoint {
     public PrincipalDTO savePrincipal(@RequestBody PrincipalDTO principalDTO) {
         Principal principal = principalMapper.fromDTO(principalDTO);
         principal = principalService.save(principal);
+        return principalMapper.fromEntity(principal);
+    }
+
+    @RequestMapping(value = "setEnabled", method = RequestMethod.GET)
+    @ApiOperation(value = " a principal")
+    public PrincipalDTO setEnabledForPrincipalWithId(@RequestParam(value = "id") UUID id,
+        @RequestParam(value = "enabled") boolean enabled) {
+        Principal principal = principalService.setEnabledForPrincipalWithId(id, enabled);
         return principalMapper.fromEntity(principal);
     }
 }
