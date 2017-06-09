@@ -9,15 +9,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" minHeight="275.0" minWidth="350.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.CustomerSelection">
+<VBox minHeight="275.0" minWidth="350.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.CustomerSelection">
     <children>
-      <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="%transaction.detail.customerSelection" />
+      <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="%transaction.detail.customerSelection">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin></Text>
         <Separator>
             <VBox.margin>
                 <Insets bottom="10.0" top="10.0" />
             </VBox.margin>
         </Separator>
-        <HBox alignment="TOP_CENTER">
+        <HBox>
             <children>
                 <TextField fx:id="customerSearchField" onKeyReleased="#onSearchChange" promptText="%search">
                     <HBox.margin>
@@ -26,22 +29,31 @@
                 </TextField>
                 <Button fx:id="btnAddNewCustomer" mnemonicParsing="false" onAction="#handleNewCustomer" text="%customer.add.new" />
             </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </HBox>
       <VBox fx:id="customerSelectionParent">
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" top="10.0" />
          </VBox.margin></VBox>
-        <HBox alignment="TOP_CENTER">
+        <HBox>
             <children>
-                <Label text="%customer.selected" />
+                <Label text="%customer.selected">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Label>
                 <Label fx:id="selectedCustomer" text="-">
                     <HBox.margin>
                         <Insets left="5.0" />
                     </HBox.margin>
                 </Label>
             </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </HBox>
-        <HBox alignment="TOP_CENTER">
+        <HBox alignment="TOP_RIGHT">
             <children>
             <Button fx:id="btnReturn" mnemonicParsing="false" onAction="#handleReturnButton" text="%transaction.detail.returnToHallplan">
                <HBox.margin>
@@ -54,6 +66,12 @@
                     </HBox.margin>
                 </Button>
             </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </HBox>
     </children>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
 </VBox>

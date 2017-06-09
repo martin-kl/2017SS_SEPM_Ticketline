@@ -4,12 +4,13 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.HallplanService;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
-import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.text.TextAlignment;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
+
+import java.util.List;
 
 @Slf4j
 public class SectorButton extends Button {

@@ -52,7 +52,6 @@ public class CustomerSelection {
         TransactionController transactionController) {
         this.springFxmlLoader = springFxmlLoader;
         this.transactionController = transactionController;
-
     }
 
     public void initData() {

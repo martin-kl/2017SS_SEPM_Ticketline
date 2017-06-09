@@ -52,9 +52,10 @@ public class EventDataGenerator {
             for (int i = 0; i < NUMBER_OF_EVENTS_TO_GENERATE; i++) {
 
                 Event event = Event.builder()
-                    .category(EventCategory.NO_CATEGORY)
+                    //.category(EventCategory.NO_CATEGORY)
+                    .category(getRandomCategory())
                     .description(faker.lorem().characters(25, 100))
-                    .name("Event " + faker.name().lastName())
+                    .name(faker.name().lastName())
                     .build();
                 log.debug("saving event {}", event);
                 eventRepository.save(event);
@@ -71,4 +72,19 @@ public class EventDataGenerator {
         }
     }
 
+    private EventCategory getRandomCategory() {
+        double randomVal = Math.random();
+        if(randomVal < 0.2)
+            return EventCategory.NO_CATEGORY;
+        else if(randomVal < 0.35)
+            return EventCategory.COMEDY;
+        else if(randomVal < 0.5)
+            return EventCategory.CONCERT;
+        else if(randomVal < 0.67)
+            return EventCategory.OPERA;
+        else if(randomVal < 0.84)
+            return EventCategory.SPORTS;
+        else
+            return EventCategory.THEATER;
+    }
 }

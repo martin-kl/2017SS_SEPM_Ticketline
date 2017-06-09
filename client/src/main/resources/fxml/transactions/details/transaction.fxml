@@ -31,9 +31,9 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                        <ScrollPane>
+                        <ScrollPane fitToWidth="true" minWidth="220.0">
                             <content>
-                                <VBox fx:id="vbTickets" />
+                                <VBox fx:id="vbTickets" minWidth="218.0" />
                             </content>
                         </ScrollPane>
                </children>
