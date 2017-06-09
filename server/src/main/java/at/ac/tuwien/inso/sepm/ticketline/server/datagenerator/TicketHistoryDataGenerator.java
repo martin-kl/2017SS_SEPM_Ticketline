@@ -218,7 +218,5 @@ public class TicketHistoryDataGenerator {
                 .build();
             ticketHistoryRepository.save(ticketHistory);
         }
-
     }
-
 }

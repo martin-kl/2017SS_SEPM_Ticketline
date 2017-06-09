@@ -34,7 +34,7 @@ public class NewsDataGenerator {
                 News news = News.builder()
                     .summary(faker.lorem().characters(25, 100))
                     .title(faker.lorem().characters(10, 30))
-                    .text(faker.lorem().paragraph(faker.number().numberBetween(5, 10)))
+                    .text(faker.lorem().paragraph(faker.number().numberBetween(8, 16)))
                     .publishedAt(
                         LocalDateTime.ofInstant(
                             faker.date()
@@ -48,5 +48,4 @@ public class NewsDataGenerator {
             }
         }
     }
-
 }

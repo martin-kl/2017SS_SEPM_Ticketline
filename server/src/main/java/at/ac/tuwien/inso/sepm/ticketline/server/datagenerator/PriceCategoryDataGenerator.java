@@ -30,7 +30,8 @@ public class PriceCategoryDataGenerator {
             double modifier = 1;
             for (int i = 0; i < NUMBER_OF_PRICE_CATEGORY_TO_GENERATE; i++) {
                 PriceCategory priceCategory = PriceCategory.builder()
-                    .name("Category " + String.valueOf('A' + i))
+                    //.name("Category " + String.valueOf('A' + i))
+                    .name(String.valueOf('A' + i))
                     .modifier(modifier)
                     .build();
                 log.debug("saving price category {}", priceCategory);
