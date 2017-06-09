@@ -20,8 +20,8 @@ public class TransactionListElementController {
 
     @FXML
     private VBox vbReservationAndTickets;
-    @FXML
-    private HBox hbReservation;
+    //@FXML
+    //private HBox hbReservation;
     @FXML
     private Label lbCustomerFirstName;
     @FXML
@@ -57,9 +57,9 @@ public class TransactionListElementController {
             .getChildren();
 
         //copy HBox away, clear VBox and add HBox again
-        HBox hbReservationTemp = hbReservation;
+        /*HBox hbReservationTemp = hbReservation;
         vbReservationAndTicketsChildren.clear();
-        vbReservationAndTicketsChildren.add(hbReservationTemp);
+        vbReservationAndTicketsChildren.add(hbReservationTemp);*/
 
         for (TicketDTO ticket : ticketTransactionDTO.getTickets()) {
             LoadWrapper wrapper = springFxmlLoader

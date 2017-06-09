@@ -2,36 +2,32 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListElementController">
     <children>
-        <HBox fx:id="hbReservation">
-            <children>
-                <Label fx:id="lbCustomerFirstName" text="&lt;CustomerFirstName&gt;">
-                    <HBox.margin>
-                        <Insets right="5.0" />
-                    </HBox.margin>
-                </Label>
-                <Label fx:id="lbCustomerLastName" layoutX="10.0" layoutY="10.0" text="&lt;CustomerLastName&gt;">
-                    <HBox.margin>
-                        <Insets right="10.0" />
-                    </HBox.margin>
-                </Label>
-                <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;">
-                    <HBox.margin>
-                        <Insets right="10.0" />
-                    </HBox.margin>
-                </Label>
-            <Label fx:id="lbPerformanceName" text="&lt;PerformanceName&gt;">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Label>
-                <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;" />
-            </children>
-        </HBox>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+                <Label fx:id="lbCustomerFirstName" text="&lt;CustomerFirstName&gt;" />
+                <Label fx:id="lbCustomerLastName" text="&lt;CustomerLastName&gt;" GridPane.columnIndex="1" />
+                <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;" GridPane.columnIndex="2" />
+            <Label fx:id="lbPerformanceName" text="&lt;PerformanceName&gt;" GridPane.columnIndex="3" />
+                <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;" GridPane.columnIndex="4" />
+         </children>
+      </GridPane>
     </children>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
