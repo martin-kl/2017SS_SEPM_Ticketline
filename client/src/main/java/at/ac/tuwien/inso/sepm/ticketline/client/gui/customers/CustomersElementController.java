@@ -21,7 +21,7 @@ public class CustomersElementController {
 
     public void initializeData(CustomerDTO customerDTO) {
         lblPrename.setText(customerDTO.getFirstName());
-        lblLastname.setText(customerDTO.getLastName() + ", ");
+        lblLastname.setText(customerDTO.getLastName());
         lbEMail.setText(customerDTO.getEmail());
     }
 }
