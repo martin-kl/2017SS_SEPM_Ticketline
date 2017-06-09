@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ExceptionWithDialog;
 import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.MainController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.graph.EventElementSmallController;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.EventService;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.PerformanceService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
@@ -18,6 +19,21 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import lombok.extern.slf4j.Slf4j;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -25,31 +41,7 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.time.Duration;
 import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.util.Callback;
-import lombok.extern.slf4j.Slf4j;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -332,7 +324,6 @@ public class EventsController {
         barChartTopTen.setAnimated(false);
         barChartTopTen.setTitle("Top Ten");
         barChartTopTen.setLegendVisible(false);
-        //xAxis.setLabel(BundleManager.getBundle().getString("events.topten.label.x"));
         barChartTopTen.getYAxis().setLabel(BundleManager.getBundle().getString("events.topten.label.y"));
 
         LAST_MONTH = BundleManager.getBundle().getString("performance.month.last") + " " + BundleManager.getBundle().getString("performance.month");
@@ -407,7 +398,7 @@ public class EventsController {
     }
 
     public void setSelectedPerformance(PerformanceDTO selectedPerformance, VBox performanceBox) {
-        if (previousSelectedBox != null) {
+            if (previousSelectedBox != null) {
             previousSelectedBox.setStyle("-fx-background-color: #f4f4f4");
         }
         previousSelectedBox = performanceBox;
@@ -527,24 +518,40 @@ public class EventsController {
     }
 
     private void buildGraph(HashMap<Integer, EventDTO> data) {
-        log.debug("buildGraph called");
+        log.debug("buildGraph called " + data.toString());
         barChartTopTen.getData().clear();
-        // what the hell is happening
-        //xAxis.setCategories(FXCollections.observableList(data.values().stream().map(EventDTO::getName).collect(Collectors.toList())));
+        if(!data.isEmpty()){
+            Iterator it = data.entrySet().iterator();
+            XYChart.Series<String, Integer> seriesX = new XYChart.Series<>();
+            while(it.hasNext()){
+                Map.Entry pair = (Map.Entry)it.next();
 
+                EventDTO currEvent = (EventDTO) pair.getValue();
+                Integer currSold = (Integer) pair.getKey();
 
-        Iterator it = data.entrySet().iterator();
-        XYChart.Series<String, Integer> seriesX = new XYChart.Series<>();
-        while(it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
+                seriesX.getData().add(new XYChart.Data<>(currEvent.getName(), currSold));
+            }
+            barChartTopTen.getData().add(seriesX);
 
-            EventDTO currEvent = (EventDTO) pair.getValue();
-            Integer currSold = (Integer) pair.getKey();
-
-            seriesX.getData().add(new XYChart.Data<>(currEvent.getName(), currSold));
-            //barChartTopTen.getData().add(seriesX);
+            // add listener to nodes
+            for(XYChart.Series<String, Integer> serie : barChartTopTen.getData()){
+                for(XYChart.Data<String, Integer> item : serie.getData()){
+                    item.getNode().setOnMousePressed((MouseEvent event) -> {
+                        // load the performances for this event
+                        for (Object o : data.entrySet()) {
+                            Map.Entry pairX = (Map.Entry) o;
+                            EventDTO currentEvent = (EventDTO) pairX.getValue();
+                            if (currentEvent.getName().equals(item.getXValue())) {
+                                // curr is the event clicked on
+                                selectedPerformance = null;
+                                selectGraphEvent(currentEvent);
+                            }
+                        }
+                    });
+                }
+            }
         }
-        barChartTopTen.getData().add(seriesX);
+        currentlyLoading = false;
     }
 
     /* methods to load data for comboboxes */
@@ -614,7 +621,6 @@ public class EventsController {
         new Thread(task).start();
     }
 
-
     /* methods to append elements into a list or vbox */
     private void appendArtistElements(List<ArtistDTO> elements){
         cbArtistMatches.getItems().clear();
@@ -643,7 +649,12 @@ public class EventsController {
         }
         currentlyLoading = false;
     }
-
+    private void selectGraphEvent(EventDTO event){
+        vbPerformanceParent.getChildren().clear();
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader.loadAndWrap("/fxml/events/graph/eventElementSmall.fxml");
+        ((EventElementSmallController) wrapper.getController()).initializeData(event);
+        vbPerformanceParent.getChildren().add((Node) wrapper.getLoadedObject());
+    }
 
     @FXML
     public void handleGeneralSearchClick(){
@@ -868,6 +879,8 @@ public class EventsController {
 
     @FXML
     public void handleGraphSearchClick(){
+        selectedPerformance = null;
+        vbPerformanceParent.getChildren().clear();
         // Validate input and send request
         int monthsInPast = -1;
         if(cbMonth.getSelectionModel().getSelectedItem().equals(ALL_TIME)){
@@ -894,10 +907,11 @@ public class EventsController {
         } else {
             loadTopTen(null, monthsInPast);
         }
-        // TODO: test
     }
     @FXML
     public void handleAsListClick(){
+        selectedPerformance = null;
+
         apGraphFilters.setManaged(false);
         apGraphFilters.setVisible(false);
 
@@ -939,6 +953,7 @@ public class EventsController {
 
     @FXML
     public void handleAsGraphClick(){
+        selectedPerformance = null;
         apGraphFilters.setManaged(true);
         apGraphFilters.setVisible(true);
 
