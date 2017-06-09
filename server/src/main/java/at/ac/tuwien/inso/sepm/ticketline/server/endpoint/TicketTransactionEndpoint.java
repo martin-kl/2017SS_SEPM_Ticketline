@@ -50,7 +50,7 @@ public class TicketTransactionEndpoint {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get one Ticket Transaction by ID")
-    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {
+    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable Long id) {
         return ticketTransactionMapper.fromEntity(ticketService.findTransactionsByID(id));
     }
 
@@ -93,7 +93,7 @@ public class TicketTransactionEndpoint {
     @RequestMapping(value = "{transactionid}/download", method = RequestMethod.GET)
     @ApiOperation(value = "Downloads a PDF a transaction")
     public void downloadPdf(
-        @PathVariable(name = "transactionid") UUID transactionId,
+        @PathVariable(name = "transactionid") Long transactionId,
         @RequestParam(value = "lang", required = false) String language,
         HttpServletResponse response
     ) throws IOException, DocumentException, URISyntaxException {

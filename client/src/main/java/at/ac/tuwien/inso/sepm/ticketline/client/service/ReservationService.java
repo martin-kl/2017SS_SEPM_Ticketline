@@ -46,5 +46,5 @@ public interface ReservationService {
      * @param id transaction id
      * @throws ExceptionWithDialog
      */
-    void downloadFile(UUID id) throws ExceptionWithDialog;
+    void downloadFile(Long id) throws ExceptionWithDialog;
 }

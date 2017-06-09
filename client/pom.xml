@@ -19,7 +19,7 @@
         <start-class>at.ac.tuwien.inso.sepm.ticketline.client.TicketlineClientApplication</start-class>
         <preloader-class>at.ac.tuwien.inso.sepm.ticketline.client.app.preloader.AppPreloader</preloader-class>
         <!-- dependency -->
-        <ticketline-rest.version>3.0.0-SNAPSHOT</ticketline-rest.version>
+        <ticketline-rest.version>3.5.0</ticketline-rest.version>
         <spring.version>4.3.7.RELEASE</spring.version>
         <httpclient.version>4.5.3</httpclient.version>
         <controlsfx.version>8.40.12</controlsfx.version>

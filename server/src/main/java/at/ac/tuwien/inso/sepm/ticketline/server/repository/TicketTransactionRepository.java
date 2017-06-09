@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TicketTransactionRepository extends JpaRepository<TicketTransaction, UUID> {
+public interface TicketTransactionRepository extends JpaRepository<TicketTransaction, Long> {
 
     /**
      * Returns all TicketTransactions with the given status
@@ -48,7 +48,7 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @param id The id of the transaction
      * @return the Transaction with the id of the parameter
      */
-    Optional<TicketTransaction> findOneById(UUID id);
+    Optional<TicketTransaction> findOneById(Long id);
 
     /**
      * Returns the transaction with a (at least partial) match in the id column.

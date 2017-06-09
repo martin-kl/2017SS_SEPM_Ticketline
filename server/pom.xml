@@ -16,7 +16,7 @@
 
     <properties>
         <!-- dependencies -->
-        <ticketline-rest.version>3.0.0-SNAPSHOT</ticketline-rest.version>
+        <ticketline-rest.version>3.5.0</ticketline-rest.version>
         <h2.version>1.4.194</h2.version>
         <mapstruct.version>1.2.0.Beta2</mapstruct.version>
         <jjwt.version>0.7.0</jjwt.version>

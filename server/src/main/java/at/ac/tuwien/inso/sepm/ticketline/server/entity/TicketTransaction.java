@@ -22,9 +22,10 @@ public class TicketTransaction extends Audited {
 
     @Getter
     @Id
-    @GeneratedValue
-    @Column(columnDefinition = "uuid", updatable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_ticket_id")
+    @SequenceGenerator(name = "seq_ticket_id", sequenceName = "seq_ticket_id", initialValue = 100)
+    @Column(updatable = false)
+    private Long id;
 
     @Column(updatable = false)
     @NotNull

@@ -31,7 +31,7 @@ public interface TicketService {
      * @param uuid the id of the transaction
      * @return the transaction with the id
      */
-    TicketTransaction findTransactionsByID(UUID uuid);
+    TicketTransaction findTransactionsByID(Long uuid);
 
     /**
      * Returns a (paged) list of transactions with the (partial) id.

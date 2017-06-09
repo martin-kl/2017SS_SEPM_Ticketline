@@ -63,7 +63,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketTransaction findTransactionsByID(UUID id) {
+    public TicketTransaction findTransactionsByID(Long id) {
         Optional<TicketTransaction> transaction = ticketTransactionRepository.findOneById(id);
         if(transaction == null)
             throw new NotFoundException();
@@ -247,7 +247,7 @@ public class TicketServiceImpl implements TicketService {
      * @param compareTransactionId id of the transaction to check
      * @return returns true if the transaction is allowed
      */
-    private boolean isValidTransaction(TicketTransaction toCheck, UUID compareTransactionId) {
+    private boolean isValidTransaction(TicketTransaction toCheck, Long compareTransactionId) {
         if (compareTransactionId == null) {
             return toCheck.getStatus() == STORNO;
         } else {
