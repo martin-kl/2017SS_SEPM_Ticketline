@@ -40,11 +40,6 @@ public class PerformanceServiceTest {
         testDataGenerator.emptyAllRepositories();
     }
 
-    @Test
-    public void test() {
-
-    }
-
     @Test(expected = NotFoundException.class)
     public void findOneShouldFail() {
         performanceService.findOne(new UUID(0, 0));
