@@ -4,7 +4,6 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PrincipalRole;
 import at.ac.tuwien.inso.sepm.ticketline.rest.principal.PrincipalDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal.Role;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class PrincipalRoleMapper implements PrincipalMapper {
@@ -21,6 +20,8 @@ public abstract class PrincipalRoleMapper implements PrincipalMapper {
         } else {
             principal.setRole(Role.SELLER);
         }
+        //negate locked to get enabled
+        principal.setEnabled(! principalDTO.getLocked());
         return principal;
     }
 
@@ -33,6 +34,8 @@ public abstract class PrincipalRoleMapper implements PrincipalMapper {
         } else {
             principalDTO.setPrincipalRole(PrincipalRole.SELLER);
         }
+        //negate enabled to get locked
+        principalDTO.setLocked(! principal.isEnabled());
         return principalDTO;
     }
 }

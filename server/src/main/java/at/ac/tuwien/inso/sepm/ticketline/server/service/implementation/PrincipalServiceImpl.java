@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal.Role;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.QPrincipal;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.ConflictException;
@@ -68,9 +69,9 @@ class PrincipalServiceImpl implements PrincipalService {
             b.or(principal.email.containsIgnoreCase(token));
             builder.and(b.getValue());
         }
-        if(locked != null) {
+        if (locked != null) {
             BooleanBuilder b = new BooleanBuilder();
-            b.or(principal.enabled.eq(! locked));
+            b.or(principal.enabled.eq(!locked));
             builder.and(b.getValue());
         }
         Page<Principal> page = principalRepository.findAll(builder.getValue(), pageable);
@@ -86,12 +87,15 @@ class PrincipalServiceImpl implements PrincipalService {
         boolean enabled = !locked;
         //if we wanna set it to disable, check if it is not the current user, because the current
         //user should not be able to lock himself out
-        if (! enabled) {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!enabled) {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
             Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
             if (currentPrincipal.getId() == id) {
                 //this is not allowed
-                throw new ConflictException("Conflict: The user with name \""+currentPrincipal.getUsername()+"\"wanted to lock himself out which is not possible");
+                throw new ConflictException(
+                    "Conflict: The user with name \"" + currentPrincipal.getUsername()
+                        + "\"wanted to lock himself out which is not possible");
             }
         }
         principalRepository.updateEnabledFlag(id, enabled);
@@ -102,31 +106,50 @@ class PrincipalServiceImpl implements PrincipalService {
     public Principal save(Principal principal, String password) {
         //check the password length (if it is not null or "") here and not after the if else
         //because we have to encode it in there
-         if (password != null && (! password.equals("")) && password.length() < 6) {
+        if (password != null && (!password.equals("")) && password.length() < 6) {
             log.error("Password is not even 6 character long, that is not valid");
-            throw new BadRequestException("Password is not even 6 character long, that is not valid");
+            throw new BadRequestException(
+                "Password is not even 6 character long, that is not valid");
         }
 
-        if(principal.getId() == null) {
+        if (principal.getId() == null) {
             //TODO check if the username already exists
 
             //we have a new principal not an edit, so set loginCount to zero
             principal.setFailedLoginCount(0);
             principal.setEnabled(true);
-            if(password == null || password.equals("")) {
+            if (password == null || password.equals("")) {
                 log.error("Wanted to save a new principal but password is empty");
                 throw new BadRequestException("Password for new principal is empty");
             }
             //encode the plaintext password
             principal.setPassword(passwordEncoder.encode(password));
-        }else {
-            //we edit a user, look if he wants to set a new password
+        } else {
+            //we edit a user
+            Principal principal1FromRepo = principalRepository.findOne(principal.getId());
+
+            //update failed login counts in case someone tried to login with the user in the meantime
+            principal.setFailedLoginCount(principal1FromRepo.getFailedLoginCount());
+
+            //look if he wants to set a new password
             if (password == null || password.equals("")) {
                 //password has not changed - load old password and save it again
-                Principal principal1FromRepo = principalRepository.findOne(principal.getId());
                 principal.setPassword(principal1FromRepo.getPassword());
-            }else {
+            } else {
                 principal.setPassword(passwordEncoder.encode(password));
+            }
+
+            //an admin cannot set itself to the role of a seller
+            if (principal.getRole() == Role.SELLER && principal1FromRepo.getRole() == Role.ADMIN) {
+                User user = (User) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal();
+                Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
+                if (currentPrincipal.getId() == principal.getId()) {
+                    //this is not allowed
+                    throw new ConflictException(
+                        "Conflict: The admin with username \"" + principal.getUsername()
+                            + "\"wanted to set himself to the role of a SELLER, which is not possible");
+                }
             }
         }
         try {
