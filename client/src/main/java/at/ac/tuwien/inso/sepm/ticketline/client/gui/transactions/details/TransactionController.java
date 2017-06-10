@@ -61,7 +61,8 @@ public class TransactionController {
 
     private DetailedTicketTransactionDTO oldTicketTransaction = null;
 
-    public TransactionController(SpringFxmlLoader springFxmlLoader, ReservationService reservationService) {
+    public TransactionController(SpringFxmlLoader springFxmlLoader,
+        ReservationService reservationService) {
         this.springFxmlLoader = springFxmlLoader;
         this.reservationService = reservationService;
     }
@@ -89,7 +90,9 @@ public class TransactionController {
     }
 
     //this is the "normal" method that is called after the hallplan
-    public void initData(List<? extends TicketDTO> ticketDTOList, DetailedPerformanceDTO detailedPerformanceDTO, PerformanceDetailController performanceDetailController) {
+    public void initData(List<? extends TicketDTO> ticketDTOList,
+        DetailedPerformanceDTO detailedPerformanceDTO,
+        PerformanceDetailController performanceDetailController) {
         this.detailedPerformanceDTO = detailedPerformanceDTO;
         //this.performanceDetailController = performanceDetailController;
 
@@ -110,8 +113,8 @@ public class TransactionController {
         customerSelection.initData();
     }
 
-    //TODO there is no performance passed here - so to save this transaction we possible have to load the performance later
-    public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO, TransactionListController transactionListController) {
+    public void initData(DetailedTicketTransactionDTO detailedTicketTransactionDTO,
+        TransactionListController transactionListController, boolean cancelledReservation) {
         this.detailedPerformanceDTO = null;
         this.oldTicketTransaction = detailedTicketTransactionDTO;
         //this.performanceDetailController = null;
@@ -125,7 +128,7 @@ public class TransactionController {
             .loadAndWrap("/fxml/transactions/details/transactionDetails.fxml");
         TransactionDetailsController tdvc = (TransactionDetailsController) wrapper
             .getController();
-        tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO);
+        tdvc.setDetailedTicketTransactionDTO(detailedTicketTransactionDTO, cancelledReservation);
         tdvc.setTransactionController(this);
 
         //clear list and add relevant items again
@@ -134,7 +137,8 @@ public class TransactionController {
         children.add(vbTicketsInclLabel);
         children.add(spSeparator);
 
-        if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT && detailedTicketTransactionDTO.getStatus() != TicketStatus.STORNO) {
+        if (detailedTicketTransactionDTO.getStatus() != TicketStatus.BOUGHT
+            && detailedTicketTransactionDTO.getStatus() != TicketStatus.STORNO) {
             ticketsSelectable = true;
         }
         hbMain.getChildren().add((VBox) wrapper.getLoadedObject());
@@ -189,7 +193,8 @@ public class TransactionController {
         if (selectedTickets.size() == 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(BundleManager.getBundle().getString("transaction.notickets"));
-            alert.setHeaderText(BundleManager.getBundle().getString("transaction.notickets.header"));
+            alert
+                .setHeaderText(BundleManager.getBundle().getString("transaction.notickets.header"));
             alert.showAndWait();
             return;
         }
@@ -207,14 +212,19 @@ public class TransactionController {
             alert.setHeaderText(BundleManager.getBundle().getString("transaction.saved.header"));
             alert.showAndWait();
 
-            initData(dttdto, tlController);
+            boolean cancelledReservation = false;
+            if ((oldTicketTransaction != null) &&
+                (oldTicketTransaction.getStatus() == TicketStatus.RESERVED) &&
+                (status == TicketStatus.STORNO)) {
+                cancelledReservation = true;
+            }
+            initData(dttdto, tlController, cancelledReservation);
             if (tlController != null) {
                 tlController.initTransactions();
             }
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }
-
     }
 
     public void openPDF() {

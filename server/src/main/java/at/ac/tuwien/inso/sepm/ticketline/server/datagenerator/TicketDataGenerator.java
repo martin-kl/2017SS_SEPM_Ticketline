@@ -37,8 +37,6 @@ public class TicketDataGenerator {
     @Autowired
     private PerformanceDataGenerator performanceDataGenerator;
 
-    private final Faker faker = new Faker();
-
     @PostConstruct
     private void generateTickets() {
         if (ticketRepository.count() > 0) {

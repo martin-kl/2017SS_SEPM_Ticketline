@@ -3,7 +3,6 @@ package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
