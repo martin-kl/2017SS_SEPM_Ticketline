@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -44,8 +45,14 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
                 response.getStatusCode());
             return response.getBody();
         } catch (HttpStatusCodeException e) {
+            if (e.getStatusCode() == HttpStatus.LOCKED) {
+                throw new DataAccessException(
+                    "Failed to authenticate with status code " + e.getStatusCode().toString(),
+                    "exception.invalid.login.locked");
+            }
             throw new DataAccessException(
-                "Failed to authenticate with status code " + e.getStatusCode().toString(), "exception.invalid.login");
+                "Failed to authenticate with status code " + e.getStatusCode().toString(),
+                "exception.invalid.login");
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -54,7 +61,8 @@ public class SimpleAuthenticationRestClient implements AuthenticationRestClient 
     @Override
     public AuthenticationToken authenticate() throws DataAccessException {
         try {
-            log.info("Get AuthenticationToken at {}", restClient.getServiceURI(AUTHENTICATION_URL));
+            log.info("Get AuthenticationToken at {}",
+                restClient.getServiceURI(AUTHENTICATION_URL));
             ResponseEntity<AuthenticationToken> response =
                 restClient.exchange(
                     restClient.getServiceURI(AUTHENTICATION_URL),

@@ -158,13 +158,13 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
             //now we have a user with the name, increment it`s failed login count
             if(principal.isEnabled() && principal.getFailedLoginCount() < 4) {
                 principalRepository.incrementFailedLoginCount(principal.getId(), true);
+                throw new BadCredentialsException(e.getMessage());
             }else {
+                System.out.println("\n\n\tin here - user has more than 5 failed login attempts\n\n");
                 principalRepository.incrementFailedLoginCount(principal.getId(), false);
                 //throw exception to the client to show him that
                 throw new AccountLockedException("User is locked because he tried the wrong password for 5 times");
             }
-            //System.out.println("\t\treturn value of operation : " + returnValue + "\n\n");
-            throw new BadCredentialsException(e.getMessage());
         }
     }
 
