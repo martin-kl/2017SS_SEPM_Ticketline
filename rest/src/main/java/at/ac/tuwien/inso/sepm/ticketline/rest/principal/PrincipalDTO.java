@@ -20,6 +20,9 @@ public class PrincipalDTO {
     @ApiModelProperty(required = true, readOnly = true, name = "The username of the principal")
     private String username;
 
+    @ApiModelProperty(required = false, name = "In case that the user wants to set a new password he passes it in here")
+    private String newPassword;
+
     @ApiModelProperty(required = true, readOnly = true, name = "The role of the principal")
     private PrincipalRole principalRole;
 

@@ -45,9 +45,10 @@ public interface PrincipalService {
      * save or edit a rincipal
      *
      * @param principal The principal object to save or edit
+     * @param password The new (or possible empty, in the case that the password has not changed) password
      * @return the same principal passed into the method with fields updated
      */
-    Principal save(Principal principal);
+    Principal save(Principal principal, String password);
 
     /**
      * Reset the password of the Principal

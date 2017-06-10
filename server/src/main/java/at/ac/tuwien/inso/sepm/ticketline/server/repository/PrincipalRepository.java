@@ -28,7 +28,6 @@ public interface PrincipalRepository extends JpaRepository<Principal, UUID>,
      *
      * @param id The principal ID to increment the failed login count
      * @param enabled The new enabled status for this principal
-     * @return The updated principal entry
      */
     //Modifying and Transactional are needed for spring to show it:
         // modifying: let Spring-data know that the query is not a query used to select values, but to update values

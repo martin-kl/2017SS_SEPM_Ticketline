@@ -30,6 +30,7 @@ public class PrincipalEndpoint {
 
 
     @RequestMapping(method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Get list of all principals")
     public List<PrincipalDTO> findAll(Pageable pageable) {
         return principalService.findAll(pageable)
@@ -39,6 +40,7 @@ public class PrincipalEndpoint {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Get searched principals")
     public List<PrincipalDTO> search(@RequestParam(value = "query") String query, Boolean locked,
         Pageable pageable) {
@@ -53,7 +55,7 @@ public class PrincipalEndpoint {
     @ApiOperation(value = "Save a principal")
     public PrincipalDTO savePrincipal(@RequestBody PrincipalDTO principalDTO) {
         Principal principal = principalMapper.fromDTO(principalDTO);
-        principal = principalService.save(principal);
+        principal = principalService.save(principal, principalDTO.getNewPassword());
         return principalMapper.fromEntity(principal);
     }
 

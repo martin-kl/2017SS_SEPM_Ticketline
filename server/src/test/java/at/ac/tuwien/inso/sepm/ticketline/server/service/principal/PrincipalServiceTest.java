@@ -45,20 +45,20 @@ public class PrincipalServiceTest {
         testUserOne = Principal.builder()
             .role(TESTROLE1)
             .username(USERNAME1)
-            .password(passwordEncoder.encode("password"))
+            //.password(passwordEncoder.encode("password"))
             .enabled(true)
             .email(USERONEMAIL)
             .build();
-        testUserOne = principalService.save(testUserOne);
+        testUserOne = principalService.save(testUserOne, "password");
 
         testUserTwo = Principal.builder()
             .role(TESTROLE2)
             .username(USERNAME2)
-            .password("passwordTwo")
+            //.password("passwordTwo")
             .enabled(false)
             .email(USERTWOMAIL)
             .build();
-        testUserTwo = principalService.save(testUserTwo);
+        testUserTwo = principalService.save(testUserTwo, "passwordTwo");
     }
 
     @Test
@@ -66,12 +66,13 @@ public class PrincipalServiceTest {
         List<Principal> principalList = principalRepository.findAll();
         Assert.assertTrue(principalList.contains(testUserOne));
 
-        testUserOne.setPassword("new_password");
-        testUserOne = principalService.save(testUserOne);
+        //testUserOne.setPassword("new_password");
+        testUserOne = principalService.save(testUserOne, "new_password");
 
         principalList.clear();
         principalList = principalRepository.findAll();
         Assert.assertTrue(principalList.contains(testUserOne));
+        Assert.assertTrue(principalList.get(0).getPassword().equals("new_password"));
     }
 
     @Test
@@ -114,7 +115,7 @@ public class PrincipalServiceTest {
 
         String newUserName = "administrator";
         testUserOne.setUsername(newUserName);
-        testUserOne = principalService.save(testUserOne);
+        testUserOne = principalService.save(testUserOne, "password_to_test");
         List<Principal> result2 = principalService.search("trat", null, pageable);
         Assert.assertTrue(result2 != null);
         Assert.assertTrue(result2.size() == 1);

@@ -159,6 +159,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 principalRepository.incrementFailedLoginCount(principal.getId(), true);
             }else {
                 principalRepository.incrementFailedLoginCount(principal.getId(), false);
+                //throw exception to the client to show him that
             }
             //System.out.println("\t\treturn value of operation : " + returnValue + "\n\n");
             throw new BadCredentialsException(e.getMessage());

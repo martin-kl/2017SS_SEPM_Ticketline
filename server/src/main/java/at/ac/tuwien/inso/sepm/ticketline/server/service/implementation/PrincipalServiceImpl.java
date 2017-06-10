@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.xml.bind.ValidationException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,16 +28,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionSystemException;
 
+@Slf4j
 @Service
 class PrincipalServiceImpl implements PrincipalService {
 
     @Autowired
     private PrincipalRepository principalRepository;
 
-    /*
     @Autowired
     private PasswordEncoder passwordEncoder;
-    */
+
+
     @Override
     public List<Principal> findAll(Pageable pageable) {
         Pageable adaptedPageable = new PageRequest(
@@ -96,10 +98,36 @@ class PrincipalServiceImpl implements PrincipalService {
     }
 
     @Override
-    public Principal save(Principal principal) {
+    public Principal save(Principal principal, String password) {
+        /*
+        if(password == null){
+            System.out.println("\n\n\t\tpassword is null\n\n");
+        }
+        if(password.equals("")){
+            System.out.println("\n\n\t\tpassword is empty string\n\n");
+        }
+        */
         if(principal.getId() == null) {
             //we have a new principal not an edit, so set loginCount to zero
             principal.setFailedLoginCount(0);
+            if(password == null || password.equals("")) {
+                log.error("Wanted to save a new principal but password is empty");
+                throw new BadRequestException("Password for new principal is empty");
+            }
+            principal.setPassword(passwordEncoder.encode(password));
+        }else {
+            //we edit a user, look if he wants to set a new password
+            if (password == null || password.equals("")) {
+                //password has not changed - load old password and save it again
+                Principal principal1FromRepo = principalRepository.findOne(principal.getId());
+                principal.setPassword(principal1FromRepo.getPassword());
+            }else {
+                principal.setPassword(passwordEncoder.encode(password));
+            }
+        }
+        if (password != null && password.length() < 6) {
+            log.error("Password is not even 6 character long, that is not valid");
+            throw new BadRequestException("Password is not even 6 character long, that is not valid");
         }
         try {
             return principalRepository.save(principal);

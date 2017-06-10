@@ -48,20 +48,20 @@ public class PrincipalEndpointTest extends BaseIntegrationTest {
         testUserOne = Principal.builder()
             .role(TESTROLE1)
             .username(USERNAME1)
-            .password(passwordEncoder.encode("password"))
+            //.password(passwordEncoder.encode("password"))
             .enabled(true)
             .email(USERONEMAIL)
             .build();
-        testUserOne = principalService.save(testUserOne);
+        testUserOne = principalService.save(testUserOne, "password");
 
         testUserTwo = Principal.builder()
             .role(TESTROLE2)
             .username(USERNAME2)
-            .password("passwordTwo")
+            //.password("passwordTwo")
             .enabled(false)
             .email(USERTWOMAIL)
             .build();
-        testUserTwo = principalService.save(testUserTwo);
+        testUserTwo = principalService.save(testUserTwo, "passwordTwo");
     }
 
     @After
@@ -81,6 +81,7 @@ public class PrincipalEndpointTest extends BaseIntegrationTest {
     public void canSaveAndUpdateNewSeller() {
         PrincipalDTO newPrincipal = new PrincipalDTO();
         newPrincipal.setUsername("new_user");
+        newPrincipal.setNewPassword("new_password");
         newPrincipal.setPrincipalRole(PrincipalRole.SELLER);
         newPrincipal.setEmail("test@test.at");
         newPrincipal.setLocked(false);
