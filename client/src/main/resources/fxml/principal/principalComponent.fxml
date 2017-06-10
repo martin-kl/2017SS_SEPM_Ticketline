@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ComboBox?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalsController">
     <top>
         <HBox spacing="5.0" stylesheets="@/css/tabHeader.css" BorderPane.alignment="CENTER">
@@ -33,7 +34,7 @@
                </VBox.margin>
                <children>
                       <TextField fx:id="searchField" onKeyReleased="#onSearchChange" promptText="%search" />
-                  <ChoiceBox fx:id="status" prefWidth="150.0" />
+                  <ComboBox fx:id="status" prefWidth="150.0" />
                </children>
             </HBox>
                 <VBox fx:id="customerSelectionParent">

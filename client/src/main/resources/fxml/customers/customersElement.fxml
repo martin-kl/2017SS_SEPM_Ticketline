@@ -6,12 +6,12 @@
 
 <HBox spacing="5.0" styleClass="customersElement" stylesheets="@../../css/customersElement.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersElementController">
     <children>
-        <Label fx:id="lblPrename" text="&lt;Prename&gt;" HBox.hgrow="ALWAYS">
+        <Label fx:id="lblPrename" minWidth="80.0" text="&lt;Prename&gt;" HBox.hgrow="ALWAYS">
             <HBox.margin>
                 <Insets />
             </HBox.margin>
         </Label>
-        <Label fx:id="lblLastname" text="&lt;Lastname&gt;" HBox.hgrow="ALWAYS">
+        <Label fx:id="lblLastname" minWidth="90.0" text="&lt;Lastname&gt;" HBox.hgrow="ALWAYS">
             <HBox.margin>
                 <Insets />
             </HBox.margin>

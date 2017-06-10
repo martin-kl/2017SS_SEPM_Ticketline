@@ -42,7 +42,7 @@ public class PrincipalsController {
     private TextField searchField;
 
     @FXML
-    private ChoiceBox<String> status;
+    private ComboBox<String> status;
 
     public PrincipalsController(MainController mainController, SpringFxmlLoader springFxmlLoader) {
         this.mainController = mainController;

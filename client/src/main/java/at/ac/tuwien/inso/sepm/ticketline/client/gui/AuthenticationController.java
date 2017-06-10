@@ -81,4 +81,9 @@ public class AuthenticationController {
         new Thread(task).start();
     }
 
+    public void empty() {
+        txtPassword.setText("");
+        txtUsername.setText("");
+    }
+
 }

@@ -75,6 +75,8 @@ public class MainController {
     private PerformanceDetailController performanceDetailController;
     private boolean alreadyLoggedIn = false;
 
+    private AuthenticationInformationService authenticationInformationService;
+
     public MainController(
         SpringFxmlLoader springFxmlLoader,
         FontAwesome fontAwesome,
@@ -82,15 +84,15 @@ public class MainController {
     ) {
         this.springFxmlLoader = springFxmlLoader;
         this.fontAwesome = fontAwesome;
+        this.authenticationInformationService = authenticationInformationService;
         authenticationInformationService.addAuthenticationChangeListener(
             authenticationTokenInfo -> setAuthenticated(null != authenticationTokenInfo));
     }
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         Platform.runLater(() -> mbMain.setUseSystemMenuBar(true));
         pbLoadingProgress.setProgress(0);
-        //login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
 
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/authenticationComponent.fxml");
@@ -140,13 +142,6 @@ public class MainController {
 
     @FXML
     private void aboutApplication(ActionEvent actionEvent) {
-        /*
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-        */
         Stage dialog = initStage();
         dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/aboutDialog.fxml")));
         dialog.setTitle(BundleManager.getBundle().getString("dialog.about.title"));
@@ -154,16 +149,7 @@ public class MainController {
     }
 
     public void showPerformanceDetailWindow(DetailedPerformanceDTO performance) {
-        /*
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-        */
         Stage dialog = initStage();
-
-        //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
         performanceDetailController = (PerformanceDetailController) wrapper
@@ -199,16 +185,8 @@ public class MainController {
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
-        /*
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-        */
         Stage dialog = initStage();
 
-        //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/customers/addEditCustomer.fxml");
         CustomerAddEditController controller = (CustomerAddEditController) wrapper.getController();
@@ -372,7 +350,6 @@ public class MainController {
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
             alreadyLoggedIn = true;
-            authenticationController = null;
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
@@ -418,6 +395,13 @@ public class MainController {
         reloadLanguage();
     }
 
+    public void logout(ActionEvent actionEvent) {
+        authenticationInformationService.setCurrentAuthenticationToken(null);
+        authenticationInformationService.setCurrentAuthenticationTokenInfo(null);
+        authenticationController.empty();
+        setAuthenticated(false);
+    }
+
     public void showAddNewsWindow() {
         Stage dialog = initStage();
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
@@ -441,7 +425,8 @@ public class MainController {
         menuList.get(2).setText(bundle.getString("menu.language"));
 
         //set language for sub menu items of menu.application
-        menuList.get(0).getItems().get(0).setText(bundle.getString("menu.application.exit"));
+        menuList.get(0).getItems().get(0).setText(bundle.getString("logout"));
+        menuList.get(0).getItems().get(1).setText(bundle.getString("menu.application.exit"));
 
         //set language for sub menu items of menu.help
         menuList.get(1).getItems().get(0).setText(bundle.getString("menu.help.about"));
@@ -450,7 +435,8 @@ public class MainController {
         menuList.get(2).getItems().get(0).setText(bundle.getString("menu.language.german"));
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
 
-        if(! alreadyLoggedIn) {
+
+        if(!alreadyLoggedIn) {
             authenticationController.reloadLanguage();
         }
         newsController.reloadLanguage(alreadyLoggedIn);
