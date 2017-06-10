@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalAddEditController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
@@ -16,6 +17,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.principal.PrincipalDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -66,7 +68,7 @@ public class MainController {
     private final FontAwesome fontAwesome;
     private AuthenticationController authenticationController;
     private NewsController newsController;
-    private AccountsController accountsController;
+    private PrincipalsController accountsController;
     private CustomersController customersController;
     private TransactionListController transactionListController;
     private EventsController eventsController;
@@ -117,7 +119,7 @@ public class MainController {
                     reloadEventList();
                     break;
                 case "accounts":
-                    //reloadCustomerList();
+                    reloadPrincipals();
                     break;
                 case "transactions":
                     reloadReservationList();
@@ -222,6 +224,23 @@ public class MainController {
         dialog.showAndWait();
     }
 
+    public void addEditPrincipalWindow(PrincipalDTO principalDTO) {
+        Stage dialog = initStage();
+
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/principal/addEditPrincipal.fxml");
+        PrincipalAddEditController controller = (PrincipalAddEditController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.setToEdit(principalDTO);
+        controller.setOnDone((a, b) -> {
+            reloadPrincipals();
+        });
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        dialog.showAndWait();
+    }
+
     public void showTransactionDetailWindow(
         DetailedTicketTransactionDTO detailedTicketTransactionDTO,
         TransactionListController transactionListController) {
@@ -235,7 +254,6 @@ public class MainController {
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
         controller.initData(detailedTicketTransactionDTO, transactionListController, false);
-        //showTransactionDetailStage(dialog);
         dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
     }
@@ -325,8 +343,8 @@ public class MainController {
 
     private void initAccountsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/accounts/accountsComponent.fxml");
-        accountsController = (AccountsController) wrapper.getController();
+            .loadAndWrap("/fxml/principal/principalComponent.fxml");
+        accountsController = (PrincipalsController) wrapper.getController();
         accountsController.setFont(fontAwesome);
         Tab accountsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
@@ -384,6 +402,10 @@ public class MainController {
 
     private void reloadReservationList() {
         transactionListController.initTransactions();
+    }
+
+    private void reloadPrincipals() {
+        accountsController.init();
     }
 
     public void changeToGerman(ActionEvent actionEvent) {

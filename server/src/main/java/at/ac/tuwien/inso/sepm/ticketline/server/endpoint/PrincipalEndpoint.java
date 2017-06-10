@@ -42,7 +42,7 @@ public class PrincipalEndpoint {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = "Get searched principals")
-    public List<PrincipalDTO> search(@RequestParam(value = "query") String query, Boolean locked,
+    public List<PrincipalDTO> search(@RequestParam(value = "query") String query, @RequestParam(value="locked") Boolean locked,
         Pageable pageable) {
         return principalService.search(query, locked, pageable)
             .stream()

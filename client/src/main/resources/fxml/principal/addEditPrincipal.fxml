@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.PasswordField?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalAddEditController">
+    <bottom>
+        <ButtonBar BorderPane.alignment="CENTER">
+            <buttons>
+            <Button mnemonicParsing="false" fx:id="resetButton" onAction="#resetClicked" text="%principal.reset_password" />
+            <Button mnemonicParsing="false" fx:id="lockButton" onAction="#lockClicked" text="%principal.lock" />
+                <Button  mnemonicParsing="false" onAction="#handleCancel" text="%customer.cancel" />
+                <Button  mnemonicParsing="false" onAction="#handleOK" text="%customer.ok" />
+            </buttons>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </ButtonBar>
+    </bottom>
+    <top>
+        <BorderPane BorderPane.alignment="CENTER_LEFT">
+            <top>
+                <Label fx:id="lb_CustomerHeadline" text="%principal.seller" BorderPane.alignment="CENTER_LEFT">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="5.0" />
+                    </padding>
+                </Label>
+            </top>
+            <center>
+                <Separator prefWidth="200.0" BorderPane.alignment="CENTER" />
+            </center>
+            <bottom>
+                <GridPane hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="10.0" prefWidth="129.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="474.0" minWidth="10.0" prefWidth="446.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="%principal.username" />
+                        <TextField fx:id="username" promptText="%principal.username" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text="%principal.password" GridPane.rowIndex="1" />
+                        <PasswordField fx:id="password" promptText="%principal.password" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </PasswordField>
+                        <Label text="%principal.confirm_password" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="confirmPassword" promptText="%principal.confirm_password" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </PasswordField>
+                        <Label text="%principal.email" GridPane.rowIndex="3" />
+                        <TextField fx:id="email" promptText="%principal.email" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </TextField>
+                        <Label text="%principal.type" GridPane.rowIndex="4" />
+                  <ComboBox fx:id="type" prefWidth="150.0" promptText="%principal.type" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    </children>
+                    <BorderPane.margin>
+                        <Insets top="5.0" />
+                    </BorderPane.margin>
+                </GridPane>
+            </bottom>
+        </BorderPane>
+    </top>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</BorderPane>
