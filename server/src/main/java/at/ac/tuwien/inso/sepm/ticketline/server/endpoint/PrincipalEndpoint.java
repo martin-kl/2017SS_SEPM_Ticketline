@@ -59,12 +59,12 @@ public class PrincipalEndpoint {
         return principalMapper.fromEntity(principal);
     }
 
-    @RequestMapping(value = "setEnabled", method = RequestMethod.GET)
+    @RequestMapping(value = "/setLocked", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation(value = " a principal")
-    public PrincipalDTO setEnabledForPrincipalWithId(@RequestParam(value = "id") UUID id,
-        @RequestParam(value = "enabled") boolean enabled) {
-        Principal principal = principalService.setEnabledForPrincipalWithId(id, enabled);
+    public PrincipalDTO setLockedForPrincipalWithId(@RequestParam(value = "id") UUID id,
+        @RequestParam(value = "locked") boolean locked) {
+        Principal principal = principalService.setEnabledForPrincipalWithId(id, locked);
         return principalMapper.fromEntity(principal);
     }
 }

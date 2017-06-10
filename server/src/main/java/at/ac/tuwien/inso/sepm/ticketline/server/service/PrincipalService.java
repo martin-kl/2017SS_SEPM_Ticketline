@@ -36,10 +36,10 @@ public interface PrincipalService {
      * Enable/Disable the principal with the given id
      *
      * @param id The principal ID to unlock
-     * @param enabled The enable status for the principal
+     * @param locked The locked status for the principal
      * @return The updated principal entry
      */
-    Principal setEnabledForPrincipalWithId(UUID id, boolean enabled);
+    Principal setEnabledForPrincipalWithId(UUID id, boolean locked);
 
     /**
      * save or edit a rincipal

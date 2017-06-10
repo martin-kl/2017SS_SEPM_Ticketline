@@ -32,6 +32,6 @@ public class PrincipalDTO {
     @ApiModelProperty(required = true, readOnly = true, name = "The number of failed login attempts")
     private int failedLoginCount;
 
-    @ApiModelProperty(readOnly = true, name = "The address of the customer")
+    @ApiModelProperty(readOnly = true, name = "The locked status of the principal")
     private Boolean locked;
 }

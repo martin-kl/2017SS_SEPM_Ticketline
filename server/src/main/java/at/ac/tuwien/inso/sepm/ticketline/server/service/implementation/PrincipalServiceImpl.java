@@ -81,12 +81,13 @@ class PrincipalServiceImpl implements PrincipalService {
     }
 
     @Override
-    public Principal setEnabledForPrincipalWithId(UUID id, boolean enabled) {
+    public Principal setEnabledForPrincipalWithId(UUID id, boolean locked) {
+        //we have to negate locked to get enabled
+        boolean enabled = !locked;
         //if we wanna set it to disable, check if it is not the current user, because the current
         //user should not be able to lock himself out
-        if (!enabled) {
-            User user = (User) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
+        if (! enabled) {
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
             if (currentPrincipal.getId() == id) {
                 //this is not allowed
@@ -99,21 +100,24 @@ class PrincipalServiceImpl implements PrincipalService {
 
     @Override
     public Principal save(Principal principal, String password) {
-        /*
-        if(password == null){
-            System.out.println("\n\n\t\tpassword is null\n\n");
+        //check the password length (if it is not null or "") here and not after the if else
+        //because we have to encode it in there
+         if (password != null && (! password.equals("")) && password.length() < 6) {
+            log.error("Password is not even 6 character long, that is not valid");
+            throw new BadRequestException("Password is not even 6 character long, that is not valid");
         }
-        if(password.equals("")){
-            System.out.println("\n\n\t\tpassword is empty string\n\n");
-        }
-        */
+
         if(principal.getId() == null) {
+            //TODO check if the username already exists
+
             //we have a new principal not an edit, so set loginCount to zero
             principal.setFailedLoginCount(0);
+            principal.setEnabled(true);
             if(password == null || password.equals("")) {
                 log.error("Wanted to save a new principal but password is empty");
                 throw new BadRequestException("Password for new principal is empty");
             }
+            //encode the plaintext password
             principal.setPassword(passwordEncoder.encode(password));
         }else {
             //we edit a user, look if he wants to set a new password
@@ -124,10 +128,6 @@ class PrincipalServiceImpl implements PrincipalService {
             }else {
                 principal.setPassword(passwordEncoder.encode(password));
             }
-        }
-        if (password != null && password.length() < 6) {
-            log.error("Password is not even 6 character long, that is not valid");
-            throw new BadRequestException("Password is not even 6 character long, that is not valid");
         }
         try {
             return principalRepository.save(principal);

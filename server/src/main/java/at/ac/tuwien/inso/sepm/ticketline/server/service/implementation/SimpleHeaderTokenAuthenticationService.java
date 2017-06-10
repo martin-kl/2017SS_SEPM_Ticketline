@@ -4,6 +4,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.authentication.AuthenticationToken
 import at.ac.tuwien.inso.sepm.ticketline.rest.authentication.AuthenticationTokenInfo;
 import at.ac.tuwien.inso.sepm.ticketline.server.configuration.properties.AuthenticationConfigurationProperties;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.AccountLockedException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.security.AuthenticationConstants;
@@ -160,6 +161,7 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
             }else {
                 principalRepository.incrementFailedLoginCount(principal.getId(), false);
                 //throw exception to the client to show him that
+                throw new AccountLockedException("User is locked because he tried the wrong password for 5 times");
             }
             //System.out.println("\t\treturn value of operation : " + returnValue + "\n\n");
             throw new BadCredentialsException(e.getMessage());

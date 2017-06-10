@@ -49,16 +49,19 @@ public class NewsServiceTest {
 
     @Before
     public void setUpCustomer() {
+        principalRepository.deleteAll();
         admin = Principal.builder()
             .role(Principal.Role.ADMIN)
             .username("admin")
             .password(passwordEncoder.encode("password"))
+            .email("admin@ticketline.at")
             .enabled(true)
             .build();
 
         user = Principal.builder()
             .role(Principal.Role.SELLER)
             .username("user")
+            .email("user@ticketline.at")
             .password(passwordEncoder.encode("password"))
             .enabled(true)
             .build();
