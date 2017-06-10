@@ -37,7 +37,6 @@ public class TicketTransaction extends Audited {
     @OneToMany(mappedBy = "ticketTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TicketHistory> ticketHistories;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_tickethistory_customer")
