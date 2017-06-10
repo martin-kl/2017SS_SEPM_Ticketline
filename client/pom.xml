@@ -96,11 +96,6 @@
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
         </dependency>
-        <dependency>
-            <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
-            <artifactId>ticketline-rest</artifactId>
-            <version>3.4.1</version>
-        </dependency>
     </dependencies>
 
     <build>
