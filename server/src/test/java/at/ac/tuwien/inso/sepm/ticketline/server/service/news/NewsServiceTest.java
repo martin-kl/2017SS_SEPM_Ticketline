@@ -101,10 +101,9 @@ public class NewsServiceTest {
         assertTrue(unread.contains(saved2));
         News news = newsService.reportSeen(saved1.getId(), user);
         unread = newsService.findAllNotSeenByUser(user.getId(), pageable);
-        // TODO: bitte jemand fixen!!!
-        // assertFalse(unread.contains(saved1));
-        // assertFalse(unread.contains(news));
-        // assertTrue(unread.contains(saved2));
+        assertFalse(unread.contains(saved1));
+        assertFalse(unread.contains(news));
+        assertTrue(unread.contains(saved2));
     }
 
     @Test
