@@ -37,7 +37,7 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
         try {
             log.debug("Searching principals with query {} using url {}", query,
                 restClient.getServiceURI(PRINCIPAL_URL) + "?search=" + query);
-            ResponseEntity<List<PrincipalDTO>> customer =
+            ResponseEntity<List<PrincipalDTO>> principal =
                 restClient.exchange(
                     UriComponentsBuilder.fromUri(
                         URI.create(restClient.getServiceURI(PRINCIPAL_URL) + "/search"))
@@ -50,12 +50,12 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
                     null,
                     new ParameterizedTypeReference<List<PrincipalDTO>>() {
                     });
-            log.debug("Result status was {} with content {}", customer.getStatusCode(),
-                customer.getBody());
-            return customer.getBody();
+            log.debug("Result status was {} with content {}", principal.getStatusCode(),
+                principal.getBody());
+            return principal.getBody();
         } catch (HttpStatusCodeException e) {
             throw new DataAccessException(
-                "Failed to search for customers with status code " + e.getStatusCode().toString());
+                "Failed to search for principals with status code " + e.getStatusCode().toString());
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }
@@ -68,16 +68,16 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             HttpEntity<PrincipalDTO> entity = new HttpEntity<>(principalDTO, headers);
-            ResponseEntity<PrincipalDTO> customerReturn = restClient.exchange(
+            ResponseEntity<PrincipalDTO> principalReturn = restClient.exchange(
                 restClient.getServiceURI(PRINCIPAL_URL),
                 HttpMethod.POST,
                 entity,
                 new ParameterizedTypeReference<PrincipalDTO>() {
                 }
             );
-            log.debug("Result status was {} with content {}", customerReturn.getStatusCode(),
-                customerReturn.getBody());
-            return customerReturn.getBody();
+            log.debug("Result status was {} with content {}", principalReturn.getStatusCode(),
+                principalReturn.getBody());
+            return principalReturn.getBody();
         } catch (HttpStatusCodeException e) {
             log.error("Failed save principal with status code " + e.getStatusCode().toString());
             if (e.getStatusCode() == HttpStatus.CONFLICT) { //username used
@@ -88,10 +88,10 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
                 throw new ValidationException("principal.admin.illegal.type.change");
             } else {
                 throw new DataAccessException(
-                    "Failed save customer with status code " + e.getStatusCode().toString());
+                    "Failed save principal with status code " + e.getStatusCode().toString());
             }
         } catch (RestClientException e) {
-            log.error("Failed save customer with with error message " + e.getMessage());
+            log.error("Failed save principal with with error message " + e.getMessage());
             throw new DataAccessException(e.getMessage(), e);
         }
     }
