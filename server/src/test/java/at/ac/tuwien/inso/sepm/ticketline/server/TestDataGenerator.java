@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
@@ -280,6 +281,9 @@ public class TestDataGenerator {
             TicketStatus.STORNO,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransaction0);
@@ -289,6 +293,9 @@ public class TestDataGenerator {
             TicketStatus.RESERVED,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransaction1);
@@ -298,6 +305,9 @@ public class TestDataGenerator {
             TicketStatus.BOUGHT,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransaction2);
@@ -307,6 +317,9 @@ public class TestDataGenerator {
             TicketStatus.STORNO,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransaction3);

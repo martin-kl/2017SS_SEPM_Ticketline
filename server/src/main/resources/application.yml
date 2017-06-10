@@ -27,3 +27,7 @@ management:
   info:
     git:
       mode: full
+
+payment:
+  stripe-secret-key: sk_test_WAHp3KeynWJYeu2KaP6Pxuyn
+  stripe-public-key: pk_test_0vVQXWVR20jFOjrMPmLyOPqp

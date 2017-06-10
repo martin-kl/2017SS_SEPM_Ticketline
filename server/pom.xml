@@ -26,6 +26,7 @@
         <com.querydsl.version>4.1.4</com.querydsl.version>
         <org.xhtmlrenderer.version>9.1.5</org.xhtmlrenderer.version>
         <commons-io.version>2.4</commons-io.version>
+        <com.stripe>5.2.0</com.stripe>
     </properties>
 
     <dependencies>
@@ -147,6 +148,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- payment -->
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>${com.stripe}</version>
         </dependency>
 
     </dependencies>

@@ -14,6 +14,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketHistoryRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.PaymentService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 
 import java.util.*;
@@ -43,6 +44,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private TicketHistoryRepository ticketHistoryRepository;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Override
     public List<TicketTransaction> getAllTransactions(String status, Pageable pageable) {
@@ -190,11 +194,15 @@ public class TicketServiceImpl implements TicketService {
                     keepHistories.add(th);
                 }
             }
+
             // there are some old histories, so lets save as a new transaction
             if (!keepHistories.isEmpty()) {
                 TicketTransaction keepTT = TicketTransaction.builder()
                     .customer(customer)
                     .status(tt.getStatus())
+                    .paymentIdentifier(tt.getPaymentIdentifier())
+                    .paymentProviderOption(tt.getPaymentProviderOption())
+                    .refunded(tt.isRefunded())
                     .build();
                 keepTT = ticketTransactionRepository.save(keepTT);
                 for (TicketHistory oldTh : keepHistories) {
@@ -211,6 +219,11 @@ public class TicketServiceImpl implements TicketService {
                 ticketTransactionRepository.delete(tt);
                 tt.setStatus(TicketStatus.STORNO);
                 return tt;
+            }
+
+            // transition BOUGHT to STORNO opens repays the tickets
+            if (tt.getStatus() == TicketStatus.BOUGHT && ticketTransaction.getStatus() == TicketStatus.STORNO) {
+                paymentService.refund(tt.getId());
             }
 
             tt = TicketTransaction.builder()

@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
@@ -45,5 +46,14 @@ public class TicketTransaction extends Audited {
 
     @Column
     private boolean outdated = false;
+
+    @Column
+    private String paymentIdentifier = null;
+
+    @Column
+    private PaymentProviderOption paymentProviderOption = PaymentProviderOption.STRIPE;
+
+    @Column
+    private boolean refunded = false;
 
 }
