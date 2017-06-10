@@ -14,7 +14,7 @@ public interface PaymentService {
     void pay(PaymentProviderOption paymentProviderOption, Long ticketTransactionId, String paymentIdentifier);
 
     /**
-     * refund the
+     * refund the old transaction
      *
      * @param ticketTransactionId ticketId of the old transaction
      */

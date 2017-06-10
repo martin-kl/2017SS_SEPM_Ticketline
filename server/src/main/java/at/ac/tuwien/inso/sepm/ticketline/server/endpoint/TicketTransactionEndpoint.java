@@ -127,7 +127,7 @@ public class TicketTransactionEndpoint {
         @ModelAttribute(name = "provider")PaymentProviderOption paymentProviderOption
     ) {
         paymentService.pay(
-            PaymentProviderOption.STRIPE,
+            paymentProviderOption,
             transactionId,
             source
         );
