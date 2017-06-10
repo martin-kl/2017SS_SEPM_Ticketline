@@ -286,7 +286,7 @@ public class TestDataGenerator {
             PaymentProviderOption.STRIPE,
             false
         );
-        ticketTransactionRepository.save(ticketTransaction0);
+        ticketTransaction0 = ticketTransactionRepository.save(ticketTransaction0);
 
         TicketTransaction ticketTransaction1 = new TicketTransaction(
             null,
@@ -298,7 +298,7 @@ public class TestDataGenerator {
             PaymentProviderOption.STRIPE,
             false
         );
-        ticketTransactionRepository.save(ticketTransaction1);
+        ticketTransaction1 = ticketTransactionRepository.save(ticketTransaction1);
 
         TicketTransaction ticketTransaction2 = new TicketTransaction(
             null,
@@ -310,7 +310,7 @@ public class TestDataGenerator {
             PaymentProviderOption.STRIPE,
             false
         );
-        ticketTransactionRepository.save(ticketTransaction2);
+        ticketTransaction2 = ticketTransactionRepository.save(ticketTransaction2);
 
         TicketTransaction ticketTransaction3 = new TicketTransaction(
             null,
@@ -322,7 +322,7 @@ public class TestDataGenerator {
             PaymentProviderOption.STRIPE,
             false
         );
-        ticketTransactionRepository.save(ticketTransaction3);
+        ticketTransaction3 = ticketTransactionRepository.save(ticketTransaction3);
 
         TicketHistory ticketHistory0 = new TicketHistory(
             null,
