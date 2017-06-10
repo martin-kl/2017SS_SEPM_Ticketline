@@ -77,8 +77,9 @@ public class PaymentServiceImpl implements PaymentService {
         if (ticketTransaction.getStatus() != TicketStatus.BOUGHT) {
             throw new BadRequestException();
         }
+        // transaction was not paid yet, so no need to refund it
         if (ticketTransaction.getPaymentIdentifier() == null || ticketTransaction.isRefunded()) {
-            throw new PaymentException();
+            return;
         }
         PaymentProvider provider = getProvider(ticketTransaction.getPaymentProviderOption());
 
