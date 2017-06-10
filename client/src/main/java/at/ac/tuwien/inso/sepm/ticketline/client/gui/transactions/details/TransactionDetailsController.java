@@ -38,26 +38,44 @@ public class TransactionDetailsController {
     private Button btnReserve;
     private Button btnCancelReservation;
 
-    public void setDetailedTicketTransactionDTO(DetailedTicketTransactionDTO detailedTicketTransactionDTO) {
+    private TransactionController transactionController;
 
-        loadButtonsAccordingToStatus(detailedTicketTransactionDTO.getStatus(), false);
+    public void setTransactionController(TransactionController transactionController) {
+        this.transactionController = transactionController;
+    }
 
-        transactionNumber.setText(detailedTicketTransactionDTO.getId().toString());
+    //explanation for cancelledReservation:
+    //if the ticket was just reserved but not bought, the cancel process just deletes the
+    //transaction - so we cannot show the print pdf button and the id field should be empty
+    public void setDetailedTicketTransactionDTO(
+        DetailedTicketTransactionDTO detailedTicketTransactionDTO, boolean cancelledReservation) {
+
+        loadButtonsAccordingToStatus(detailedTicketTransactionDTO.getStatus(), false,
+            cancelledReservation);
+
+        if(cancelledReservation) {
+            transactionNumber.setText("/");
+        }else {
+            transactionNumber.setText(detailedTicketTransactionDTO.getId().toString());
+        }
         customer.setText(detailedTicketTransactionDTO.getCustomer().getFirstName() + " "
             + detailedTicketTransactionDTO.getCustomer().getLastName());
         totalPrice.setText(
             "€" + Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString());
     }
 
-    //if we are coming from the saalplan, the initController method is called and this calls the loadButtonsAccordingToStatus with the flag TRUE - so the status is ignored
+    // if we are coming from the saalplan, the initController method is called and this calls the
+    // loadButtonsAccordingToStatus with the flag TRUE - so the status is ignored
 
-    public void initController(CustomerDTO customerDTO, PerformanceDTO performanceDTO, List<? extends TicketDTO> ticketDTOList) {
-        loadButtonsAccordingToStatus(TicketStatus.BOUGHT, true);
+    public void initController(CustomerDTO customerDTO, PerformanceDTO performanceDTO,
+        List<? extends TicketDTO> ticketDTOList) {
+        loadButtonsAccordingToStatus(TicketStatus.BOUGHT, true, false);
 
         transactionNumber.setText("/");
-        if(customerDTO == null) {
-            customer.setText(BundleManager.getBundle().getString("transaction.detail.anonymousCustomer"));
-        }else {
+        if (customerDTO == null) {
+            customer.setText(
+                BundleManager.getBundle().getString("transaction.detail.anonymousCustomer"));
+        } else {
             customer.setText(customerDTO.getFirstName() + " "
                 + customerDTO.getLastName());
         }
@@ -65,19 +83,15 @@ public class TransactionDetailsController {
             "€" + Helper.getTotalPrice(ticketDTOList).toString());
     }
 
-    TransactionController transactionController;
-    public void setTransactionController(TransactionController transactionController) {
-        this.transactionController = transactionController;
-
-    }
-
-    private void loadButtonsAccordingToStatus(TicketStatus status, boolean newEntry) {
+    private void loadButtonsAccordingToStatus(TicketStatus status, boolean newEntry,
+        boolean cancelledReservation) {
         ObservableList<Node> buttons = btnBar.getButtons();
         buttons.clear();
 
-        if(newEntry) {
-             //we are coming from the saalplan - status is not yet set
-            btnReserve = new Button(BundleManager.getBundle().getString("transaction.detail.reserve"));
+        if (newEntry) {
+            //we are coming from the saalplan - status is not yet set
+            btnReserve = new Button(
+                BundleManager.getBundle().getString("transaction.detail.reserve"));
             btnReserve.setOnAction(event -> {
                 log.info("reserve ticket button has been clicked");
                 transactionController.updateTransaction(TicketStatus.RESERVED);
@@ -98,7 +112,8 @@ public class TransactionDetailsController {
             lbTransactionID.setText(
                 BundleManager.getBundle().getString("transaction.detail.reservationNumber"));
 
-            btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
+            btnCancelReservation = new Button(
+                BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
             btnCancelReservation.setOnAction(event -> {
                 log.info("cancel reservation button has been clicked");
                 transactionController.updateTransaction(TicketStatus.STORNO);
@@ -114,7 +129,8 @@ public class TransactionDetailsController {
         } else if (status == TicketStatus.BOUGHT) {
             lbTransactionID
                 .setText(BundleManager.getBundle().getString("transaction.detail.billNumber"));
-            btnCancelReservation = new Button(BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
+            btnCancelReservation = new Button(
+                BundleManager.getBundle().getString("transaction.detail.cancelReservation"));
             btnCancelReservation.setOnAction(event -> {
                 log.info("cancel reservation button has been clicked");
                 transactionController.updateTransaction(TicketStatus.STORNO);
@@ -129,18 +145,18 @@ public class TransactionDetailsController {
 
             buttons.add(btnCancelReservation);
             buttons.add(btnPrintPDF);
-        } else if(status == TicketStatus.STORNO) {
+        } else if (status == TicketStatus.STORNO) {
             lbTransactionID
                 .setText(BundleManager.getBundle().getString("transaction.detail.stornoNumber"));
-             btnPrintPDF = new Button(
+            btnPrintPDF = new Button(
                 BundleManager.getBundle().getString("transaction.detail.printPDF"));
             btnPrintPDF.setOnAction(event -> {
                 log.info("print pdf button in cancelled transaction has been clicked");
                 transactionController.openPDF();
             });
-
-            buttons.add(btnPrintPDF);
+            if (!cancelledReservation) {
+                buttons.add(btnPrintPDF);
+            }
         }
-
     }
 }

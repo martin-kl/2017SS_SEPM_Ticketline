@@ -6,29 +6,14 @@ import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SeatTicketDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.SectorTicketDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketWrapperDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.*;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,6 +22,8 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 @Slf4j
 @Component

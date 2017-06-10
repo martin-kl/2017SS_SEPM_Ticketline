@@ -13,87 +13,77 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.AddNewsController">
-   <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0">
-         <center>
-            <VBox BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets left="20.0" right="20.0" top="5.0" />
-               </BorderPane.margin>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.AddNewsController">
+   <center>
+      <VBox BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="5.0" />
+         </BorderPane.margin>
+         <children>
+            <Label text="%news.fields.title">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="title" />
+            <Label text="%news.summary">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <TextArea fx:id="summary" prefHeight="50.0" prefWidth="200.0" wrapText="true" />
+            <Label text="%news.text">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <TextArea fx:id="text" prefHeight="175.0" prefWidth="560.0" wrapText="true" />
+            <BorderPane>
+               <right>
+                  <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#onUpload" text="%upload" BorderPane.alignment="CENTER" />
+               </right>
+               <center>
+                  <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="5.0" />
+                     </BorderPane.margin></ImageView>
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <ButtonBar BorderPane.alignment="CENTER">
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#onSave" text="%news.save" />
+        </buttons>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </ButtonBar>
+   </bottom>
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="BOTTOM_LEFT">
                <children>
-                  <Label text="%news.fields.title">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="title" />
-                  <Label text="%news.summary">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextArea fx:id="summary" prefHeight="50.0" prefWidth="200.0" wrapText="true" />
-                  <Label text="%news.text">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextArea fx:id="text" prefHeight="175.0" prefWidth="560.0" wrapText="true" />
-                  <HBox alignment="CENTER_LEFT">
-                     <children>
-                        <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#onUpload" text="%upload">
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Button>
-                        <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </ImageView>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </HBox>
+                  <Label style="-fx-font-size: 18;" text="%news.add" />
                </children>
-            </VBox>
-         </center>
-         <bottom>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <buttons>
-                <Button mnemonicParsing="false" onAction="#onSave" text="%news.save" />
-              </buttons>
-               <BorderPane.margin>
-                  <Insets left="30.0" right="30.0" top="5.0" />
-               </BorderPane.margin>
-            </ButtonBar>
-         </bottom>
-         <top>
-            <VBox BorderPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="BOTTOM_LEFT">
-                     <children>
-                        <Label style="-fx-font-size: 18;" text="%news.add" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" />
-                     </padding>
-                  </HBox>
-                  <Separator prefWidth="200.0" />
-               </children>
-            </VBox>
-         </top>
-      </BorderPane>
-   </children>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </HBox>
+            <Separator prefWidth="200.0" />
+         </children>
+      </VBox>
+   </top>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
-</VBox>
+</BorderPane>

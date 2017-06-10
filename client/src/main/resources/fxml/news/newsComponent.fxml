@@ -11,48 +11,47 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController">
-   <children>
-      <BorderPane>
-         <center>
-            <VBox>
-                <children>
-                    <Separator />
-                    <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
-                        <VBox fx:id="vbNewsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                            <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </padding>
-                        </VBox>
-                    </ScrollPane>
-                </children>
-            </VBox>
-         </center>
-         <top>
-              <HBox spacing="5.0" stylesheets="@/css/tabHeader.css" BorderPane.alignment="BOTTOM_LEFT">
-                  <children>
-                      <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
-                      <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
-                  </children>
-               <BorderPane.margin>
-                  <Insets bottom="10.0" />
-               </BorderPane.margin>
-              </HBox>
-         </top>
-         <bottom>
-            <ButtonBar BorderPane.alignment="CENTER">
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsController">
+   <center>
+      <VBox>
+          <children>
+              <Separator />
+              <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+                  <VBox fx:id="vbNewsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                      <padding>
+                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                      </padding>
+                  </VBox>
+              </ScrollPane>
+          </children>
+      </VBox>
+   </center>
+   <top>
+        <HBox spacing="5.0" stylesheets="@/css/tabHeader.css" BorderPane.alignment="BOTTOM_LEFT">
+            <children>
+                <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
+                <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
+            </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+        </HBox>
+   </top>
+   <bottom>
+      <VBox spacing="5.0" BorderPane.alignment="CENTER">
+         <children>
+            <Separator prefWidth="200.0" />
+            <ButtonBar>
                <buttons>
                   <CheckBox fx:id="cbShowSeen" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showSeenClicked" text="%show.read" />
                   <Button fx:id="btnAddNews" mnemonicParsing="false" onAction="#addNewsClicked" text="%news.add" />
                </buttons>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </ButtonBar>
-         </bottom>
-      </BorderPane>
-   </children>
+         </children>
+      </VBox>
+   </bottom>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
-</VBox>
+</BorderPane>

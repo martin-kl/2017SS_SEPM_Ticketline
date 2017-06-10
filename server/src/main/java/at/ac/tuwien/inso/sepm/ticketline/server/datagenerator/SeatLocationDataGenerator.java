@@ -54,7 +54,8 @@ public class SeatLocationDataGenerator {
             for (int i = 0; i < NUMBER_OF_LOCATIONS_TO_GENERATE; i++) {
 
                 SeatLocation sectorLocation = SeatLocation.builder()
-                    .name("Halle " + faker.name().lastName())
+                    .name(faker.name().lastName())
+                    //.name("Halle " + faker.name().lastName())
                     .city(faker.address().city())
                     .country(faker.address().country())
                     .street(faker.address().streetAddress())

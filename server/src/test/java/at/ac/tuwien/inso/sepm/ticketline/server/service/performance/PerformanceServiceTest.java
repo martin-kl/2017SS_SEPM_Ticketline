@@ -1,6 +1,5 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.service.performance;
 
-
 import at.ac.tuwien.inso.sepm.ticketline.server.TestDataGenerator;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Ticket;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;

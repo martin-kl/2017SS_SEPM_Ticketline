@@ -4,11 +4,9 @@ import at.ac.tuwien.inso.sepm.ticketline.client.exception.DataAccessException;
 import at.ac.tuwien.inso.sepm.ticketline.client.service.NewsService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
-import at.ac.tuwien.inso.sepm.ticketline.client.util.JavaFXUtils;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.DetailedNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import java.time.format.DateTimeFormatter;
-import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -18,7 +16,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +27,11 @@ import org.springframework.stereotype.Component;
 public class NewsDetailController {
 
     @FXML
-    private ScrollPane spScrollPane;
-    @FXML
-    private Label lbTitle;
-    @FXML
-    private Label lbPublishDate;
-    @FXML
-    private Separator separatorUnderTitle;
-    @FXML
     private ImageView ivImage;
+    @FXML
+    private Separator separatorAboveTitle;
+    @FXML
+    private Label lbTitleAndDate;
     @FXML
     private Label lbSummaryHeader;
     @FXML
@@ -60,40 +53,44 @@ public class NewsDetailController {
             if (detailedNewsDTO.getImage() != null) {
                 ivImage.setVisible(true);
                 ivImage.setManaged(true);
-                separatorUnderTitle.setVisible(true);
-                separatorUnderTitle.setManaged(true);
+                separatorAboveTitle.setVisible(true);
+                separatorAboveTitle.setManaged(true);
                 ivImage.setFitWidth(500);
                 ivImage.setFitHeight(300);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
                 ivImage.setImage(image);
-            }else {
+            } else {
                 ivImage.setVisible(false);
                 ivImage.setManaged(false);
-                separatorUnderTitle.setVisible(false);
-                separatorUnderTitle.setManaged(false);
+                separatorAboveTitle.setVisible(false);
+                separatorAboveTitle.setManaged(false);
             }
 
             lbText.setWrapText(true);
             lbSummary.setWrapText(true);
+            lbTitleAndDate.setWrapText(true);
             //txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
 
-            lbPublishDate.setText(detailedNewsDTO.getPublishedAt().format(formatter));
-            lbTitle.setText(detailedNewsDTO.getTitle());
+            lbTitleAndDate.setText(
+                detailedNewsDTO.getTitle() + " - " + detailedNewsDTO.getPublishedAt()
+                    .format(formatter));
+            //lbTitle.setText(detailedNewsDTO.getTitle());
             lbSummaryHeader.setText(BundleManager.getBundle().getString("news.summary.header"));
             lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
             lbText.setText(detailedNewsDTO.getText());
-            spScrollPane.setVvalue(0.0);
         } catch (DataAccessException e) {
             log.error("error retrieving the detailed news entry for id {}, localized message: {}",
                 simpleNewsDTO.getId(), e.getLocalizedMessage());
 
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle(BundleManager.getExceptionBundle().getString("default.error.title"));
-            alert.setHeaderText(BundleManager.getExceptionBundle().getString("default.error.header"));
-            alert.setContentText(BundleManager.getExceptionBundle().getString("default.error.content"));
+            alert.setHeaderText(
+                BundleManager.getExceptionBundle().getString("default.error.header"));
+            alert.setContentText(
+                BundleManager.getExceptionBundle().getString("default.error.content"));
         }
     }
 
