@@ -44,6 +44,7 @@ public class Principal extends Audited implements UserDetails {
 
     @Column
     @JsonIgnore
+    @Length(min=6)
     private String password;
 
     @Column(nullable = false, length = 10_000, unique = true)

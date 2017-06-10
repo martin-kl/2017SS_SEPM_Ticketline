@@ -50,7 +50,7 @@
                 <Separator />
                 <ButtonBar buttonMinWidth="0.0">
                     <buttons>
-                        <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" text="%customer.add" />
+                        <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#handleAdd" text="%principal.add" />
                     </buttons>
                 </ButtonBar>
             </children>

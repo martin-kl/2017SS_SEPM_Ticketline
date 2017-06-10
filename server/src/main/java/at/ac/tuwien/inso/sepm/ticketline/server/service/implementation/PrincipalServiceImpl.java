@@ -90,7 +90,7 @@ class PrincipalServiceImpl implements PrincipalService {
             User user = (User) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
             Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
-            if (currentPrincipal.getId() == id) {
+            if (currentPrincipal.getId().equals(id)) {
                 //this is not allowed
                 throw new LockOwnAccountException(
                     "Conflict: The user with name \"" + currentPrincipal.getUsername()
@@ -196,24 +196,4 @@ class PrincipalServiceImpl implements PrincipalService {
         return false;
     }
 
-    /*
-    //reset password has to be done on the client side because we cannot encode the new password here and decode it on the client side
-
-    @Override
-    public Principal resetPassword(UUID id) {
-        //RandomStringUtils randomStringUtils
-        char[] possibleCharacters = ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%&*()-_=+[{]}\\|:\'\"<.>")
-            .toCharArray();
-        String randomStr = RandomStringUtils
-            .random(10, 0, possibleCharacters.length - 1, false, false,
-                possibleCharacters, new SecureRandom());
-
-        System.out.println("\n\n\t\tgenerated password: \"" + randomStr + "\"\n\n");
-
-        Principal principal = principalRepository.findOne(id);
-        //principal.setPassword(passwordEncoder.encode(randomStr));
-        principal.setPassword(randomStr);
-        return save(principal);
-    }
-    */
 }

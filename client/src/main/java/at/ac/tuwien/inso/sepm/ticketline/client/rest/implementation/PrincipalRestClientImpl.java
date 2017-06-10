@@ -39,7 +39,6 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
                 restClient.getServiceURI(PRINCIPAL_URL) + "?search=" + query);
             ResponseEntity<List<PrincipalDTO>> customer =
                 restClient.exchange(
-                    //URI.create(baseUrl + "/" + serviceLocation);
                     UriComponentsBuilder.fromUri(
                         URI.create(restClient.getServiceURI(PRINCIPAL_URL) + "/search"))
                         .queryParam("query", query)
@@ -81,8 +80,12 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
             return customerReturn.getBody();
         } catch (HttpStatusCodeException e) {
             log.error("Failed save principal with status code " + e.getStatusCode().toString());
-            if (e.getStatusCode() == HttpStatus.CONFLICT) {
-                throw new ValidationException("customer.error.uniqueEmail");
+            if (e.getStatusCode() == HttpStatus.CONFLICT) { //username used
+                throw new ValidationException("principal.username.unique");
+            } else if (e.getStatusCode() == HttpStatus.GONE) {//email used
+                throw new ValidationException("principal.email.unique");
+            } else if (e.getStatusCode() == HttpStatus.LENGTH_REQUIRED) { //admin cannot set own type to seller
+                throw new ValidationException("principal.admin.illegal.type.change");
             } else {
                 throw new DataAccessException(
                     "Failed save customer with status code " + e.getStatusCode().toString());
@@ -94,7 +97,7 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
     }
 
     @Override
-    public PrincipalDTO setLocked(UUID principalId, Boolean locked) throws DataAccessException {
+    public PrincipalDTO setLocked(UUID principalId, Boolean locked) throws DataAccessException, ValidationException {
         try {
             ResponseEntity<PrincipalDTO> principal =
                 restClient.exchange(
@@ -109,8 +112,12 @@ public class PrincipalRestClientImpl implements PrincipalRestClient {
                     });
             return principal.getBody();
         } catch (HttpStatusCodeException e) {
-            throw new DataAccessException(
-                "Failed to search for customers with status code " + e.getStatusCode().toString());
+            if (e.getStatusCode() == HttpStatus.PRECONDITION_FAILED) { //cannot lock own account
+                throw new ValidationException("principal.illegal.account.lock");
+            } else {
+                throw new DataAccessException(
+                    "Failed to lock user with status code " + e.getStatusCode().toString());
+            }
         } catch (RestClientException e) {
             throw new DataAccessException(e.getMessage(), e);
         }    }

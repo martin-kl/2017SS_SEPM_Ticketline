@@ -111,7 +111,7 @@ public class PrincipalAddEditController {
 
     public void handleOK(ActionEvent actionEvent) {
         if (!passwordEntriesOK()) return;
-        if (this.principalDTO == null) { principalDTO = new PrincipalDTO(); }
+        if (this.principalDTO == null) { principalDTO = new PrincipalDTO(); principalDTO.setLocked(false); }
         principalDTO.setUsername(username.getText());
         principalDTO.setEmail(email.getText());
         principalDTO.setNewPassword(password.getText());

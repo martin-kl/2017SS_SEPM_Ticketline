@@ -115,7 +115,7 @@ public class PrincipalsController {
 
 
     public void handleAdd(ActionEvent actionEvent) {
-        mainController.addEditCustomerWindow(null);
+        mainController.addEditPrincipalWindow(null);
     }
 }
 

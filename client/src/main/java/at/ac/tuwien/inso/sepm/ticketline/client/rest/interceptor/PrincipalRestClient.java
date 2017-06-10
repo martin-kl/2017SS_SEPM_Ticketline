@@ -15,5 +15,5 @@ public interface PrincipalRestClient {
 
     PrincipalDTO save(PrincipalDTO principalDTO) throws ValidationException, DataAccessException;
 
-    PrincipalDTO setLocked(UUID principalId, Boolean locked) throws DataAccessException;
+    PrincipalDTO setLocked(UUID principalId, Boolean locked) throws DataAccessException, ValidationException;
 }
