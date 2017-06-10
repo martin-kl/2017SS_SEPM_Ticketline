@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
@@ -15,6 +16,7 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformatio
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PrincipalRole;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.principal.PrincipalDTO;
@@ -90,7 +92,7 @@ public class MainController {
     }
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         Platform.runLater(() -> mbMain.setUseSystemMenuBar(true));
         pbLoadingProgress.setProgress(0);
 
@@ -121,7 +123,13 @@ public class MainController {
                     reloadEventList();
                     break;
                 case "accounts":
-                    reloadPrincipals();
+                    List<String> roles = authenticationInformationService.getCurrentAuthenticationTokenInfo().get().getRoles();
+                    if (!roles.contains("ADMIN")) {
+                        tpContent.getSelectionModel().select(oldTab);
+                        (new ValidationException("principal.needs.admin")).showDialog();
+                    } else {
+                        reloadPrincipals();
+                    }
                     break;
                 case "transactions":
                     reloadReservationList();
@@ -349,6 +357,7 @@ public class MainController {
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
+            tpContent.getSelectionModel().select(0);
             alreadyLoggedIn = true;
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
