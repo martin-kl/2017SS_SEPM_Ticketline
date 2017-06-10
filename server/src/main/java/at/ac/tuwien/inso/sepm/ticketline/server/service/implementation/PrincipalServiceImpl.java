@@ -5,20 +5,19 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal.Role;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.QPrincipal;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.ConflictException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.DowngradeOwnAccountException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.EMailAlreadyInUseException;
+import at.ac.tuwien.inso.sepm.ticketline.server.exception.LockOwnAccountException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PrincipalService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.util.ValidationHelper;
 import com.querydsl.core.BooleanBuilder;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import javax.xml.bind.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -93,7 +92,7 @@ class PrincipalServiceImpl implements PrincipalService {
             Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
             if (currentPrincipal.getId() == id) {
                 //this is not allowed
-                throw new ConflictException(
+                throw new LockOwnAccountException(
                     "Conflict: The user with name \"" + currentPrincipal.getUsername()
                         + "\"wanted to lock himself out which is not possible");
             }
@@ -113,8 +112,6 @@ class PrincipalServiceImpl implements PrincipalService {
         }
 
         if (principal.getId() == null) {
-            //TODO check if the username already exists
-
             //we have a new principal not an edit, so set loginCount to zero
             principal.setFailedLoginCount(0);
             principal.setEnabled(true);
@@ -124,12 +121,30 @@ class PrincipalServiceImpl implements PrincipalService {
             }
             //encode the plaintext password
             principal.setPassword(passwordEncoder.encode(password));
+            if (checkIfUsernameExists(principal.getUsername())) {
+                throw new ConflictException("Username is already in use");
+            }
+            if (checkIfEMailExists(principal.getEmail())) {
+                throw new EMailAlreadyInUseException();
+            }
         } else {
             //we edit a user
             Principal principal1FromRepo = principalRepository.findOne(principal.getId());
 
             //update failed login counts in case someone tried to login with the user in the meantime
             principal.setFailedLoginCount(principal1FromRepo.getFailedLoginCount());
+
+            //if he wants to change the username we have to check if it is available
+            if (!principal1FromRepo.getUsername().equals(principal.getUsername())) {
+                if (checkIfUsernameExists(principal.getUsername())) {
+                    throw new ConflictException("Username is already in use");
+                }
+            }
+            if (!principal1FromRepo.getEmail().equals(principal.getEmail())) {
+                if (checkIfEMailExists(principal.getEmail())) {
+                    throw new EMailAlreadyInUseException();
+                }
+            }
 
             //look if he wants to set a new password
             if (password == null || password.equals("")) {
@@ -146,7 +161,7 @@ class PrincipalServiceImpl implements PrincipalService {
                 Principal currentPrincipal = findPrincipalByUsername(user.getUsername());
                 if (currentPrincipal.getId() == principal.getId()) {
                     //this is not allowed
-                    throw new ConflictException(
+                    throw new DowngradeOwnAccountException(
                         "Conflict: The admin with username \"" + principal.getUsername()
                             + "\"wanted to set himself to the role of a SELLER, which is not possible");
                 }
@@ -157,6 +172,26 @@ class PrincipalServiceImpl implements PrincipalService {
         } catch (TransactionSystemException e) {
             throw new BadRequestException(ValidationHelper.getErrorMessages(e).toString());
         }
+    }
+
+    private boolean checkIfEMailExists(String email) {
+        List<Principal> principalList = principalRepository.findAll();
+        for (Principal principal : principalList) {
+            if (principal.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfUsernameExists(String username) {
+        List<Principal> principalList = principalRepository.findAll();
+        for (Principal principal : principalList) {
+            if (principal.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
