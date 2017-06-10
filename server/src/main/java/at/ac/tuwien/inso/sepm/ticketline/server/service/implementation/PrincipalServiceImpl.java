@@ -175,9 +175,10 @@ class PrincipalServiceImpl implements PrincipalService {
     }
 
     private boolean checkIfEMailExists(String email) {
+        email = email.toLowerCase();
         List<Principal> principalList = principalRepository.findAll();
         for (Principal principal : principalList) {
-            if (principal.getEmail().equals(email)) {
+            if (principal.getEmail().toLowerCase().equals(email)) {
                 return true;
             }
         }
@@ -185,9 +186,10 @@ class PrincipalServiceImpl implements PrincipalService {
     }
 
     private boolean checkIfUsernameExists(String username) {
+        username = username.toLowerCase();
         List<Principal> principalList = principalRepository.findAll();
         for (Principal principal : principalList) {
-            if (principal.getUsername().equals(username)) {
+            if (principal.getUsername().toLowerCase().equals(username)) {
                 return true;
             }
         }
