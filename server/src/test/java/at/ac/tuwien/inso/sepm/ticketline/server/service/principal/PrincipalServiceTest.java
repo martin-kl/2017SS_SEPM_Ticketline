@@ -4,7 +4,10 @@ import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.Principal.Role;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.PrincipalRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PrincipalService;
+
 import java.util.List;
+
+import at.ac.tuwien.inso.sepm.ticketline.server.utils.SecurityContextHolderMocker;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +67,6 @@ public class PrincipalServiceTest {
         List<Principal> principalList = principalRepository.findAll();
         Assert.assertTrue(principalList.contains(testUserOne));
 
-        //testUserOne.setPassword("new_password");
         testUserOne.setEmail("new_mail@test.at");
         testUserOne = principalService.save(testUserOne, "");
 
@@ -75,17 +77,15 @@ public class PrincipalServiceTest {
         Assert.assertTrue(principalList.contains(testUserOne));
     }
 
-    /*
-    //cannot test it cause we get a nullpointer during the process of getting the current logged in user
     @Test
     public void canSetEnabledForPrincipal() {
+        SecurityContextHolderMocker.setSecurityContextToUsername(testUserOne.getUsername());
         Principal result = principalRepository.findOne(testUserTwo.getId());
         Assert.assertTrue(result.isEnabled());
         result = principalService.setEnabledForPrincipalWithId(testUserTwo.getId(), true);
-        Assert.assertTrue(result.isEnabled());
+        Assert.assertFalse(result.isEnabled());
         Assert.assertTrue(result.getFailedLoginCount() == 0);
     }
-    */
 
     @Test
     public void canFindPrincipleByUsername() {
@@ -134,16 +134,4 @@ public class PrincipalServiceTest {
         Assert.assertTrue(result.contains(testUserTwo));
     }
 
-    /*
-    //reset Password will be done on the client side so we can`t test it here
-    @Test
-    public void canResetPassword() {
-        principalRepository.deleteAll();
-        principalRepository.save(testUserOne);
-        //start resetting the password
-        Principal newPrincipal = principalService.resetPassword(testUserOne.getId());
-        //System.out.println("\n\n\t\tafter resetting the passwor the username is \""+newPrincipal.getUsername()+"\" the password is \""+newPrincipal.getPassword()+"\"");
-        simpleHeaderTokenAuthenticationService.authenticate(newPrincipal.getUsername(), newPrincipal.getPassword());
-    }
-    */
 }
