@@ -42,7 +42,7 @@ public class PdfDownloadEndpointTest extends BaseIntegrationTest {
     @Test
     public void downloadABoughtTransaction() {
         List<TicketTransaction> transactionList = ticketTransactionRepository
-            .findByStatus(TicketStatus.BOUGHT, new PageRequest(0, 1));
+            .findByStatusAndOutdated(TicketStatus.BOUGHT, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
         TicketTransaction ticketTransaction = transactionList.get(0);
 
@@ -58,7 +58,7 @@ public class PdfDownloadEndpointTest extends BaseIntegrationTest {
     @Test
     public void downloadAReservedTransaction() {
         List<TicketTransaction> transactionList = ticketTransactionRepository
-            .findByStatus(TicketStatus.RESERVED, new PageRequest(0, 1));
+            .findByStatusAndOutdated(TicketStatus.RESERVED, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
         TicketTransaction ticketTransaction = transactionList.get(0);
 
@@ -74,7 +74,7 @@ public class PdfDownloadEndpointTest extends BaseIntegrationTest {
     @Test
     public void downloadAStornoTransaction() {
         List<TicketTransaction> transactionList = ticketTransactionRepository
-            .findByStatus(TicketStatus.STORNO, new PageRequest(0, 1));
+            .findByStatusAndOutdated(TicketStatus.STORNO, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
         TicketTransaction ticketTransaction = transactionList.get(0);
 

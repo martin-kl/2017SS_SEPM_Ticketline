@@ -58,7 +58,7 @@ public class TicketServiceImpl implements TicketService {
             throw new BadRequestException("Bad status");
         }
 
-        return ticketTransactionRepository.findByStatus(ticketStatus, pageable);
+        return ticketTransactionRepository.findByStatusAndOutdated(ticketStatus, false,pageable);
     }
 
     @Override
