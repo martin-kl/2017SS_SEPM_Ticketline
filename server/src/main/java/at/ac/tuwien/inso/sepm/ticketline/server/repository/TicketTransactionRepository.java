@@ -85,4 +85,13 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
         " WHERE th.ticket.id = ?1 AND tt.outdated = FALSE ORDER BY th.lastModifiedAt DESC")
     List<TicketTransaction> findTransactionForTicket(UUID ticketId);
 
+    /**
+     * Returns a full transaction with the history
+     *
+     * @param transactionId
+     * @return a tickettransaction
+     */
+    @Query("SELECT tt from TicketTransaction tt LEFT JOIN FETCH tt.ticketHistories WHERE tt.id = ?1")
+    TicketTransaction findFullOne(Long transactionId);
+
 }

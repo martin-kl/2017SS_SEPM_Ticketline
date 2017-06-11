@@ -34,7 +34,7 @@ public class TicketTransaction extends Audited {
     private TicketStatus status = TicketStatus.RESERVED;
 
     @Getter
-    @OneToMany(mappedBy = "ticketTransaction", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ticketTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TicketHistory> ticketHistories;
 
     @ManyToOne

@@ -68,7 +68,7 @@ public class TicketTransactionUpdateEndpointTest extends BaseIntegrationTest {
         List<TicketTransaction> transactionList = ticketTransactionRepository
             .findByStatusAndOutdated(TicketStatus.STORNO, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
-        TicketTransaction ticketTransaction = ticketTransactionRepository.findOne(transactionList.get(0).getId());
+        TicketTransaction ticketTransaction = ticketTransactionRepository.findFullOne(transactionList.get(0).getId());
 
         DetailedTicketTransactionDTO dto = ticketTransactionMapper.fromEntity(ticketTransaction);
 
@@ -102,7 +102,7 @@ public class TicketTransactionUpdateEndpointTest extends BaseIntegrationTest {
         List<TicketTransaction> transactionList = ticketTransactionRepository
             .findByStatusAndOutdated(TicketStatus.STORNO, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
-        TicketTransaction ticketTransaction = ticketTransactionRepository.findOne(transactionList.get(0).getId());
+        TicketTransaction ticketTransaction = ticketTransactionRepository.findFullOne(transactionList.get(0).getId());
 
         DetailedTicketTransactionDTO dto = ticketTransactionMapper.fromEntity(ticketTransaction);
 
@@ -136,7 +136,7 @@ public class TicketTransactionUpdateEndpointTest extends BaseIntegrationTest {
         List<TicketTransaction> transactionList = ticketTransactionRepository
             .findByStatusAndOutdated(TicketStatus.BOUGHT, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
-        TicketTransaction ticketTransaction = ticketTransactionRepository.findOne(transactionList.get(0).getId());
+        TicketTransaction ticketTransaction = ticketTransactionRepository.findFullOne(transactionList.get(0).getId());
 
         DetailedTicketTransactionDTO dto = ticketTransactionMapper.fromEntity(ticketTransaction);
 
@@ -171,7 +171,7 @@ public class TicketTransactionUpdateEndpointTest extends BaseIntegrationTest {
         List<TicketTransaction> transactionList = ticketTransactionRepository
             .findByStatusAndOutdated(TicketStatus.BOUGHT, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
-        TicketTransaction ticketTransaction = ticketTransactionRepository.findOne(transactionList.get(0).getId());
+        TicketTransaction ticketTransaction = ticketTransactionRepository.findFullOne(transactionList.get(0).getId());
 
         DetailedTicketTransactionDTO dto = ticketTransactionMapper.fromEntity(ticketTransaction);
 
@@ -197,7 +197,7 @@ public class TicketTransactionUpdateEndpointTest extends BaseIntegrationTest {
         List<TicketTransaction> transactionList = ticketTransactionRepository
             .findByStatusAndOutdated(TicketStatus.RESERVED, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
-        TicketTransaction ticketTransaction = ticketTransactionRepository.findOne(transactionList.get(0).getId());
+        TicketTransaction ticketTransaction = ticketTransactionRepository.findFullOne(transactionList.get(0).getId());
 
         DetailedTicketTransactionDTO dto = ticketTransactionMapper.fromEntity(ticketTransaction);
 
@@ -232,7 +232,7 @@ public class TicketTransactionUpdateEndpointTest extends BaseIntegrationTest {
         List<TicketTransaction> transactionList = ticketTransactionRepository
             .findByStatusAndOutdated(TicketStatus.BOUGHT, false, new PageRequest(0, 1));
         Assert.assertFalse(transactionList.isEmpty());
-        TicketTransaction ticketTransaction = ticketTransactionRepository.findOne(transactionList.get(0).getId());
+        TicketTransaction ticketTransaction = ticketTransactionRepository.findFullOne(transactionList.get(0).getId());
 
         DetailedTicketTransactionDTO dto = ticketTransactionMapper.fromEntity(ticketTransaction);
 
