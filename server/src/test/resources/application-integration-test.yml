@@ -1,8 +1,6 @@
 logging:
   file: ./log/ticketline.server-test.log
-  level.: INFO
-  level.at.ac.tuwien.inso.sepm.ticketline.server: ALL
-  level.org.hibernate: ERROR
+  level.: ERROR
 
 application:
   authentication:
