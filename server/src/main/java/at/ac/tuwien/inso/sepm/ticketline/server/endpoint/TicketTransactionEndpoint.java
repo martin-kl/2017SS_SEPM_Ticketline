@@ -1,10 +1,12 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.NotFoundException;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.PaymentService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.PdfService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 import com.lowagie.text.DocumentException;
@@ -37,6 +39,9 @@ public class TicketTransactionEndpoint {
     @Autowired
     private PdfService pdfService;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Gets a list of bought and reserved Ticket Reservations")
     public List<DetailedTicketTransactionDTO> getAllReservedAndBoughtTransactions(
@@ -50,7 +55,7 @@ public class TicketTransactionEndpoint {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation(value = "Get one Ticket Transaction by ID")
-    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable UUID id) {
+    public DetailedTicketTransactionDTO findTicketTransactionByID(@PathVariable Long id) {
         return ticketTransactionMapper.fromEntity(ticketService.findTransactionsByID(id));
     }
 
@@ -93,7 +98,7 @@ public class TicketTransactionEndpoint {
     @RequestMapping(value = "{transactionid}/download", method = RequestMethod.GET)
     @ApiOperation(value = "Downloads a PDF a transaction")
     public void downloadPdf(
-        @PathVariable(name = "transactionid") UUID transactionId,
+        @PathVariable(name = "transactionid") Long transactionId,
         @RequestParam(value = "lang", required = false) String language,
         HttpServletResponse response
     ) throws IOException, DocumentException, URISyntaxException {
@@ -112,6 +117,21 @@ public class TicketTransactionEndpoint {
         }
 
         pdfService.download(response.getOutputStream(), ticketTransaction, language);
+    }
+
+    @RequestMapping(value = "{transactionid}/pay", method = RequestMethod.POST)
+    @ApiOperation(value = "Paying the transaction")
+    public boolean pay(
+        @PathVariable(name = "transactionid") Long transactionId,
+        @ModelAttribute(name = "source") String source,
+        @ModelAttribute(name = "provider")PaymentProviderOption paymentProviderOption
+    ) {
+        paymentService.pay(
+            paymentProviderOption,
+            transactionId,
+            source
+        );
+        return true;
     }
 
 }

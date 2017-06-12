@@ -7,11 +7,11 @@
     <parent>
         <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
         <artifactId>ticketline</artifactId>
-        <version>3.4.1</version>
+        <version>3.5.0</version>
     </parent>
 
     <artifactId>ticketline-client</artifactId>
-    <version>3.4.1</version>
+    <version>3.5.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -19,7 +19,7 @@
         <start-class>at.ac.tuwien.inso.sepm.ticketline.client.TicketlineClientApplication</start-class>
         <preloader-class>at.ac.tuwien.inso.sepm.ticketline.client.app.preloader.AppPreloader</preloader-class>
         <!-- dependency -->
-        <ticketline-rest.version>3.0.0-SNAPSHOT</ticketline-rest.version>
+        <ticketline-rest.version>3.5.0</ticketline-rest.version>
         <spring.version>4.3.7.RELEASE</spring.version>
         <httpclient.version>4.5.3</httpclient.version>
         <controlsfx.version>8.40.12</controlsfx.version>
@@ -28,6 +28,7 @@
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
 
         <commons-io.version>2.4</commons-io.version>
+        <org.apache.commons>3.5</org.apache.commons>
     </properties>
 
     <dependencies>
@@ -97,14 +98,9 @@
             <version>${commons-io.version}</version>
         </dependency>
         <dependency>
-            <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
-            <artifactId>ticketline-rest</artifactId>
-            <version>3.4.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.5</version>
+            <version>${org.apache.commons}</version>
         </dependency>
     </dependencies>
 

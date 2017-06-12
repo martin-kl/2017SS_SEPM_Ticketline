@@ -7,16 +7,16 @@
     <parent>
         <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
         <artifactId>ticketline</artifactId>
-        <version>3.4.1</version>
+        <version>3.5.0</version>
     </parent>
 
     <artifactId>ticketline-server</artifactId>
-    <version>3.4.1</version>
+    <version>3.5.0</version>
     <packaging>jar</packaging>
 
     <properties>
         <!-- dependencies -->
-        <ticketline-rest.version>3.0.0-SNAPSHOT</ticketline-rest.version>
+        <ticketline-rest.version>3.5.0</ticketline-rest.version>
         <h2.version>1.4.194</h2.version>
         <mapstruct.version>1.2.0.Beta2</mapstruct.version>
         <jjwt.version>0.7.0</jjwt.version>
@@ -26,6 +26,7 @@
         <com.querydsl.version>4.1.4</com.querydsl.version>
         <org.xhtmlrenderer.version>9.1.5</org.xhtmlrenderer.version>
         <commons-io.version>2.4</commons-io.version>
+        <com.stripe>5.2.0</com.stripe>
     </properties>
 
     <dependencies>
@@ -148,10 +149,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
+        <!-- payment -->
         <dependency>
-            <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
-            <artifactId>ticketline-rest</artifactId>
-            <version>3.4.1</version>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>${com.stripe}</version>
         </dependency>
 
     </dependencies>

@@ -1,5 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity;
 
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.base.Audited;
 import lombok.*;
@@ -22,9 +23,10 @@ public class TicketTransaction extends Audited {
 
     @Getter
     @Id
-    @GeneratedValue
-    @Column(columnDefinition = "uuid", updatable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_ticket_id")
+    @SequenceGenerator(name = "seq_ticket_id", sequenceName = "seq_ticket_id", initialValue = 100)
+    @Column(updatable = false)
+    private Long id;
 
     @Column(updatable = false)
     @NotNull
@@ -35,7 +37,6 @@ public class TicketTransaction extends Audited {
     @OneToMany(mappedBy = "ticketTransaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TicketHistory> ticketHistories;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(
         foreignKey = @ForeignKey(name = "fk_tickethistory_customer")
@@ -44,5 +45,14 @@ public class TicketTransaction extends Audited {
 
     @Column
     private boolean outdated = false;
+
+    @Column
+    private String paymentIdentifier = null;
+
+    @Column
+    private PaymentProviderOption paymentProviderOption = PaymentProviderOption.STRIPE;
+
+    @Column
+    private boolean refunded = false;
 
 }

@@ -164,7 +164,7 @@ public class TicketTransactionRestClientImpl implements TicketTransactionRestCli
     }
 
     @Override
-    public void downloadFile(UUID id) throws ExceptionWithDialog {
+    public void downloadFile(Long id) throws ExceptionWithDialog {
         try {
             String language = BundleManager.getBundle().getLocale().getLanguage();
             URI uri = restClient.getServiceURI(TRANSACTION_URL + "/" + id + "/download?lang=" + language);

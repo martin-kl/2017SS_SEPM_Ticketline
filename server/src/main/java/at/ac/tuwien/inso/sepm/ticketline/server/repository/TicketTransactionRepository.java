@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TicketTransactionRepository extends JpaRepository<TicketTransaction, UUID> {
+public interface TicketTransactionRepository extends JpaRepository<TicketTransaction, Long> {
 
     /**
      * Returns all TicketTransactions with the given status
@@ -20,7 +20,7 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @param status The status, that the details have to have
      * @return All TicketTransactions with the status
      */
-    List<TicketTransaction> findByStatus(TicketStatus status, Pageable pageable);
+    List<TicketTransaction> findByStatusAndOutdated(TicketStatus status, boolean outdated,Pageable pageable);
 
     /**
      * Returns all ticket transactions with status either status1 oder status2
@@ -48,7 +48,7 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
      * @param id The id of the transaction
      * @return the Transaction with the id of the parameter
      */
-    Optional<TicketTransaction> findOneById(UUID id);
+    Optional<TicketTransaction> findOneById(Long id);
 
     /**
      * Returns the transaction with a (at least partial) match in the id column.
@@ -84,5 +84,14 @@ public interface TicketTransactionRepository extends JpaRepository<TicketTransac
     @Query("SELECT tt FROM TicketTransaction tt JOIN tt.ticketHistories th" +
         " WHERE th.ticket.id = ?1 AND tt.outdated = FALSE ORDER BY th.lastModifiedAt DESC")
     List<TicketTransaction> findTransactionForTicket(UUID ticketId);
+
+    /**
+     * Returns a full transaction with the history
+     *
+     * @param transactionId
+     * @return a tickettransaction
+     */
+    @Query("SELECT tt from TicketTransaction tt LEFT JOIN FETCH tt.ticketHistories WHERE tt.id = ?1")
+    TicketTransaction findFullOne(Long transactionId);
 
 }
