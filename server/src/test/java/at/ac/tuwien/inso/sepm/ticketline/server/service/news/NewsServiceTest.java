@@ -48,17 +48,21 @@ public class NewsServiceTest {
     private static Pageable pageable = new PageRequest(0, 10000);
 
     @Before
-    public void setUpCustomer() {
+    public void setUp() {
+        newsRepository.deleteAll();
+        principalRepository.deleteAll();
         admin = Principal.builder()
             .role(Principal.Role.ADMIN)
             .username("admin")
             .password(passwordEncoder.encode("password"))
+            .email("admin@ticketline.at")
             .enabled(true)
             .build();
 
         user = Principal.builder()
             .role(Principal.Role.SELLER)
             .username("user")
+            .email("user@ticketline.at")
             .password(passwordEncoder.encode("password"))
             .enabled(true)
             .build();
@@ -102,7 +106,9 @@ public class NewsServiceTest {
         assertTrue(unread.contains(saved1));
         assertTrue(unread.contains(saved2));
         News news = newsService.reportSeen(saved1.getId(), user);
+        System.out.println(unread);
         unread = newsService.findAllNotSeenByUser(user.getId(), pageable);
+        System.out.println(unread);
         assertFalse(unread.contains(saved1));
         assertFalse(unread.contains(news));
         assertTrue(unread.contains(saved2));

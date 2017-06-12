@@ -28,6 +28,7 @@
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
 
         <commons-io.version>2.4</commons-io.version>
+        <org.apache.commons>3.5</org.apache.commons>
     </properties>
 
     <dependencies>
@@ -95,6 +96,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${org.apache.commons}</version>
         </dependency>
     </dependencies>
 

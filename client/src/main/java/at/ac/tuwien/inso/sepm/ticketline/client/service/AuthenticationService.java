@@ -13,7 +13,8 @@ public interface AuthenticationService {
      * @return A valid authentication token
      * @throws DataAccessException in case something went wrong
      */
-    AuthenticationTokenInfo authenticate(AuthenticationRequest authenticationRequest) throws DataAccessException;
+    AuthenticationTokenInfo authenticate(AuthenticationRequest authenticationRequest)
+        throws DataAccessException;
 
     /**
      * Deauthenticate current user

@@ -52,12 +52,19 @@ public class AuthenticationController {
     private void handleAuthenticate(ActionEvent actionEvent) {
         Task<AuthenticationTokenInfo> task = new Task<AuthenticationTokenInfo>() {
             @Override
-            protected AuthenticationTokenInfo call() throws DataAccessException {
-                return authenticationService.authenticate(
-                    AuthenticationRequest.builder()
-                        .username(txtUsername.getText())
-                        .password(txtPassword.getText())
-                        .build());
+            protected AuthenticationTokenInfo call() {
+                try {
+                    return authenticationService.authenticate(
+                        AuthenticationRequest.builder()
+                            .username(txtUsername.getText())
+                            .password(txtPassword.getText())
+                            .build());
+                } catch (DataAccessException e) {
+                    e.showDialog();
+                    //e.printStackTrace();
+                }
+                //we can do this because in that case the program automatically deAuthenticates itself and is no longer usable
+                return null;
             }
 
             @Override
@@ -72,6 +79,11 @@ public class AuthenticationController {
                 running ? ProgressBar.INDETERMINATE_PROGRESS : 0)
         );
         new Thread(task).start();
+    }
+
+    public void empty() {
+        txtPassword.setText("");
+        txtUsername.setText("");
     }
 
 }
