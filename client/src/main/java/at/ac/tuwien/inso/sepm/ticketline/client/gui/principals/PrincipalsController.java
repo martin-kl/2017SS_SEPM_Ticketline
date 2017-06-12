@@ -51,13 +51,17 @@ public class PrincipalsController {
 
     @FXML
     public void initialize() {
+        setDropDownText();
+        status.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> onLockedChange());
+    }
+
+    private void setDropDownText() {
         status.setItems(FXCollections.observableArrayList(
             BundleManager.getBundle().getString("any"),
             BundleManager.getBundle().getString("principal.locked"),
             BundleManager.getBundle().getString("principal.unlocked")
         ));
         status.setValue(BundleManager.getBundle().getString("any"));
-        status.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> onLockedChange());
     }
 
     private Boolean getLocked() {
@@ -85,6 +89,9 @@ public class PrincipalsController {
         setTitle(BundleManager.getBundle().getString("accounts.title"));
         searchField.setPromptText(BundleManager.getBundle().getString("search"));
         btnAdd.setText(BundleManager.getBundle().getString("customer.add"));
+        setDropDownText();
+        debouncer.call(1);
+
     }
 
 

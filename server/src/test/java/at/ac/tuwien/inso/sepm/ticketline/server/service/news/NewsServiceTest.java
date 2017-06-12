@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -50,6 +51,7 @@ public class NewsServiceTest {
     @Before
     public void setUp() {
         newsRepository.deleteAll();
+        principalNewsRepository.deleteAll();
         principalRepository.deleteAll();
         admin = Principal.builder()
             .role(Principal.Role.ADMIN)
@@ -94,8 +96,6 @@ public class NewsServiceTest {
         assertTrue(newsService.findAll(pageable).contains(saved));
     }
 
-    // TODO: fix test !!!
-    /*
     @Test
     public void canReportAsSeenAndCanFindAllNotSeen() {
         News news1 = getUnsavedNews();
@@ -113,7 +113,6 @@ public class NewsServiceTest {
         assertFalse(unread.contains(news));
         assertTrue(unread.contains(saved2));
     }
-    */
 
     @Test
     public void canPageFindUnseen() {
@@ -137,10 +136,11 @@ public class NewsServiceTest {
     }
 
     @Test
-    public void canPageFindAll() {
+    public void canPageFindAll() throws InterruptedException {
         News news1 = getUnsavedNews();
         News news2 = getUnsavedNews();
         News saved1 = newsService.publishNews(news1);
+        TimeUnit.SECONDS.sleep(1);
         News saved2 = newsService.publishNews(news2);
         Pageable page = new PageRequest(0, 1);
         List<News> unread = newsService.findAll(page);
