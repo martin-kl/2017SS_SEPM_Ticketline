@@ -43,7 +43,7 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
 
     private static final String TRANSACTION_ENDPOINT = "/tickettransaction";
 
-    private static final UUID TEST_TRANSACTION_ID = UUID.randomUUID();
+    private static final Long TEST_TRANSACTION_ID = 1l;
     private static final Customer TEST_CUSTOMER = Customer.builder()
         .id(UUID.randomUUID())
         .firstName("TestuserFN")
@@ -133,7 +133,7 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
             .given()
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, validUserTokenWithPrefix)
-            .when().get(TRANSACTION_ENDPOINT + "/" + UUID.randomUUID())
+            .when().get(TRANSACTION_ENDPOINT + "/" + 2)
             .then().extract().response();
 
         Assert.assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND.value()));

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class DetailedTicketTransactionDTO {
 
     @ApiModelProperty(readOnly = true, name = "The automatically generated database id")
-    private UUID id;
+    private Long id;
 
     @ApiModelProperty(readOnly = true, name = "Status of the ticket. Can either be bought, reserved or cancelled")
     private TicketStatus status;

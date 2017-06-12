@@ -40,8 +40,13 @@ public class TransactionListElementController {
     }
 
     public void initializeData(DetailedTicketTransactionDTO ticketTransactionDTO) {
-        lbCustomerFirstName.setText(ticketTransactionDTO.getCustomer().getFirstName());
-        lbCustomerLastName.setText(ticketTransactionDTO.getCustomer().getLastName());
+        if (ticketTransactionDTO.getCustomer() != null) {
+            lbCustomerFirstName.setText(ticketTransactionDTO.getCustomer().getFirstName());
+            lbCustomerLastName.setText(ticketTransactionDTO.getCustomer().getLastName());
+        } else {
+            lbCustomerFirstName.setText(BundleManager.getBundle().getString("transaction.detail.anonymousCustomer"));
+            lbCustomerLastName.setText("");
+        }
         lbReservationID.setText(ticketTransactionDTO.getId().toString());
         lbPerformanceName.setText(ticketTransactionDTO.getPerformanceName());
 

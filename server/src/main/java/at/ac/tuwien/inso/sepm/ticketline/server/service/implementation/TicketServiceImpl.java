@@ -14,6 +14,7 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.CustomerRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketHistoryRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.TicketTransactionRepository;
+import at.ac.tuwien.inso.sepm.ticketline.server.service.PaymentService;
 import at.ac.tuwien.inso.sepm.ticketline.server.service.TicketService;
 
 import java.util.*;
@@ -44,6 +45,9 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private TicketHistoryRepository ticketHistoryRepository;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @Override
     public List<TicketTransaction> getAllTransactions(String status, Pageable pageable) {
         TicketStatus ticketStatus;
@@ -54,7 +58,7 @@ public class TicketServiceImpl implements TicketService {
             throw new BadRequestException("Bad status");
         }
 
-        return ticketTransactionRepository.findByStatus(ticketStatus, pageable);
+        return ticketTransactionRepository.findByStatusAndOutdated(ticketStatus, false,pageable);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketTransaction findTransactionsByID(UUID id) {
+    public TicketTransaction findTransactionsByID(Long id) {
         Optional<TicketTransaction> transaction = ticketTransactionRepository.findOneById(id);
         if(transaction == null)
             throw new NotFoundException();
@@ -190,11 +194,15 @@ public class TicketServiceImpl implements TicketService {
                     keepHistories.add(th);
                 }
             }
+
             // there are some old histories, so lets save as a new transaction
             if (!keepHistories.isEmpty()) {
                 TicketTransaction keepTT = TicketTransaction.builder()
                     .customer(customer)
                     .status(tt.getStatus())
+                    .paymentIdentifier(tt.getPaymentIdentifier())
+                    .paymentProviderOption(tt.getPaymentProviderOption())
+                    .refunded(tt.isRefunded())
                     .build();
                 keepTT = ticketTransactionRepository.save(keepTT);
                 for (TicketHistory oldTh : keepHistories) {
@@ -211,6 +219,11 @@ public class TicketServiceImpl implements TicketService {
                 ticketTransactionRepository.delete(tt);
                 tt.setStatus(TicketStatus.STORNO);
                 return tt;
+            }
+
+            // transition BOUGHT to STORNO opens repays the tickets
+            if (tt.getStatus() == TicketStatus.BOUGHT && ticketTransaction.getStatus() == TicketStatus.STORNO) {
+                paymentService.refund(tt.getId());
             }
 
             tt = TicketTransaction.builder()
@@ -247,7 +260,7 @@ public class TicketServiceImpl implements TicketService {
      * @param compareTransactionId id of the transaction to check
      * @return returns true if the transaction is allowed
      */
-    private boolean isValidTransaction(TicketTransaction toCheck, UUID compareTransactionId) {
+    private boolean isValidTransaction(TicketTransaction toCheck, Long compareTransactionId) {
         if (compareTransactionId == null) {
             return toCheck.getStatus() == STORNO;
         } else {

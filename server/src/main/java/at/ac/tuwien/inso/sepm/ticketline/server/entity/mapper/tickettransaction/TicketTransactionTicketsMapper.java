@@ -1,7 +1,6 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
-import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.ticket.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
