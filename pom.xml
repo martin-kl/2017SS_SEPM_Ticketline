@@ -6,7 +6,7 @@
 
     <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
     <artifactId>ticketline</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0</version>
     <packaging>pom</packaging>
 
     <modules>
