@@ -122,7 +122,9 @@ public class CustomerAddEditController {
         }
 
         btn_CustomerOK.setDisable(true);
-        btn_CustomerOK.setText("SAVED");
+        btn_CustomerOK.setText(BundleManager.getBundle().getString("principal.saved.short"));
+        btn_CustomerOK.setPrefWidth(100);
+        btn_CustomerOK.setStyle("-fx-background-color: #3cff00; ");
         Timeline timeline = new Timeline(new KeyFrame(
             Duration.millis(500),
             ae -> closeStage()));
