@@ -13,10 +13,10 @@
     <children>
       <GridPane>
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="35.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="22.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="22.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="22.0" prefWidth="250.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
