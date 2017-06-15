@@ -6,20 +6,18 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.Custome
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
-import java.util.Optional;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -114,21 +112,26 @@ public class CustomerAddEditController {
                 customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getEmail(),
                 customerDTO.getAddress(), customerDTO.getBirthday(), customerDTO.getId());
 
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle(BundleManager.getBundle().getString("customer.saved.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("customer.saved.header"));
-            alert.showAndWait();
-
             if(fromSelection) {
                 customerSelection.returnFromAddCustomer(customerDTO);
             }else {
                 mainController.reloadCustomerList();
             }
-            //close this stage
-            Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
-            stage.close();
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }
+
+        btn_CustomerOK.setDisable(true);
+        btn_CustomerOK.setText("SAVED");
+        Timeline timeline = new Timeline(new KeyFrame(
+            Duration.millis(500),
+            ae -> closeStage()));
+        timeline.play();
+    }
+
+    private void closeStage(){
+        //close this stage
+        Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
+        stage.close();
     }
 }
