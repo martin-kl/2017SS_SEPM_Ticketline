@@ -64,6 +64,10 @@ public class PerformanceDetailController {
 
     private DetailedPerformanceDTO detailedPerformance;
 
+    public boolean ticketsAlreadyChosen() {
+        return chosenTickets.size() != 0;
+    }
+
     private List<TicketDTO> chosenTickets = new ArrayList<>();
     private FontAwesome fontAwesome;
 
