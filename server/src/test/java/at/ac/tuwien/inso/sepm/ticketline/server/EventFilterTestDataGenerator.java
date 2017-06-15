@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.EventCategory;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.*;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.*;
@@ -231,7 +232,7 @@ public class EventFilterTestDataGenerator {
                 30, 0);
 
         cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_YEAR, 201); //add 20 days to today
+        cal.add(Calendar.DAY_OF_YEAR, 20); //add 20 days to today
         LocalDateTime performance3Start = LocalDateTime
             .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
                 15, 0);
@@ -351,6 +352,9 @@ public class EventFilterTestDataGenerator {
             TicketStatus.STORNO,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransactionStorno);
@@ -360,6 +364,9 @@ public class EventFilterTestDataGenerator {
             TicketStatus.RESERVED,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransactionReserved);
@@ -369,6 +376,9 @@ public class EventFilterTestDataGenerator {
             TicketStatus.BOUGHT,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransactionBought);
@@ -378,6 +388,9 @@ public class EventFilterTestDataGenerator {
             TicketStatus.BOUGHT,
             null,
             this.customers.get(0),
+            false,
+            null,
+            PaymentProviderOption.STRIPE,
             false
         );
         ticketTransactionRepository.save(ticketTransactionBoughtAndLaterCancelled);

@@ -1,6 +1,8 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui;
 
-import at.ac.tuwien.inso.sepm.ticketline.client.gui.accounts.AccountsController;
+import at.ac.tuwien.inso.sepm.ticketline.client.exception.ValidationException;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalAddEditController;
+import at.ac.tuwien.inso.sepm.ticketline.client.gui.principals.PrincipalsController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomerAddEditController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.customers.CustomersController;
 import at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController;
@@ -14,8 +16,10 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformatio
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PrincipalRole;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
+import at.ac.tuwien.inso.sepm.ticketline.rest.principal.PrincipalDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.TicketDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
@@ -66,12 +70,14 @@ public class MainController {
     private final FontAwesome fontAwesome;
     private AuthenticationController authenticationController;
     private NewsController newsController;
-    private AccountsController accountsController;
+    private PrincipalsController accountsController;
     private CustomersController customersController;
     private TransactionListController transactionListController;
     private EventsController eventsController;
     private PerformanceDetailController performanceDetailController;
     private boolean alreadyLoggedIn = false;
+
+    private AuthenticationInformationService authenticationInformationService;
 
     public MainController(
         SpringFxmlLoader springFxmlLoader,
@@ -80,6 +86,7 @@ public class MainController {
     ) {
         this.springFxmlLoader = springFxmlLoader;
         this.fontAwesome = fontAwesome;
+        this.authenticationInformationService = authenticationInformationService;
         authenticationInformationService.addAuthenticationChangeListener(
             authenticationTokenInfo -> setAuthenticated(null != authenticationTokenInfo));
     }
@@ -88,7 +95,6 @@ public class MainController {
     private void initialize() {
         Platform.runLater(() -> mbMain.setUseSystemMenuBar(true));
         pbLoadingProgress.setProgress(0);
-        //login = (Node) springFxmlLoader.load("/fxml/authenticationComponent.fxml");
 
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/authenticationComponent.fxml");
@@ -117,7 +123,13 @@ public class MainController {
                     reloadEventList();
                     break;
                 case "accounts":
-                    //reloadCustomerList();
+                    List<String> roles = authenticationInformationService.getCurrentAuthenticationTokenInfo().get().getRoles();
+                    if (!roles.contains("ADMIN")) {
+                        tpContent.getSelectionModel().select(oldTab);
+                        (new ValidationException("principal.needs.admin")).showDialog();
+                    } else {
+                        reloadPrincipals();
+                    }
                     break;
                 case "transactions":
                     reloadReservationList();
@@ -138,13 +150,6 @@ public class MainController {
 
     @FXML
     private void aboutApplication(ActionEvent actionEvent) {
-        /*
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-        */
         Stage dialog = initStage();
         dialog.setScene(new Scene((Parent) springFxmlLoader.load("/fxml/aboutDialog.fxml")));
         dialog.setTitle(BundleManager.getBundle().getString("dialog.about.title"));
@@ -152,16 +157,7 @@ public class MainController {
     }
 
     public void showPerformanceDetailWindow(DetailedPerformanceDTO performance) {
-        /*
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-        */
         Stage dialog = initStage();
-
-        //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/events/performanceDetailComponent.fxml");
         performanceDetailController = (PerformanceDetailController) wrapper
@@ -197,16 +193,8 @@ public class MainController {
     }
 
     public void addEditCustomerWindow(CustomerDTO customerToEdit) {
-        /*
-        Stage stage = (Stage) spMainContent.getScene().getWindow();
-        Stage dialog = new Stage();
-        dialog.setResizable(false);
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(stage);
-        */
         Stage dialog = initStage();
 
-        //wrapper contains controller and loaded object
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
             .loadAndWrap("/fxml/customers/addEditCustomer.fxml");
         CustomerAddEditController controller = (CustomerAddEditController) wrapper.getController();
@@ -218,6 +206,23 @@ public class MainController {
         } else {
             dialog.setTitle(BundleManager.getBundle().getString("customer.add"));
         }
+        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        dialog.showAndWait();
+    }
+
+    public void addEditPrincipalWindow(PrincipalDTO principalDTO) {
+        Stage dialog = initStage();
+
+        //wrapper contains controller and loaded object
+        SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
+            .loadAndWrap("/fxml/principal/addEditPrincipal.fxml");
+        PrincipalAddEditController controller = (PrincipalAddEditController) wrapper.getController();
+        dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
+
+        controller.setToEdit(principalDTO);
+        controller.setOnDone((a, b) -> {
+            reloadPrincipals();
+        });
         dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
     }
@@ -235,7 +240,6 @@ public class MainController {
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
         controller.initData(detailedTicketTransactionDTO, transactionListController, false);
-        //showTransactionDetailStage(dialog);
         dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
     }
@@ -325,8 +329,8 @@ public class MainController {
 
     private void initAccountsTabPane() {
         SpringFxmlLoader.LoadWrapper wrapper = springFxmlLoader
-            .loadAndWrap("/fxml/accounts/accountsComponent.fxml");
-        accountsController = (AccountsController) wrapper.getController();
+            .loadAndWrap("/fxml/principal/principalComponent.fxml");
+        accountsController = (PrincipalsController) wrapper.getController();
         accountsController.setFont(fontAwesome);
         Tab accountsTab = new Tab(null, (Node) wrapper.getLoadedObject());
         Glyph newsGlyph = fontAwesome.create(FontAwesome.Glyph.USERS);
@@ -353,8 +357,8 @@ public class MainController {
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
+            tpContent.getSelectionModel().select(0);
             alreadyLoggedIn = true;
-            authenticationController = null;
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
@@ -386,6 +390,10 @@ public class MainController {
         transactionListController.initTransactions();
     }
 
+    private void reloadPrincipals() {
+        accountsController.init();
+    }
+
     public void changeToGerman(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("de"));
         reloadLanguage();
@@ -394,6 +402,13 @@ public class MainController {
     public void changeToEnglish(ActionEvent actionEvent) {
         BundleManager.changeLocale(new Locale("en"));
         reloadLanguage();
+    }
+
+    public void logout(ActionEvent actionEvent) {
+        authenticationInformationService.setCurrentAuthenticationToken(null);
+        authenticationInformationService.setCurrentAuthenticationTokenInfo(null);
+        authenticationController.empty();
+        setAuthenticated(false);
     }
 
     public void showAddNewsWindow() {
@@ -419,7 +434,8 @@ public class MainController {
         menuList.get(2).setText(bundle.getString("menu.language"));
 
         //set language for sub menu items of menu.application
-        menuList.get(0).getItems().get(0).setText(bundle.getString("menu.application.exit"));
+        menuList.get(0).getItems().get(0).setText(bundle.getString("logout"));
+        menuList.get(0).getItems().get(1).setText(bundle.getString("menu.application.exit"));
 
         //set language for sub menu items of menu.help
         menuList.get(1).getItems().get(0).setText(bundle.getString("menu.help.about"));
@@ -428,7 +444,8 @@ public class MainController {
         menuList.get(2).getItems().get(0).setText(bundle.getString("menu.language.german"));
         menuList.get(2).getItems().get(1).setText(bundle.getString("menu.language.english"));
 
-        if(! alreadyLoggedIn) {
+
+        if(!alreadyLoggedIn) {
             authenticationController.reloadLanguage();
         }
         newsController.reloadLanguage(alreadyLoggedIn);

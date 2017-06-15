@@ -49,6 +49,7 @@ public class PrincipalDataGenerator {
                 .username("admin")
                 .password(passwordEncoder.encode("password"))
                 .enabled(true)
+                .email("admin@ticketline.at")
                 .build();
 
             Principal user = Principal.builder()
@@ -56,6 +57,7 @@ public class PrincipalDataGenerator {
                 .username("user")
                 .password(passwordEncoder.encode("password"))
                 .enabled(true)
+                .email("user@ticketline.at")
                 .build();
 
             principalRepository.save(admin);

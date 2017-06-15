@@ -1,3 +1,6 @@
 spring:
   profiles:
     include: development
+
+logging:
+  level.org.hibernate: ERROR

@@ -138,8 +138,6 @@ public class EventServiceTest {
         Assert.assertThat(eventsSearchResult, is(expectedEvents));
     }
 
-    /* performance filters */
-
     @Test
     public void filterPerformanceByLocation() {
         List<Location> allLocations = locationRepository.findAll(new Sort(Sort.Direction.ASC, "name"));

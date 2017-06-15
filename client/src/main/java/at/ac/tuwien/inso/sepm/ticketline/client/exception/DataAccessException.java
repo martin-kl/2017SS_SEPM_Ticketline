@@ -13,6 +13,10 @@ public class DataAccessException extends ExceptionWithDialog {
         super(message);
     }
 
+    public DataAccessException(String message, String errorMessagePropertyName) {
+        super(message, errorMessagePropertyName);
+    }
+
     public DataAccessException(String message, String errorMessagePropertyName, Throwable cause) {
         super(message, errorMessagePropertyName);
     }

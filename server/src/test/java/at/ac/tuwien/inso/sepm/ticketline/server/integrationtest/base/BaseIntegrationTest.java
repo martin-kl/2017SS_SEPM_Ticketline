@@ -29,6 +29,8 @@ public abstract class BaseIntegrationTest {
     private static final String USER_PASSWORD = "password";
     private static final String ADMIN_PASSWORD = "password";
     private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_EMAIL = "admin@ticketline.at";
+    private static final String USER_EMAIL = "user@ticketline.at";
 
     @Value("${server.context-path}")
     private String contextPath;
@@ -82,6 +84,7 @@ public abstract class BaseIntegrationTest {
             .username(ADMIN_USERNAME)
             .password(passwordEncoder.encode(ADMIN_PASSWORD))
             .enabled(true)
+            .email(ADMIN_EMAIL)
             .build();
 
         Principal user = Principal.builder()
@@ -89,6 +92,7 @@ public abstract class BaseIntegrationTest {
             .username(USER_USERNAME)
             .password(passwordEncoder.encode(USER_PASSWORD))
             .enabled(true)
+            .email(USER_EMAIL)
             .build();
 
         principalRepository.save(admin);

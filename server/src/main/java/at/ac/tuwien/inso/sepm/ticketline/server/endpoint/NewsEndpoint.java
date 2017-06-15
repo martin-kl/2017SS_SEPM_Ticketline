@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,8 +66,4 @@ public class NewsEndpoint {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.principalService.findPrincipalByUsername(user.getUsername());
     }
-
-
-
-
 }

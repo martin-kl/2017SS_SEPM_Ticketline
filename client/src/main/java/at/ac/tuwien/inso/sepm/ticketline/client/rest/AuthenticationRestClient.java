@@ -14,7 +14,8 @@ public interface AuthenticationRestClient {
      * @return A valid authentication token
      * @throws DataAccessException in case something went wrong
      */
-    AuthenticationToken authenticate(AuthenticationRequest authenticationRequest) throws DataAccessException;
+    AuthenticationToken authenticate(AuthenticationRequest authenticationRequest)
+        throws DataAccessException;
 
     /**
      * Renew authentication with the current authentication token.

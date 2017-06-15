@@ -44,7 +44,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void downloadFile(UUID id) throws ExceptionWithDialog {
+    public void downloadFile(Long id) throws ExceptionWithDialog {
         ticketTransactionRestClient.downloadFile(id);
     }
 
