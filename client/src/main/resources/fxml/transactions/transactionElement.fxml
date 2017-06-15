@@ -4,28 +4,64 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox fx:id="vbReservationAndTickets" spacing="5.0" styleClass="customersElement" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.TransactionListElementController">
     <children>
       <GridPane>
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-                <Label fx:id="lbCustomerFirstName" text="&lt;CustomerFirstName&gt;" />
-                <Label fx:id="lbCustomerLastName" text="&lt;CustomerLastName&gt;" GridPane.columnIndex="1" />
-                <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;" GridPane.columnIndex="2" />
-            <Label fx:id="lbPerformanceName" text="&lt;PerformanceName&gt;" GridPane.columnIndex="3" />
-                <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;" GridPane.columnIndex="4" />
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <Label fx:id="lbCustomerNameLabelling" text="Name">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                      <Label fx:id="lbCustomerFirstName" text="&lt;CustomerFirstName&gt;" />
+                  <Label text=" " />
+                      <Label fx:id="lbCustomerLastName" text="&lt;CustomerLastName&gt;" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Label fx:id="lbPerformanceNameLabelling" text="Aufführungsname">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="lbPerformanceName" text="&lt;PerformanceName&gt;" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3">
+               <children>
+                  <Label fx:id="lbStatusLabelling" text="Status">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                      <Label fx:id="lbBoughtReserved" text="&lt;Bought/Reserved&gt;" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" GridPane.columnIndex="2">
+               <children>
+                  <Label fx:id="lbReservationIDLabelling" text="ReservierungsID">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                      <Label fx:id="lbReservationID" text="&lt;ReservationID&gt;" />
+               </children>
+            </HBox>
          </children>
       </GridPane>
     </children>
