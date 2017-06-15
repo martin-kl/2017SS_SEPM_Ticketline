@@ -53,9 +53,9 @@ public class TransactionDetailsController {
         loadButtonsAccordingToStatus(detailedTicketTransactionDTO.getStatus(), false,
             cancelledReservation);
 
-        if(cancelledReservation) {
+        if (cancelledReservation) {
             transactionNumber.setText("/");
-        }else {
+        } else {
             transactionNumber.setText(detailedTicketTransactionDTO.getId().toString());
         }
         if (detailedTicketTransactionDTO.getCustomer() != null) {
@@ -65,10 +65,10 @@ public class TransactionDetailsController {
             customer.setText(BundleManager.getBundle().getString("customer.guest"));
         }
         totalPrice.setText(
-            "€" + Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString());
+            Helper.getTotalPrice(detailedTicketTransactionDTO.getTickets()).toString() + " €");
     }
 
-    // if we are coming from the saalplan, the initController method is called and this calls the
+    // if we are coming from the hallplan, the initController method is called and this calls the
     // loadButtonsAccordingToStatus with the flag TRUE - so the status is ignored
 
     public void initController(CustomerDTO customerDTO, PerformanceDTO performanceDTO,
@@ -83,8 +83,7 @@ public class TransactionDetailsController {
             customer.setText(customerDTO.getFirstName() + " "
                 + customerDTO.getLastName());
         }
-        totalPrice.setText(
-            "€" + Helper.getTotalPrice(ticketDTOList).toString());
+        totalPrice.setText(Helper.getTotalPrice(ticketDTOList).toString() + " €");
     }
 
     private void loadButtonsAccordingToStatus(TicketStatus status, boolean newEntry,

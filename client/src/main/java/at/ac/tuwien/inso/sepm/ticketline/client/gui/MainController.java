@@ -16,7 +16,6 @@ import at.ac.tuwien.inso.sepm.ticketline.client.service.AuthenticationInformatio
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
-import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PrincipalRole;
 import at.ac.tuwien.inso.sepm.ticketline.rest.news.SimpleNewsDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.principal.PrincipalDTO;
@@ -173,20 +172,27 @@ public class MainController {
 
     private Stage setHallplanOnCloseRequest(Stage dialog) {
         dialog.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.initModality(Modality.APPLICATION_MODAL);
-            alert.initOwner(dialog);
-            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
+            if(performanceDetailController.ticketsAlreadyChosen()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.initModality(Modality.APPLICATION_MODAL);
+                alert.initOwner(dialog);
+                alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+                alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+                alert
+                    .setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && ButtonType.OK.equals(result.get())) {
+                    performanceDetailController.clearData(true);
+                    performanceDetailController = null;
+                    //event.consume();
+                } else {
+                    //if event.consume is not fired in here, the window would close even on the cancel button
+                    event.consume();
+                }
+            }else {
+                //no tickets chosen - just close the window
                 performanceDetailController.clearData(true);
                 performanceDetailController = null;
-                //event.consume();
-            } else {
-                //if event.consume is not fired in here, the window would close even on the cancel button
-                event.consume();
             }
         });
         return dialog;
@@ -240,7 +246,8 @@ public class MainController {
         dialog.setScene(new Scene((Parent) wrapper.getLoadedObject()));
 
         controller.initData(detailedTicketTransactionDTO, transactionListController, false);
-        dialog = Helper.setDefaultOnCloseRequest(dialog);
+        //we don`t have to show the dialog here because closing the window cannot result in lost data
+        //dialog = Helper.setDefaultOnCloseRequest(dialog);
         dialog.showAndWait();
     }
 

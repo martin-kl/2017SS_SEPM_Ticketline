@@ -97,10 +97,11 @@ public class NewsServiceTest {
     }
 
     @Test
-    public void canReportAsSeenAndCanFindAllNotSeen() {
+    public void canReportAsSeenAndCanFindAllNotSeen() throws InterruptedException {
         News news1 = getUnsavedNews();
         News news2 = getUnsavedNews();
         News saved1 = newsService.publishNews(news1);
+        TimeUnit.SECONDS.sleep(1);
         News saved2 = newsService.publishNews(news2);
         List<News> unread = newsService.findAllNotSeenByUser(user.getId(),pageable);
         assertTrue(unread.contains(saved1));

@@ -36,7 +36,7 @@
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin></TextField>
-                  <ComboBox fx:id="status" prefWidth="150.0" />
+                  <ComboBox fx:id="status" />
                </children>
             </HBox>
                 <VBox fx:id="customerSelectionParent">
