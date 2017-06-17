@@ -63,7 +63,9 @@ public class CustomerAddEditController {
         customerSelection = null;
 
         customerDTO = customerToEdit;
-        if (customerToEdit == null) return;
+        if (customerToEdit == null) {
+            return;
+        }
 
         lb_CustomerHeadline.setText(BundleManager.getBundle().getString("customer.edit"));
         tf_customerFirstName.setText(customerToEdit.getFirstName());
@@ -98,7 +100,9 @@ public class CustomerAddEditController {
         String firstName = tf_customerFirstName.getText().trim();
         String lastName = tf_customerLastName.getText().trim();
 
-        if (this.customerDTO == null) { customerDTO = new CustomerDTO(); }
+        if (this.customerDTO == null) {
+            customerDTO = new CustomerDTO();
+        }
         customerDTO.setFirstName(firstName);
         customerDTO.setLastName(lastName);
         customerDTO.setEmail(tf_customerMail.getText().trim());
@@ -112,26 +116,26 @@ public class CustomerAddEditController {
                 customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getEmail(),
                 customerDTO.getAddress(), customerDTO.getBirthday(), customerDTO.getId());
 
-            if(fromSelection) {
+            if (fromSelection) {
                 customerSelection.returnFromAddCustomer(customerDTO);
-            }else {
+            } else {
                 mainController.reloadCustomerList();
             }
+
+            btn_CustomerOK.setDisable(true);
+            btn_CustomerOK.setText(BundleManager.getBundle().getString("principal.saved.short"));
+            btn_CustomerOK.setPrefWidth(100);
+            btn_CustomerOK.setStyle("-fx-background-color: #2acd00; ");
+            Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(500),
+                ae -> closeStage()));
+            timeline.play();
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }
-
-        btn_CustomerOK.setDisable(true);
-        btn_CustomerOK.setText(BundleManager.getBundle().getString("principal.saved.short"));
-        btn_CustomerOK.setPrefWidth(100);
-        btn_CustomerOK.setStyle("-fx-background-color: #2acd00; ");
-        Timeline timeline = new Timeline(new KeyFrame(
-            Duration.millis(500),
-            ae -> closeStage()));
-        timeline.play();
     }
 
-    private void closeStage(){
+    private void closeStage() {
         //close this stage
         Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
         stage.close();

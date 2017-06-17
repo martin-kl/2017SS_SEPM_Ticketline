@@ -248,20 +248,24 @@ public class PerformanceDetailController {
     }
 
     public boolean handleCancel(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(btnCancel.getScene().getWindow());
+        if(ticketsAlreadyChosen()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.initModality(Modality.APPLICATION_MODAL);
+            alert.initOwner(btnCancel.getScene().getWindow());
 
-        alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
-        alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
-        alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
-        Optional<ButtonType> result = alert.showAndWait();
+            alert.setTitle(BundleManager.getBundle().getString("dialog.customer.title"));
+            alert.setHeaderText(BundleManager.getBundle().getString("dialog.customer.header"));
+            alert.setContentText(BundleManager.getBundle().getString("dialog.customer.content"));
+            Optional<ButtonType> result = alert.showAndWait();
 
-        if (result.isPresent() && ButtonType.OK.equals(result.get())) {
-            clearData(true);
-            return true;
+            if (result.isPresent() && ButtonType.OK.equals(result.get())) {
+                clearData(true);
+                return true;
+            }
+            return false;
         }
-        return false;
+        clearData(true);
+        return true;
     }
 
     public void handleContinue(){
