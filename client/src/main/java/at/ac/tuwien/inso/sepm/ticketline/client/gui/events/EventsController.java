@@ -19,6 +19,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.awt.Event;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -344,7 +345,12 @@ public class EventsController {
         // Category combobox
         if(cbEventCategory.getItems().isEmpty()){
             cbEventCategory.getItems().add(CATEGORY_STANDARD);
-            cbEventCategory.getItems().addAll(Stream.of(EventCategory.values()).map(EventCategory::name).toArray(String[]::new));
+            //cbEventCategory.getItems().addAll(Stream.of(EventCategory.values()).map(EventCategory::name).toArray(String[]::new));
+            EventCategory[] events = EventCategory.values();
+            for (EventCategory ec : events){
+                cbEventCategory.getItems().add(BundleManager.getBundle().getString("events.category." +
+                    ec.name()));
+            }
         }
         cbEventCategory.getSelectionModel().select(CATEGORY_STANDARD);
         btnGraphSearch.setText(BundleManager.getBundle().getString("search"));
@@ -414,7 +420,7 @@ public class EventsController {
             btnManageTickets.setDisable(true);
             loadDetailedPerformance(selectedPerformance);
         } else {
-            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
+            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection."));
         }
 
     }
@@ -439,7 +445,7 @@ public class EventsController {
             protected void failed() {
                 super.failed();
                 btnManageTickets.setDisable(false);
-                ValidationException e = new ValidationException("event.error.dialog.noselection.header");
+                ValidationException e = new ValidationException("event.error.dialog.noselection.content");
                 e.showDialog();
             }
         };
@@ -902,7 +908,22 @@ public class EventsController {
         }
         EventCategory category;
         if(!cbEventCategory.getSelectionModel().getSelectedItem().equals(CATEGORY_STANDARD)){
-            category = EventCategory.valueOf(cbEventCategory.getSelectionModel().getSelectedItem());
+            //category = EventCategory.valueOf(cbEventCategory.getSelectionModel().getSelectedItem());
+            String internationalizedCategory = cbEventCategory.getSelectionModel().getSelectedItem();
+            if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.NO_CATEGORY"))) {
+                category = EventCategory.NO_CATEGORY;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.CONCERT"))) {
+                category = EventCategory.CONCERT;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.COMEDY"))) {
+                category = EventCategory.COMEDY;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.OPERA"))) {
+                category = EventCategory.OPERA;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.SPORTS"))) {
+                category = EventCategory.SPORTS;
+            }else { //if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.THEATER"))) {
+                //now it can only be THEATER
+                category = EventCategory.THEATER;
+            }
             loadTopTen(category, monthsInPast);
         } else {
             loadTopTen(null, monthsInPast);
