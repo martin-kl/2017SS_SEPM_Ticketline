@@ -527,7 +527,8 @@ public class EventsController {
         log.debug("buildGraph called " + data.toString());
         barChartTopTen.getData().clear();
         if(!data.isEmpty()){
-            Iterator it = data.entrySet().iterator();
+            SortedMap<Integer, EventDTO> sortedMap = new TreeMap<>(data);
+            Iterator it = sortedMap.entrySet().iterator();
             XYChart.Series<String, Integer> seriesX = new XYChart.Series<>();
             while(it.hasNext()){
                 Map.Entry pair = (Map.Entry)it.next();
@@ -544,7 +545,7 @@ public class EventsController {
                 for(XYChart.Data<String, Integer> item : serie.getData()){
                     item.getNode().setOnMousePressed((MouseEvent event) -> {
                         // load the performances for this event
-                        for (Object o : data.entrySet()) {
+                        for (Object o : sortedMap.entrySet()) {
                             Map.Entry pairX = (Map.Entry) o;
                             EventDTO currentEvent = (EventDTO) pairX.getValue();
                             if (currentEvent.getName().equals(item.getXValue())) {
