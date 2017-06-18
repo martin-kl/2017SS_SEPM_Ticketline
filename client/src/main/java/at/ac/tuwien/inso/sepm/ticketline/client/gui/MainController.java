@@ -366,6 +366,9 @@ public class MainController {
         if (authenticated) {
             tpContent.getSelectionModel().select(0);
             alreadyLoggedIn = true;
+
+            //the date time formatter has to be loaded according to the language
+            Helper.reloadLanguage();
             if (spMainContent.getChildren().contains(login)) {
                 spMainContent.getChildren().remove(login);
             }
@@ -455,6 +458,7 @@ public class MainController {
         if(!alreadyLoggedIn) {
             authenticationController.reloadLanguage();
         }
+        Helper.reloadLanguage();
         newsController.reloadLanguage(alreadyLoggedIn);
         customersController.reloadLanguage(alreadyLoggedIn);
         eventsController.reloadLanguage(alreadyLoggedIn);

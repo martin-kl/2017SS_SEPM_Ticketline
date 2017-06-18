@@ -99,6 +99,9 @@ public class NewsController {
         setTitle(BundleManager.getBundle().getString("news.title"));
         cbShowSeen.setText(BundleManager.getBundle().getString("show.read"));
         btnAddNews.setText(BundleManager.getBundle().getString("news.add"));
+        if(alreadyLoggedIn) {
+            reload();
+        }
     }
 
     public void setFont(FontAwesome fontAwesome) {
