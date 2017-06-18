@@ -60,7 +60,7 @@ public class EventElementController {
 
     public void initializeData(EventDTO eventDTO) {
         labelEventName.setText(eventDTO.getName());
-        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category"));
+        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category") + ":");
         labelEventCategory.setText(BundleManager.getBundle().getString("events.category." +
             eventDTO.getCategory().toString()));
         labelDescription.setText(eventDTO.getDescription());
