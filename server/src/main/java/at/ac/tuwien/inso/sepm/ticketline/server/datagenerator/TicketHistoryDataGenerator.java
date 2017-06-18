@@ -218,5 +218,12 @@ public class TicketHistoryDataGenerator {
                 .build();
             ticketHistoryRepository.save(ticketHistory);
         }
+
+        /* delay for unique timestamps */
+        try {
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){
+            log.info("Thread interrupted");
+        }
     }
 }
