@@ -2,6 +2,7 @@ package at.ac.tuwien.inso.sepm.ticketline.server.service.implementation;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.TicketStatus;
+import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketHistory;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.BadRequestException;
 import at.ac.tuwien.inso.sepm.ticketline.server.exception.PaymentException;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -49,14 +52,12 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         // get the total price for all tickets
-        BigDecimal sum = new BigDecimal(0);
-        ticketTransaction
+        Set<TicketHistory> ticketHistories = ticketTransaction.getTicketHistories();
+        BigDecimal sum = ticketTransaction
             .getTicketHistories()
             .stream()
-            .map(th -> th.getTicket())
-            .forEach(ticket -> {
-                sum.add(ticket.getPrice());
-            });
+            .map(th -> th.getTicket().getPrice())
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // pay it
         String identifier = provider.pay(sum, paymentIdentifier);
@@ -64,6 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
 
         // set that the transaction is already paid
         ticketTransaction.setPaymentIdentifier(identifier);
+        ticketTransaction.setPaymentProviderOption(paymentProvider);
 
         ticketTransactionRepository.save(ticketTransaction);
     }
