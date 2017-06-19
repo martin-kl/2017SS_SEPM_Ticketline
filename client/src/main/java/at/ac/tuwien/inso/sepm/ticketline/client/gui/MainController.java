@@ -364,7 +364,9 @@ public class MainController {
 
     private void setAuthenticated(boolean authenticated) {
         if (authenticated) {
-            tpContent.getSelectionModel().select(0);
+            if (!alreadyLoggedIn) {
+                tpContent.getSelectionModel().select(0);
+            }
             alreadyLoggedIn = true;
 
             //the date time formatter has to be loaded according to the language
