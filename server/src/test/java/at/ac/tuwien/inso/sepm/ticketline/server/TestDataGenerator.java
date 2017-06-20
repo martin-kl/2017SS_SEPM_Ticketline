@@ -277,135 +277,120 @@ public class TestDataGenerator {
     private void generateTicketHistoryAndTransaction(){
         //the order of saving the ticketTransactions is important
         TicketTransaction ticketTransaction0 = TicketTransaction.builder()
-            .customer(customers.get(0))
-            .outdated(true)
-            .status(TicketStatus.RESERVED)
-            .build();
-        ticketTransaction0 = ticketTransactionRepository.save(ticketTransaction0);
-        try{
-            Thread.sleep(0,1);
-        } catch (InterruptedException e){}
-        // add tickets 0 and 1
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(0))
-                .ticketTransaction(ticketTransaction0)
-                .build()
-        );
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(1))
-                .ticketTransaction(ticketTransaction0)
-                .build()
-        );
-
-        //the order of saving the ticketTransactions is important
-        TicketTransaction ticketTransaction1 = TicketTransaction.builder()
-            .customer(customers.get(0))
-            .outdated(false)
-            .status(TicketStatus.BOUGHT)
-            .build();
-        ticketTransaction1 = ticketTransactionRepository.save(ticketTransaction1);
-        try{
-            Thread.sleep(0,1);
-        } catch (InterruptedException e){}
-        // add tickets 0 and 1
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(0))
-                .ticketTransaction(ticketTransaction1)
-                .build()
-        );
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(1))
-                .ticketTransaction(ticketTransaction1)
-                .build()
-        );
-
-        //the order of saving the ticketTransactions is important
-        TicketTransaction ticketTransaction2 = TicketTransaction.builder()
-            .customer(null)
-            .outdated(false)
-            .status(TicketStatus.BOUGHT)
-            .build();
-        ticketTransaction2 = ticketTransactionRepository.save(ticketTransaction2);
-        try{
-            Thread.sleep(0,1);
-        } catch (InterruptedException e){}
-        // add tickets 2
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(2))
-                .ticketTransaction(ticketTransaction2)
-                .build()
-        );
-
-        //the order of saving the ticketTransactions is important
-        TicketTransaction ticketTransaction3 = TicketTransaction.builder()
-            .customer(null)
-            .outdated(false)
-            .status(TicketStatus.RESERVED)
-            .build();
-        ticketTransaction3 = ticketTransactionRepository.save(ticketTransaction3);
-        try{
-            Thread.sleep(0,1);
-        } catch (InterruptedException e){}
-        // add tickets 3
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(3))
-                .ticketTransaction(ticketTransaction3)
-                .build()
-        );
-
-        //the order of saving the ticketTransactions is important
-        TicketTransaction ticketTransaction4 = TicketTransaction.builder()
-            .customer(customers.get(1))
-            .outdated(true)
-            .status(TicketStatus.BOUGHT)
-            .build();
-        ticketTransaction4 = ticketTransactionRepository.save(ticketTransaction4);
-        try{
-            Thread.sleep(0,1);
-        } catch (InterruptedException e){}
-        // add tickets 4 and 5
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(4))
-                .ticketTransaction(ticketTransaction4)
-                .build()
-        );
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(5))
-                .ticketTransaction(ticketTransaction4)
-                .build()
-        );
-
-        //the order of saving the ticketTransactions is important
-        TicketTransaction ticketTransaction5 = TicketTransaction.builder()
-            .customer(customers.get(1))
-            .outdated(false)
+            .id(null)
             .status(TicketStatus.STORNO)
+            .ticketHistories(null)
+            .customer(this.customers.get(0))
+            .outdated(false)
             .build();
-        ticketTransaction5 = ticketTransactionRepository.save(ticketTransaction5);
-        try{
-            Thread.sleep(0,1);
-        } catch (InterruptedException e){}
-        // add tickets 4 and 5
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(4))
-                .ticketTransaction(ticketTransaction5)
-                .build()
-        );
-        ticketHistoryRepository.save(
-            TicketHistory.builder()
-                .ticket(ticketsToPerf0.get(5))
-                .ticketTransaction(ticketTransaction5)
-                .build()
-        );
+        ticketTransactionRepository.save(ticketTransaction0);
+        try { Thread.sleep(0,1);} catch (InterruptedException e){}
 
+        TicketTransaction ticketTransaction1 = TicketTransaction.builder()
+            .id(null)
+            .status(TicketStatus.RESERVED)
+            .ticketHistories(null)
+            .customer(this.customers.get(0))
+            .outdated(false)
+            .build();
+        ticketTransactionRepository.save(ticketTransaction1);
+        try { Thread.sleep(0,1);} catch (InterruptedException e){}
+
+        TicketTransaction ticketTransaction2 = TicketTransaction.builder()
+            .id(null)
+            .status(TicketStatus.BOUGHT)
+            .ticketHistories(null)
+            .customer(this.customers.get(0))
+            .outdated(false)
+            .build();
+        ticketTransactionRepository.save(ticketTransaction2);
+        try { Thread.sleep(0,1);} catch (InterruptedException e){}
+
+        TicketTransaction ticketTransaction3 = TicketTransaction.builder()
+            .id(null)
+            .status(TicketStatus.STORNO)
+            .ticketHistories(null)
+            .customer(this.customers.get(0))
+            .outdated(false)
+            .build();
+        ticketTransactionRepository.save(ticketTransaction3);
+        try { Thread.sleep(0,1);} catch (InterruptedException e){}
+
+        TicketHistory ticketHistory0 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(1),
+            ticketTransaction0
+        );
+        ticketHistoryRepository.save(ticketHistory0);
+
+        TicketHistory ticketHistory1 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(3),
+            ticketTransaction0
+        );
+        ticketHistoryRepository.save(ticketHistory1);
+
+        TicketHistory ticketHistory2 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(0),
+            ticketTransaction1
+        );
+        ticketHistoryRepository.save(ticketHistory2);
+
+        TicketHistory ticketHistory3 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(1),
+            ticketTransaction1
+        );
+        ticketHistoryRepository.save(ticketHistory3);
+
+        TicketHistory ticketHistory4 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(2),
+            ticketTransaction1
+        );
+        ticketHistoryRepository.save(ticketHistory4);
+
+        TicketHistory ticketHistory5 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(2),
+            ticketTransaction2
+        );
+        ticketHistoryRepository.save(ticketHistory5);
+
+        TicketHistory ticketHistory6 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(3),
+            ticketTransaction2
+        );
+        ticketHistoryRepository.save(ticketHistory6);
+
+        TicketHistory ticketHistory7 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(4),
+            ticketTransaction2
+        );
+        ticketHistoryRepository.save(ticketHistory7);
+
+        TicketHistory ticketHistory8 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(0),
+            ticketTransaction3
+        );
+        ticketHistoryRepository.save(ticketHistory8);
+
+        TicketHistory ticketHistory9 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(4),
+            ticketTransaction3
+        );
+        ticketHistoryRepository.save(ticketHistory9);
+
+        TicketHistory ticketHistory10 = new TicketHistory(
+            null,
+            ticketsToPerf0.get(5),
+            ticketTransaction3
+        );
+        ticketHistoryRepository.save(ticketHistory10);
     }
 }
