@@ -335,7 +335,7 @@ public class EventsController {
         LAST_2_YEARS = BundleManager.getBundle().getString("performance.month.last") + " 2 " + BundleManager.getBundle().getString("performance.years");
         LAST_5_YEARS = BundleManager.getBundle().getString("performance.month.last") + " 5 " + BundleManager.getBundle().getString("performance.years");
         ALL_TIME =  BundleManager.getBundle().getString("performance.months.all");
-        CATEGORY_STANDARD = BundleManager.getBundle().getString("events.category");
+        CATEGORY_STANDARD = BundleManager.getBundle().getString("events.category.ALL_CATEGORIES");
         // Month combobox
         if(cbMonth.getItems().isEmpty()){
             cbMonth.getItems().addAll(ALL_TIME, LAST_MONTH, LAST_2_MONTHS, LAST_4_MONTHS, LAST_6_MONTHS, LAST_YEAR, LAST_2_YEARS, LAST_5_YEARS);

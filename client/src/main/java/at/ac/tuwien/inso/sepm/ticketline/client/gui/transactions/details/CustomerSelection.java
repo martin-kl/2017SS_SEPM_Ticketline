@@ -105,6 +105,8 @@ public class CustomerSelection {
     }
 
     public void handleContinue(ActionEvent actionEvent) {
+        previousSelectedBox = null;
+        lastSelectedCustomer = null;
         transactionController.onContinue(lastSelectedCustomer);
     }
 

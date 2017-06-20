@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import javafx.embed.swing.SwingFXUtils;
@@ -22,6 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Helper {
+
+    private static DateTimeFormatter dateAndTimeFormatter = DateTimeFormatter.ofPattern(
+        (BundleManager.getBundle().getLocale().getLanguage().equals("de")
+            ? "dd.MM.yyyy - HH:mm:ss" : "MM/dd/yyyy - HH:mm:ss"));
 
     public static BigDecimal getTotalPrice(List<? extends TicketDTO> tickets) {
         BigDecimal result = new BigDecimal(0);
@@ -72,5 +77,15 @@ public class Helper {
                 .getLocalizedMessage());
         }
         return image;
+    }
+
+    public static DateTimeFormatter getDateAndTimeFormatter() {
+        return dateAndTimeFormatter;
+    }
+
+    public static void reloadLanguage() {
+        dateAndTimeFormatter = DateTimeFormatter.ofPattern(
+            (BundleManager.getBundle().getLocale().getLanguage().equals("de")
+                ? "dd.MM.yyyy, HH:mm 'Uhr'" : "MM/dd/yyyy, hh:mm a"));
     }
 }

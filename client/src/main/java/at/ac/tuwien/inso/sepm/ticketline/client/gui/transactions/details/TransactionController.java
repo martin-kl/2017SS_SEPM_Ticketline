@@ -57,6 +57,7 @@ public class TransactionController {
     private List<TicketDTO> selectedTickets = new ArrayList<>();
     private CustomerDTO selectedCustomer;
 
+
     private TransactionListController tlController = null;
 
     private DetailedTicketTransactionDTO oldTicketTransaction = null;
