@@ -1,10 +1,10 @@
 .newsPublishDate {
-    -fx-font-size: 12px;
+    -fx-font-size: 9px;
     -fx-font-style: italic;
 }
 
 .newsTitle {
-    -fx-font-size: 12px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 

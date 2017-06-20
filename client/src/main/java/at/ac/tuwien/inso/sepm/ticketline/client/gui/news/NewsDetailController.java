@@ -55,8 +55,8 @@ public class NewsDetailController {
                 ivImage.setManaged(true);
                 separatorAboveTitle.setVisible(true);
                 separatorAboveTitle.setManaged(true);
-                ivImage.setFitWidth(500);
-                ivImage.setFitHeight(300);
+                ivImage.setFitWidth(570);
+                ivImage.setFitHeight(500);
                 Image image = Helper.convertToJavaFXImage(detailedNewsDTO.getImage(),
                     (int) ivImage.getFitWidth(),
                     (int) ivImage.getFitHeight());
@@ -71,12 +71,10 @@ public class NewsDetailController {
             lbText.setWrapText(true);
             lbSummary.setWrapText(true);
             lbTitleAndDate.setWrapText(true);
-            //txSummary.wrappingWidthProperty().bind(lbSummaryHeader.getScene().getWindow().widthProperty().subtract(40));
 
             lbTitleAndDate.setText(
                 detailedNewsDTO.getTitle() + " - " + detailedNewsDTO.getPublishedAt()
                     .format(formatter));
-            //lbTitle.setText(detailedNewsDTO.getTitle());
             lbSummaryHeader.setText(BundleManager.getBundle().getString("news.summary.header"));
             lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));
