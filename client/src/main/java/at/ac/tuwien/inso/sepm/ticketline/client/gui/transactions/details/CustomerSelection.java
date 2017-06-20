@@ -105,9 +105,9 @@ public class CustomerSelection {
     }
 
     public void handleContinue(ActionEvent actionEvent) {
+        transactionController.onContinue(lastSelectedCustomer);
         previousSelectedBox = null;
         lastSelectedCustomer = null;
-        transactionController.onContinue(lastSelectedCustomer);
     }
 
     Debouncer<Integer> d = new Debouncer<>(o -> customerList.reload(customerSearchField.getText()), 250);
