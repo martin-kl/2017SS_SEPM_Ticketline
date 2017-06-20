@@ -182,7 +182,6 @@ public class EventServiceImpl implements EventService {
         if (monthsInPast > 0) {
             LocalDate ld = LocalDate.now().minus(monthsInPast, ChronoUnit.MONTHS);
             searchStart = Date.from(ld.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            //System.out.println("\n\n\n\t\tsearching start in : "+searchStart.toString() + "\n\n");
         } else {
             searchStart = new Date(Long.MIN_VALUE);
         }

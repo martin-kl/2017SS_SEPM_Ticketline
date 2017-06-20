@@ -211,34 +211,27 @@ public class EventFilterTestDataGenerator {
 
     //adds 2 performances for event1 and 1 performance for event2 - all on the same location
     private void generatePerformances() {
-        Calendar cal = Calendar.getInstance();
 
-        cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_YEAR, -4); //remove 5 days from today
-        LocalDateTime performance1Start = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
-                15, 0);
-        LocalDateTime performance1End = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 20,
-                15, 0);
+        //Performance 1 = 5 days ago - 2 hour performance
+        LocalDateTime performance1Start = LocalDateTime.now();
+        LocalDateTime performance1End = LocalDateTime.now();
+        performance1Start.minusDays(5);
+        performance1Start.minusHours(2);
+        performance1End.minusDays(5);
 
-        cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_YEAR, 10); //add 10 days to today
-        LocalDateTime performance2Start = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
-                10, 0);
-        LocalDateTime performance2End = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 20,
-                30, 0);
+        //Performance 2 = 10 days ago - 3 hour performance
+        LocalDateTime performance2Start = LocalDateTime.now();
+        LocalDateTime performance2End = LocalDateTime.now();
+        performance1Start.minusDays(10);
+        performance1Start.minusHours(3);
+        performance1End.minusDays(10);
 
-        cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_YEAR, 20); //add 20 days to today
-        LocalDateTime performance3Start = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
-                15, 0);
-        LocalDateTime performance3End = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 20,
-                25, 0);
+        //Performance 3 = 20 days in the future - 4 hour performance
+        LocalDateTime performance3Start = LocalDateTime.now();
+        LocalDateTime performance3End = LocalDateTime.now();
+        performance1Start.plusDays(20);
+        performance1Start.minusHours(4);
+        performance1End.plusDays(20);
 
         Performance performance = new Performance(
             null,
@@ -455,13 +448,8 @@ public class EventFilterTestDataGenerator {
 
 
         //inserting ticket history for performance 1
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_YEAR, -18); //remove 18 days from today
-        LocalDateTime performance1 = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
-                15, 0);
+        LocalDateTime performance1 = LocalDateTime.now();
+        performance1.minusDays(20); //remove 20 day from today
 
         //performance 1 tickets 3, 4 and 5 get bought
         createTicketHistory(1, 3, ticketTransactionBought, performance1.toInstant(ZoneOffset.UTC));
@@ -471,13 +459,8 @@ public class EventFilterTestDataGenerator {
 
 
 
-
-
-        cal.setTime(new java.util.Date(System.currentTimeMillis()));
-        cal.add(Calendar.DAY_OF_YEAR, -40); //remove 40 days from today
-        LocalDateTime performance2 = LocalDateTime
-            .of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 18,
-                10, 0);
+        LocalDateTime performance2 = LocalDateTime.now();
+        performance2.minusDays(20); //remove 40 day from today
 
         //performance 2 tickets 1 and 6 get bought
         createTicketHistory(2, 1, ticketTransactionBought, performance2.toInstant(ZoneOffset.UTC));

@@ -160,7 +160,6 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 principalRepository.incrementFailedLoginCount(principal.getId(), true);
                 throw new BadCredentialsException(e.getMessage());
             }else {
-                System.out.println("\n\n\tin here - user has more than 5 failed login attempts\n\n");
                 principalRepository.incrementFailedLoginCount(principal.getId(), false);
                 //throw exception to the client to show him that
                 throw new AccountLockedException("User is locked because he tried the wrong password for 5 times");
