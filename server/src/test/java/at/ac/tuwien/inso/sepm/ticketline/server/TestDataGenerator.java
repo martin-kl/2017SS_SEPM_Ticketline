@@ -282,6 +282,9 @@ public class TestDataGenerator {
             .status(TicketStatus.RESERVED)
             .build();
         ticketTransaction0 = ticketTransactionRepository.save(ticketTransaction0);
+        try{
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){}
         // add tickets 0 and 1
         ticketHistoryRepository.save(
             TicketHistory.builder()
@@ -303,6 +306,9 @@ public class TestDataGenerator {
             .status(TicketStatus.BOUGHT)
             .build();
         ticketTransaction1 = ticketTransactionRepository.save(ticketTransaction1);
+        try{
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){}
         // add tickets 0 and 1
         ticketHistoryRepository.save(
             TicketHistory.builder()
@@ -324,6 +330,9 @@ public class TestDataGenerator {
             .status(TicketStatus.BOUGHT)
             .build();
         ticketTransaction2 = ticketTransactionRepository.save(ticketTransaction2);
+        try{
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){}
         // add tickets 2
         ticketHistoryRepository.save(
             TicketHistory.builder()
@@ -339,6 +348,9 @@ public class TestDataGenerator {
             .status(TicketStatus.RESERVED)
             .build();
         ticketTransaction3 = ticketTransactionRepository.save(ticketTransaction3);
+        try{
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){}
         // add tickets 3
         ticketHistoryRepository.save(
             TicketHistory.builder()
@@ -354,6 +366,9 @@ public class TestDataGenerator {
             .status(TicketStatus.BOUGHT)
             .build();
         ticketTransaction4 = ticketTransactionRepository.save(ticketTransaction4);
+        try{
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){}
         // add tickets 4 and 5
         ticketHistoryRepository.save(
             TicketHistory.builder()
@@ -375,6 +390,9 @@ public class TestDataGenerator {
             .status(TicketStatus.STORNO)
             .build();
         ticketTransaction5 = ticketTransactionRepository.save(ticketTransaction5);
+        try{
+            Thread.sleep(0,1);
+        } catch (InterruptedException e){}
         // add tickets 4 and 5
         ticketHistoryRepository.save(
             TicketHistory.builder()
