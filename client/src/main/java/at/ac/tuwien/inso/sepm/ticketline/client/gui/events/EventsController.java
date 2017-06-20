@@ -19,6 +19,7 @@ import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.DetailedPerformanceDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
 import at.ac.tuwien.inso.springfx.SpringFxmlLoader;
+import java.awt.Event;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -334,7 +335,7 @@ public class EventsController {
         LAST_2_YEARS = BundleManager.getBundle().getString("performance.month.last") + " 2 " + BundleManager.getBundle().getString("performance.years");
         LAST_5_YEARS = BundleManager.getBundle().getString("performance.month.last") + " 5 " + BundleManager.getBundle().getString("performance.years");
         ALL_TIME =  BundleManager.getBundle().getString("performance.months.all");
-        CATEGORY_STANDARD = BundleManager.getBundle().getString("events.category");
+        CATEGORY_STANDARD = BundleManager.getBundle().getString("events.category.ALL_CATEGORIES");
         // Month combobox
         if(cbMonth.getItems().isEmpty()){
             cbMonth.getItems().addAll(ALL_TIME, LAST_MONTH, LAST_2_MONTHS, LAST_4_MONTHS, LAST_6_MONTHS, LAST_YEAR, LAST_2_YEARS, LAST_5_YEARS);
@@ -344,7 +345,12 @@ public class EventsController {
         // Category combobox
         if(cbEventCategory.getItems().isEmpty()){
             cbEventCategory.getItems().add(CATEGORY_STANDARD);
-            cbEventCategory.getItems().addAll(Stream.of(EventCategory.values()).map(EventCategory::name).toArray(String[]::new));
+            //cbEventCategory.getItems().addAll(Stream.of(EventCategory.values()).map(EventCategory::name).toArray(String[]::new));
+            EventCategory[] events = EventCategory.values();
+            for (EventCategory ec : events){
+                cbEventCategory.getItems().add(BundleManager.getBundle().getString("events.category." +
+                    ec.name()));
+            }
         }
         cbEventCategory.getSelectionModel().select(CATEGORY_STANDARD);
         btnGraphSearch.setText(BundleManager.getBundle().getString("search"));
@@ -414,7 +420,7 @@ public class EventsController {
             btnManageTickets.setDisable(true);
             loadDetailedPerformance(selectedPerformance);
         } else {
-            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
+            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection."));
         }
 
     }
@@ -439,7 +445,7 @@ public class EventsController {
             protected void failed() {
                 super.failed();
                 btnManageTickets.setDisable(false);
-                ValidationException e = new ValidationException("event.error.dialog.noselection.header");
+                ValidationException e = new ValidationException("event.error.dialog.noselection.content");
                 e.showDialog();
             }
         };
@@ -521,7 +527,8 @@ public class EventsController {
         log.debug("buildGraph called " + data.toString());
         barChartTopTen.getData().clear();
         if(!data.isEmpty()){
-            Iterator it = data.entrySet().iterator();
+            SortedMap<Integer, EventDTO> sortedMap = new TreeMap<>(data);
+            Iterator it = sortedMap.entrySet().iterator();
             XYChart.Series<String, Integer> seriesX = new XYChart.Series<>();
             while(it.hasNext()){
                 Map.Entry pair = (Map.Entry)it.next();
@@ -538,7 +545,7 @@ public class EventsController {
                 for(XYChart.Data<String, Integer> item : serie.getData()){
                     item.getNode().setOnMousePressed((MouseEvent event) -> {
                         // load the performances for this event
-                        for (Object o : data.entrySet()) {
+                        for (Object o : sortedMap.entrySet()) {
                             Map.Entry pairX = (Map.Entry) o;
                             EventDTO currentEvent = (EventDTO) pairX.getValue();
                             if (currentEvent.getName().equals(item.getXValue())) {
@@ -902,7 +909,22 @@ public class EventsController {
         }
         EventCategory category;
         if(!cbEventCategory.getSelectionModel().getSelectedItem().equals(CATEGORY_STANDARD)){
-            category = EventCategory.valueOf(cbEventCategory.getSelectionModel().getSelectedItem());
+            //category = EventCategory.valueOf(cbEventCategory.getSelectionModel().getSelectedItem());
+            String internationalizedCategory = cbEventCategory.getSelectionModel().getSelectedItem();
+            if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.NO_CATEGORY"))) {
+                category = EventCategory.NO_CATEGORY;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.CONCERT"))) {
+                category = EventCategory.CONCERT;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.COMEDY"))) {
+                category = EventCategory.COMEDY;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.OPERA"))) {
+                category = EventCategory.OPERA;
+            }else if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.SPORTS"))) {
+                category = EventCategory.SPORTS;
+            }else { //if(internationalizedCategory.equals(BundleManager.getBundle().getString("events.category.THEATER"))) {
+                //now it can only be THEATER
+                category = EventCategory.THEATER;
+            }
             loadTopTen(category, monthsInPast);
         } else {
             loadTopTen(null, monthsInPast);

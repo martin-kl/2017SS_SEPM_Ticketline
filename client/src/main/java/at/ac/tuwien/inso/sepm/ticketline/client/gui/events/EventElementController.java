@@ -60,15 +60,16 @@ public class EventElementController {
 
     public void initializeData(EventDTO eventDTO) {
         labelEventName.setText(eventDTO.getName());
-        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category"));
-        labelEventCategory.setText(eventDTO.getCategory().toString());
+        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category") + ":");
+        labelEventCategory.setText(BundleManager.getBundle().getString("events.category." +
+            eventDTO.getCategory().toString()));
         labelDescription.setText(eventDTO.getDescription());
         showPerformances(eventDTO);
         reloadLanguage();
     }
 
     private void reloadLanguage(){
-        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category"));
+        labelEventCategoryLabelling.setText(BundleManager.getBundle().getString("events.category") + ":");
 
         labelPerformancenameLabelling.setText(BundleManager.getBundle().getString("events.performance.name"));
         labelBegintimeLabelling.setText(BundleManager.getBundle().getString("events.begin"));

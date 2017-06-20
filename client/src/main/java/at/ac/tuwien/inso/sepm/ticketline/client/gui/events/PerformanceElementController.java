@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.client.gui.events;
 
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
+import at.ac.tuwien.inso.sepm.ticketline.client.util.Helper;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SeatLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.location.SectorLocationDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.performance.PerformanceDTO;
@@ -12,11 +13,11 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class PerformanceElementController {
+
     @FXML
     private Label labelPerformanceName;
 
@@ -32,18 +33,18 @@ public class PerformanceElementController {
     @FXML
     private Label labelType;
 
-    private static final DateTimeFormatter DTF =
-        DateTimeFormatter.ofPattern("d.M.yyyy HH:mm");
-
     public void initializeData(PerformanceDTO performanceDTO) {
         labelPerformanceName.setText(performanceDTO.getName());
-        labelStartTime.setText(DTF.format(LocalDateTime.ofInstant(performanceDTO.getStartTime(), ZoneOffset.UTC)));
-        labelEndTime.setText(DTF.format(LocalDateTime.ofInstant(performanceDTO.getEndTime(), ZoneOffset.UTC)));
+        labelStartTime.setText(
+            Helper.getDateAndTimeFormatter()
+                .format(LocalDateTime.ofInstant(performanceDTO.getStartTime(), ZoneOffset.UTC)));
+        labelEndTime.setText(
+            Helper.getDateAndTimeFormatter()
+                .format(LocalDateTime.ofInstant(performanceDTO.getEndTime(), ZoneOffset.UTC)));
         labelLocationName.setText(performanceDTO.getLocation().getName());
-        if(performanceDTO.getLocation() instanceof SeatLocationDTO){
+        if (performanceDTO.getLocation() instanceof SeatLocationDTO) {
             labelType.setText(BundleManager.getBundle().getString("performance.type.seat"));
-        }
-        else if(performanceDTO.getLocation() instanceof SectorLocationDTO){
+        } else if (performanceDTO.getLocation() instanceof SectorLocationDTO) {
             labelType.setText(BundleManager.getBundle().getString("performance.type.sector"));
         }
     }

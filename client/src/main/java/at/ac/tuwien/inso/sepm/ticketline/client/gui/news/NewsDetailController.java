@@ -41,8 +41,6 @@ public class NewsDetailController {
     @FXML
     private Label lbText;
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
     @Autowired
     private NewsService newsService;
 
@@ -74,7 +72,7 @@ public class NewsDetailController {
 
             lbTitleAndDate.setText(
                 detailedNewsDTO.getTitle() + " - " + detailedNewsDTO.getPublishedAt()
-                    .format(formatter));
+                    .format(Helper.getDateAndTimeFormatter()));
             lbSummaryHeader.setText(BundleManager.getBundle().getString("news.summary.header"));
             lbSummary.setText(detailedNewsDTO.getSummary());
             lbTextHeader.setText(BundleManager.getBundle().getString("news.text.header"));

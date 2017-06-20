@@ -55,7 +55,11 @@ public class PrincipalServiceImpl implements PrincipalService {
         if (principalDTO.getUsername().length() < 3) throw new ValidationException("principal.validation.username");
         EmailValidator ev = new EmailValidator();
         if(principalDTO.getEmail() == null || principalDTO.getEmail().equals("") || !ev.isValid(principalDTO.getEmail(), null)) throw new ValidationException("customer.error.email");
-        if(principalDTO.getId() == null) {
+        if(principalDTO.getId() == null){
+            if (principalDTO.getNewPassword() == null || principalDTO.getNewPassword().length()<6) {
+                throw new ValidationException("principal.validation.password");
+            }
+        } else if (principalDTO.getNewPassword() != null && !principalDTO.getNewPassword().equals("")) {
             if (principalDTO.getNewPassword().length()<6) {
                 throw new ValidationException("principal.validation.password");
             }

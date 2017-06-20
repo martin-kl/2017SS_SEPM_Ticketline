@@ -6,20 +6,18 @@ import at.ac.tuwien.inso.sepm.ticketline.client.gui.transactions.details.Custome
 import at.ac.tuwien.inso.sepm.ticketline.client.service.CustomerService;
 import at.ac.tuwien.inso.sepm.ticketline.client.util.BundleManager;
 import at.ac.tuwien.inso.sepm.ticketline.rest.customer.CustomerDTO;
-import java.util.Optional;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -65,7 +63,9 @@ public class CustomerAddEditController {
         customerSelection = null;
 
         customerDTO = customerToEdit;
-        if (customerToEdit == null) return;
+        if (customerToEdit == null) {
+            return;
+        }
 
         lb_CustomerHeadline.setText(BundleManager.getBundle().getString("customer.edit"));
         tf_customerFirstName.setText(customerToEdit.getFirstName());
@@ -100,7 +100,9 @@ public class CustomerAddEditController {
         String firstName = tf_customerFirstName.getText().trim();
         String lastName = tf_customerLastName.getText().trim();
 
-        if (this.customerDTO == null) { customerDTO = new CustomerDTO(); }
+        if (this.customerDTO == null) {
+            customerDTO = new CustomerDTO();
+        }
         customerDTO.setFirstName(firstName);
         customerDTO.setLastName(lastName);
         customerDTO.setEmail(tf_customerMail.getText().trim());
@@ -114,21 +116,28 @@ public class CustomerAddEditController {
                 customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getEmail(),
                 customerDTO.getAddress(), customerDTO.getBirthday(), customerDTO.getId());
 
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle(BundleManager.getBundle().getString("customer.saved.title"));
-            alert.setHeaderText(BundleManager.getBundle().getString("customer.saved.header"));
-            alert.showAndWait();
-
-            if(fromSelection) {
+            if (fromSelection) {
                 customerSelection.returnFromAddCustomer(customerDTO);
-            }else {
+            } else {
                 mainController.reloadCustomerList();
             }
-            //close this stage
-            Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
-            stage.close();
+
+            btn_CustomerOK.setDisable(true);
+            btn_CustomerOK.setText(BundleManager.getBundle().getString("principal.saved.short"));
+            btn_CustomerOK.setPrefWidth(100);
+            btn_CustomerOK.setStyle("-fx-background-color: #2acd00; ");
+            Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(500),
+                ae -> closeStage()));
+            timeline.play();
         } catch (ExceptionWithDialog exceptionWithDialog) {
             exceptionWithDialog.showDialog();
         }
+    }
+
+    private void closeStage() {
+        //close this stage
+        Stage stage = (Stage) btn_CustomerCancel.getScene().getWindow();
+        stage.close();
     }
 }

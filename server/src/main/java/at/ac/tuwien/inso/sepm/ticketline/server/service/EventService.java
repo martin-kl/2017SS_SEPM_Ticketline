@@ -38,9 +38,10 @@ public interface EventService {
 
     /**
      * gets top ten events since 'monthInPast'.
+     *
      * @param category The category to search for the top ten
      * @param monthsInPast can be negative to mean entire timespan
-     * @return A list of top ten events since 'monthInPast# for the given category
+     * @return A map of top ten events since 'monthInPast' for the given category
      */
     Map<Integer, Event> getTopTen(EventCategory category, int monthsInPast);
 }
