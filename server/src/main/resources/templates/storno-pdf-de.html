@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <td>Geburtstag:</td>
-            <td><b th:text="${customer.birthday}"></b></td>
+            <td><b th:text="${birthdate}"></b></td>
         </tr>
         <tr>
             <td>Adresse:</td>
@@ -35,10 +35,10 @@
             <td style="width: 70%" th:text="${ticket.class.name == 'at.ac.tuwien.inso.sepm.ticketline.server.entity.SeatTicket' ? 'Sitzplatz in Reihe ' + ticket.seat.row + '/ Spalte ' + ticket.seat.column : 'Stehplatz in Sektor ' + ticket.sector.name}"></td>
             <td style="width: 30%">€ <span th:text="${ticket.price}"></span></td>
         </tr>
-        <tr></tr>
+        <tr><br /></tr>
         <tr>
-            <td style="width: 70%">Gesamtpreis:</td>
-            <td style="width: 30%">€ <span th:text="${#aggregates.sum(tickets.![price])}"></span></td>
+            <td style="width: 70%"><b>Gesamtpreis:</b></td>
+            <td style="width: 30%"><b>€ <span th:text="${#aggregates.sum(tickets.![price])}"></span></b></td>
         </tr>
     </table>
 

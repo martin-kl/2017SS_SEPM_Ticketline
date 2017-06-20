@@ -17,6 +17,9 @@ import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,8 +34,15 @@ public class PdfServiceImpl implements PdfService {
             language = "de";
         }
         language = language.toLowerCase();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
+            language.equals("de") ? "dd.MM.yyyy" : "MM/dd/yyyy"
+        );
         if (ticketTransaction.getStatus() == TicketStatus.STORNO) {
             Context context = new Context();
+            if (ticketTransaction.getCustomer() != null) {
+                String formattedString = ticketTransaction.getCustomer().getBirthday().format(formatter);
+                context.setVariable("birthdate", formattedString);
+            }
             context.setVariable("customer", ticketTransaction.getCustomer());
             context.setVariable("transaction", ticketTransaction);
             context.setVariable("tickets", ticketTransaction
@@ -45,6 +55,10 @@ public class PdfServiceImpl implements PdfService {
             outputStream.close();
         } else if (ticketTransaction.getStatus() == TicketStatus.BOUGHT) {
             Context context = new Context();
+            if (ticketTransaction.getCustomer() != null) {
+                String formattedString = ticketTransaction.getCustomer().getBirthday().format(formatter);
+                context.setVariable("birthdate", formattedString);
+            }
             context.setVariable("customer", ticketTransaction.getCustomer());
             context.setVariable("transaction", ticketTransaction);
             context.setVariable("tickets", ticketTransaction

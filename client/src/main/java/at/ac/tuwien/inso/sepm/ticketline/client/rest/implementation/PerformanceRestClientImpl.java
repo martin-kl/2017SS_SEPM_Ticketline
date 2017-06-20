@@ -42,13 +42,4 @@ public class PerformanceRestClientImpl implements PerformanceRestClient {
             throw new DataAccessException(e.getMessage(), e);
         }
     }
-
-    // TODO: implement
-    @Override
-    public DetailedPerformanceDTO save(DetailedPerformanceDTO detailedPerformanceDTO)
-        throws DataAccessException {
-        return null;
-    }
-
-
 }

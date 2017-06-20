@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController">
+<BorderPane fx:id="borderPane" minHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.news.NewsDetailController">
    <center>
       <ScrollPane fitToWidth="true" maxHeight="600.0">
          <content>
             <VBox>
                 <children>
-                    <ImageView fx:id="ivImage" fitHeight="175.0" fitWidth="200" pickOnBounds="true" preserveRatio="true" />
+                    <ImageView fx:id="ivImage" fitHeight="252.0" fitWidth="582.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
                     <Separator fx:id="separatorAboveTitle">
                         <VBox.margin>
                             <Insets bottom="5.0" top="5.0" />
@@ -33,7 +33,7 @@
                             <Insets bottom="5.0" top="5.0" />
                         </VBox.margin>
                     </Separator>
-                    <Label fx:id="lbSummaryHeader" text="%news.summary.header">
+                    <Label fx:id="lbSummaryHeader" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="%news.summary.header">
                         <VBox.margin>
                             <Insets />
                         </VBox.margin>
@@ -42,7 +42,7 @@
                         </font>
                     </Label>
                   <Label fx:id="lbSummary" text="&lt;summary label&gt;" />
-                    <Label fx:id="lbTextHeader" text="%news.text.header">
+                    <Label fx:id="lbTextHeader" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="%news.text.header">
                         <font>
                             <Font name="System Bold" size="14.0" />
                         </font>

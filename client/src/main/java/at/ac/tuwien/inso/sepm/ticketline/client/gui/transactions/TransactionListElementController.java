@@ -21,8 +21,6 @@ public class TransactionListElementController {
     @FXML
     private VBox vbReservationAndTickets;
     @FXML
-    private HBox hbReservation;
-    @FXML
     private Label lbCustomerFirstName;
     @FXML
     private Label lbCustomerLastName;
@@ -32,6 +30,15 @@ public class TransactionListElementController {
     private Label lbPerformanceName;
     @FXML
     private Label lbBoughtReserved;
+
+    @FXML
+    private Label lbCustomerNameLabelling;
+    @FXML
+    private Label lbPerformanceNameLabelling;
+    @FXML
+    private Label lbReservationIDLabelling;
+    @FXML
+    private Label lbStatusLabelling;
 
     private final SpringFxmlLoader springFxmlLoader;
 
@@ -50,6 +57,12 @@ public class TransactionListElementController {
         lbReservationID.setText(ticketTransactionDTO.getId().toString());
         lbPerformanceName.setText(ticketTransactionDTO.getPerformanceName());
 
+        lbCustomerNameLabelling.setText(BundleManager.getBundle().getString("customer.name") + ": ");
+        lbPerformanceNameLabelling.setText(BundleManager.getBundle().getString("events.performance.name") + ": ");
+        lbReservationIDLabelling.setText(BundleManager.getBundle().getString("transaction.detail.reservationNumber"));
+        lbStatusLabelling.setText(BundleManager.getBundle().getString("transaction.status.name")+ ": ");
+
+
         TicketStatus status = ticketTransactionDTO.getStatus();
         lbBoughtReserved.setText(
             status == TicketStatus.BOUGHT ? BundleManager.getBundle()
@@ -62,9 +75,9 @@ public class TransactionListElementController {
             .getChildren();
 
         //copy HBox away, clear VBox and add HBox again
-        HBox hbReservationTemp = hbReservation;
+        /*HBox hbReservationTemp = hbReservation;
         vbReservationAndTicketsChildren.clear();
-        vbReservationAndTicketsChildren.add(hbReservationTemp);
+        vbReservationAndTicketsChildren.add(hbReservationTemp);*/
 
         for (TicketDTO ticket : ticketTransactionDTO.getTickets()) {
             LoadWrapper wrapper = springFxmlLoader

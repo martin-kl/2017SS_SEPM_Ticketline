@@ -122,12 +122,6 @@ public class TicketTransactionEndpointTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void findTransactionByPartialId() {
-        //TODO: test with real data because mockito cannot be used to test the query
-        //Do this when Benni merged his data generation for tests
-    }
-
-    @Test
     public void findTransactionByInvalidId() {
         Response response = RestAssured
             .given()
