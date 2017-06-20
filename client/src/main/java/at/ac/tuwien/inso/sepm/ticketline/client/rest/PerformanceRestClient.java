@@ -13,10 +13,4 @@ public interface PerformanceRestClient {
      */
     DetailedPerformanceDTO findOne(UUID id) throws DataAccessException;
 
-    /**
-     * saves a new or edited performance
-     * @param detailedPerformanceDTO The performance object to save or edit
-     * @return the same performance passed into the method with fields updated
-     */
-    DetailedPerformanceDTO save(DetailedPerformanceDTO detailedPerformanceDTO) throws DataAccessException;
 }
