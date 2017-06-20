@@ -1,373 +1,394 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane minWidth="678.0" prefHeight="678.0" prefWidth="975.0" stylesheets="@/css/filterDropdown.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.tuwien.inso.sepm.ticketline.client.gui.events.EventsController">
    <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="678.0" prefWidth="975.0" spacing="5.0">
-                <children>
-                  <AnchorPane>
-                     <children>
-                        <ButtonBar layoutY="-4.0" prefHeight="23.0" prefWidth="1041.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
-                          <buttons>
-                            <Button fx:id="btnAsList" mnemonicParsing="false" onAction="#handleAsListClick" />
-                              <Button fx:id="btnAsGraph" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAsGraphClick" />
-                          </buttons>
-                        </ButtonBar>
-                         <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
-                             <children>
-                                 <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
-                                 <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
-                             </children>
-                         </HBox>
-
-                           </children>
-                  </AnchorPane>
-
-                          <Separator disable="true" />
-                  <AnchorPane fx:id="apListFilters">
-                     <children>
-                        <VBox prefHeight="195.0" prefWidth="955.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <VBox>
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="678.0" prefWidth="975.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                      <children>
+                        <AnchorPane>
                            <children>
-                              <AnchorPane>
+                              <ButtonBar layoutY="-4.0" prefHeight="23.0" prefWidth="1041.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-4.0">
+                                <buttons>
+                                  <Button fx:id="btnAsList" mnemonicParsing="false" onAction="#handleAsListClick" />
+                                    <Button fx:id="btnAsGraph" layoutX="20.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleAsGraphClick" />
+                                </buttons>
+                              </ButtonBar>
+                               <HBox spacing="5.0" stylesheets="@/css/tabHeader.css">
+                                   <children>
+                                       <Label fx:id="lblHeaderIcon" styleClass="headerIcon" />
+                                       <Label fx:id="lblHeaderTitle" styleClass="headerTitle" text="&lt;HeaderTitle&gt;" />
+                                   </children>
+                               </HBox>
+      
+                                       </children>
+                        </AnchorPane>
+      
+                                      <Separator disable="true" />
+                        <AnchorPane fx:id="apListFilters" maxHeight="154.0">
+                           <children>
+                              <VBox prefHeight="195.0" prefWidth="955.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="473.0" minWidth="10.0" prefWidth="398.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.0" minWidth="10.0" prefWidth="557.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
+                                    <AnchorPane>
                                        <children>
-                                          <ButtonBar minHeight="-Infinity" prefHeight="25.0" prefWidth="739.0" GridPane.columnIndex="1">
-                                             <buttons>
-                                                <Button fx:id="btnExtendedSearch" mnemonicParsing="false" onAction="#handleExtendedSearchClick" text="&lt;Extended Search&gt;" />
-                                             </buttons>
-                                          </ButtonBar>
-                                          <GridPane prefWidth="424.0">
+                                          <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="236.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="162.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="398.0" />
+                                              <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="557.0" />
                                             </columnConstraints>
                                             <rowConstraints>
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <TextField fx:id="tfGeneralSearch" prefWidth="225.0" promptText="&lt;Search ..&gt;">
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                </TextField>
-                                                <Button fx:id="btnGeneralSearch" mnemonicParsing="false" onAction="#handleGeneralSearchClick" text="&lt;Search&gt;" GridPane.columnIndex="1">
-                                                   <GridPane.margin>
-                                                      <Insets left="10.0" />
-                                                   </GridPane.margin>
-                                                </Button>
+                                                <ButtonBar minHeight="-Infinity" prefHeight="25.0" prefWidth="739.0" GridPane.columnIndex="1">
+                                                   <buttons>
+                                                      <Button fx:id="btnExtendedSearch" mnemonicParsing="false" onAction="#handleExtendedSearchClick" text="&lt;Extended Search&gt;" />
+                                                   </buttons>
+                                                </ButtonBar>
+                                                <GridPane prefWidth="424.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="236.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="162.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <TextField fx:id="tfGeneralSearch" prefWidth="225.0" promptText="&lt;Search ..&gt;">
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </TextField>
+                                                      <Button fx:id="btnGeneralSearch" mnemonicParsing="false" onAction="#handleGeneralSearchClick" text="&lt;Search&gt;" GridPane.columnIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets left="10.0" />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
                                              </children>
                                           </GridPane>
                                        </children>
-                                    </GridPane>
-                                 </children>
-                              </AnchorPane>
-                              <Separator disable="true" />
-                                <AnchorPane fx:id="apExtendedFilters" minHeight="111.0">
-                                 <children>
-                                    <SplitPane dividerPositions="0.31584470094438616" prefHeight="111.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <items>
-                                        <AnchorPane maxWidth="300.0" minWidth="300.0">
-                                             <children>
-                                                <BorderPane layoutX="14.0" prefHeight="109.0" prefWidth="298.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <top>
-                                                      <Label fx:id="lblEventFilter" text="&lt;Event Filter&gt;" BorderPane.alignment="CENTER">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                         <BorderPane.margin>
-                                                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                                         </BorderPane.margin>
-                                                      </Label>
-                                                   </top>
-                                                   <center>
-                                                      <BorderPane BorderPane.alignment="CENTER">
-                                                         <center>
-                                                            <GridPane alignment="CENTER" hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
-                                                               <columnConstraints>
-                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                                                               </columnConstraints>
-                                                               <rowConstraints>
-                                                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                               </rowConstraints>
-                                                               <children>
-                                                                  <TextField fx:id="tfEventSearch" maxWidth="1.7976931348623157E308" promptText="&lt;Search for ..&gt;" GridPane.halignment="CENTER">
-                                                                     <opaqueInsets>
-                                                                        <Insets />
-                                                                     </opaqueInsets>
-                                                                     <GridPane.margin>
-                                                                        <Insets />
-                                                                     </GridPane.margin>
-                                                                  </TextField>
-                                                                  <TextField fx:id="tfArtistName" maxWidth="1.7976931348623157E308" onAction="#handleArtistEnter" promptText="&lt;Artist name ..&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                                                     <opaqueInsets>
-                                                                        <Insets />
-                                                                     </opaqueInsets>
-                                                                  </TextField>
-                                                                  <ComboBox fx:id="cbEventAttribute" maxWidth="1.7976931348623157E308" prefWidth="120.0" promptText="&lt;Eventname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                                                  <ComboBox fx:id="cbArtistMatches" maxWidth="1.7976931348623157E308" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                                               </children>
-                                                               <opaqueInsets>
-                                                                  <Insets />
-                                                               </opaqueInsets>
+                                    </AnchorPane>
+                                    <Separator disable="true" />
+                                      <AnchorPane fx:id="apExtendedFilters" minHeight="111.0">
+                                       <children>
+                                          <SplitPane dividerPositions="0.31584470094438616" prefHeight="111.0" prefWidth="955.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <items>
+                                              <AnchorPane maxWidth="300.0" minWidth="300.0">
+                                                   <children>
+                                                      <BorderPane layoutX="14.0" prefHeight="109.0" prefWidth="298.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <top>
+                                                            <Label fx:id="lblEventFilter" text="&lt;Event Filter&gt;" BorderPane.alignment="CENTER">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
                                                                <BorderPane.margin>
-                                                                  <Insets />
+                                                                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                                                                </BorderPane.margin>
-                                                               <padding>
-                                                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                               </padding>
-                                                            </GridPane>
-                                                         </center>
-                                                         <top>
-                                                            <Separator prefHeight="3.0" prefWidth="281.0" BorderPane.alignment="CENTER" />
-                                                         </top>
-                                                      </BorderPane>
-                                                   </center>
-                                                </BorderPane>
-                                             </children>
-                                          </AnchorPane>
-                                        <AnchorPane>
-                                             <children>
-                                                <BorderPane layoutX="14.0" layoutY="-1.0" prefHeight="109.0" prefWidth="649.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                   <top>
-                                                      <Label fx:id="lblPerformanceFilter" text="&lt;Performance Filter&gt;" BorderPane.alignment="CENTER">
-                                                         <font>
-                                                            <Font size="20.0" />
-                                                         </font>
-                                                         <BorderPane.margin>
-                                                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
-                                                         </BorderPane.margin>
-                                                      </Label>
-                                                   </top>
-                                                   <center>
-                                                      <BorderPane prefHeight="109.0" prefWidth="649.0" BorderPane.alignment="CENTER">
-                                                         <top>
-                                                            <Separator prefHeight="3.0" prefWidth="666.0" BorderPane.alignment="CENTER" />
+                                                            </Label>
                                                          </top>
                                                          <center>
-                                                            <GridPane BorderPane.alignment="CENTER">
-                                                              <columnConstraints>
-                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="343.0" minWidth="10.0" percentWidth="46.0" prefWidth="279.0" />
-                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" percentWidth="46.0" prefWidth="306.0" />
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="10.0" percentWidth="8.0" prefWidth="58.0" />
-                                                              </columnConstraints>
-                                                              <rowConstraints>
-                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                              </rowConstraints>
-                                                               <children>
-                                                                  <GridPane>
-                                                                    <columnConstraints>
-                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                    </columnConstraints>
-                                                                    <rowConstraints>
-                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                    </rowConstraints>
-                                                                     <children>
-                                                                        <GridPane hgap="5.0">
-                                                                          <columnConstraints>
-                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                          </columnConstraints>
-                                                                          <rowConstraints>
-                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                          </rowConstraints>
-                                                                           <children>
-                                                                              <TextField fx:id="tfPrice" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="&lt;Price ..&gt;" GridPane.halignment="CENTER">
-                                                                                 <opaqueInsets>
-                                                                                    <Insets />
-                                                                                 </opaqueInsets>
-                                                                              </TextField>
-                                                                              <DatePicker fx:id="dpStartTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;Start ..&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                                                              <DatePicker fx:id="dpEndTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;End ..&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                                                                           </children>
-                                                                           <padding>
-                                                                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                                           </padding>
-                                                                        </GridPane>
-                                                                        <GridPane alignment="CENTER" hgap="5.0" prefHeight="66.0" prefWidth="321.0" GridPane.rowIndex="1">
-                                                                           <columnConstraints>
-                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" percentWidth="25.0" prefWidth="98.0" />
-                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" percentWidth="25.0" prefWidth="104.0" />
-                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" percentWidth="25.0" prefWidth="99.0" />
-                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
-                                                                           </columnConstraints>
-                                                                           <rowConstraints>
-                                                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                                           </rowConstraints>
-                                                                           <children>
-                                                                              <Label fx:id="lblDuration" text="&lt;Duration:&gt;">
-                                                                                 <GridPane.margin>
-                                                                                    <Insets />
-                                                                                 </GridPane.margin>
-                                                                                 <padding>
-                                                                                    <Insets left="4.0" />
-                                                                                 </padding>
-                                                                                 <font>
-                                                                                    <Font size="13.0" />
-                                                                                 </font>
-                                                                              </Label>
-                                                                              <TextField fx:id="tfDurationDays" promptText="&lt;Days&gt;" GridPane.columnIndex="1" />
-                                                                              <TextField fx:id="tfDurationHours" promptText="&lt;Hours&gt;" GridPane.columnIndex="2" />
-                                                                              <TextField fx:id="tfDurationMinutes" promptText="&lt;Minutes&gt;" GridPane.columnIndex="3" />
-                                                                           </children>
-                                                                           <padding>
-                                                                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                                                           </padding>
-                                                                        </GridPane>
-                                                                     </children>
-                                                                  </GridPane>
-                                                                  <GridPane alignment="CENTER" hgap="5.0" vgap="10.0" GridPane.columnIndex="1">
+                                                            <BorderPane BorderPane.alignment="CENTER">
+                                                               <center>
+                                                                  <GridPane alignment="CENTER" hgap="5.0" vgap="5.0" BorderPane.alignment="CENTER">
                                                                      <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" percentWidth="60.0" prefWidth="183.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" percentWidth="40.0" prefWidth="109.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                                                      </columnConstraints>
                                                                      <rowConstraints>
                                                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                                                      </rowConstraints>
                                                                      <children>
-                                                                        <TextField fx:id="tfLocationSearch" maxWidth="1.7976931348623157E308" onAction="#handleLocationEnter" prefWidth="0.0" promptText="&lt;Search for ..&gt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                                        <TextField fx:id="tfEventSearch" maxWidth="1.7976931348623157E308" promptText="&lt;Search for ..&gt;" GridPane.halignment="CENTER">
+                                                                           <opaqueInsets>
+                                                                              <Insets />
+                                                                           </opaqueInsets>
+                                                                           <GridPane.margin>
+                                                                              <Insets />
+                                                                           </GridPane.margin>
+                                                                        </TextField>
+                                                                        <TextField fx:id="tfArtistName" maxWidth="1.7976931348623157E308" onAction="#handleArtistEnter" promptText="&lt;Artist name ..&gt;" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                                                            <opaqueInsets>
                                                                               <Insets />
                                                                            </opaqueInsets>
                                                                         </TextField>
-                                                                        <ComboBox fx:id="cbLocationAttribute" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Locationname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                                                        <ComboBox fx:id="cbLocationMatches" maxWidth="1.7976931348623157E308" prefWidth="160.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                                                        <ComboBox fx:id="cbPerformanceType" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Type&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                                                        <ComboBox fx:id="cbEventAttribute" maxWidth="1.7976931348623157E308" prefWidth="120.0" promptText="&lt;Eventname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                                                                        <ComboBox fx:id="cbArtistMatches" maxWidth="1.7976931348623157E308" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                                                      </children>
+                                                                     <opaqueInsets>
+                                                                        <Insets />
+                                                                     </opaqueInsets>
+                                                                     <BorderPane.margin>
+                                                                        <Insets />
+                                                                     </BorderPane.margin>
                                                                      <padding>
                                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                                      </padding>
                                                                   </GridPane>
-                                                                  <AnchorPane GridPane.columnIndex="2">
-                                                                     <children>
-                                                                        <Button fx:id="btnSearchExtended" mnemonicParsing="false" onAction="#handleGeneralSearchClick" prefHeight="67.0" prefWidth="51.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                     </children>
-                                                                     <padding>
-                                                                        <Insets bottom="4.0" left="5.0" top="4.0" />
-                                                                     </padding>
-                                                                  </AnchorPane>
-                                                               </children>
-                                                               <padding>
-                                                                  <Insets bottom="1.0" right="5.0" />
-                                                               </padding>
-                                                            </GridPane>
+                                                               </center>
+                                                               <top>
+                                                                  <Separator prefHeight="3.0" prefWidth="281.0" BorderPane.alignment="CENTER" />
+                                                               </top>
+                                                            </BorderPane>
                                                          </center>
                                                       </BorderPane>
-                                                   </center>
-                                                </BorderPane>
-                                             </children>
-                                          </AnchorPane>
-                                      </items>
-                                    </SplitPane>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="apGraphFilters" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox prefHeight="385.0" prefWidth="955.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <VBox spacing="7.0" VBox.vgrow="NEVER">
-                                 <children>
-                                    <HBox spacing="10.0">
-                                       <children>
-                                          <ComboBox fx:id="cbMonth" prefWidth="150.0" promptText="&lt;Month&gt;" />
-                                          <ComboBox fx:id="cbEventCategory" prefWidth="150.0" />
-                                          <Button fx:id="btnGraphSearch" mnemonicParsing="false" onAction="#handleGraphSearchClick" text="&lt;Search&gt;" />
+                                                   </children>
+                                                </AnchorPane>
+                                              <AnchorPane>
+                                                   <children>
+                                                      <BorderPane layoutX="14.0" layoutY="-1.0" prefHeight="109.0" prefWidth="649.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <top>
+                                                            <Label fx:id="lblPerformanceFilter" text="&lt;Performance Filter&gt;" BorderPane.alignment="CENTER">
+                                                               <font>
+                                                                  <Font size="20.0" />
+                                                               </font>
+                                                               <BorderPane.margin>
+                                                                  <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                               </BorderPane.margin>
+                                                            </Label>
+                                                         </top>
+                                                         <center>
+                                                            <BorderPane prefHeight="109.0" prefWidth="649.0" BorderPane.alignment="CENTER">
+                                                               <top>
+                                                                  <Separator prefHeight="3.0" prefWidth="666.0" BorderPane.alignment="CENTER" />
+                                                               </top>
+                                                               <center>
+                                                                  <GridPane BorderPane.alignment="CENTER">
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="343.0" minWidth="10.0" percentWidth="46.0" prefWidth="279.0" />
+                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" percentWidth="46.0" prefWidth="306.0" />
+                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="10.0" percentWidth="8.0" prefWidth="58.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <GridPane>
+                                                                          <columnConstraints>
+                                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                          </columnConstraints>
+                                                                          <rowConstraints>
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                          </rowConstraints>
+                                                                           <children>
+                                                                              <GridPane hgap="5.0">
+                                                                                <columnConstraints>
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
+                                                                                 <children>
+                                                                                    <TextField fx:id="tfPrice" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="160.0" promptText="&lt;Price ..&gt;" GridPane.halignment="CENTER">
+                                                                                       <opaqueInsets>
+                                                                                          <Insets />
+                                                                                       </opaqueInsets>
+                                                                                    </TextField>
+                                                                                    <DatePicker fx:id="dpStartTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;Start ..&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                                                    <DatePicker fx:id="dpEndTime" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="90.0" promptText="&lt;End ..&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                                                                                 </children>
+                                                                                 <padding>
+                                                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                                 </padding>
+                                                                              </GridPane>
+                                                                              <GridPane alignment="CENTER" hgap="5.0" prefHeight="66.0" prefWidth="321.0" GridPane.rowIndex="1">
+                                                                                 <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="10.0" percentWidth="25.0" prefWidth="98.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.0" minWidth="10.0" percentWidth="25.0" prefWidth="104.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" percentWidth="25.0" prefWidth="99.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+                                                                                 </columnConstraints>
+                                                                                 <rowConstraints>
+                                                                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                                 </rowConstraints>
+                                                                                 <children>
+                                                                                    <Label fx:id="lblDuration" text="&lt;Duration:&gt;">
+                                                                                       <GridPane.margin>
+                                                                                          <Insets />
+                                                                                       </GridPane.margin>
+                                                                                       <padding>
+                                                                                          <Insets left="4.0" />
+                                                                                       </padding>
+                                                                                       <font>
+                                                                                          <Font size="13.0" />
+                                                                                       </font>
+                                                                                    </Label>
+                                                                                    <TextField fx:id="tfDurationDays" promptText="&lt;Days&gt;" GridPane.columnIndex="1" />
+                                                                                    <TextField fx:id="tfDurationHours" promptText="&lt;Hours&gt;" GridPane.columnIndex="2" />
+                                                                                    <TextField fx:id="tfDurationMinutes" promptText="&lt;Minutes&gt;" GridPane.columnIndex="3" />
+                                                                                 </children>
+                                                                                 <padding>
+                                                                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                                 </padding>
+                                                                              </GridPane>
+                                                                           </children>
+                                                                        </GridPane>
+                                                                        <GridPane alignment="CENTER" hgap="5.0" vgap="10.0" GridPane.columnIndex="1">
+                                                                           <columnConstraints>
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="183.0" minWidth="10.0" percentWidth="60.0" prefWidth="183.0" />
+                                                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.0" minWidth="10.0" percentWidth="40.0" prefWidth="109.0" />
+                                                                           </columnConstraints>
+                                                                           <rowConstraints>
+                                                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                           </rowConstraints>
+                                                                           <children>
+                                                                              <TextField fx:id="tfLocationSearch" maxWidth="1.7976931348623157E308" onAction="#handleLocationEnter" prefWidth="0.0" promptText="&lt;Search for ..&gt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                                                                 <opaqueInsets>
+                                                                                    <Insets />
+                                                                                 </opaqueInsets>
+                                                                              </TextField>
+                                                                              <ComboBox fx:id="cbLocationAttribute" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Locationname&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                                              <ComboBox fx:id="cbLocationMatches" maxWidth="1.7976931348623157E308" prefWidth="160.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                                                              <ComboBox fx:id="cbPerformanceType" maxWidth="1.7976931348623157E308" prefWidth="135.0" promptText="&lt;Type&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                                                           </children>
+                                                                           <padding>
+                                                                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                           </padding>
+                                                                        </GridPane>
+                                                                        <AnchorPane GridPane.columnIndex="2">
+                                                                           <children>
+                                                                              <Button fx:id="btnSearchExtended" mnemonicParsing="false" onAction="#handleGeneralSearchClick" prefHeight="67.0" prefWidth="51.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                           </children>
+                                                                           <padding>
+                                                                              <Insets bottom="4.0" left="5.0" top="4.0" />
+                                                                           </padding>
+                                                                        </AnchorPane>
+                                                                     </children>
+                                                                     <padding>
+                                                                        <Insets bottom="1.0" right="5.0" />
+                                                                     </padding>
+                                                                  </GridPane>
+                                                               </center>
+                                                            </BorderPane>
+                                                         </center>
+                                                      </BorderPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </items>
+                                          </SplitPane>
                                        </children>
-                                    </HBox>
-                                    <Separator disable="true" />
+                                    </AnchorPane>
                                  </children>
                               </VBox>
-                              <GridPane VBox.vgrow="ALWAYS">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="58.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="42.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <AnchorPane>
-                                       <children>
-                                          <BarChart fx:id="barChartTopTen" layoutX="-116.0" layoutY="-121.0" prefHeight="279.0" prefWidth="664.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <xAxis>
-                                                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
-                                             </xAxis>
-                                             <yAxis>
-                                                <NumberAxis side="LEFT" />
-                                             </yAxis>
-                                          </BarChart>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane GridPane.columnIndex="2">
-                                       <children>
-                                          <VBox fx:id="vbPerformanceParent" layoutX="283.0" layoutY="-1.0" prefHeight="345.0" prefWidth="401.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1">
-                                       <GridPane.margin>
-                                          <Insets bottom="5.0" />
-                                       </GridPane.margin>
-                                    </Separator>
-                                 </children>
-                              </GridPane>
                            </children>
-                        </VBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="2.0" />
-                     </VBox.margin>
-                  </AnchorPane>
-                    <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-                        <VBox fx:id="vbEventsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                            <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </padding>
-                        </VBox>
-                    </ScrollPane>
-                </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="apGraphFilters" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="385.0" prefWidth="955.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <VBox spacing="7.0" VBox.vgrow="NEVER">
+                                       <children>
+                                          <HBox spacing="10.0">
+                                             <children>
+                                                <ComboBox fx:id="cbMonth" prefWidth="150.0" promptText="&lt;Month&gt;" />
+                                                <ComboBox fx:id="cbEventCategory" prefWidth="150.0" />
+                                                <Button fx:id="btnGraphSearch" mnemonicParsing="false" onAction="#handleGraphSearchClick" text="&lt;Search&gt;" />
+                                             </children>
+                                          </HBox>
+                                          <Separator disable="true" />
+                                       </children>
+                                    </VBox>
+                                    <GridPane VBox.vgrow="ALWAYS">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="58.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="42.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <AnchorPane>
+                                             <children>
+                                                <BarChart fx:id="barChartTopTen" layoutX="-116.0" layoutY="-121.0" prefHeight="279.0" prefWidth="664.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <xAxis>
+                                                      <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                                                   </xAxis>
+                                                   <yAxis>
+                                                      <NumberAxis side="LEFT" />
+                                                   </yAxis>
+                                                </BarChart>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane GridPane.columnIndex="2">
+                                             <children>
+                                                <VBox fx:id="vbPerformanceParent" layoutX="283.0" layoutY="-1.0" prefHeight="345.0" prefWidth="401.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                          <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1">
+                                             <GridPane.margin>
+                                                <Insets bottom="5.0" />
+                                             </GridPane.margin>
+                                          </Separator>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="2.0" />
+                           </VBox.margin>
+                        </AnchorPane>
+                          <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                              <VBox fx:id="vbEventsElements" fillWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                  <padding>
+                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                  </padding>
+                              </VBox>
+                          </ScrollPane>
+                      </children>
+                  </VBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </VBox>
-            <VBox spacing="5.0">
+         </center>
+         <bottom>
+            <VBox alignment="TOP_RIGHT" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
                   <Separator />
-                  <ButtonBar prefHeight="25.0" prefWidth="1041.0">
+                  <ButtonBar>
                      <buttons>
                         <Button fx:id="btnManageTickets" mnemonicParsing="false" onAction="#manageTicketsHandler" text="&lt;Manage Tickets&gt;" />
                      </buttons>
                   </ButtonBar>
                </children>
             </VBox>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
+         </bottom>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
-      </VBox>
+      </BorderPane>
    </children>
 </AnchorPane>
