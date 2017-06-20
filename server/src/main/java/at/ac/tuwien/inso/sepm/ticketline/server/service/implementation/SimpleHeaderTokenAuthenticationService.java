@@ -13,10 +13,23 @@ import at.ac.tuwien.inso.sepm.ticketline.server.service.PrincipalService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,18 +42,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -136,22 +137,9 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 .futureToken(futureToken)
                 .build();
         } catch (AuthenticationException e) {
-            /*
             //we get in here if the credentials were wrong
             //and here we add our login counter if the login was not successful
-            //at first we have to check if there is even a user with the username:
 
-            Principal principal;
-            try {
-                principal = principalService.findPrincipalByUsername(username);
-            } catch (NotFoundException f) {
-                log.error(
-                    "tAuthenticationException caught, then tried to get user but user does not exist -> throw a BadCredentialException");
-                //now we know, that there is no such user
-                //so we just throw the caught exception for BadCredentials
-                throw new BadCredentialsException(e.getMessage());
-            }
-            */
             log.error(
                 "AuthenticationException caught for an existing user"
                     + " -> increment FailedLoginCounter and throw a BadCredentialException");
@@ -160,7 +148,6 @@ public class SimpleHeaderTokenAuthenticationService implements HeaderTokenAuthen
                 principalRepository.incrementFailedLoginCount(principal.getId(), true);
                 throw new BadCredentialsException(e.getMessage());
             }else {
-                System.out.println("\n\n\tin here - user has more than 5 failed login attempts\n\n");
                 principalRepository.incrementFailedLoginCount(principal.getId(), false);
                 //throw exception to the client to show him that
                 throw new AccountLockedException("User is locked because he tried the wrong password for 5 times");

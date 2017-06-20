@@ -1,6 +1,7 @@
 package at.ac.tuwien.inso.sepm.ticketline.server.endpoint;
 
 import at.ac.tuwien.inso.sepm.ticketline.rest.enums.PaymentProviderOption;
+import at.ac.tuwien.inso.sepm.ticketline.rest.payment.PaymentRequestDTO;
 import at.ac.tuwien.inso.sepm.ticketline.rest.ticket.DetailedTicketTransactionDTO;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.TicketTransaction;
 import at.ac.tuwien.inso.sepm.ticketline.server.entity.mapper.tickettransaction.TicketTransactionMapper;
@@ -123,13 +124,12 @@ public class TicketTransactionEndpoint {
     @ApiOperation(value = "Paying the transaction")
     public boolean pay(
         @PathVariable(name = "transactionid") Long transactionId,
-        @ModelAttribute(name = "source") String source,
-        @ModelAttribute(name = "provider")PaymentProviderOption paymentProviderOption
+        @RequestBody PaymentRequestDTO dto
     ) {
         paymentService.pay(
-            paymentProviderOption,
+            dto.getProvider(),
             transactionId,
-            source
+            dto.getSource()
         );
         return true;
     }
