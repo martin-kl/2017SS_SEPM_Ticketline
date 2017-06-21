@@ -48,8 +48,8 @@ public class PerformanceDataGenerator {
     private final Faker faker = new Faker();
 
     private final String[] performanceNames = {"Spielberg - Red Bull Ring",
-        "Stadthalle Wiener - Auftritt 1",
-        "Stadthalle Wiener - Auftritt 2",
+        "Stadthalle - Auftritt 1",
+        "Stadthalle - Auftritt 2",
         "Tournee 2017 - Olympiahalle",
         "Tournee 2017 - Stadthalle",
         "Freiluftauftritt Krieau",
