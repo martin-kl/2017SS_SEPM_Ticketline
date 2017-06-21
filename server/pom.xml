@@ -7,16 +7,16 @@
     <parent>
         <groupId>at.ac.tuwien.inso.sepm.ticketline</groupId>
         <artifactId>ticketline</artifactId>
-        <version>3.6.0</version>
+        <version>3.7.0-FINAL</version>
     </parent>
 
     <artifactId>ticketline-server</artifactId>
-    <version>3.6.0</version>
+    <version>3.7.0-FINAL</version>
     <packaging>jar</packaging>
 
     <properties>
         <!-- dependencies -->
-        <ticketline-rest.version>3.6.0</ticketline-rest.version>
+        <ticketline-rest.version>3.7.0-FINAL</ticketline-rest.version>
         <h2.version>1.4.194</h2.version>
         <mapstruct.version>1.2.0.Beta2</mapstruct.version>
         <jjwt.version>0.7.0</jjwt.version>

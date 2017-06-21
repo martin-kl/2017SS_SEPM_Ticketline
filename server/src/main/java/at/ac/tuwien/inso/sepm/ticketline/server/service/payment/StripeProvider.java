@@ -42,7 +42,6 @@ public class StripeProvider implements PaymentProvider {
 
             return charge.getId();
         } catch (StripeException e) {
-            e.printStackTrace();
             throw new PaymentException();
         }
 
