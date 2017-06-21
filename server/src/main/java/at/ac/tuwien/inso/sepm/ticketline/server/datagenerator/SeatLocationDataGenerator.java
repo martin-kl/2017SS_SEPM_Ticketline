@@ -21,7 +21,7 @@ public class SeatLocationDataGenerator {
     private static final int NUMBER_OF_LOCATIONS_TO_GENERATE = 10;
 
     private static final int MIN_NUMBER_OF_SEATS_TO_GENERATE = 10;
-    private static final int MAX_NUMBER_OF_SEATS_TO_GENERATE = 40;
+    private static final int MAX_NUMBER_OF_SEATS_TO_GENERATE = 20;
     private static final int MIN_NUMBER_OF_ROWS_TO_GENERATE = 10;
     private static final int MAX_NUMBER_OF_ROWS_TO_GENERATE = 20;
 
@@ -40,6 +40,17 @@ public class SeatLocationDataGenerator {
 
     private final Faker faker = new Faker();
 
+    private final String[] seatLocationNames = {
+        "Sporthalle-Halle 1",
+        "Olympiahalle Innsbruck",
+        "Stadthalle Wien-Halle 1",
+        "Stadthalle Wien-Halle 2",
+        "Sporthalle Wien",
+        "Stadthalle Graz",
+        "Wien-Krieau",
+        "Ernst Happel Stadion"
+    };
+
     @PostConstruct
     private void generateSeatLocations() {
         if (seatLocationRepository.count() > 0) {
@@ -52,10 +63,11 @@ public class SeatLocationDataGenerator {
             log.info("loaded {} price categories", priceCategoryList.size());
 
             for (int i = 0; i < NUMBER_OF_LOCATIONS_TO_GENERATE; i++) {
+                int randomSeatLocation = (int) (Math.random() * seatLocationNames.length);
 
                 SeatLocation sectorLocation = SeatLocation.builder()
-                    .name(faker.name().lastName())
-                    //.name("Halle " + faker.name().lastName())
+                    //.name(faker.name().lastName())
+                    .name(seatLocationNames[randomSeatLocation])
                     .city(faker.address().city())
                     .country(faker.address().country())
                     .street(faker.address().streetAddress())

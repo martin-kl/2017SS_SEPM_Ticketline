@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class PerformanceDataGenerator {
 
-    private static final int NUMBER_OF_PERFORMANCES_FOR_EVENT_TO_GENERATE = 3;
+    private static final int NUMBER_OF_PERFORMANCES_FOR_EVENT_TO_GENERATE = 2;
 
     @Autowired
     private EventRepository eventRepository;
@@ -47,6 +47,14 @@ public class PerformanceDataGenerator {
 
     private final Faker faker = new Faker();
 
+    private final String[] performanceNames = {"Spielberg - Red Bull Ring",
+        "Stadthalle - Auftritt 1",
+        "Stadthalle - Auftritt 2",
+        "Tournee 2017 - Olympiahalle",
+        "Tournee 2017 - Stadthalle",
+        "Freiluftauftritt Krieau",
+        "Freiluftkonzert Schladming"};
+
     @PostConstruct
     private void generatePerformances() {
         if (performanceRepository.count() > 0) {
@@ -67,9 +75,11 @@ public class PerformanceDataGenerator {
                         .future(365 * 3, TimeUnit.DAYS)
                         .toInstant();
 
+                    int randomPerformanceName = (int) (Math.random() * performanceNames.length);
+
                     Performance performance = Performance.builder()
-                        //.name("Performance " + faker.name().lastName())
-                        .name(faker.name().lastName())
+                        .name(performanceNames[randomPerformanceName])
+                        //.name(faker.name().lastName())
                         .event(event)
                         .location(locationList.get(randomLocationId))
                         .defaultPrice(new BigDecimal(Math.random() * 200 + 10))
@@ -79,7 +89,6 @@ public class PerformanceDataGenerator {
 
                     log.debug("saving performance {}", performance);
                     performanceRepository.save(performance);
-
                 }
             }
         }

@@ -44,8 +44,10 @@ public class CustomerDataGenerator {
         long ms = -946771200000L + (Math.abs(random.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000));
         LocalDate birthday = Instant.ofEpochMilli(ms).atZone(ZoneId.systemDefault()).toLocalDate();
         return Customer.builder()
-            .firstName(faker.artist().name())
-            .lastName(faker.artist().name())
+            .firstName(faker.name().firstName())
+            //.firstName(faker.artist().name())
+            .lastName(faker.name().lastName())
+            //.lastName(faker.artist().name())
             .address(faker.address().fullAddress())
             .email(faker.internet().emailAddress())
             .birthday(birthday)
