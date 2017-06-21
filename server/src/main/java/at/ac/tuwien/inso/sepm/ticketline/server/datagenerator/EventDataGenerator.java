@@ -21,8 +21,6 @@ import java.util.List;
 @Component
 public class EventDataGenerator {
 
-    private static final int NUMBER_OF_EVENTS_TO_GENERATE = 25;
-
     @Autowired
     private EventRepository eventRepository;
 
@@ -38,24 +36,37 @@ public class EventDataGenerator {
 
     private final Faker faker = new Faker();
 
+    //ATTENTION: eventNames and eventDescriptions have to have the same number of entries
+    private final String[] eventNames = {"Andreas Gabalier-Heimspiel",
+        "David Guetta - Unity Tour",
+        "PLANET ERDE II - 2017",
+        "Die Toten Hosen-Zurück auf dem Bolzplatz Tour",
+        "The Rolling Stones - 2017"};
+    private final String[] eventDescriptions = {"Die einzigen MEGA OPEN AIRS von Andreas Gabalier 2017 in ÖSTERREICH",
+        "Neben Superstar DAVID GUETTA kommen auch OLIVER HELDENS und JONAS BLUE",
+        "Die schönsten Bilder der neuen BBC-Erfolgsserie Planet Erde II",
+        "Die Toten Hosen treten nach ihrem Auftritt beim \"Rock in Vienna 2017\" noch bei zwei weiteren Gelegenheiten im Spätsommer in Wiesen und Innsbruck an",
+        "Die Tour wird „STONES – NO FILTER“ heißen und bringt Mick Jagger, Keith Richards, Charlie Watts und Ronnie Wood zurück auf Tour"};
+
     @PostConstruct
     private void generateEvents() {
         if (eventRepository.count() > 0) {
             log.info("events already generated");
         } else {
-            log.info("generating {} event entries", NUMBER_OF_EVENTS_TO_GENERATE);
+            log.info("generating {} event entries", eventNames.length);
 
             List<Artist> artistList = artistRepository.findAll();
 
             log.info("loaded {} artists", artistList.size());
 
-            for (int i = 0; i < NUMBER_OF_EVENTS_TO_GENERATE; i++) {
+            for (int i = 0; i < eventNames.length; i++) {
 
                 Event event = Event.builder()
-                    //.category(EventCategory.NO_CATEGORY)
                     .category(getRandomCategory())
-                    .description(faker.lorem().characters(25, 100))
-                    .name(faker.name().lastName())
+                    .name(eventNames[i])
+                    .description(eventDescriptions[i])
+                    //.description(faker.lorem().characters(25, 100))
+                    //.name(faker.name().lastName())
                     .build();
                 log.debug("saving event {}", event);
                 eventRepository.save(event);
