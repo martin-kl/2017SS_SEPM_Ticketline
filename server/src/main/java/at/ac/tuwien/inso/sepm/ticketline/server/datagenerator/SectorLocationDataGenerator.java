@@ -43,6 +43,16 @@ public class SectorLocationDataGenerator {
 
     private final Faker faker = new Faker();
 
+    private final String[] sectorNames = {
+        "Olympiahalle Innsbruck",
+        "Stadthalle Wien-Halle 1",
+        "Stadthalle Wien-Halle 2",
+        "Sporthalle Wien",
+        "Stadthalle Graz",
+        "Wien-Krieau",
+        "Ernst Happel Stadion"
+    };
+
     @PostConstruct
     private void generateSectorLocations() {
         if (sectorLocationRepository.count() > 0) {
@@ -55,10 +65,12 @@ public class SectorLocationDataGenerator {
             log.info("loaded {} price categories", priceCategoryList.size());
 
             for (int i = 0; i < NUMBER_OF_LOCATIONS_TO_GENERATE; i++) {
+                int randomSectorName = (int) (Math.random() * sectorNames.length);
 
                 SectorLocation sectorLocation = SectorLocation.builder()
                     //.name("Halle " + faker.name().lastName())
-                    .name(faker.name().lastName())
+                    //.name(faker.name().lastName())
+                    .name(sectorNames[randomSectorName])
                     .city(faker.address().city())
                     .country(faker.address().country())
                     .street(faker.address().streetAddress())
