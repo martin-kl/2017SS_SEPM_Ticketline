@@ -420,7 +420,7 @@ public class EventsController {
             btnManageTickets.setDisable(true);
             loadDetailedPerformance(selectedPerformance);
         } else {
-            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection."));
+            showInvalidInputErrorDialog(BundleManager.getBundle().getString("event.error.dialog.noselection.header"));
         }
 
     }
