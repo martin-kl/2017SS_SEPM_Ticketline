@@ -21,7 +21,7 @@ public class SeatLocationDataGenerator {
     private static final int NUMBER_OF_LOCATIONS_TO_GENERATE = 10;
 
     private static final int MIN_NUMBER_OF_SEATS_TO_GENERATE = 10;
-    private static final int MAX_NUMBER_OF_SEATS_TO_GENERATE = 40;
+    private static final int MAX_NUMBER_OF_SEATS_TO_GENERATE = 20;
     private static final int MIN_NUMBER_OF_ROWS_TO_GENERATE = 10;
     private static final int MAX_NUMBER_OF_ROWS_TO_GENERATE = 20;
 

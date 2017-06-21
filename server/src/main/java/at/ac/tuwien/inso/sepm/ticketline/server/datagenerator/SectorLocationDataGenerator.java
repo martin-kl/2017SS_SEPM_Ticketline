@@ -7,15 +7,13 @@ import at.ac.tuwien.inso.sepm.ticketline.server.repository.PriceCategoryReposito
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.SectorLocationRepository;
 import at.ac.tuwien.inso.sepm.ticketline.server.repository.SectorRepository;
 import com.github.javafaker.Faker;
+import java.util.HashSet;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.List;
 
 @Slf4j
 @Profile("generateData")
@@ -70,22 +68,22 @@ public class SectorLocationDataGenerator {
                 log.debug("saving sector location {}", sectorLocation);
                 sectorLocationRepository.save(sectorLocation);
 
-                int max = (int) (Math.random() * MAX_NUMBER_OF_SECTORS_TO_GENERATE + MIN_NUMBER_OF_SECTORS_TO_GENERATE);
+                int max = (int) (Math.random() * MAX_NUMBER_OF_SECTORS_TO_GENERATE
+                    + MIN_NUMBER_OF_SECTORS_TO_GENERATE);
                 for (int j = 0; j < max; j++) {
                     int randomPriceCategoryId = (int) (Math.random() * priceCategoryList.size());
                     Sector sector = Sector.builder()
                         .location(sectorLocation)
                         .priceCategory(priceCategoryList.get(randomPriceCategoryId))
-                        .size((int) (Math.random() * MAX_NUMBER_OF_SECTOR_PLACES + MIN_NUMBER_OF_SECTOR_PLACES))
+                        .size((int) (Math.random() * MAX_NUMBER_OF_SECTOR_PLACES
+                            + MIN_NUMBER_OF_SECTOR_PLACES))
                         //.name("Sector " + faker.name().firstName())
                         .name(faker.name().firstName())
                         .build();
                     log.debug("saving sector {}", sector);
                     sectorRepository.save(sector);
                 }
-
             }
         }
     }
-
 }

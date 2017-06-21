@@ -37,16 +37,25 @@ public class EventDataGenerator {
     private final Faker faker = new Faker();
 
     //ATTENTION: eventNames and eventDescriptions have to have the same number of entries
+    //and for every entry in eventNames one event is created
     private final String[] eventNames = {"Andreas Gabalier-Heimspiel",
         "David Guetta - Unity Tour",
         "PLANET ERDE II - 2017",
-        "Die Toten Hosen-Zurück auf dem Bolzplatz Tour",
-        "The Rolling Stones - 2017"};
-    private final String[] eventDescriptions = {"Die einzigen MEGA OPEN AIRS von Andreas Gabalier 2017 in ÖSTERREICH",
-        "Neben Superstar DAVID GUETTA kommen auch OLIVER HELDENS und JONAS BLUE",
-        "Die schönsten Bilder der neuen BBC-Erfolgsserie Planet Erde II",
-        "Die Toten Hosen treten nach ihrem Auftritt beim \"Rock in Vienna 2017\" noch bei zwei weiteren Gelegenheiten im Spätsommer in Wiesen und Innsbruck an",
-        "Die Tour wird „STONES – NO FILTER“ heißen und bringt Mick Jagger, Keith Richards, Charlie Watts und Ronnie Wood zurück auf Tour"};
+        "Die Toten Hosen-Bolzplatz Tour",
+        "The Rolling Stones - 2017"
+    };
+    private final String[] eventDescriptions = {"Die einzigen MEGA OPEN AIRS von Andreas Gabalier 2017 in ÖSTERREICH.",
+        "Neben Superstar DAVID GUETTA kommen auch OLIVER HELDENS und JONAS BLUE.",
+        "Die schönsten Bilder der neuen BBC-Erfolgsserie Planet Erde II.",
+        "Die Toten Hosen treten nach ihrem Auftritt beim \"Rock in Vienna 2017\" noch bei zwei weiteren Gelegenheiten im Spätsommer in Wiesen und Innsbruck an.",
+        "Die Tour wird „STONES – NO FILTER“ heißen und bringt Mick Jagger, Keith Richards, Charlie Watts und Ronnie Wood zurück auf Tour."
+    };
+    private final EventCategory[] eventCategories = {EventCategory.CONCERT,
+        EventCategory.CONCERT,
+        EventCategory.THEATER,
+        EventCategory.CONCERT,
+        EventCategory.CONCERT
+    };
 
     @PostConstruct
     private void generateEvents() {
@@ -62,7 +71,8 @@ public class EventDataGenerator {
             for (int i = 0; i < eventNames.length; i++) {
 
                 Event event = Event.builder()
-                    .category(getRandomCategory())
+                    //.category(getRandomCategory())
+                    .category(eventCategories[i])
                     .name(eventNames[i])
                     .description(eventDescriptions[i])
                     //.description(faker.lorem().characters(25, 100))
