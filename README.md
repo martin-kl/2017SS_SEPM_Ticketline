@@ -1,31 +1,41 @@
-## Ticketline
+# Ticketline
 
-### Building Ticketline
+## Description
+This repository contains the code created during the *Software Engineering & Project Management* course by our group during the summer term 2017.
+The [description](documents/description) folder contains the description of the project as given by the TU Wien.
+
+### Brief summary of the project
+*Ticketline* is an application to manage and sell tickets for various events. The application is bi-lingual (DE & EN) and provides different views depending on the user that is logged-in: *Admins* can manage all events, tickets and bills whereas *Users* are limited to browse, filter, search for events and reserve & buy tickets or cancel a reservation/purchase.
+
+---
+
+## Building Ticketline
 
 1. Install:
     * Oracle JDK 1.8.0_112+
 2. Navigate to the ticketline code directory
 3. Build the server as well as the client with the following commands
 
-#### Server + Client:
+### Server + Client:
 ```
 ./mvnw clean verify
 ```
-#### Server:
+### Server:
 ```
 ./mvnw -pl=server -am clean verify
 ```
-#### Client
+### Client
 ```
 ./mvnw -pl=client -am clean verify
 ```
+---
 
-### Running Ticketline
+## Running Ticketline
 
 1. Navigate to the ticketline code directory
 2. Run the server as well as the client with with the following commands
 
-#### Server:
+### Server:
 ```
 ./mvnw -pl=server -am spring-boot:run
 ```
@@ -41,12 +51,12 @@ On Windows Powershell
 ./mvnw -pl=server -am spring-boot:run '-Drun.profiles=generateData,development'
 ```
 
-#### Client
+### Client
 ```
 ./mvnw -pl=client -am spring-boot:run
 ```
 
-### Login
+## Login
 
 You can login to the client using one of the following credentials:
 
@@ -59,6 +69,8 @@ You can login to the client using one of the following credentials:
 * Database
   * Username: ticketline
   * Password: ticketline
+
+---
 
 ## Intellij Configuration
 
@@ -75,4 +87,5 @@ use the following command to create versions:
     git tag v1.0
     git push origin dev --tags
     
-
+## Authors
+calvinclaus, cglantschnig, yungfred, Akkes1 & martin-kl
